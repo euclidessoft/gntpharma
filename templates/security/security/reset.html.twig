@@ -1,0 +1,69 @@
+{% extends 'layout.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block order %}active{% endblock %}
+{% block body %}
+    <!-- Header Start -->
+    <div class="container-fluid py-5 mb-5 page-header">
+        <div class="container">
+            <div class="row justify-content-center mt-lg-5">
+                <div class="col-lg-10 text-center mt-lg-5">
+                    <h1 class="display-5 text-white fw-bold mt-lg-5 mb-4">
+                        {{ "Commande"|trans }}
+                    </h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item">
+                                <a class="text-white" href="{{ path('Accueil') }}">
+                                    {{ "Accueil"|trans }}
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                {{ "Commande"|trans }}
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 fond">
+                <div class="card border-success mt-4 mb-3">
+                    <div class="card-header bg-light border-botom border-success text-dark py-4 text-bold">
+                        <i class="fa fa-lock"></i>
+                        {{ 'Nouveau mot de passe'|trans }}
+                    </div>
+                    <div class="card-body pt-5">
+                        {% for message in app.flashes('notice') %}
+                            <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black mt-2">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;
+                                </button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+
+                        <div class="col-10 offset-1">
+                            {{ form_start(form) }}
+                            <div class="form-group mt-4">
+                                {{ form_row(form.password, {'label':false, 'attr' : { 'placeholder' : 'Nouveau mot de passe', 'autofocus':'autofocus'}}) }}
+                            </div>
+                            <div class="form-group mt-4">
+
+                                {{ form_row(form.confirm, {'label':false, 'attr' : { 'placeholder' : 'Confirmer mot de passe'}}) }}
+                            </div>
+                            <div class="centrer mt-4">
+                                <button type="submit" class="btn btn-success mt-4 mb-4 pl-4 pr-4">
+                                    <i class="fa fa-save"></i>
+                                    {{ 'Enregistrer'|trans }}
+                                </button>
+                            </div>
+                            {{ form_rest(form) }}
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

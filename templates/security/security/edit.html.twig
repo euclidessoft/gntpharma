@@ -1,0 +1,291 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ 'Modification profil'|trans }} - Hajjalbayt {% endblock %}
+{% block body %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-8 offset-lg-2 mt-5 mb-5 pb-1 fond-inner">
+            <h4 class="mt-4 mb-5 text-bold">
+                <i class="fa fa-user-plus"></i>
+                {{ 'Modifier profil'|trans }}
+            </h4>
+            <div class="col-12">
+                Les Champs avec * sont obligatoires
+            </div>
+             {{ include('security/security/userform.html.twig') }}
+             <br/>
+        </div>
+</div>
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        $('#universite').hide();
+        $('#faculte').hide();
+        $('#classe').hide();
+
+        $('#registration_universite').hide();
+        $('#registration_faculte').hide();
+        $('#registration_classe').hide();
+        $('#registration_femmes').hide();
+        $('#registration_enfants').hide();
+
+        $('#profession').hide();
+        $('#specialite').hide();
+        $('#registration_profession').hide();
+        $('#registration_specialite').hide();
+        if($('#registration_situation option:selected').val() == 'Marie(e)'){
+                $('#registration_femmes').show();
+                 $('#registration_enfants').show();
+        }
+        if($('#registration_status option:selected').val() == 'Etudiant'){
+                    $('#universite').show();
+                    $('#faculte').show();
+                    $('#classe').show();
+
+                    $('#profession').hide();
+                    $('#specialite').hide();
+
+                $('#registration_universite').show();
+                $('#registration_faculte').show();
+                $('#registration_classe').show();
+
+                $('#registration_profession').hide();
+                $('#registration_specialite').hide();
+
+                $('#registration_profession').val('');
+                $('#registration_specialite').val('');
+            }
+            if($('#registration_status option:selected').val() == 'Professionnel'){
+                $('#universite').hide();
+                $('#faculte').hide();
+                $('#classe').hide();
+
+                $('#profession').show();
+                $('#specialite').show();
+
+                $('#registration_universite').hide();
+                $('#registration_faculte').hide();
+                $('#registration_classe').hide();
+
+                $('#registration_profession').show();
+                $('#registration_specialite').show();
+
+                $('#registration_universite').val('');
+                $('#registration_faculte').val('');
+                $('#registration_classe').val('');
+            }
+
+        $('#registration_status').change(function(){
+            if($('#registration_status option:selected').val() == 'Etudiant'){
+                    $('#universite').show();
+                    $('#faculte').show();
+                    $('#classe').show();
+
+                    $('#profession').hide();
+                    $('#specialite').hide();
+
+                $('#registration_universite').show();
+                $('#registration_faculte').show();
+                $('#registration_classe').show();
+
+                $('#registration_profession').hide();
+                $('#registration_specialite').hide();
+
+                $('#registration_profession').val('');
+                $('#registration_specialite').val('');
+            }
+            else if($('#registration_status option:selected').val() == 'Professionnel'){
+                $('#universite').hide();
+                $('#faculte').hide();
+                $('#classe').hide();
+
+                $('#profession').show();
+                $('#specialite').show();
+
+                $('#registration_universite').hide();
+                $('#registration_faculte').hide();
+                $('#registration_classe').hide();
+
+                $('#registration_profession').show();
+                $('#registration_specialite').show();
+
+                $('#registration_universite').val('');
+                $('#registration_faculte').val('');
+                $('#registration_classe').val('');
+            }
+            else{
+                $('#universite').hide();
+                $('#faculte').hide();
+                $('#classe').hide();
+                $('#profession').hide();
+                $('#specialite').hide();
+
+                $('#registration_universite').hide();
+                $('#registration_faculte').hide();
+                $('#registration_classe').hide();
+                $('#registration_profession').hide();
+                $('#registration_specialite').hide();
+
+                $('#registration_universite').val('');
+                $('#registration_faculte').val('');
+                $('#registration_classe').val('');
+                $('#registration_profession').val('');
+                $('#registration_specialite').val('');
+            }
+        });
+
+        $('#registration_situation').change(function(){
+            if($('#registration_situation option:selected').val() == 'Marie(e)'){
+                $('#registration_femmes').show();
+                 $('#registration_enfants').show();
+        }else{
+            $('#registration_femmes').hide();
+             $('#registration_enfants').hide();
+
+             $('#registration_femmes').val('');
+             $('#registration_enfants').val('');
+        }
+
+        });
+
+        $('#registration_femmes').change(function(){
+            if($('#registration_sexe option:selected').val() == 'Madame'){
+                $('#registration_femmes').val('');
+        }
+
+        });
+
+        $('#registration_sexe').change(function(){
+            if($('#registration_sexe option:selected').val() == 'Madame'){
+                $('#registration_femmes').val('');
+        }
+
+        });
+        
+        
+    }); 
+function envoie() {
+    /* $('#send').html("<img src='{{ asset('images/ajax-loader.gif')}}' width='20' />");*/
+    var submit = 1;
+    if($('#registration_status option:selected').val() == 'Etudiant'){
+        if( $('#registration_universite').val() == "" || $('#registration_faculte').val () == "" || $('#registration_classe option:selected').val() == ""){
+            alert("Renseignez: \n Universite \n Faculte \n Classe");
+            submit = 0;
+        }
+    }
+    else if($('#registration_status option:selected').val() == 'Professionnel'){
+         if( $('#registration_profession').val() == ""){
+            alert("Renseignez la profession au moins");
+            submit = 0;
+        }
+    }
+    else{
+        
+        alert("Renseignez le status");
+        submit = 0;
+    }
+
+    if($('#registration_situation option:selected').val() == 'Marie(e)'){
+        if($('#registration_sexe option:selected').val() == 'Madame'){
+            
+            if( $('#registration_enfants').val() == "" ){
+                alert("Renseignez: Votre nombre d'enfants"); 
+                submit = 0; 
+            } 
+        } else{
+            if( $('#registration_enfants').val() == "" || $('#registration_femmes option:selected').val() == "" ){
+                alert("Renseignez: \n Nombre de femmes \n nombre d'enfants"); 
+                submit = 0; 
+            }    
+        }
+    } 
+
+    if(submit == 1)
+    $('#subm').trigger('click');
+    
+}
+
+function send() {
+     $('#confirm').html("<img src='{{ asset('images/ajax-loader.gif')}}' width='30' class='text-center' />");
+     $('#form').submit();
+}
+function verif() {
+     $('#annee').html($('#registration_annee  option:selected').val());
+     $('#civilite').html($('#registration_sexe  option:selected').val());
+     $('#prenom').html($('#registration_prenom').val());
+     $('#nom').html($('#registration_nom').val());
+     $('#datenaiss').html($('#registration_birthday').val());
+     $('#lieunaiss').html($('#registration_lieunaiss').val());
+     $('#adresse').html($('#registration_adresse').val());
+     $('#telephone').html($('#registration_phone').val());
+     $('#email').html($('#registration_email').val());
+     $('#blood').html($('#registration_bloodgroup').val());
+     $('#vr_status').html($('#registration_status option:selected').val());
+
+     if($('#registration_status option:selected').val() == 'Etudiant'){
+        $('#vr_div_universite').show();
+         $('#vr_div_faculte').show();
+         $('#vr_div_niveau').show();
+
+         $('#vr_div_profession').hide();
+         $('#vr_div_specialite').hide();
+
+        $('#vr_universite').html($('#registration_universite').val());
+        $('#vr_faculte').html($('#registration_faculte').val());
+        $('#niveau').html($('#registration_classe option:selected').val());
+
+     }
+     else if($('#registration_status option:selected').val() == 'Professionnel'){
+        $('#vr_div_universite').hide();
+         $('#vr_div_faculte').hide();
+         $('#vr_div_niveau').hide();
+
+         $('#vr_div_profession').show();
+         $('#vr_div_specialite').show();
+
+        $('#vr_profession').html($('#registration_profession option:selected').val());
+        $('#vr_specialite').html($('#registration_specialite').val());
+
+     }
+     $('#vr_profession').html($('#registration_profession').val());
+     $('#vr_specialite').html($('#registration_specialite').val());
+     
+     $('#vr_situation').html($('#registration_situation option:selected').val());
+
+     if($('#registration_situation option:selected').val() == 'Marie(e)'){
+         $('#vr_div_femmes').show();
+         $('#vr_div_enfants').show();
+        $('#vr_femmes').html($('#registration_femmes option:selected').val());
+         $('#vr_enfants').html($('#registration_enfants').val());
+
+     }else{
+        $('#vr_div_femmes').hide();
+         $('#vr_div_enfants').hide();
+     }
+    
+     
+     switch($('#registration_region option:selected').val()){
+       case '3': $('#region').html("Dakar"); break; 
+       case '4': $('#region').html("Thies"); break;
+       case '5': $('#region').html("Diourbel"); break;
+       case '6': $('#region').html("Kaolack"); break;
+       case '7': $('#region').html("Fatick"); break;
+       case '8': $('#region').html("Kaffrine"); break;
+       case '9': $('#region').html("Saint Louis"); break;
+       case '10': $('#region').html("Louga"); break;
+       case '11': $('#region').html("Matam"); break;
+       case '12': $('#region').html("Ziguinchor"); break;
+       case '13': $('#region').html("Kolda"); break;
+       case '14': $('#region').html("Sedhiou"); break;
+       case '15': $('#region').html("Kedougou"); break;
+       case '16': $('#region').html("Tambacounda"); break;
+     }
+     $('#departement').html($('#registration_departement').val());
+     $('#ville').html($('#registration_ville').val());
+     $('#etablissement').html($('#registration_etablissement').val());
+     $('#fonction').html($('#registration_fonction').val());
+}
+</script>
+{% endblock %}
+
+{% endblock %}

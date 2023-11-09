@@ -1,0 +1,43 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block order %}active{% endblock %}
+
+{% block body %}
+    <h1>{{ "Suivi des commandes"|trans }}</h1>
+
+
+    <table class="table table-success-light table-bordered table-hover table-striped w-100">
+        <thead>
+        <tr>
+            <th>Numero Commande</th>
+            <th>Date</th>
+            <th> </th>
+            <th>Montant</th>
+            <th> </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for commande in commandes %}
+            <tr>
+                <td>{{ commande.id }}</td>
+                <td>{{ commande.date|date('d/m/Y') }}</td>
+                <td> </td>
+                <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
+                <td>
+                    <a href="{{ path('commande_panier_Detail_admin', {'commande' : commande.id}) }}" class="btn btn-success">
+                        <i class="fa fa-circle-info"></i> Details
+                    </a>
+                </td>
+
+
+            </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="5">Aucune commande</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ 'Mon profile'|trans }} {% endblock %}
+{% block body %}
+<div class="row">
+  
+    <div class="col-12">
+
+        {{ include('security/security/boutons.html.twig') }}
+        
+        {% for message in app.flashes('notice')%}
+        <div class="col-lg-12 mt-4 alert alert-success alert-dismissible fade show radius-10 shadow-black" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ message|trans }}
+        </div>
+        {% endfor%}
+        <div class="col-lg-12">
+            <div class="col-lg-6  col-md-12 offset-lg-3 mt-5 mb-5 pb-2 fond-inner">
+                <div class="col-12 profile-header">
+
+                </div>
+                <div class="row">
+                <div class="col-4 mt-5 text-center">
+{#                    {% if user.sexe == "Monsieur" %}#}
+{#                     <img src="{{asset('images/avatar.jpg') }}" width="100" alt="Photo" class="rounded-circle" />#}
+{#                     {% else %}#}
+{#                     <img src="{{asset('images/avatar-femme.jpg') }}" width="100" alt="Photo" class="rounded-circle" />#}
+{#                     {% endif %}#}
+{#                     <h6 class="mt-3">{{ user.bloodgroup }}</h6>#}
+                </div>
+                <div class="col-8 mt-3 mb-4">
+                    <h6>Prenom :<b>   {{ user.prenom }}</b></h6>
+                    <h6>Nom :<b>   {{ user.nom }}</b></h6>
+                    <h6>Telephone :<b>   {{ user.phone }}</b></h6>
+
+                    <h6> Email: <b>{{user.email}}</b></h6>
+
+                    <h6>Adresse :<b>   {{ user.adresse }}</b></h6>
+                     
+                </div>
+                </div>
+                
+                  
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% block scripts %}
+<script>
+    function joindre() {
+        $('#joindre').html("<div class=\"spinner-border spinner-border-sm text-info\" role=\"status\"><span class=\"sr-only\">Loading...</span></div>");
+    }
+
+
+</script>
+{% endblock %}
+{% endblock %}

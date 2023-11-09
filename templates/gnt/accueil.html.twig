@@ -1,0 +1,361 @@
+{% extends 'layout.html.twig' %}
+
+{% block home %}active{% endblock %}
+
+{% block body %}
+
+    <!--PreLoader Ends-->
+
+    <!-- Carousel Start -->
+    <div class="container-fluid p-0 mb-lg-5">
+        <div id="header-carousel" class="carousel header-carousel" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item position-relative active">
+                    <div class="carousel-img slide_1 animated fadeInLeft">
+                    </div>
+                    <div class="carousel-overlay">
+                        <div class="container mt-md-5">
+                            <div class="row justify-content-center mt-md-5 text-center">
+                                <div class="col-10 col-lg-8">
+                                    <h1 class="fs-2 text-secondaire fw-bold mb-4 animated fadeInDownBig delay-05s">
+                                        {{ "Promotion médicale et pharmaceutique"|trans }}
+                                    </h1>
+                                    <div class="fs-5 text-white mb-4 pb-2 animated fadeInUpBig delay-05s">
+                                        <p class="paragraphe-1 mb-0">
+                                            {{ "Notre passion pour l'excellence médicale nous motive à redéfinir constamment les normes de l'industrie et à mettre la barre plus haut pour le bénéfice de tous."|trans }}
+                                        </p>
+                                        <p class="paragraphe-2">
+                                            {{ "Nous sommes bien plus qu'une entreprise, nous sommes des artisans de la santé, des guides de l'innovation et des catalyseurs du bien-être"|trans }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item position-relative">
+                    <div class="carousel-img slide_3 animated fadeInLeft">
+                    </div>
+                    <div class="carousel-overlay">
+                        <div class="container mt-md-5">
+                            <div class="row justify-content-center mt-md-5 text-center">
+                                <div class="col-10 col-lg-8">
+                                    <h1 class="fs-2 text-secondaire fw-bold mb-4 animated fadeInDownBig delay-05s">
+                                        {{ "Importation et stockage de produits pharmaceutiques"|trans }}
+                                    </h1>
+                                    <p class="fs-5 text-white mb-4 pb-2 animated fadeInUpBig delay-05s">
+                                        {{ "Nous prenons à cœur notre rôle essentiel dans la chaîne d'approvisionnement pharmaceutique en veillant à ce que chaque produit qui entre dans nos entrepôts soit traité avec le plus grand soin et la plus grande précision"|trans }}
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item position-relative">
+                    <div class="carousel-img slide_2 animated fadeInLeft">
+                    </div>
+                    <div class="carousel-overlay">
+                        <div class="container mt-md-5">
+                            <div class="row justify-content-center mt-md-5 text-center">
+                                <div class="col-10 col-lg-8">
+                                    <h1 class="fs-2 text-secondaire fw-bold mb-4 animated fadeInDownBig delay-05s">
+                                        {{ "Distribution de produits pharmaceutiques"|trans }}
+                                    </h1>
+                                    <p class="fs-5 text-white mb-4 pb-2 animated fadeInUpBig delay-05s">
+                                        {{ "Nous nous engageons à jouer un rôle crucial dans la chaîne d'approvisionnement pharmaceutique en fournissant des solutions de distribution innovantes et fiables pour les laboratoires à travers le monde"|trans }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#header-carousel" data-bs-slide-to="0" aria-label="Slide 1"
+                        class="active" aria-current="true"></button>
+                <button type="button" data-bs-target="#header-carousel" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#header-carousel" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-control">
+                <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel"
+                        data-bs-slide="prev">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#header-carousel"
+                        data-bs-slide="next">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Carousel End -->
+
+    <!-- About Start -->
+    <div class="container-fluid py-5 mt-lg-5">
+        <div class="container mt-lg-5">
+            <div class="row g-5">
+                <div class="col-lg-6 wow fadeInRightBig text-center text-lg-end" data-wow-delay="0.3s">
+                    <h2 class="section-title bg-white text-lg-end pe-3 mb-5">
+                        {{ "Qui sommes-nous"|trans }}
+                    </h2>
+                    <p class="fs-5 mb-4">
+                        {{ "GNT PHARMA a évolué à partir d'une petite initiative locale, pour devenir l'un des noms les plus fiables, si ce n’est pas le plus fiable, dans l'industrie pharmaceutique, avec une portée nationale et même internationale."|trans }}
+                    </p>
+                    <p class="fs-5 mb-5">
+                        {{ "Depuis, GNT PHARMA s'est forgé une solide réputation en tant que leader de confiance dans le domaine de la distribution de produits pharmaceutiques."|trans }}
+                    </p>
+                    <a class="btn btn-primaire btn-effect p-3" href="{{ path('About') }}">
+                        {{ "En savoir plus ..."|trans }}
+                    </a>
+                </div>
+                <div class="col-lg-6 wow fadeInLeftBig" data-wow-delay="0.3s">
+                    <div class="position-relative h-100">
+                        <img class="img-fluid position-absolute w-100 h-100 fit-cover"
+                             src="{{ asset('images/distribution_2.avif') }}" alt="A propos">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+    <!-- Metier Start -->
+    <div class="container-fluid py-5 mb-lg-5">
+        <div class="container mb-5">
+            <div class="text-center mb-5 mt-5 wow fadeInUp" data-wow-delay="0.1s">
+                <h2 class="section-title bg-white text-center text-secondaire px-3 mb-5">
+                    {{ "Nos métiers"|trans }}
+                </h2>
+            </div>
+            <div class="row g-5 justify-content-center">
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="metier-item">
+                        <div class="metier-item-inner">
+                            <div class="metier-item-front">
+                                <img class="img-fluid w-100" src="{{ asset('images/logistic_home.avif') }}"
+                                     alt="Logistique">
+                                <h2 class="metier-front-tittle p-5">
+                                    {{ "Logistique"|trans }}
+                                </h2>
+                            </div>
+                            <div class="metier-item-back px-5 py-4">
+                                <h3 class="metier-tittle">
+                                    {{ "Logistique"|trans }}
+                                </h3>
+                                <p class="metier-text">
+                                    {{ "Chez GNT PHARMA, nous prenons à cœur notre rôle essentiel dans la chaîne d'approvisionnement pharmaceutique, en veillant à ce que chaque produit qui entre dans nos entrepôts soit traité avec le plus grand soin et la plus grande précision."|trans }}
+                                </p>
+                                <a class="btn btn-primaire btn-effect" href="{{ path('Logistique') }}">
+                                    {{ "En savoir plus ..."|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="metier-item">
+                        <div class="metier-item-inner">
+                            <div class="metier-item-front">
+                                <img class="img-fluid w-100" src="{{ asset('images/distribution_home.avif') }}"
+                                     alt="Distribution">
+                                <h2 class="metier-front-tittle p-5">
+                                    {{ "Distribution"|trans }}
+                                </h2>
+                            </div>
+                            <div class="metier-item-back px-5 py-4">
+                                <h3 class="metier-tittle">
+                                    {{ "Distribution"|trans }}
+                                </h3>
+                                <p class="metier-text">
+                                    {{ "Chez GNT PHARMA, nous nous engageons à jouer un rôle crucial dans la chaîne d'approvisionnement pharmaceutique en fournissant des solutions de distribution innovantes et fiables pour les laboratoires à travers le monde."|trans }}
+                                </p>
+                                <a class="btn btn-primaire btn-effect" href="{{ path('Distribution') }}">
+                                    {{ "En savoir plus ..."|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="metier-item">
+                        <div class="metier-item-inner">
+                            <div class="metier-item-front">
+                                <img class="img-fluid w-100" src="{{ asset('images/promotion_home.avif') }}"
+                                     alt="Promotion">
+                                <h2 class="metier-front-tittle p-5">
+                                    {{ "Promotion"|trans }}
+                                </h2>
+                            </div>
+                            <div class="metier-item-back px-5 py-4">
+                                <h3 class="metier-tittle">
+                                    {{ "Promotion"|trans }}
+                                </h3>
+                                <p class="metier-text">
+                                    {{ "Notre passion pour l'excellence médicale nous motive à redéfinir constamment les normes de l'industrie et à mettre la barre plus haut pour le bénéfice de tous."|trans }}
+                                    {{ "Nous sommes bien plus qu'une entreprise, nous sommes des artisans de la santé"|trans }}
+                                </p>
+                                <a class="btn btn-primaire btn-effect" href="{{ path('Promotion') }}">
+                                    {{ "En savoir plus ..."|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Metier End -->
+
+    <!-- Carriere Start -->
+    <div class="container-fluid carriere wow fadeInUp mb-lg-5" data-wow-delay="0.1s">
+        <div class="row">
+            <div class="col-lg-6 col-md-8">
+                <div class="row">
+                    <div class="carriere-inner my-5 py-3 pe-5 wow fadeInLeft" data-wow-delay="0.2s">
+                        <div class="text-center mb-5 mt-5 wow fadeInLeft" data-wow-delay="0.3s">
+                            <h1 class="text-center text-white px-3">
+                                {{ "Carrière"|trans }}
+                            </h1>
+                        </div>
+                        <div class="ms-lg-5 ms-md-4 ms-3">
+                        <p class="fs-5 pe-5 wow fadeInLeft" data-wow-delay="0.5s">
+                            {{ "Chez GNT Pharma, nous croyons fermement que la réussite d'une entreprise repose sur une culture d'entreprise solide et sur le bien-être de ses employés."|trans }}
+                        </p>
+                        <p class="fs-5 pe-5 wow fadeInLeft" data-wow-delay="0.7s">
+                            {{ "Notre culture est façonnée par des valeurs fondamentales et une vision commune, créant un environnement de travail dynamique et positif où chaque employé peut s'épanouir."|trans }}
+                        </p>
+                        <div class="text-center">
+                            <a class="btn btn-secondaire btn-effect mt-5 mb-5" href="{{ path('Carriere') }}">
+                                {{ "Plus de détails ..."|trans }}
+                            </a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- row -->
+    </div>
+    <!-- Carriere End -->
+
+    <!-- Actualite Start -->
+    <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container">
+            <div class="text-center mb-5 mt-5">
+                <h2 class="section-title bg-white text-center text-secondaire px-3 mb-5">
+                    {{ "Actualité"|trans }}
+                </h2>
+            </div>
+            <div class="row g-5">
+                <div class="col-md-6">
+                    <div class="banner wow fadeInUp shadow" data-wow-delay="0.3s">
+                        <div class="row">
+                            <div class="col-lg-4 wow fadeInLeft" data-wow-delay="0.5s">
+                                <div class="h-100">
+                                    <img class="img-fluid w-100 h-100 fit-cover"
+                                         src="{{ asset('images/event_1.avif') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="col-lg-8 text-center">
+                                <h3 class="fw-bold mt-4 fs-4 wow fadeInRight" data-wow-delay="0.7s">
+                                    {{ "Titre de l'article 1"|trans }}
+                                </h3>
+                                <p class="text-lg-start mt-3 px-3 wow fadeInRight" data-wow-delay="0.7s">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab accusantium
+                                    cupiditate
+                                    distinctio, dolor explicabo fugiat illo illum inventore minima necessitatibus
+                                    possimus
+                                </p>
+                                <a class="btn btn-primaire btn-effect px-4 py-2 mt-lg-2 mt-3 mb-lg-3 mb-5 me-3 float-lg-end" href="#">
+                                    {{ "En savoir plus ..."|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="banner wow fadeInUp shadow" data-wow-delay="0.3s">
+                        <div class="row">
+                            <div class="col-lg-4 wow fadeInLeft" data-wow-delay="0.5s">
+                                <div class="h-100">
+                                    <img class="img-fluid w-100 h-100 fit-cover"
+                                         src="{{ asset('images/event_2.avif') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="col-lg-8 text-center">
+                                <h3 class="fw-bold mt-4 fs-4 wow fadeInRight" data-wow-delay="0.7s">
+                                    {{ "Titre de l'article 2"|trans }}
+                                </h3>
+                                <p class="text-lg-start mt-3 px-3 wow fadeInRight" data-wow-delay="0.7s">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab accusantium
+                                    cupiditate
+                                    distinctio, dolor explicabo fugiat illo illum inventore minima necessitatibus
+                                    possimus
+                                </p>
+                                <a class="btn btn-primaire btn-effect px-4 py-2 mt-lg-2 mt-3 mb-lg-3 mb-5 me-3 float-lg-end" href="#">
+                                    {{ "En savoir plus ..."|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="banner wow fadeInUp shadow" data-wow-delay="0.3s">
+                        <div class="row">
+                            <div class="col-lg-4 wow fadeInLeft" data-wow-delay="0.5s">
+                                <div class="h-100">
+                                    <img class="img-fluid w-100 h-100 fit-cover"
+                                         src="{{ asset('images/event_3.avif') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="col-lg-8 text-center">
+                                <h3 class="fw-bold mt-4 fs-4 wow fadeInRight" data-wow-delay="0.7s">
+                                    {{ "Titre de l'article 3"|trans }}
+                                </h3>
+                                <p class="text-lg-start mt-3 px-3 wow fadeInRight" data-wow-delay="0.7s">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab accusantium
+                                    cupiditate
+                                    distinctio, dolor explicabo fugiat illo illum inventore minima necessitatibus
+                                    possimus
+                                </p>
+                                <a class="btn btn-primaire btn-effect px-4 py-2 mt-lg-2 mt-3 mb-lg-3 mb-5 me-3 float-lg-end" href="#">
+                                    {{ "En savoir plus ..."|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="banner wow fadeInUp shadow" data-wow-delay="0.3s">
+                        <div class="row">
+                            <div class="col-lg-4 wow fadeInLeft" data-wow-delay="0.5s">
+                                <div class="h-100">
+                                    <img class="img-fluid w-100 h-100 fit-cover"
+                                         src="{{ asset('images/event_4.avif') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="col-lg-8 text-center">
+                                <h3 class="fw-bold mt-4 fs-4 wow fadeInRight" data-wow-delay="0.7s">
+                                    {{ "Titre de l'article 4"|trans }}
+                                </h3>
+                                <p class="text-lg-start mt-3 px-3 wow fadeInRight" data-wow-delay="0.7s">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab accusantium
+                                    cupiditate
+                                    distinctio, dolor explicabo fugiat illo illum inventore minima necessitatibus
+                                    possimus
+                                </p>
+                                <a class="btn btn-primaire btn-effect px-4 py-2 mt-lg-2 mt-3 mb-lg-3 mb-5 me-3 float-lg-end" href="#">
+                                    {{ "En savoir plus ..."|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Actualite End -->
+
+{% endblock %}

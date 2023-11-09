@@ -1,0 +1,235 @@
+{% extends 'layout1.html.twig' %}
+{% block title %} TAM- Assemblee Generale  {% endblock %}
+{% block ag %} class="active" {% endblock %}
+
+{% block body %}
+<button type="button" data-toggle="modal" href="#nombre" id="subm" class="btn btn-normal btn-primary mb-2 mr-3">
+    <i class="fa fa-list"></i>
+    {{ 'Trier'|trans }}
+</button>
+<div class="modal" id="nombre" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg mt-5" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center" id="packtitle">
+                    {{ 'Affichage par criteres'|trans }}
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mt-4 mb-4">
+                    {{ form_start(form)}}
+                    <div class="row">
+                        
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form_row(form.annee) }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form_row(form.sexe) }}
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                {{ form_row(form.status) }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form_row(form.situation) }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form_row(form.bloodgroup) }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form_row(form.cellule) }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group mb-4">
+                                {{ form_row(form.profession) }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group mb-4">
+                                {{ form_row(form.specialite) }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group mb-4">
+                                {{ form_row(form.region) }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group mb-4">
+                                {{ form_row(form.departement,{ 'attr' : {'label' : 'Departement'}}) }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group mb-4">
+                                {{ form_row(form.ville) }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group mb-4">
+                                {{ form_row(form.etablissement) }}
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                        <button class="btn btn-primary text-center" type="submit" id="send" onclick="recherche()"> Rechercher</button>
+                        </div>
+                        {{ form_end(form)}}
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+    <div class="panel panel-primary">
+        
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+    {% for message in app.flashes('notice')%}
+    <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        {{ message|trans }}
+    </div>
+    {% endfor%}
+    <div class="alert alert-primary">
+        {{ users|length }} élément(s) trouvé(s)
+    </div>
+    <table width="100%" class="table table-striped table-bordered table-hover" id="liste">
+        <thead>
+            <tr>
+                <th class="text-center">
+                    {{ 'Photo'|trans }}
+                </th>
+                <th>
+                    {{ 'Identifiant'|trans }}
+                </th>
+                <th>
+                    {{ 'Nom et Prénom'|trans }}
+                </th>
+                <th class="text-center">
+                    {{ 'Téléphone'|trans }}
+                </th>
+                <th class="text-center">
+                    {{ 'Profession'|trans }}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td data-label="{{ 'Photo'|trans }}">
+                    <b><a href="{{ path('security_user', { user : user.id })}}">
+                        {% if user.sexe == "Monsieur" %}
+                        <img src="{{asset('images/avatar.jpg') }}" width="50" alt="Photo" class="rounded-circle" />
+                        {% else %}
+                        <img src="{{asset('images/avatar-femme.jpg') }}" width="50" alt="Photo" class="rounded-circle" />
+                        {% endif %}
+                    </a></b>
+                </td>
+                <td data-label="{{ 'Identifiant'|trans }}">
+                   <b> <a href="{{ path('security_user', { user : user.id })}}">
+                        {{ user.username|upper }}
+                    </a></b>
+                </td>
+                <td data-label="{{ 'Prénom'|trans }}">
+                   <b> <a href="{{ path('security_user', { user : user.id })}}">
+                        {{ user.nom|upper }} {{ user.prenom }} 
+                    </a></b>
+                </td>
+                <td data-label="{{ 'Téléphone'|trans }}" class="phone">
+                   <b> <a href="{{ path('security_user', { user : user.id })}}">
+                        {{ user.phone }}
+                    </a></b>
+                </td>
+                <td data-label="{{ 'Profession'|trans }}" class="text-center">
+                   <b> <a href="{{ path('security_user', { user : user.id })}}">
+                        {{ user.profession }}
+                    </a></b>
+                </td>
+               
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-12" id="exportexcel">
+
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+{% block scripts %}
+<script>
+    function userdisable(id) {
+        if (confirm("{{ 'Voulez-vous vraiment désactiver cet utilisateur ?'|trans }}")) {
+            $('#btn' + id).html("<img src='{{ asset('images/ajax-loader.gif')}}' width='24' />");
+            $.ajax({
+                type: "POST",
+                url: "{{path('security_user_disable')}}",
+                data: "usr=" + id,
+                success: function(data) {
+                    if (data['ok'] != '') {
+                        $('#btn' + id).attr('class', 'btn btn-shadow btn-td btn-normal btn-success');
+                        $('#btn' + id).attr('onclick', 'userenable(' + id + ')');
+                        $('#btn' + id).html("<i class='fa fa-lock-open'></i> {{'Activer'|trans}}");
+                    }
+                },
+                error: function() {
+                    alert("{{ 'La requête n\'a pas abouti'|trans}}");
+                }
+            });
+        }
+
+    }
+
+    function userenable(id) {
+        if (confirm("{{ 'Voulez-vous vraiment activer cet utilisateur ?'|trans }}")) {
+            $('#btn' + id).html("<img src='{{ asset('images/ajax-loader.gif')}}' width='24' />");
+            $.ajax({
+                type: "POST",
+                url: "{{path('security_user_enable')}}",
+                data: "usr=" + id,
+                success: function(data) {
+                    if (data['ok'] != '') {
+                        $('#btn' + id).attr('class', 'btn btn-shadow btn-td btn-normal btn-danger');
+                        $('#btn' + id).attr('onclick', 'userdisable(' + id + ')');
+                        $('#btn' + id).html("<i class='fa fa-user-lock'></i> {{'Désactiver'|trans}}");
+                    }
+                },
+                error: function() {
+                    alert("{{ 'La requête n\'a pas abouti'|trans}}");
+                }
+            });
+        }
+
+    }
+    function recherche(){
+         $('#send').html("<i class='fa fa-spinner'></i>");
+
+    }
+
+</script>
+{% endblock %}
+{% endblock %}

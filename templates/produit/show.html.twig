@@ -1,0 +1,42 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block order %}active{% endblock %}
+
+{% block body %}
+    <h1>Produit</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ produit.id }}</td>
+            </tr>
+            <tr>
+                <th>Reference</th>
+                <td>{{ produit.reference }}</td>
+            </tr>
+            <tr>
+                <th>Desigantion</th>
+                <td>{{ produit.desigantion }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ produit.prix }}</td>
+            </tr>
+            <tr>
+                <th>Mincommande</th>
+                <td>{{ produit.mincommande }}</td>
+            </tr>
+            <tr>
+                <th>Fabriquant</th>
+                <td>{{ produit.fabriquant }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('produit_index') }}">back to list</a>
+
+    <a href="{{ path('produit_edit', {'id': produit.id}) }}">edit</a>
+
+    {{ include('produit/_delete_form.html.twig') }}
+{% endblock %}

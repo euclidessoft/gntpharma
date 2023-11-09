@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>
+        {% block title %} GNT Pharma - Leader dans la distribution des produits pharmaceutiques {% endblock %}
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="GNT Pharma">
+    <meta name="description" content="Leader dans la distribution des produits pharmaceutiques">
+    <meta name="author" content="EUCLIDES">
+
+    <!-- Favicon -->
+    <!--    <link href="images/favicon.ico" rel="icon"> -->
+
+    <!-- Libraries Stylesheet -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+
+    <!-- Site Stylesheet -->
+    <link href="{{ asset('css/commande.css') }}" rel="stylesheet">
+    {#    <link href="{{ asset('css/style.min.css')}}" rel="stylesheet">#}
+</head>
+
+<body>
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg navbar-light sticky-top p-0">
+    <a href="{{ path('Accueil') }}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <h2 class="m-0 logo fw-bold">
+            <i class="fa-solid fa-staff-snake fa-lg me-2"></i>GNT PHARMA
+        </h2>
+    </a>
+    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#main-nav">
+        <i class="fa fa-bars fa-lg"></i>
+    </button>
+    <div class="collapse navbar-collapse pe-5" id="main-nav">
+        <div class="navbar-nav ms-auto d-flex align-items-center p-4 p-lg-0">
+            <a href="{{ path('Accueil') }}"
+               class="nav-item nav-link {% block home %} {% endblock %}">{{ "Accueil"|trans }}</a>
+            <a href="{{ path('About') }}"
+               class="nav-item nav-link {% block about %} {% endblock %}">{{ "A propos"|trans }}</a>
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle {% block metiers %} {% endblock %}"
+                   data-bs-toggle="dropdown" aria-expanded="false">{{ "Nos métiers"|trans }}</a>
+                <div class="dropdown-menu m-0">
+                    <a href="{{ path('Logistique') }}"
+                       class="dropdown-item {% block logistique %} {% endblock %}">{{ "Logistique"|trans }}</a>
+                    <a href="{{ path('Distribution') }}"
+                       class="dropdown-item {% block distribution %} {% endblock %}">{{ "Distribution"|trans }}</a>
+                    <a href="{{ path('Promotion') }}"
+                       class="dropdown-item {% block promotion %} {% endblock %}">{{ "Promotion"|trans }}</a>
+                </div>
+            </div>
+            <a href="{{ path('produit_index') }}"
+               class="nav-item nav-link {% block commande %} {% endblock %}">{{ "Commande"|trans }}</a>
+            <a href="{{ path('Carriere') }}"
+               class="nav-item nav-link {% block carriere %} {% endblock %}">{{ "Carrières"|trans }}</a>
+            <a href="{{ path('Contact') }}"
+               class="nav-item nav-link {% block contact %} {% endblock %}">{{ "Contact"|trans }}</a>
+            <button id="changelang" class="lang-button">
+            </button>
+        </div>
+    </div>
+</nav>
+<!-- Navbar End -->
+
+<!-- Topbar Start -->
+<div class="container-fluid bg-secondaire topbar">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <a href="{{ path('security_logout') }}"> Deconnexion</a>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <a href="{{ path('security_profile') }}"> Profil</a>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('commande_panier_suivi', {'user' : app.user.id}) }}"> suivi commande</a>
+                {% else %}
+                    <a href="{{ path('commande_panier_history') }}"> historique commande</a>
+                {% endif %}
+            </div>
+            <div class="col-lg-3 col-sm-6 text-lg-end">
+
+                {% if is_granted('ROLE_CLIENT') %}
+                    <a href="{{ path('commande_panier_panier') }}">
+                    <span id="gest_panier" class="badge text-bg-danger">
+                            {{ panier|length }}
+                    </span>
+
+                        <i class="fa fa-cart-shopping fa-2x"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Topbar End -->
+<div class="container main">
+    {% block body %}
+
+
+    {% endblock %}
+</div>
+<!-- Footer Start -->
+<div class="mt-5">
+    &nbsp;
+</div>
+<footer class="text-light mt-5">
+    <div class="container-fluid footer pt-3 mt-5">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="footer-tittle">{{ "Contact"|trans }}</h4>
+                    <p class="mb-2 fw-medium">
+                        <i class="fa fa-map-marker-alt fa-lg me-2 text-secondaire"></i>
+                        BP 15746 Douala Akwa, Cameroun
+                    </p>
+                    <p class="mb-2">
+                        <a href="tel:+237621117743" class="footer-link fw-medium">
+                            <i class="fa fa-phone fa-lg me-2 text-secondaire"></i>
+                            +237 6 21 11 77 43
+                        </a>
+                    </p>
+                    <p class="mb-2">
+                        <a href="mailto:lnatlantiscameroon@gmail.com" class="footer-link fw-medium">
+                            <i class="fa fa-envelope fa-lg me-2 text-secondaire"></i>
+                            info@gntpharma.com
+                        </a>
+                    </p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="footer-tittle">{{ "Liens utiles"|trans }}</h4>
+                    <a class="btn btn-link" href="{{ path('About') }}">{{ "A propos"|trans }}</a>
+                    {#                    <a class="btn btn-link" href="#">{{ "Metiers"|trans}}</a>#}
+                    <a class="btn btn-link" href="#">{{ "Actualité et événements"|trans }}</a>
+                    <a class="btn btn-link" href="{{ path('produit_index') }}">{{ "Commande"|trans }}</a>
+                    <a class="btn btn-link" href="{{ path('Contact') }}">{{ "Contact"|trans }}</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="footer-tittle">{{ "Réseaux sociaux"|trans }}</h4>
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="socialink" href="#">
+                                <span class="socialink-facebook">
+                                    gnt-pharma
+                                </span>
+                                <i class="fab fa-facebook-square fa-2x"></i>
+                            </a>
+                        </div>
+                        <div class="col-12">
+                            <a class="socialink" href="#">
+                                <span class="socialink-twitter">
+                                    gnt-pharma
+                                </span>
+                                <i class="fab fa-twitter fa-2x"></i>
+                            </a>
+                        </div>
+                        <div class="col-12">
+                            <a class="socialink" href="#">
+                                <span class="socialink-instagram">
+                                    gnt-pharma
+                                </span>
+                                <i class="fab fa-instagram fa-2x"></i>
+                            </a>
+                        </div>
+                        <div class="col-12">
+                            <a class="socialink" href="#">
+                                <span class="socialink-youtube">
+                                    gnt-pharma
+                                </span>
+                                <i class="fab fa-youtube fa-2x"></i>
+                            </a>
+                        </div>
+                        <div class="col-12">
+                            <a class="socialink" href="#">
+                                <span class="socialink-linkedin">
+                                    gnt-pharma
+                                </span>
+                                <i class="fab fa-linkedin fa-2x"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="footer-tittle">Newsletter</h4>
+                    <p class="mb-3">
+                        {{ "Abonnez-vous à notre liste de diffusion pour recevoir les dernières actualités"|trans }}
+                    </p>
+                    <div class="subcriber-box">
+                        <form id="nl-form" class="mc-form">
+                            <div class="newsletter-form">
+                                <div class="input-group mb-3">
+                                    <input type="email" class="form-control" placeholder="Adresse email"
+                                           aria-label="Adresse email" aria-describedby="email">
+                                    <span class="input-group-text" id="email">
+                                        <i class="fa fa-paper-plane"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid copyright px-0">
+        <div class="d-flex flex-column flex-md-row justify-content-between">
+            <div class="py-4 px-5 text-center text-md-start">
+                <p class="mb-0">&copy; 2023 GNT Pharma, {{ "Tout droits réservés."|trans }}</p>
+            </div>
+            <div class="py-4 px-5 bg-secondaire footer-shape position-relative text-center text-md-end">
+                <p class="mb-0 text-primaire">
+                    Designed By
+                    <a class="fw-bold text-primaire" href="https://euclideservices.com" target="_blank">EUCLIDES</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Footer End -->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg back-to-top">
+    <i class="fa-solid fa-chevron-up"></i>
+</a>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" async></script>
+<script src="{{ asset('js/datatables.min.js') }}"></script>
+
+<!-- Main Javascript -->
+{#<script src="{{ asset('js/main.js')}}"></script>#}
+<script src="{{ asset('js/commande.min.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        var table = $('#liste').DataTable({
+
+            responsive: true,
+            "pageLength": 25,
+            buttons: [{
+                extend: 'excelHtml5',
+                text: '<i class="fa fa-file-excel fa-lg"></i> Exporter vers Excel',
+                attr: {
+                    class: 'btn btn-success'
+                },
+            }],
+            language: {
+                processing: "Traitement en cours...",
+                search: "Rechercher&nbsp;:",
+                lengthMenu: "Afficher _MENU_ &eacute;l&eacute;ments",
+                info: "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+                infoEmpty: "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+                infoFiltered: "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+                infoPostFix: "",
+                loadingRecords: "Chargement en cours...",
+                zeroRecords: "Aucun &eacute;l&eacute;ment &agrave; afficher",
+                emptyTable: "Aucune donnée disponible dans le tableau",
+                paginate: {
+                    first: "Premier",
+                    previous: "Pr&eacute;c&eacute;dent",
+                    next: "Suivant",
+                    last: "Dernier"
+                },
+                aria: {
+                    sortAscending: ": activer pour trier la colonne par ordre croissant",
+                    sortDescending: ": activer pour trier la colonne par ordre décroissant"
+                }
+            }
+
+        });
+        table.buttons().container().appendTo('#exportexcel');
+        selectAllstart();
+    });
+
+    function selectAllstart() { //selectionner tous les eleves
+        if ($("#tous").is(':checked')) {
+            $("input[type=checkbox]").attr('checked', true);
+            $("input[type=checkbox]").each(
+                function () {
+                    if ($(this).is(':checked')) {
+
+                    } else {
+                        $(this).trigger('click')
+                    }
+                    trselect($(this).attr("id"));
+                });
+        }
+    }
+
+    function addprod(id, mincom) {
+        var reg = new RegExp("^[0-9]+$");
+        if (reg.test($('#text' + id).val()) && mincom <= $('#text' + id).val()) {
+            $('#btn' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+            $.ajax({
+                type: "POST",
+                url: "{{ path('commande_add') }}",
+                data: "prod=" + id + "&quantite=" + $('#text' + id).val(),
+                success: function (data) {
+                    if (data['id'] == 'ok') {
+                        $('#tdprod' + id).html($('#text' + id).val());
+                        $('#gest_panier').html(data['panier']);
+                        $('#btn' + id).html("<i class='fa fa-cart-shopping'></i>");
+                        $('#btn' + id).addClass('disabled');
+                    } else {
+                        alert("{{ 'verifier la quantite saisie'|trans }}")
+                    }
+                },
+                error: function () {
+                    alert("{{ 'La requête n a pas abouti'|trans }}");
+                }
+            });
+        } else alert("{{ 'verifier la quantite saisie'|trans }}");
+
+    }
+
+
+
+
+
+    function nofocu(id) {
+        $('#tampon').val('');
+    }
+
+</script>
+{% block scripts %}
+
+{% endblock %}
+</body>
+
+</html>

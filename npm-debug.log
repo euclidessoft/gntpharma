@@ -1,0 +1,109 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node',
+1 verbose cli   '/usr/share/npm/bin/npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   '--scripts-prepend-node-path=auto' ]
+2 info using npm@3.5.2
+3 info using node@v8.10.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly install normalizeTree
+8 silly loadCurrentTree Finishing
+9 silly loadIdealTree Starting
+10 silly install loadIdealTree
+11 silly cloneCurrentTree Starting
+12 silly install cloneCurrentTreeToIdealTree
+13 silly cloneCurrentTree Finishing
+14 silly loadShrinkwrap Starting
+15 silly install loadShrinkwrap
+16 silly loadShrinkwrap Finishing
+17 silly loadAllDepsIntoIdealTree Starting
+18 silly install loadAllDepsIntoIdealTree
+19 silly fetchNamedPackageData waypoints
+20 silly mapToRegistry name waypoints
+21 silly mapToRegistry using default registry
+22 silly mapToRegistry registry https://registry.npmjs.org/
+23 silly mapToRegistry uri https://registry.npmjs.org/waypoints
+24 silly fetchNamedPackageData yuicompressor
+25 silly mapToRegistry name yuicompressor
+26 silly mapToRegistry using default registry
+27 silly mapToRegistry registry https://registry.npmjs.org/
+28 silly mapToRegistry uri https://registry.npmjs.org/yuicompressor
+29 verbose request uri https://registry.npmjs.org/waypoints
+30 verbose request no auth needed
+31 info attempt registry request try #1 at 10:26:56
+32 verbose request id 8cfc525195ea17c9
+33 verbose etag W/"067467938b3df1c27af115a0c517915f"
+34 verbose lastModified Tue, 28 Jun 2022 22:16:15 GMT
+35 http request GET https://registry.npmjs.org/waypoints
+36 verbose request uri https://registry.npmjs.org/yuicompressor
+37 verbose request no auth needed
+38 info attempt registry request try #1 at 10:26:56
+39 verbose etag W/"9c28fd28245e4eec2b7858a541703ae6"
+40 verbose lastModified Wed, 29 Jun 2022 08:27:49 GMT
+41 http request GET https://registry.npmjs.org/yuicompressor
+42 http 304 https://registry.npmjs.org/yuicompressor
+43 verbose headers { date: 'Fri, 29 Sep 2023 10:26:58 GMT',
+43 verbose headers   connection: 'keep-alive',
+43 verbose headers   'cf-ray': '80e387e3ff57f5d2-DKR',
+43 verbose headers   'cf-cache-status': 'REVALIDATED',
+43 verbose headers   'cache-control': 'public, max-age=300',
+43 verbose headers   etag: '"9c28fd28245e4eec2b7858a541703ae6"',
+43 verbose headers   'last-modified': 'Wed, 29 Jun 2022 08:27:49 GMT',
+43 verbose headers   vary: 'Accept-Encoding',
+43 verbose headers   server: 'cloudflare' }
+44 silly get cb [ 304,
+44 silly get   { date: 'Fri, 29 Sep 2023 10:26:58 GMT',
+44 silly get     connection: 'keep-alive',
+44 silly get     'cf-ray': '80e387e3ff57f5d2-DKR',
+44 silly get     'cf-cache-status': 'REVALIDATED',
+44 silly get     'cache-control': 'public, max-age=300',
+44 silly get     etag: '"9c28fd28245e4eec2b7858a541703ae6"',
+44 silly get     'last-modified': 'Wed, 29 Jun 2022 08:27:49 GMT',
+44 silly get     vary: 'Accept-Encoding',
+44 silly get     server: 'cloudflare' } ]
+45 verbose etag https://registry.npmjs.org/yuicompressor from cache
+46 verbose get saving yuicompressor to /home/moda/.npm/registry.npmjs.org/yuicompressor/.cache.json
+47 http 304 https://registry.npmjs.org/waypoints
+48 verbose headers { date: 'Fri, 29 Sep 2023 10:26:58 GMT',
+48 verbose headers   connection: 'keep-alive',
+48 verbose headers   'cf-ray': '80e387e3fc2bf5c6-DKR',
+48 verbose headers   'cf-cache-status': 'REVALIDATED',
+48 verbose headers   'cache-control': 'public, max-age=300',
+48 verbose headers   etag: '"067467938b3df1c27af115a0c517915f"',
+48 verbose headers   'last-modified': 'Tue, 28 Jun 2022 22:16:15 GMT',
+48 verbose headers   vary: 'Accept-Encoding',
+48 verbose headers   server: 'cloudflare' }
+49 silly get cb [ 304,
+49 silly get   { date: 'Fri, 29 Sep 2023 10:26:58 GMT',
+49 silly get     connection: 'keep-alive',
+49 silly get     'cf-ray': '80e387e3fc2bf5c6-DKR',
+49 silly get     'cf-cache-status': 'REVALIDATED',
+49 silly get     'cache-control': 'public, max-age=300',
+49 silly get     etag: '"067467938b3df1c27af115a0c517915f"',
+49 silly get     'last-modified': 'Tue, 28 Jun 2022 22:16:15 GMT',
+49 silly get     vary: 'Accept-Encoding',
+49 silly get     server: 'cloudflare' } ]
+50 verbose etag https://registry.npmjs.org/waypoints from cache
+51 verbose get saving waypoints to /home/moda/.npm/registry.npmjs.org/waypoints/.cache.json
+52 verbose stack TypeError: Invalid Version: 2.4.8pre2
+52 verbose stack     at new SemVer (/usr/share/npm/node_modules/semver/semver.js:293:11)
+52 verbose stack     at compare (/usr/share/npm/node_modules/semver/semver.js:570:10)
+52 verbose stack     at rcompare (/usr/share/npm/node_modules/semver/semver.js:580:10)
+52 verbose stack     at Array.sort (native)
+52 verbose stack     at pickVersionFromRegistryDocument (/usr/share/npm/lib/fetch-package-metadata.js:121:48)
+52 verbose stack     at /usr/share/npm/node_modules/iferr/index.js:13:50
+52 verbose stack     at /usr/share/npm/lib/utils/pulse-till-done.js:19:8
+52 verbose stack     at saved (/usr/share/npm/lib/cache/caching-client.js:168:7)
+52 verbose stack     at /usr/share/npm/node_modules/graceful-fs/polyfills.js:210:7
+52 verbose stack     at FSReqWrap.oncomplete (fs.js:135:15)
+53 verbose cwd /var/www/html/gntpharma
+54 error Linux 5.3.0-46-generic
+55 error argv "/usr/bin/node" "/usr/share/npm/bin/npm-cli.js" "install" "--scripts-prepend-node-path=auto"
+56 error node v8.10.0
+57 error npm  v3.5.2
+58 error Invalid Version: 2.4.8pre2
+59 error If you need help, you may report this error at:
+59 error     <https://github.com/npm/npm/issues>
+60 verbose exit [ 1, true ]

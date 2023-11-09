@@ -1,0 +1,16 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block order %}active{% endblock %}
+
+{% block body %}
+    <h1>System de paiement</h1>
+    <a href="{{ path("commande_index") }}" class="btn btn-success float-right"
+       title="Valider la commande">
+        <i class="fa fa-check"></i> Nouvelle commande
+    </a>
+
+{% endblock %}
+{% block scripts %}
+
+
+{% endblock %}

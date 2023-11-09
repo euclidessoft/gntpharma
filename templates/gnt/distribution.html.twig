@@ -1,0 +1,92 @@
+
+{% extends 'layout.html.twig' %}
+{% block title %} {{ "Distribution"|trans }} - GNT Pharma {% endblock %}
+{% block metiers %}active{% endblock %}
+{% block distribution %}active{% endblock %}
+{% block body %}
+    <!-- Header Start -->
+    <div class="container-fluid py-5 mb-5 page-header">
+        <div class="container">
+            <div class="row justify-content-center mt-lg-5">
+                <div class="col-lg-10 text-center mt-lg-5">
+                    <h1 class="display-5 text-white fw-bold mt-lg-5 mb-4">
+                        {{ "Distribution"|trans }}
+                    </h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item">
+                                <a class="text-white" href="{{ path('Accueil') }}">
+                                    {{ "Accueil"|trans }}
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                {{ "Nos Mètiers"|trans }}
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                {{ "Distribution"|trans }}
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+
+    <!-- Distribution Start -->
+    <div class="container-fluid py-5">
+        <div class="container fs-5 mb-5">
+            <div class="row g-5">
+                <div class="col-lg-10 offset-lg-1 wow zoomIn" data-wow-delay="0.3s">
+                    <p class="mb-4 text-center">
+                        {{ "Chez GNT PHARMA, nous nous engageons à jouer un rôle crucial dans la chaîne d'approvisionnement pharmaceutique en fournissant des solutions de distribution innovantes et fiables pour les laboratoires à travers le monde."|trans }}
+                        {{ "Forts de notre expertise éprouvée, nous sommes votre partenaire de confiance pour garantir que les médicaments et produits essentiels atteignent efficacement leurs destinations finales, en maintenant les plus hauts standards de qualité et de sécurité."|trans }}
+                    </p>
+                    <h2 class="mt-5">{{ "Gestion de la chaîne d'approvisionnement avancée"|trans }}</h2>
+                    <p class="mb-4">
+                        {{ "Nous savons que la gestion de la chaîne d'approvisionnement peut avoir un impact significatif sur l'efficacité et les coûts."|trans }}
+                        {{ "Grâce à l'utilisation de technologies de pointe, nous optimisons la gestion de votre inventaire, la planification des itinéraires de livraison et la visibilité en temps réel, vous permettant ainsi de prendre des décisions éclairées et d'améliorer votre rentabilité."|trans }}
+                    </p>
+                    <div class="distribution-section1"></div>
+                    <h2 class="mt-5">{{ "Grossiste"|trans }}</h2>
+                    <p class="mb-4">
+                        {{ "La réussite de nos partenaires grossistes est au cœur de notre mission. Nous vous offrons un soutien personnalisé pour vous aider à promouvoir et à distribuer nos produits de manière efficace. Notre équipe dévouée est là pour répondre à vos questions, fournir des informations médicales précises et vous aider à optimiser vos activités pour maximiser votre impact sur le marché."|trans }}
+                    </p>
+                    <div class="distribution-section3"></div>
+                </div>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-10 offset-lg-1 wow zoomIn" data-wow-delay="0.3s">
+                    <h2 class="mt-5">{{ "Une livraison ponctuelle et précise"|trans }}</h2>
+                    <p class="mt-2">
+                        {{ "La recherche scientifique ne peut tolérer de délais inutiles."|trans }}
+                        {{ "C'est pourquoi nous nous engageons à offrir des solutions de livraison rapides et fiables. Grâce à notre réseau de logistique bien établi, nous nous efforçons de garantir que les produits pharmaceutiques arrivent à destination en temps voulu et dans les conditions optimales, préservant ainsi leur intégrité et leur efficacité."|trans }}
+                    </p>
+                    <div class="distribution-section4"></div>
+                    <h2 class="mt-5"> {{ "Sécurité et Conformité"|trans }}</h2>
+                    <p class="mt-3">
+                        {{ "La sécurité et la conformité sont au cœur de tout ce que nous faisons. Nous respectons rigoureusement les normes réglementaires internationales en matière de distribution pharmaceutique."|trans }}
+                        {{ "Chaque étape de notre processus est minutieusement planifiée et exécutée pour garantir que les produits sont manipulés et transportés conformément aux directives les plus strictes."|trans }}
+                    </p>
+                    <div class="distribution-section5"></div>
+                    <h2 class="mt-5">{{ "Partenariat et Engagement"|trans }}</h2>
+                    <p class="mt-3">
+                    {{ "En tant que partenaire de confiance, nous sommes déterminés à établir des relations durables avec nos clients."|trans }}
+                    {{ "Notre équipe dévouée est toujours prête à écouter vos besoins, à fournir des solutions flexibles et à anticiper les défis éventuels."|trans }}
+                    {{ "Votre succès est notre fierté, et nous nous engageons à contribuer activement à vous aider à l’atteindre."|trans }}
+                    </p>
+                    <div class="distribution-section6"></div>
+                    <p class="mt-5 text-center">
+                    {{ "GNT PHARMA est bien plus qu'un distributeur de produits pharmaceutiques ; nous sommes une extension de votre équipe, travaillant en étroite collaboration pour garantir la réussite de vos opérations."|trans }}
+                    {{ "Faites confiance à notre expérience, à notre engagement envers l'excellence et à notre détermination à fournir des solutions de distribution pharmaceutique qui font la différence."|trans }}
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- Distribution End -->
+{% endblock %}
+
+

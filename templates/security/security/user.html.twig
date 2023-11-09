@@ -1,0 +1,107 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ 'Mon profile'|trans }} {% endblock %}
+{% block body %}
+    {{ include('security/security/boutons.html.twig') }}
+<div class="row">
+  
+    <div class="col-12">
+       
+
+        {% for message in app.flashes('notice')%}
+        <div class="col-lg-12 mt-4 alert alert-success alert-dismissible fade show radius-10 shadow-black" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ message|trans }}
+        </div>
+        {% endfor%}
+        <div class="col-lg-12">
+            <div class="col-lg-6  col-md-12 offset-lg-3 mt-5 mb-5 pb-2 fond-inner">
+
+                <div class="row">
+
+                <div class="col-8 mt-3 mb-4">
+                    <h6>Prenom :<b>   {{ user.prenom }}</b></h6>
+                    <h6>Nom :<b>   {{ user.nom }}</b></h6>
+                    <h6>Adresse :<b>   {{ user.adresse }}</b></h6>
+                </div>
+                </div>
+                
+                          
+
+                    
+            
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% block scripts %}
+<script>
+    
+    function del(id) {
+        if (confirm("{{ 'Voulez-vous vraiment supprimer cet utilisateur ?'|trans }}")) {
+            $('#btn').html("<i class=\"fa fa-spinner\"></i>");
+            $.ajax({
+                type: "POST",
+                {#url: "{{path('security_user_delete')}}",#}
+                data: "usr=" + id,
+                success: function(data) {
+                    if (data['ok'] != '') {
+                        document.location.href = "{{ path('security_users') }}";
+                    }
+                },
+                error: function() {
+                    alert("{{ 'La requête n\'a pas abouti'|trans}}");
+                }
+            });
+        }
+
+    }
+
+    function userdisable(id) {
+        if (confirm("{{ 'Voulez-vous vraiment désactiver cet utilisateur ?'|trans }}")) {
+            $('#btn' + id).html("<i class='fa fa-spinner'></i>");
+            $.ajax({
+                type: "POST",
+                url: "{{path('security_user_disable')}}",
+                data: "usr=" + id,
+                success: function(data) {
+                    if (data['ok'] != '') {
+                        $('#btn' + id).attr('class', 'btn btn-shadow btn-td btn-normal btn-success');
+                        $('#btn' + id).attr('onclick', 'userenable(' + id + ')');
+                        $('#btn' + id).html("<i class='fa fa-lock-open'></i> {{'Activer'|trans}}");
+                    }
+                },
+                error: function() {
+                    alert("{{ 'La requête n\'a pas abouti'|trans}}");
+                }
+            });
+        }
+
+    }
+
+    function userenable(id) {
+        if (confirm("{{ 'Voulez-vous vraiment activer cet utilisateur ?'|trans }}")) {
+            $('#btn' + id).html("<i class='fa fa-spinner'></i>");
+            $.ajax({
+                type: "POST",
+                url: "{{path('security_user_enable')}}",
+                data: "usr=" + id,
+                success: function(data) {
+                    if (data['ok'] != '') {
+                        $('#btn' + id).attr('class', 'btn btn-shadow btn-td btn-normal btn-warning');
+                        $('#btn' + id).attr('onclick', 'userdisable(' + id + ')');
+                        $('#btn' + id).html("<i class='fa fa-user-lock'></i> {{'Désactiver'|trans}}");
+                        document.location.href = "/User/"+id;
+                    }
+                },
+                error: function() {
+                    alert("{{ 'La requête n\'a pas abouti'|trans}}");
+                }
+            });
+        }
+
+    }
+
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'layout.html.twig' %}
+{% block title %} {{ "A propos"|trans }} - GNT Pharma {% endblock %}
+{% block about %}active{% endblock %}
+{% block body %}
+    <!-- Header Start -->
+    <div class="container-fluid py-5 mb-5 page-header">
+        <div class="container">
+            <div class="row justify-content-center mt-lg-5">
+                <div class="col-lg-10 text-center mt-lg-5">
+                    <h1 class="display-5 text-white fw-bold mt-lg-5 mb-4">
+                        {{ "A propos"|trans }}
+                    </h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item">
+                                <a class="text-white" href="{{ path('Accueil') }}">
+                                    {{ "Accueil"|trans }}
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                {{ "A propos"|trans }}
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+
+    <!-- About Start -->
+    <div class="container-fluid py-5">
+        <div class="container fs-5 mb-5">
+            <div class="row g-5">
+                <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.1s">
+                    <div class="position-relative h-100">
+                        <img class="img-fluid w-100 h-100 fit-cover"
+                             src="{{ asset('images/distribution_2.avif') }}" alt="distribution">
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.1s">
+                    <p class="mb-4">
+                        {{ "GNT PHARMA a évolué à partir d'une petite initiative locale pour devenir, l'un des noms les plus fiables, si ce n’est pas le plus fiable, dans l'industrie pharmaceutique, avec une portée nationale et même internationale."|trans }}
+                        {{ "Depuis, GNT PHARMA s'est forgé une solide réputation en tant que leader de confiance dans le domaine de la distribution de produits pharmaceutiques."|trans }}
+
+                    </p>
+                    <p class="mb-0">
+                        {{ "GNT PHARMA a tracé un chemin remarquable dans le secteur de la distribution pharmaceutique avec une vision claire de fournir des solutions de distribution innovantes et fiables pour répondre aux besoins croissants de l'industrie pharmaceutique."|trans }}
+                        {{ "Notre dévouement, rigueur, soucis de l'excellence, la qualité et le respect des normes les plus strictes nous a permis de bâtir des partenariats solides avec des fabricants de grande renommée et des pharmacies respectées à travers tous le Cameroun."|trans }}
+                    </p>
+
+                </div>
+            </div>
+            <div class="row g-5 mt-2">
+                <div class="col-lg-12">
+                    <h2 class="mb-3 wow fadeInUp" data-wow-delay="0.3s">
+                        {{ "Notre Mission"|trans }}
+                    </h2>
+                    <p class="mb-5 wow fadeInUp" data-wow-delay="0.4s">
+                        {{ "Chez GNT PHARMA, notre mission est profondément ancrée dans l'amélioration de la santé et du bien-être de la société."|trans }}
+                        {{ "Nous nous engageons fermement à jouer un rôle capital dans la chaîne de soins de santé, en veillant à ce que les médicaments et les produits pharmaceutiques parviennent en toute sécurité et en temps voulu à ceux qui en ont besoin."|trans }}
+                        {{ "Notre dévouement à cette cause guide chaque action que nous entreprenons."|trans }}
+                    </p>
+                    <h2 class="mb-3 wow fadeInUp" data-wow-delay="0.6s">
+                        {{ "Nos Valeurs"|trans }}
+                    </h2>
+                    <p class="mt-2 wow fadeInUp" data-wow-delay="0.7s">
+                        <b>{{ "Intégrité"|trans }} : </b>
+                        {{ "Nous respectons les plus hautes normes d'intégrité dans toutes nos opérations."|trans }}
+                        {{ "Nous agissons de manière responsable, transparente et éthique à chaque étape de notre travail."|trans }}
+                    </p>
+                    <p class="mt-3 wow fadeInUp" data-wow-delay="0.9s">
+                        <b>{{ "Qualité"|trans }} :</b>
+                        {{ "Nous croyons en la qualité qui fait la différence."|trans }}
+                        {{ "Chaque produit que nous distribuons est soigneusement sélectionné et testé pour garantir qu'il répond aux normes les plus strictes de l'industrie."|trans }}
+                    </p>
+                    <p class="mt-3 wow fadeInUp" data-wow-delay="1.1s">
+                        <b>{{ "Engagement envers la Santé"|trans }}</b> :
+                        {{ "Notre travail a un impact direct sur la santé et le bien-être de millions de personnes."|trans }}
+                        {{ "C'est pourquoi nous nous engageons profondément à assurer une distribution fiable et sécurisée des produits pour sauver des vies."|trans }}
+                    </p>
+                    <p class="mt-3 wow fadeInUp" data-wow-delay="1.3s">
+                        <b>{{ "Responsabilité Sociale"|trans }} :</b>
+                        {{ "En tant 'acteur clé de l'industrie de la santé, nous nous engageons à agir de manière éthique et responsable envers nos employés, nos partenaires commerciaux et l'environnement."|trans }}
+                    </p>
+                    <p class="mt-3 wow fadeInUp" data-wow-delay="1.5s">
+                        <b>{{ "Innovation"|trans }} :</b>
+                        {{ "Nous embrassons le changement et l'innovation pour répondre aux besoins en constante évolution de l'industrie pharmaceutique."|trans }}
+                        {{ "Nous explorons de nouvelles méthodes pour améliorer nos processus et optimiser notre offre de services."|trans }}
+                    </p>
+                    <p class="mt-3 wow fadeInUp" data-wow-delay="1.7s">
+                        <b> {{ "Collaboration"|trans }} :</b>
+                        {{ "Notre succès repose sur la collaboration et le partenariat avec nos clients, nos fournisseurs et nos partenaires."|trans }}
+                        {{ "Nous croyons en la création de relations durables basées sur la confiance mutuelle."|trans }}
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-12 mt-3 about-background">
+            </div>
+            <div class="col-lg-12 fs-5 text-center">
+                <p class="mt-5 wow fadeInUp" data-wow-delay="0.9s">
+                    {{ "Conscient que nous sommes un maillon essentiel d'une chaîne de soins de santé, à GNT PHARMA, nous considérons nos actions bien plus que de simples services rendus mains une contribution positive à la santé publique en garantissant un accès sans faille aux médicaments et aux produits pharmaceutiques."|trans }}
+                    {{ "Notre parcours jusqu'à présent n'est qu'un prélude à ce que nous envisageons pour l'avenir. Nous sommes déterminés à élargir notre portée, à innover davantage et à continuer à être un acteur clé dans la distribution de produits pharmaceutiques."|trans }}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="container mb-2">&nbsp;
+    </div>
+    <!-- About End -->
+{% endblock %}
+
+
+
