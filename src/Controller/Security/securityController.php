@@ -56,7 +56,7 @@ class securityController extends AbstractController
                 $url = $this->generateUrl('security_activation', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $message = (new \Swift_Message('Activation compte utilisateur'))
-                    ->setFrom('easyschool@jolofsoft.com')
+                    ->setFrom('admin@euclideservices.com')
                     ->setTo($user->getEmail())
                     ->setBody("Cliquez sur le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
 //                $message = (new \Swift_Message('Activation compte utilisateur'))
@@ -67,7 +67,7 @@ class securityController extends AbstractController
                 $mail->send($message);
                 // fin envoie mail
 
-                $this->addFlash('notice', 'Utilisateur cree, un mail a ete envoye a son adresse mail pour l\'activation du compte');
+                $this->addFlash('notice', 'Utilisateur créé, un message a été envoyé à son adresse mail pour l\'activation du compte');
                 return $this->redirectToRoute('security_login');
             }
 
@@ -84,7 +84,7 @@ class securityController extends AbstractController
             ]);
             return $response;
        /* } else {
-            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'accede a cette partie de l\'application');
+            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_login');
         }*/
     }
@@ -141,7 +141,7 @@ class securityController extends AbstractController
             ]);
             return $response;
         } else {
-            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'accede a cette partie de l\'application');
+            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_login');
         }
     }
@@ -180,7 +180,7 @@ class securityController extends AbstractController
             ]);
             return $response;
         } else {
-            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'accede a cette partie de l\'application');
+            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_login');
         }
     }
@@ -211,7 +211,7 @@ class securityController extends AbstractController
                     $user->setPassword($newpassword);
                     $em->persist($user);
                     $em->flush();
-                    $this->addFlash('change', 'Votre mot de passe  a ete modifié, reconnectez vous!');
+                    $this->addFlash('change', 'Votre mot de passe  a été modifié, veuillez vous reconnecter!');
                     return $this->redirectToRoute('security_login');
                 } else {
                     $form->addError(new FormError('Ancien mot de passe incorrecte'));
@@ -233,7 +233,7 @@ class securityController extends AbstractController
             return $response;
 
         } else {
-            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'accede a cette partie de l\'application');
+            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_login');
         }
     }
@@ -296,7 +296,7 @@ class securityController extends AbstractController
             ]);
             return $response;
         } else {
-            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'accede a cette partie de l\'application');
+            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_logout');
         }
 
@@ -322,7 +322,7 @@ class securityController extends AbstractController
             ]);
             return $response;
         } else {
-            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'accede a cette partie de l\'application');
+            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_login');
         }
 
@@ -354,7 +354,7 @@ class securityController extends AbstractController
             $user->setPassword($newpassword);
             $em->persist($user);
             $em->flush();
-            $this->addFlash('change', 'Reinitialisation reussie');
+            $this->addFlash('change', 'Réinitialisation réussie');
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
@@ -387,7 +387,7 @@ class securityController extends AbstractController
         $user->setEnabled(true);
         $em->persist($user);
         $em->flush();
-        $this->addFlash('notice', 'Compte active, veuillez  definir votre mot de passe pour la premiere connexion');
+        $this->addFlash('notice', 'Compte actif, veuillez  définir votre mot de passe pour la première connexion');
         return $this->redirectToRoute('security_reset_password', ['token' => $token]);
 
 
@@ -458,7 +458,7 @@ class securityController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
 
                 $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('notice', 'modifié avec succès');
+                $this->addFlash('notice', 'Modifié avec succès');
                 return $this->redirectToRoute('security_user', ['user' => $user->getId()]);
 
             }
@@ -475,7 +475,7 @@ class securityController extends AbstractController
             ]);
             return $response;
         } else {
-            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'accede a cette partie de l\'application');
+            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_login');
         }
     }
@@ -538,9 +538,9 @@ class securityController extends AbstractController
                 //$url = $this->generateUrl('security_activation', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $message = (new \Swift_Message('Activation compte utilisateur'))
-                    ->setFrom('ben-tam@jolofsoft.com')
+                    ->setFrom('admin@euclideservices.com')
                     ->setTo($user->getEmail())
-                    ->setBody("Vous êtes inscrit sur le site de TOUBA ASSISTANCE MEDICALE ", 'text/html');
+                    ->setBody("Vous êtes inscrit sur le site", 'text/html');
 //                $message = (new \Swift_Message('Activation compte utilisateur'))
 //                 ->setFrom('Hajjalbayt@euclideservices.com')
 //                 ->setTo($user->getEmail())
@@ -549,7 +549,7 @@ class securityController extends AbstractController
                 $mail->send($message);
                 // fin envoie mail
 
-                $this->addFlash('notice', 'enregistrement effectue');
+                $this->addFlash('notice', 'Enregistrement effectué');
                 //return $this->redirectToRoute('security_profile');
                 return $this->redirectToRoute('security_admin_register');
 
@@ -570,7 +570,7 @@ class securityController extends AbstractController
         }
         else
         {
-            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'accede a cette partie de l\'application');
+            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_login');
         }
 

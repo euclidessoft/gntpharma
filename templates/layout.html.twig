@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app.request.locale }}">
 <head>
     <meta charset="utf-8">
     <title>
@@ -14,21 +14,20 @@
     <!--    <link href="images/favicon.ico" rel="icon"> -->
 
     <!-- Libraries Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.compat.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.compat.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-    {% block photobox_css %}
-    {% endblock %}
+    {% block photobox_css %} {% endblock %}
 
     <!-- Site Stylesheet -->
-    <link href="{{ asset('css/style.css')}}" rel="stylesheet">
-{#    <link href="{{ asset('css/style.min.css')}}" rel="stylesheet">#}
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/commande.css') }}" rel="stylesheet">
 </head>
 
 <body>
 <!-- Navbar Start -->
 <nav class="navbar navbar-expand-lg navbar-light sticky-top p-0">
-    <a href="{{ path('Accueil')}}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+    <a href="{{ path('Accueil') }}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
         <h2 class="m-0 logo fw-bold">
             <i class="fa-solid fa-staff-snake fa-lg me-2"></i>GNT PHARMA
         </h2>
@@ -38,19 +37,28 @@
     </button>
     <div class="collapse navbar-collapse pe-5" id="main-nav">
         <div class="navbar-nav ms-auto d-flex align-items-center p-4 p-lg-0">
-            <a href="{{ path('Accueil')}}" class="nav-item nav-link {% block home %} {% endblock %}">{{ "Accueil"|trans }}</a>
-            <a href="{{ path('About')}}" class="nav-item nav-link {% block about %} {% endblock %}">{{ "A propos"|trans }}</a>
+            <a href="{{ path('Accueil') }}"
+               class="nav-item nav-link {% block home %} {% endblock %}">{{ "Accueil"|trans }}</a>
+            <a href="{{ path('About') }}"
+               class="nav-item nav-link {% block about %} {% endblock %}">{{ "A propos"|trans }}</a>
             <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle {% block metiers %} {% endblock %}" data-bs-toggle="dropdown" aria-expanded="false">{{ "Nos métiers"|trans }}</a>
+                <a href="#" class="nav-link dropdown-toggle {% block metiers %} {% endblock %}"
+                   data-bs-toggle="dropdown" aria-expanded="false">{{ "Nos métiers"|trans }}</a>
                 <div class="dropdown-menu m-0">
-                    <a href="{{ path('Logistique')}}" class="dropdown-item {% block logistique %} {% endblock %}">{{ "Logistique"|trans }}</a>
-                    <a href="{{ path('Distribution')}}" class="dropdown-item {% block distribution %} {% endblock %}">{{ "Distribution"|trans }}</a>
-                    <a href="{{ path('Promotion')}}" class="dropdown-item {% block promotion %} {% endblock %}">{{ "Promotion"|trans }}</a>
+                    <a href="{{ path('Logistique') }}"
+                       class="dropdown-item {% block logistique %} {% endblock %}">{{ "Logistique"|trans }}</a>
+                    <a href="{{ path('Distribution') }}"
+                       class="dropdown-item {% block distribution %} {% endblock %}">{{ "Distribution"|trans }}</a>
+                    <a href="{{ path('Promotion') }}"
+                       class="dropdown-item {% block promotion %} {% endblock %}">{{ "Promotion"|trans }}</a>
                 </div>
             </div>
-            <a href="{{ path('produit_index')}}" class="nav-item nav-link {% block commande %} {% endblock %}">{{ "Commande"|trans }}</a>
-            <a href="{{ path('Carriere')}}" class="nav-item nav-link {% block carriere %} {% endblock %}">{{ "Carrières"|trans }}</a>
-            <a href="{{ path('Contact')}}" class="nav-item nav-link {% block contact %} {% endblock %}">{{ "Contact"|trans }}</a>
+            <a href="{{ path('produit_index') }}"
+               class="nav-item nav-link {% block commande %} {% endblock %}">{{ "Commande"|trans }}</a>
+            <a href="{{ path('Carriere') }}"
+               class="nav-item nav-link {% block carriere %} {% endblock %}">{{ "Carrières"|trans }}</a>
+            <a href="{{ path('Contact') }}"
+               class="nav-item nav-link {% block contact %} {% endblock %}">{{ "Contact"|trans }}</a>
             <button id="changelang" class="lang-button">
             </button>
         </div>
@@ -58,17 +66,48 @@
 </nav>
 <!-- Navbar End -->
 
+<!-- Topbar Start -->
+{% if app.user != null %}
+    <div class="container-fluid bg-secondaire topbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6">
+                    <a href="{{ path('security_logout') }}"> Deconnexion</a>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <a href="{{ path('security_profile') }}"> Profil</a>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('commande_panier_suivi', {'user' : app.user.id}) }}"> suivi commande</a>
+                    {% else %}
+                        <a href="{{ path('commande_panier_history') }}"> historique commande</a>
+                    {% endif %}
+                </div>
+                <div class="col-lg-3 col-sm-6 text-lg-end">
+                    {% if is_granted('ROLE_CLIENT') %}
+                        <a href="{{ path('commande_panier_panier') }}">
+                    <span id="gest_panier" class="badge text-bg-danger">
+                            {{ panier|length }}
+                    </span>
+                            <i class="fa fa-cart-shopping fa-2x"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+<!-- Topbar End -->
+
 {% block body %}
 
 
 {% endblock %}
 
 <!-- Footer Start -->
-<div class="mt-5">
-    &nbsp;
-</div>
-<footer class="text-light mt-5">
-    <div class="container-fluid footer pt-3 mt-5">
+<footer class="text-light">
+    <div class="container-fluid footer pt-3">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
@@ -91,22 +130,21 @@
                     </p>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="footer-tittle">{{ "Liens utiles"|trans}}</h4>
-                    <a class="btn btn-link" href="{{ path('About')}}">{{ "A propos"|trans}}</a>
-{#                    <a class="btn btn-link" href="#">{{ "Metiers"|trans}}</a>#}
-                    <a class="btn btn-link" href="#">{{ "Actualité et événements"|trans}}</a>
-                    <a class="btn btn-link" href="{{ path('produit_index') }}">{{ "Commande"|trans}}</a>
-                    <a class="btn btn-link" href="{{ path('Contact')}}">{{ "Contact"|trans}}</a>
+                    <h4 class="footer-tittle">{{ "Liens utiles"|trans }}</h4>
+                    <a class="btn btn-link" href="{{ path('About') }}">{{ "A propos"|trans }}</a>
+                    <a class="btn btn-link" href="#">{{ "Actualité et événements"|trans }}</a>
+                    <a class="btn btn-link" href="{{ path('produit_index') }}">{{ "Commande"|trans }}</a>
+                    <a class="btn btn-link" href="{{ path('Contact') }}">{{ "Contact"|trans }}</a>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="footer-tittle">{{ "Réseaux sociaux"|trans}}</h4>
+                    <h4 class="footer-tittle">{{ "Réseaux sociaux"|trans }}</h4>
                     <div class="row">
                         <div class="col-12">
                             <a class="socialink" href="#">
                                 <span class="socialink-facebook">
                                     gnt-pharma
                                 </span>
-                                <i class="fab fa-facebook-square fa-2x"></i>
+                                <i class="fab fa-square-facebook fa-2x"></i>
                             </a>
                         </div>
                         <div class="col-12">
@@ -152,7 +190,8 @@
                         <form id="nl-form" class="mc-form">
                             <div class="newsletter-form">
                                 <div class="input-group mb-3">
-                                    <input type="email" class="form-control" placeholder="Adresse email" aria-label="Adresse email" aria-describedby="email">
+                                    <input type="email" class="form-control" placeholder="Adresse email"
+                                           aria-label="Adresse email" aria-describedby="email">
                                     <span class="input-group-text" id="email">
                                         <i class="fa fa-paper-plane"></i>
                                     </span>
@@ -186,23 +225,21 @@
 </a>
 
 <!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" async></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js" async></script>
+{% block photobox_js %} {% endblock %}
 {#<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/noframework.waypoints.min.js" ></script>#}
 {#<script src="{{ asset('libs/counterup/js/counterup.min.js')}}"></script>#}
 
 <!-- Main Javascript -->
-{#<script src="{{ asset('js/main.js')}}"></script>#}
-<script src="{{ asset('js/main.min.js')}}"></script>
-<script>
-    function scrollToBottom()
-    {
-        var height = document.body.scrollHeight;
-        window.scroll(0 , height);
-    }
-</script>
+<script src="{{ asset('js/main.min.js') }}"></script>
+{% if app.user != null %}
+    <script src="{{ asset('js/commande.min.js') }}"></script>
+{% endif %}
+
 </body>
 
 </html>

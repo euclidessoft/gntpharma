@@ -1,12 +1,14 @@
 
 ###> symfony/framework-bundle ###
+/.gitignore
+/.env
 /.env.local
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
-# /vendor/
+#/vendor/
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
@@ -15,6 +17,7 @@
 ###< symfony/phpunit-bridge ###
 
 ###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
 ###< phpunit/phpunit ###
+.idea/
+node_modules/
+vendor/symfony/maker-bundle/src/Resources/test/

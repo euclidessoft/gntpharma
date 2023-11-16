@@ -1,74 +1,59 @@
 {% extends 'layout.html.twig' %}
-{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block title %} {{ "Connexion"|trans }} - GNT Pharma {% endblock %}
 {% block order %}active{% endblock %}
 {% block body %}
-    <!-- Header Start -->
-    <div class="container-fluid py-5 mb-5 page-header">
+
+    <div class="container-fluid security-page">
         <div class="container">
-            <div class="row justify-content-center mt-lg-5">
-                <div class="col-lg-10 text-center mt-lg-5">
-                    <h1 class="display-5 text-white fw-bold mt-lg-5 mb-4">
-                        {{ "Commande"|trans }}
-                    </h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center">
-                            <li class="breadcrumb-item">
-                                <a class="text-white" href="{{ path('Accueil') }}">
-                                    {{ "Accueil"|trans }}
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">
-                                {{ "Commande"|trans }}
-                            </li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Header End -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <div class="card fond mt-4">
-                    <div class="card-body mt-5">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="login mt-lg-5">
 
-                        {% for message in app.flashes('change') %}
-                            <div class="alert alert-success alert-dismissible fade show radius-10">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                                    &times;
-                                </button>
-                                {{ message|trans }}
-                            </div>
-                        {% endfor %}
-                        {% for message in app.flashes('notice') %}
-                            <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                                    &times;
-                                </button>
-                                {{ message|trans }}
-                            </div>
-                        {% endfor %}
-
-                        {% if error %}
-                            <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                                    &times;
-                                </button>
-                                {{ 'Adresse email ou mot de passe incorrecte'|trans }}
-                            </div>
-                        {% endif %}
-                        <div class="col-10 offset-1 mt-2">
-                            <form action="{{ path('security_login') }}" method="POST" class="form-signin">
-                                <div class="form-group mb-4">
+                        <div class="col-8 offset-2 pt-5">
+                            {% for message in app.flashes('change') %}
+                                <div class="alert alert-success alert-dismissible fade show shadow">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    {{ message|trans }}
+                                </div>
+                            {% endfor %}
+                            {% for message in app.flashes('notice') %}
+                                <div class="alert alert-danger alert-dismissible fade show shadow">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    {{ message|trans }}
+                                </div>
+                            {% endfor %}
+                            {% if error %}
+                                <div class="alert alert-danger alert-dismissible fade show shadow">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    {{ 'Adresse email ou mot de passe incorrect'|trans }}
+                                </div>
+                            {% endif %}
+                            <form action="{{ path('security_login') }}" method="POST" class="mt-5">
+                                <div class="input-group mb-5">
+                                    <span class="input-group-text">
+                                        <i class="fa-solid fa-at mx-2"></i>
+                                    </span>
+                                <div class="form-floating">
                                     <input type="email" name="_username" id="_username" value="{{ last_user }}"
                                            placeholder="{{ 'Adresse email'|trans }}" class="form-control" required/>
+                                    <label for="_username">
+                                        {{ 'Adresse email'|trans }}
+                                    </label>
                                 </div>
-                                <div class="form-group mb-4">
+                                </div>
+                                <div class="input-group mb-5">
+                                    <span class="input-group-text">
+                                        <i class="fa-solid fa-lock mx-2"></i>
+                                    </span>
+                                <div class="form-floating">
                                     <input type="password" name="_password" id="_password"
                                            placeholder="{{ 'Mot de passe'|trans }}" class="form-control"/>
+                                    <label for="_password">
+                                        {{ 'Mot de passe'|trans }}
+                                    </label>
                                 </div>
-                                <div class="form-group mb-4">
+                                </div>
+                                <div class="form-floating mb-5">
                                     <div class="row text-center">
                                         <div class="col-md-7">
                                             <b> <a href="{{ path('security_forgotten_password') }}">
@@ -76,22 +61,22 @@
                                                 </a></b>
                                         </div>
                                         <div class="col-md-5">
-                                        <b> <a href="{{ path('security_register')}}">
-                                            {{ 'inscription'|trans }}
-                                        </a></b>
+                                            <b> <a href="{{ path('security_register') }}">
+                                                    {{ 'inscription'|trans }}
+                                                </a></b>
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-primaire mt-3 pl-4 pr-4">
                                         {{ 'Se connecter'|trans }}
                                         <i class="fa fa-sign-in-alt"></i>
                                     </button>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
 {% endblock %}
