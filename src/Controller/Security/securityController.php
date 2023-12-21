@@ -47,7 +47,8 @@ class securityController extends AbstractController
                 //$password = $user->getPassword();
                 $user->setPassword($hashpass);
                 $user->setusername($user->getNom());
-                $user->setRoles(['ROLE_CLIENT']);
+//                $user->setRoles(['ROLE_CLIENT']);
+                $user->setRoles(['ROLE_ADMIN']);
                 // envoie mail
                 $token = $tokenGenerator->generateToken();
                 $user->setResetToken($token);

@@ -61,9 +61,6 @@ class PanierController extends AbstractController
         }
 
 
-       /* // On "fabrique" les données
-
-        return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
     }
 
     /**
