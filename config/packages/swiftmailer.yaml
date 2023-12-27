@@ -2,7 +2,7 @@ swiftmailer:
     transport: smtp
     auth_mode: login
     port: 25
-    host: server312.web-hosting.com
-    username: admin@euclideservices.com
-    password: Moda2023
+    host: box5661.bluehost.com
+    username: support@gntpharma-cameroun.com
+    password: Passer_123
     spool: { type: 'memory' }

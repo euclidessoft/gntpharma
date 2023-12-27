@@ -57,11 +57,11 @@ class securityController extends AbstractController
                 $url = $this->generateUrl('security_activation', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $message = (new \Swift_Message('Activation compte utilisateur'))
-                    ->setFrom('admin@euclideservices.com')
+                    ->setFrom('support@gntpharma-cameroun.com')
                     ->setTo($user->getEmail())
                     ->setBody("Cliquez sur le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
 //                $message = (new \Swift_Message('Activation compte utilisateur'))
-//                 ->setFrom('Hajjalbayt@euclideservices.com')
+//                 ->setFrom('support@gntpharma-cameroun.com')
 //                 ->setTo($user->getEmail())
 //                 ->setBody($this->renderView('licence/facture.html.twig'), 'text/html');
 
@@ -261,7 +261,7 @@ class securityController extends AbstractController
             $url = $this->generateUrl('security_reset_password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
             $message = (new \Swift_Message('Réinitialisation mot de passe'))
-                ->setFrom('admin@euclideservices.com')
+                ->setFrom('support@gntpharma-cameroun.com')
                 ->setTo($user->getEmail())
                 ->setBody("Cliquez sur le lien suivant pour réinitialiser votre mot de passe " . $url, 'text/html');
 
@@ -539,11 +539,11 @@ class securityController extends AbstractController
                 //$url = $this->generateUrl('security_activation', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $message = (new \Swift_Message('Activation compte utilisateur'))
-                    ->setFrom('admin@euclideservices.com')
+                    ->setFrom('support@gntpharma-cameroun.com')
                     ->setTo($user->getEmail())
                     ->setBody("Vous êtes inscrit sur le site", 'text/html');
 //                $message = (new \Swift_Message('Activation compte utilisateur'))
-//                 ->setFrom('Hajjalbayt@euclideservices.com')
+//                 ->setFrom('support@gntpharma-cameroun.com')
 //                 ->setTo($user->getEmail())
 //                 ->setBody($this->renderView('licence/facture.html.twig'), 'text/html');
 
