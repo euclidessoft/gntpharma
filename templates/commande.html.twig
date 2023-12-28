@@ -14,12 +14,14 @@
     <!--    <link href="images/favicon.ico" rel="icon"> -->
 
     <!-- Libraries Stylesheet -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.compat.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    {% block photobox_css %} {% endblock %}
 
     <!-- Site Stylesheet -->
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/commande.css') }}" rel="stylesheet">
-    {#    <link href="{{ asset('css/style.min.css')}}" rel="stylesheet">#}
 </head>
 
 <body>
@@ -69,33 +71,54 @@
 <div class="container-fluid bg-secondaire topbar">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-2 col-sm-6">
                 <a href="{{ path('security_logout') }}">
-                    Deconnexion
+                    {{ "Deconnexion"|trans }}
                 </a>
             </div>
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-2 col-sm-6">
                 <a href="{{ path('security_profile') }}">
-                    Profil
+                    {{ "Profil"|trans }}
                 </a>
             </div>
-            <div class="col-lg-3 col-sm-6">
+
                 {% if is_granted('ROLE_ADMIN') %}
+            <div class="col-lg-2 col-sm-6">
                 <a href="{{ path('commande_panier_suivi', {'user' : app.user.id}) }}">
-                    suivi commande
+                    {{ "suivi commande"|trans }}
                 </a>
-                {% else %}
-                    <a href="{{ path('commande_panier_history') }}"> historique commande</a>
-                {% endif %}
             </div>
-            <div class="col-lg-3 col-sm-6 text-lg-end">
+                    <div class="col-lg-2 col-sm-6 text-lg-end">
+                    <a href="{{ path('produit_index', {'user' : app.user.id}) }}">
+                        {{ "Produits"|trans }}
+                </a>
+            </div>
+                    <div class="col-lg-2 col-sm-6">
+                        <a href="{{ path('approvisionnement_index') }}">
+                            {{ "Approvisionnement"|trans }}
+                        </a>
+                    </div>
+                    <div class="col-lg-2 col-sm-6">
+                        <a href="{{ path('commande_panier_suivi', {'user' : app.user.id}) }}">
+                            {{ "Livraison"|trans }}
+                        </a>
+                    </div>
+                {% else %}
+            <div class="col-lg-3 col-sm-6">
+                    <a href="{{ path('commande_panier_history') }}"> historique commande</a>
+            </div>
+                {% endif %}
+
+
                 {% if is_granted('ROLE_CLIENT') %}
+            <div class="col-lg-3 col-sm-6 text-lg-end">
                     <a href="{{ path('commande_panier_panier') }}">
                     <span id="gest_panier" class="badge text-bg-danger">
                             {{ panier|length }}
                     </span>
                         <i class="fa fa-cart-shopping fa-2x"></i>
                     </a>
+            </div>
                 {% endif %}
             </div>
         </div>
@@ -110,9 +133,6 @@
     {% endblock %}
 </div>
 <!-- Footer Start -->
-<div class="mt-5">
-    &nbsp;
-</div>
 <footer class="text-light mt-5">
     <div class="container-fluid footer pt-3 mt-5">
         <div class="container py-5">
@@ -242,11 +262,12 @@
 
 
 <!-- Main Javascript -->
-{#<script src="{{ asset('js/main.js')}}"></script>#}
+<script src="{{ asset('js/main.js')}}"></script>
 <script src="{{ asset('js/commande.min.js') }}"></script>
 <script>
     $(document).ready(function () {
         var table = $('#liste').DataTable({
+
 
             responsive: true,
             pageLength: 25,

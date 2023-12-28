@@ -1,3 +1,68 @@
+/*** Navbar ***/
+.navbar .nav-item .dropdown-menu {
+
+    background-color: var(--primaire);
+}
+
+.navbar .nav-item .dropdown-menu a {
+    color: var(--blanc);
+}
+
+.dropdown-item.active {
+    background: var(--secondaire);
+    color: var(--primaire) !important;
+    font-weight: bold;
+}
+
+.navbar .nav-item .dropdown-menu a:hover {
+    background: var(--secondaire-soft);
+    color: var(--primaire);
+}
+
+.navbar .dropdown-toggle::after {
+    border: none;
+    content: "\f107";
+    font-family: "Font Awesome 6 Free", sans-serif;
+    font-weight: 900;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+.navbar-light .nav-item .nav-link,
+.navbar-light .navbar-nav .nav-link {
+    margin: 0 15px;
+    padding: 25px 0;
+    font-size: 18px;
+    text-transform: uppercase;
+    outline: none;
+    color: var(--blanc);
+    font-weight: 600;
+    transition: all 200ms ease-in-out;
+    border-bottom: 5px solid transparent;
+}
+
+.navbar-light .navbar-nav .nav-link:focus {
+    color: var(--blanc);
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: var(--blanc);
+    border-bottom: 5px solid var(--secondaire);
+}
+
+.navbar-light .navbar-nav .nav-link.active {
+    color: var(--blanc);
+    border-bottom: 5px solid var(--primaire);
+}
+
+.navbar-light.sticky-top {
+    top: -100px;
+    transition: .5s;
+    background-color: rgb(3, 156, 79);
+    box-shadow: 1rem 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    border-bottom: 1px solid var(--secondaire);
+}
+
 /********** Commande CSS **********/
 
 .security-page {

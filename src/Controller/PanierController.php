@@ -76,7 +76,7 @@ class PanierController extends AbstractController
             $quantite = $request->get('quantite');// recuperation de la quantite commamde
             if(empty($panier[$id])){//verification existance produit dans le panier
                 $produit = $produitRepository->find($id); // recuperation de id produit dans la db
-                if($produit->getMincommande() <= $quantite) {
+                if($produit->getMincommande() <= $quantite) {// verification quantite minimum
                     $produit->setQuantite($quantite);
 
                     $panier[$id] = [// placement produit et quantite dans le panier
@@ -88,7 +88,7 @@ class PanierController extends AbstractController
 
                     $res['id'] = 'ok';
                     $res['panier'] = count($panier);
-                }else{
+
                     $res['id'] = 'min';
                 }
             }else{

@@ -83,6 +83,6 @@
     </table>
     <input type="hidden" id="tampon"/>
     {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('produit_new') }}">Create new</a>
+        <a class="btn btn-success" href="{{ path('produit_new') }}">Nouveau Produit</a>
     {% endif %}
 {% endblock %}

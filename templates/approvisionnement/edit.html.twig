@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit Approvisionnement</title>
+
+{% block body %}
+    <h1>Edit Approvisionnement</h1>
+
+    {{ include('approvisionnement/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('approvisionnement_index') }}">back to list</a>
+
+    {{ include('approvisionnement/_delete_form.html.twig') }}
+{% endblock %}

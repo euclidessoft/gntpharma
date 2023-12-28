@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<title>Approvisionnement</title>
+
+{% block body %}
+    <h1>Approvisionnement</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ approvisionnement.id }}</td>
+            </tr>
+            <tr>
+                <th>Quantite</th>
+                <td>{{ approvisionnement.quantite }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ approvisionnement.date ? approvisionnement.date|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('approvisionnement_index') }}">back to list</a>
+
+    <a href="{{ path('approvisionnement_edit', {'id': approvisionnement.id}) }}">edit</a>
+
+    {{ include('approvisionnement/_delete_form.html.twig') }}
+{% endblock %}

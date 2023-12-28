@@ -21,7 +21,7 @@
 
     <!-- Site Stylesheet -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-{#    <link href="{{ asset('css/commande.css') }}" rel="stylesheet">#}
+    <link href="{{ asset('css/commande.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -66,16 +66,63 @@
 </nav>
 <!-- Navbar End -->
 
+<!-- Topbar Start -->
+{% if app.user != null %}
+    <div class="container-fluid bg-secondaire topbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6">
+                    <a href="{{ path('security_logout') }}">
+                        {{ "Deconnexion"|trans }}
+                    </a>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <a href="{{ path('security_profile') }}">
+                        {{ "Profil"|trans }}
+                    </a>
+                </div>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="col-lg-3 col-sm-6">
+                        <a href="{{ path('commande_panier_suivi', {'user' : app.user.id}) }}">
+                            {{ "suivi commande"|trans }}
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 text-lg-end">
+                        <a href="{{ path('produit_index', {'user' : app.user.id}) }}">
+                            {{ "Produits"|trans }}
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="col-lg-3 col-sm-6">
+                        <a href="{{ path('commande_panier_history') }}"> historique commande</a>
+                    </div>
+                {% endif %}
 
 
-{% block body %}
+                {% if is_granted('ROLE_CLIENT') %}
+                    <div class="col-lg-3 col-sm-6 text-lg-end">
+                        <a href="{{ path('commande_panier_panier') }}">
+                    <span id="gest_panier" class="badge text-bg-danger">
+                            {{ panier|length }}
+                    </span>
+                            <i class="fa fa-cart-shopping fa-2x"></i>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    </div>
+{% endif %}
+<!-- Topbar End -->
+    {% block body %}
 
 
-{% endblock %}
-
+    {% endblock %}
 <!-- Footer Start -->
 <footer class="text-light">
-    <div class="container-fluid footer pt-3">
+    <div class="container-fluid footer">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
@@ -100,6 +147,7 @@
                 <div class="col-lg-3 col-md-6">
                     <h4 class="footer-tittle">{{ "Liens utiles"|trans }}</h4>
                     <a class="btn btn-link" href="{{ path('About') }}">{{ "A propos"|trans }}</a>
+                    {#                    <a class="btn btn-link" href="#">{{ "Metiers"|trans}}</a>#}
                     <a class="btn btn-link" href="#">{{ "Actualité et événements"|trans }}</a>
                     <a class="btn btn-link" href="{{ path('produit_index') }}">{{ "Commande"|trans }}</a>
                     <a class="btn btn-link" href="{{ path('Contact') }}">{{ "Contact"|trans }}</a>
@@ -112,7 +160,7 @@
                                 <span class="socialink-facebook">
                                     gnt-pharma
                                 </span>
-                                <i class="fab fa-square-facebook fa-2x"></i>
+                                <i class="fab fa-facebook-square fa-2x"></i>
                             </a>
                         </div>
                         <div class="col-12">
@@ -194,20 +242,107 @@
 
 <!-- JavaScript Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" async></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js" async></script>
 {% block photobox_js %} {% endblock %}
-{#<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/noframework.waypoints.min.js" ></script>#}
-{#<script src="{{ asset('libs/counterup/js/counterup.min.js')}}"></script>#}
+
 
 <!-- Main Javascript -->
-<script src="{{ asset('js/main.min.js') }}"></script>
-{% if app.user != null %}
-{#    <script src="{{ asset('js/commande.min.js') }}"></script>#}
-{% endif %}
+<script src="{{ asset('js/main.js')}}"></script>
+<script src="{{ asset('js/commande.min.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        var table = $('#liste').DataTable({
 
+
+            responsive: true,
+            pageLength: 25,
+            buttons: [{
+                extend: 'excelHtml5',
+                text: '<i class="fa fa-file-excel fa-lg"></i> Exporter vers Excel',
+                attr: {
+                    class: 'btn btn-success'
+                },
+            }],
+            language: {
+                processing: "Traitement en cours...",
+                search: "Rechercher&nbsp;:",
+                lengthMenu: "Afficher _MENU_ &eacute;l&eacute;ments",
+                info: "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+                infoEmpty: "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+                infoFiltered: "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+                infoPostFix: "",
+                loadingRecords: "Chargement en cours...",
+                zeroRecords: "Aucun &eacute;l&eacute;ment &agrave; afficher",
+                emptyTable: "Aucune donnée disponible dans le tableau",
+                paginate: {
+                    first: "Premier",
+                    previous: "Pr&eacute;c&eacute;dent",
+                    next: "Suivant",
+                    last: "Dernier"
+                },
+                aria: {
+                    sortAscending: ": activer pour trier la colonne par ordre croissant",
+                    sortDescending: ": activer pour trier la colonne par ordre décroissant"
+                }
+            }
+
+        });
+        table.buttons().container().appendTo('#exportexcel');
+        selectAllstart();
+    });
+
+    function selectAllstart() { //selectionner tous les produits
+        if ($("#tous").is(':checked')) {
+            $("input[type=checkbox]").attr('checked', true);
+            $("input[type=checkbox]").each(
+                function () {
+                    if ($(this).is(':checked')) {
+
+                    } else {
+                        $(this).trigger('click')
+                    }
+                    trselect($(this).attr("id"));
+                });
+        }
+    }
+
+    function addprod(id, mincom) {
+        var reg = new RegExp("^[0-9]+$");
+        if (reg.test($('#text' + id).val()) && mincom <= $('#text' + id).val()) {
+            $('#btn' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+            $.ajax({
+                type: "POST",
+                url: "{{ path('commande_add') }}",
+                data: "prod=" + id + "&quantite=" + $('#text' + id).val(),
+                success: function (data) {
+                    if (data['id'] == 'ok') {
+                        $('#tdprod' + id).html($('#text' + id).val());
+                        $('#gest_panier').html(data['panier']);
+                        $('#btn' + id).html("<i class='fa fa-cart-shopping'></i>");
+                        $('#btn' + id).addClass('disabled');
+                    } else {
+                        alert("{{ 'verifier la quantite saisie'|trans }}")
+                    }
+                },
+                error: function () {
+                    alert("{{ 'La requête n a pas abouti'|trans }}");
+                }
+            });
+        } else alert("{{ 'verifier la quantite saisie'|trans }}");
+
+    }
+
+    function nofocu(id) {
+        $('#tampon').val('');
+    }
+
+</script>
+{% block scripts %}
+
+{% endblock %}
 </body>
 
 </html>
