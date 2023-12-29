@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Approvisionnement;
+use App\Entity\Produit;
 use App\Form\ApprovisionnementType;
 use App\Repository\ApprovisionnementRepository;
 use App\Repository\ProduitRepository;
@@ -28,7 +29,7 @@ class ApprovisionnementController extends AbstractController
         $dataPanier = [];
         $total = 0;
 
-        foreach($approv as $commande){
+        foreach ($approv as $commande) {
 //                $product = $produitRepository->find($id);
             $dataPanier[] = [
                 "produit" => $commande['produit'],
@@ -49,35 +50,34 @@ class ApprovisionnementController extends AbstractController
     public function add(Request $request, ProduitRepository $produitRepository, SessionInterface $session)
     {
         // On récupère le panier actuel
-        $approv= $session->get("approv", []);
-        if( $request->isXmlHttpRequest() )
-        {// traitement de la requete ajax
+        $approv = $session->get("approv", []);
+        if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
             $id = $request->get('prod');// recuperation de id produit
             $quantite = $request->get('quantite');// recuperation de la quantite commamde
-            if(empty($approv[$id])){//verification existance produit dans le panier
+            if (empty($approv[$id])) {//verification existance produit dans le panier
                 $produit = $produitRepository->find($id); // recuperation de id produit dans la db
 
-                    $produit->setQuantite($quantite);
+                $produit->setQuantite($quantite);
 
                 $approv[$id] = [// placement produit et quantite dans le panier
-                        "produit" => $produit,
-                    ];
+                    "produit" => $produit,
+                ];
 
-                    // On sauvegarde dans la session
-                    $session->set("approv", $approv);
+                // On sauvegarde dans la session
+                $session->set("approv", $approv);
 
-                    $res['id'] = 'ok';
-                    $res['ref'] = $produit->getReference();
-                    $res['designation'] = $produit->getDesigantion();
-                    $res['fabriquant'] = $produit->getFabriquant();
-                    $res['quantite'] = $produit->getQuantite();
+                $res['id'] = 'ok';
+                $res['ref'] = $produit->getReference();
+                $res['designation'] = $produit->getDesigantion();
+                $res['fabriquant'] = $produit->getFabriquant();
+                $res['quantite'] = $produit->getQuantite();
 
-            }else{
+            } else {
                 $res['id'] = 'no';
             }
 
             $response = new Response();
-            $response->headers->set('content-type','application/json');
+            $response->headers->set('content-type', 'application/json');
             $re = json_encode($res);
             $response->setContent($re);
             return $response;
@@ -86,46 +86,92 @@ class ApprovisionnementController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="approvisionnement_show", methods={"GET"})
+     * @Route("/edit", name="edit")
      */
-    public function show(Approvisionnement $approvisionnement): Response
+    public function edit(Request $request, SessionInterface $session)
     {
-        return $this->render('approvisionnement/show.html.twig', [
-            'approvisionnement' => $approvisionnement,
-        ]);
+
+        if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
+            $id = $request->get('prod');// recuperation de id produit
+            $quantite = $request->get('quantite');// recuperation de la quantite commamde
+            if (empty($panier[$id])) {//verification existance produit dans le panier
+                $panier = $session->get("panier", []);
+                $produit = $panier[$id]['produit'];
+                $produit->setQuantite($quantite);
+                $panier[$id]['produit'] = $produit;
+
+                // On sauvegarde dans la session
+                $session->set("panier", $panier);
+
+                $res['id'] = 'ok';
+                $res['panier'] = $quantite;
+
+            } else {
+                $res['id'] = 'no';
+            }
+
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+        }
+
     }
 
     /**
-     * @Route("/{id}/edit", name="approvisionnement_edit", methods={"GET","POST"})
+     * @Route("/delete", name="delete")
      */
-    public function edit(Request $request, Approvisionnement $approvisionnement): Response
+    public function delete(Request $request, ProduitRepository $repository, SessionInterface $session)
     {
-        $form = $this->createForm(ApprovisionnementType::class, $approvisionnement);
-        $form->handleRequest($request);
+        // On récupère le panier actuel
+        $approv = $session->get("approv", []);
+        $id = $repository->find($request->get('prod'))->getId();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('approvisionnement_index', [], Response::HTTP_SEE_OTHER);
+        if (!empty($approv[$id])) {
+            unset($approv[$id]);
         }
 
-        return $this->render('approvisionnement/edit.html.twig', [
-            'approvisionnement' => $approvisionnement,
-            'form' => $form->createView(),
-        ]);
+        // On sauvegarde dans la session
+        $session->set("approv", $approv);
+        $res['id'] = 'ok';
+        $response = new Response();
+        $response->headers->set('content-type', 'application/json');
+        $re = json_encode($res);
+        $response->setContent($re);
+        return $response;
     }
 
     /**
-     * @Route("/{id}", name="approvisionnement_delete", methods={"POST"})
+     * @Route("/delete", name="delete_all")
      */
-    public function delete(Request $request, Approvisionnement $approvisionnement): Response
+    public function deleteAll(SessionInterface $session)
     {
-        if ($this->isCsrfTokenValid('delete'.$approvisionnement->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($approvisionnement);
-            $entityManager->flush();
-        }
+        $session->remove("panier");
 
-        return $this->redirectToRoute('approvisionnement_index', [], Response::HTTP_SEE_OTHER);
+        $response = $this->redirectToRoute('commande_panier_panier', [], Response::HTTP_SEE_OTHER);
+        $response->setSharedMaxAge(0);
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('no-store', true);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->setCache([
+            'max_age' => 0,
+            'private' => true,
+        ]);
+        return $response;
     }
+
+//    /**
+//     * @Route("/{id}", name="approvisionnement_delete", methods={"POST"})
+//     */
+//    public function delete(Request $request, Approvisionnement $approvisionnement): Response
+//    {
+//        if ($this->isCsrfTokenValid('delete'.$approvisionnement->getId(), $request->request->get('_token'))) {
+//            $entityManager = $this->getDoctrine()->getManager();
+//            $entityManager->remove($approvisionnement);
+//            $entityManager->flush();
+//        }
+//
+//        return $this->redirectToRoute('approvisionnement_index', [], Response::HTTP_SEE_OTHER);
+//    }
 }

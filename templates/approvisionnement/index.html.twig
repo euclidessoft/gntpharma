@@ -79,7 +79,7 @@
                 <i class="fa fa-check"></i> Valider
             </a>
 
-            <table class="table table-success-light table-bordered table-hover table-striped w-100">
+            <table class="table table-success-light table-bordered table-hover table-striped w-100" id="aprovision">
                 <thead>
                 <tr>
                     <th>Reference</th>
@@ -109,14 +109,14 @@
 
 
 
-                                <a href="{{ path("commande_delete", {id: produit.produit.id}) }}" class="btn btn-success"
-                                   title="Supprimer cet article">
+                                <button class="btn btn-success"
+                                   title="Supprimer cet article" onclick="modif({{ produit.produit.id }})">
                                     <i class="fa fa-edit"></i>
-                                </a>
-                                <a href="{{ path("commande_delete", {id: produit.produit.id}) }}" class="btn btn-danger"
-                                   title="Supprimer cet article">
+                                </button>
+                                <button class="btn btn-danger"
+                                   title="Supprimer cet article" onclick="supprim({{ produit.produit.id }})">
                                     <i class="fa fa-trash"></i>
-                                </a>
+                                </button>
 
                             </td>
                     </tr>
@@ -140,13 +140,13 @@
 {% block scripts %}
     <script>
         function Quantite(produit) {
-            var prdt = $("#quant"+produit).val();
-            if(prdt > 0){
+            var prdt = $("#quant"+produit);
+            if(prdt.val() > 0){
             $("#ajouter"+produit).html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
                 $.ajax({
                     type: "POST",
                     url: "{{ path('stock_appro_add') }}",
-                    data: "prod=" + produit + "&quantite=" + prdt,
+                    data: "prod=" + produit + "&quantite=" + prdt.val(),
                     success: function (data) {
                         if (data['id'] == 'ok') {
                             $('#selectprod').append(" <tr id='tr"+produit+"'>\n" +
@@ -154,18 +154,20 @@
                                 "                        <td>"+data['designation']+"</td>\n" +
                                 "                        <td>"+data['fabriquant']+"</td>\n" +
                                 "                        <td>"+data['quantite']+"</td>\n" +
-                                "                        <td><a href='#' class=\"btn btn-success\"\n" +
-                            "                                   title=\"Supprimer cet article\">\n" +
-                            "                                    <i class=\"fa fa-edit\"></i>\n" +
-                            "                                </a>\n" +
-                            "                                <a href='#' class=\"btn btn-danger\"\n" +
-                            "                                   title=\"Supprimer cet article\">\n" +
-                            "                                    <i class=\"fa fa-trash\"></i>\n" +
-                            "                                </a></td>\n" +
+                                "                        <td><button class='btn btn-success'\n" +
+                            "                                   title='Supprimer cet article' onclick='modif("+produit+")'>\n" +
+                            "                                    <i class='fa fa-edit'></i>\n" +
+                            "                                </button>\n" +
+                            "                                <button class='btn btn-danger'\n" +
+                            "                                   title='Supprimer cet article' onclick='supprim("+produit+")'>\n" +
+                            "                                    <i class='fa fa-trash'></i>\n" +
+                            "                                </button></td>\n" +
                                 "\n" +
                                 "                    </tr>");
                             $('#btn' + produit).addClass('disabled');
                             $("#annuler"+produit).trigger('click');
+                            prdt.val("");
+                            $("#ajouter"+produit).html("<i class='fa fa-plus'></i> Ajouter");
                         } else {
                             alert("{{ 'verifier la quantite saisie'|trans }}")
                         }
@@ -177,6 +179,25 @@
             }
             else{
                 alert("veuillez bien renseigner la quantité");
+            }
+        }
+        function supprim(produit){
+
+            if (confirm("Etes-vous sur de vouloir supprimer?")) {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('stock_delete') }}",
+                    data: "prod=" + produit,
+                    success: function (data) {
+                        if (data['id'] == 'ok') {
+                            $("#tr"+produit).remove();
+                            $('#btn' + produit).removeClass('disabled');
+                        }
+                    },
+                    error: function () {
+                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                    }
+                });
             }
         }
 
