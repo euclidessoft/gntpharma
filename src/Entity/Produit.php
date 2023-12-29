@@ -50,6 +50,11 @@ class Produit
      */
     private $prixpublic;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $stock;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -135,6 +140,24 @@ class Produit
     public function setPrixpublic(int $prixpublic): self
     {
         $this->prixpublic = $prixpublic;
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(int $stock): self
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+    public function approvisionner(int $quantite): self
+    {
+        $this->stock = $this->stock + $quantite;
 
         return $this;
     }

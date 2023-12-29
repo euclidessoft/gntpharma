@@ -88,8 +88,6 @@ class PanierController extends AbstractController
 
                     $res['id'] = 'ok';
                     $res['panier'] = count($panier);
-
-                    $res['id'] = 'min';
                 }
             }else{
                 $res['id'] = 'no';

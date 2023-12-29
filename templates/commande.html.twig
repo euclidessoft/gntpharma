@@ -94,7 +94,7 @@
                 </a>
             </div>
                     <div class="col-lg-2 col-sm-6">
-                        <a href="{{ path('approvisionnement_index') }}">
+                        <a href="{{ path('stock_appro_index') }}">
                             {{ "Approvisionnement"|trans }}
                         </a>
                     </div>
@@ -302,7 +302,7 @@
             }
 
         });
-        table.buttons().container().appendTo('#exportexcel');
+        // table.buttons().container().appendTo('#exportexcel');
         selectAllstart();
     });
 
@@ -336,14 +336,14 @@
                         $('#btn' + id).html("<i class='fa fa-cart-shopping'></i>");
                         $('#btn' + id).addClass('disabled');
                     } else {
-                        alert("{{ 'verifier la quantite saisie'|trans }}")
+                        alert("{{ 'verifier la quantite saisie 1'|trans }}")
                     }
                 },
                 error: function () {
                     alert("{{ 'La requête n a pas abouti'|trans }}");
                 }
             });
-        } else alert("{{ 'verifier la quantite saisie'|trans }}");
+        } else alert("{{ 'verifier la quantite saisie 2'|trans }}");
 
     }
 

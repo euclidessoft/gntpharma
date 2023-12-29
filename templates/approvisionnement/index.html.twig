@@ -3,40 +3,184 @@
 {% block order %}active{% endblock %}
 
 {% block body %}
-    {% for message in app.flashes('notice') %}
-        <div class="alert alert-primaire alert-dismissible fade show radius-10 shadow-black">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                &times;
-            </button>
-            {{ message|trans }}
-        </div>
-    {% endfor %}
-    <h1>Approvisionnement</h1>
+    <div class="row">
+        <div class="col-lg-7">
+            {% for message in app.flashes('notice') %}
+                <div class="alert alert-primaire alert-dismissible fade show radius-10 shadow-black">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                        &times;
+                    </button>
+                    {{ message|trans }}
+                </div>
+            {% endfor %}
+            <h1>Approvisionnement</h1>
 
-    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
-        <thead>
-        <tr>
-            <th>Reference</th>
-            <th>Designation</th>
-            <th>Fabriquant</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for produit in produits %}
-            <tr>
-                <td>{{ produit.reference }}</td>
-                <td>{{ produit.desigantion }}</td>
-                <td>{{ produit.fabriquant }}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <input type="hidden" id="tampon"/>
-    {% if is_granted('ROLE_ADMIN') %}
-        <a class="btn btn-success" href="{{ path('produit_new') }}">Nouveau Produit</a>
-    {% endif %}
+            {% set inlist = [] %}
+            {% for produit in panier %}
+
+                {% set inlist = inlist|merge([produit['produit'].id]) %}
+            {% else %}
+
+            {% endfor %}
+
+            <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+                <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>Designation</th>
+                    <th>Fabriquant</th>
+                    <th> </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for produit in produits %}
+                    <tr id="listprod{{ produit.id }}">
+                        <td>{{ produit.reference }}</td>
+                        <td>{{ produit.desigantion }}</td>
+                        <td>{{ produit.fabriquant }}</td>
+                        <td>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-success {% if produit.id in inlist%} disabled {% endif %}" data-bs-toggle="modal" data-bs-target="#modal{{ produit.id }}" id="btn{{ produit.id }}">
+                               <i class="fa fa-plus"></i> Ajouter
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="modal{{ produit.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog text-center">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                            {{ produit.reference }} {{ produit.desigantion }} {{ produit.fabriquant }}</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body px-5">
+                                           Renseignez la quantité: <input type="number" class="form-control" id="quant{{ produit.id }}">
+                                        </div>
+                                        <div class="modal-footer px-5 py-4">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="annuler{{ produit.id }}">Annuler</button>
+                                            <button type="button" class="btn btn-success ms-3" id="ajouter{{ produit.id }}" onclick="Quantite({{ produit.id }})"><i class="fa fa-plus"></i> Ajouter</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-5 mt-5">
+            <a href="{{ path("commande_panier_valider") }}" class="btn btn-success float-right mb-3"
+               title="Valider">
+                <i class="fa fa-check"></i> Valider
+            </a>
+
+            <table class="table table-success-light table-bordered table-hover table-striped w-100">
+                <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>Designation</th>
+                    <th>Fabriquant</th>
+                    <th>Quantite</th>
+
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody id="selectprod">
+                {% for produit in panier %}
+                    <tr>
+                        <td>{{ produit['produit'].reference }}</td>
+                        <td>{{ produit['produit'].desigantion }}</td>
+                        <td>{{ produit['produit'].fabriquant }}</td>
+
+                            <td class="text-center" id="tdprod{{ produit.produit.id }}">
+
+
+                                {{ produit['produit'].quantite }}
+
+
+                            </td>
+                            <td>
+
+
+
+
+                                <a href="{{ path("commande_delete", {id: produit.produit.id}) }}" class="btn btn-success"
+                                   title="Supprimer cet article">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="{{ path("commande_delete", {id: produit.produit.id}) }}" class="btn btn-danger"
+                                   title="Supprimer cet article">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+
+                            </td>
+                    </tr>
+
+                {% else %}
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+            <a href="{{ path("commande_panier_valider") }}" class="btn btn-success float-right"
+               title="Valider">
+                <i class="fa fa-check"></i> Valider
+            </a>
+
+        </div>
+    </div>
+
+{% endblock %}
+{% block scripts %}
+    <script>
+        function Quantite(produit) {
+            var prdt = $("#quant"+produit).val();
+            if(prdt > 0){
+            $("#ajouter"+produit).html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('stock_appro_add') }}",
+                    data: "prod=" + produit + "&quantite=" + prdt,
+                    success: function (data) {
+                        if (data['id'] == 'ok') {
+                            $('#selectprod').append(" <tr id='tr"+produit+"'>\n" +
+                                "                        <td>"+data['ref']+"</td>\n" +
+                                "                        <td>"+data['designation']+"</td>\n" +
+                                "                        <td>"+data['fabriquant']+"</td>\n" +
+                                "                        <td>"+data['quantite']+"</td>\n" +
+                                "                        <td><a href='#' class=\"btn btn-success\"\n" +
+                            "                                   title=\"Supprimer cet article\">\n" +
+                            "                                    <i class=\"fa fa-edit\"></i>\n" +
+                            "                                </a>\n" +
+                            "                                <a href='#' class=\"btn btn-danger\"\n" +
+                            "                                   title=\"Supprimer cet article\">\n" +
+                            "                                    <i class=\"fa fa-trash\"></i>\n" +
+                            "                                </a></td>\n" +
+                                "\n" +
+                                "                    </tr>");
+                            $('#btn' + produit).addClass('disabled');
+                            $("#annuler"+produit).trigger('click');
+                        } else {
+                            alert("{{ 'verifier la quantite saisie'|trans }}")
+                        }
+                    },
+                    error: function () {
+                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                    }
+                });
+            }
+            else{
+                alert("veuillez bien renseigner la quantité");
+            }
+        }
+
+    </script>
+
+
 {% endblock %}
