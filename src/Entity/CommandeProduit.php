@@ -41,6 +41,7 @@ class CommandeProduit
      * @ORM\Column(type="integer")
      */
     private $quantite;
+
     /**
      * Constructor
      */

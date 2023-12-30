@@ -94,13 +94,8 @@
                 </a>
             </div>
                     <div class="col-lg-2 col-sm-6">
-                        <a href="{{ path('stock_appro_index') }}">
-                            {{ "Approvisionnement"|trans }}
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-sm-6">
-                        <a href="{{ path('commande_panier_suivi', {'user' : app.user.id}) }}">
-                            {{ "Livraison"|trans }}
+                        <a href="{{ path('stock_index') }}">
+                            {{ "Stock"|trans }}
                         </a>
                     </div>
                 {% else %}

@@ -86,11 +86,10 @@
             </table>
         </div>
         <div class="col-lg-5 mt-5">
-            <a href="{{ path("commande_panier_valider") }}"
-               class="btn btn-success float-right mb-3 {% if inlist|length == 0 %} disabled {% endif %}" id="valider1"
+            <button onclick="validerappro()"  class="btn btn-success float-right mb-3 {% if inlist|length == 0 %} disabled {% endif %}" id="valider1"
                title="Valider">
                 <i class="fa fa-check"></i> Valider
-            </a>
+            </button>
 
             <table class="table table-success-light table-bordered table-hover table-striped w-100" id="aprovision">
                 <thead>
@@ -259,6 +258,11 @@
                 alert("veuillez bien renseigner la quantité");
             }
 
+        }
+        function validerappro(){
+            if(confirm("Confirmation validation?")){
+                document.location.href = "{{ path('stock_valider') }}";
+            }
         }
 
     </script>

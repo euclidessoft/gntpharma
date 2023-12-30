@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Approvisionnement;
-use App\Entity\Produit;
-use App\Form\ApprovisionnementType;
+use App\Entity\Approvisionner;
 use App\Repository\ApprovisionnementRepository;
+use App\Repository\ApprovisionnerRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +19,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApprovisionnementController extends AbstractController
 {
     /**
-     * @Route("/", name="appro_index", methods={"GET"})
+     * @Route("/", name="index", methods={"GET"})
+     */
+    public function stock(ProduitRepository $produitRepository): Response
+    {
+        return $this->render('approvisionnement/stock.html.twig', [
+            'produits' => $produitRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/Approvisionnent", name="appro_index", methods={"GET"})
      */
     public function index(SessionInterface $session, ApprovisionnementRepository $approvisionnementRepository, ProduitRepository $produitRepository): Response
     {
@@ -30,17 +40,25 @@ class ApprovisionnementController extends AbstractController
         $total = 0;
 
         foreach ($approv as $commande) {
-//                $product = $produitRepository->find($id);
             $dataPanier[] = [
                 "produit" => $commande['produit'],
             ];
-//                $total += $product->getPrix() * $quantite;
         }
+
 
         return $this->render('approvisionnement/index.html.twig', [
             'approvisionnements' => $approvisionnementRepository->findAll(),
             'produits' => $produits,
             'panier' => $dataPanier,
+        ]);
+    }
+    /**
+     * @Route("/Historique", name="historique", methods={"GET"})
+     */
+    public function historique(ApprovisionnerRepository $repository): Response
+    {
+        return $this->render('approvisionnement/historique.html.twig', [
+            'approvisionnements' => $repository->findAll(),
         ]);
     }
 
@@ -163,19 +181,90 @@ class ApprovisionnementController extends AbstractController
             'private' => true,
         ]);
         return $response;
+
     }
 
-//    /**
-//     * @Route("/{id}", name="approvisionnement_delete", methods={"POST"})
-//     */
-//    public function delete(Request $request, Approvisionnement $approvisionnement): Response
-//    {
-//        if ($this->isCsrfTokenValid('delete'.$approvisionnement->getId(), $request->request->get('_token'))) {
-//            $entityManager = $this->getDoctrine()->getManager();
-//            $entityManager->remove($approvisionnement);
-//            $entityManager->flush();
-//        }
-//
-//        return $this->redirectToRoute('approvisionnement_index', [], Response::HTTP_SEE_OTHER);
-//    }
+   /**
+ * @Route("/valider", name="valider")
+ */
+    public function valider(SessionInterface $session, ProduitRepository $produitRepository)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            $produits = $produitRepository->findAll();
+            $approv = $session->get("approv", []);
+
+
+            if (count($approv) >= 1) {
+                $em = $this->getDoctrine()->getManager();
+                $approvisionner = new  Approvisionner();
+                $approvisionner->setUser($this->getUser());
+                $em->persist($approvisionner);
+                foreach ($approv as $product) {
+                    $produit = $produitRepository->find($product['produit']->getId());
+                    $approvisionnenment = new Approvisionnement($produit,$approvisionner,$product['produit']->getQuantite());
+                    $produit->approvisionner($product['produit']->getQuantite());
+                    $em->persist($produit);
+                    $em->persist($approvisionnenment);
+                }
+                $em->flush();
+                $session->remove("approv");
+            }
+            $this->addFlash('notice', 'Approvisionnement réussie');
+            $response = $this->redirectToRoute('stock_historique');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/{id}", name="show", methods={"GET"})
+     */
+    public function show(Approvisionner $approvisionner): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+            $response = $this->render('approvisionner/show.html.twig', [
+                'approvisionner' => $approvisionner,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
 }

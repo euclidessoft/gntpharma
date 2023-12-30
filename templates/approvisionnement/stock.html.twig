@@ -1,0 +1,40 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block order %}active{% endblock %}
+
+{% block body %}
+    <a class="btn btn-success mt-4" href="{{ path('stock_appro_index') }}"><i class="fa fa-list"></i> Approvisionnement</a>
+    <a class="btn btn-success mt-4" href="{{ path('stock_appro_index') }}"><i class="fa fa-list"></i> Livraison</a>
+    <h1 class="my-2"> Etat du stock</h1>
+
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+        <tr>
+            <th>Reference</th>
+            <th>Designation</th>
+            <th>Fabriquant</th>
+            <th>Quantite</th>
+
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            <tr>
+                <td>{{ produit.reference }}</td>
+                <td>{{ produit.desigantion }}</td>
+                <td>{{ produit.fabriquant }}</td>
+                <td>{{ produit.stock }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('produit_show', {'id': produit.id}) }}"><i class="fa fa-list"></i> Détails</a>
+                </td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

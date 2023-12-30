@@ -32,6 +32,23 @@ class Approvisionnement
      */
     private $date;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $archive;
+
+    /**
+     * Constructor
+     */
+    public function __construct(Produit $produit, Approvisionner $approvisionner, $quantite)
+    {
+        $this->date = new \Datetime();
+        $this->produit = $produit;
+        $this->archive = $produit->getStock();
+        $this->approvisionner = $approvisionner;
+        $this->quantite = $quantite;
+    }
+
 
     public function getQuantite(): ?int
     {
@@ -77,6 +94,18 @@ class Approvisionnement
     public function setApprovisionner(?Approvisionner $approvisionner): self
     {
         $this->approvisionner = $approvisionner;
+
+        return $this;
+    }
+
+    public function getArchive(): ?int
+    {
+        return $this->archive;
+    }
+
+    public function setArchive(int $archive): self
+    {
+        $this->archive = $archive;
 
         return $this;
     }
