@@ -94,14 +94,15 @@ class ApprovisionnementController extends AbstractController
         if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
             $id = $request->get('prod');// recuperation de id produit
             $quantite = $request->get('quantite');// recuperation de la quantite commamde
-            if (empty($panier[$id])) {//verification existance produit dans le panier
-                $panier = $session->get("panier", []);
-                $produit = $panier[$id]['produit'];
+            $approv = $session->get("approv", []);
+            if (!empty($approv[$id])) {//verification existance produit dans le panier
+
+                $produit = $approv[$id]['produit'];
                 $produit->setQuantite($quantite);
-                $panier[$id]['produit'] = $produit;
+                $approv[$id]['produit'] = $produit;
 
                 // On sauvegarde dans la session
-                $session->set("panier", $panier);
+                $session->set("approv", $approv);
 
                 $res['id'] = 'ok';
                 $res['panier'] = $quantite;
@@ -110,6 +111,8 @@ class ApprovisionnementController extends AbstractController
                 $res['id'] = 'no';
             }
 
+            //$session->set("approv", $approv);
+            $res['id'] = 'ok';
             $response = new Response();
             $response->headers->set('content-type', 'application/json');
             $re = json_encode($res);
@@ -135,6 +138,7 @@ class ApprovisionnementController extends AbstractController
         // On sauvegarde dans la session
         $session->set("approv", $approv);
         $res['id'] = 'ok';
+        $res['nb'] = count($approv);
         $response = new Response();
         $response->headers->set('content-type', 'application/json');
         $re = json_encode($res);

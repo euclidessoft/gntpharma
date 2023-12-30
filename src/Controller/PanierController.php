@@ -111,9 +111,10 @@ class PanierController extends AbstractController
         if( $request->isXmlHttpRequest() )
         {// traitement de la requete ajax
             $id = $request->get('prod');// recuperation de id produit
+            $panier = $session->get("panier", []);
             $quantite = $request->get('quantite');// recuperation de la quantite commamde
-            if(empty($panier[$id])){//verification existance produit dans le panier
-                $panier = $session->get("panier", []);
+            if(!empty($panier[$id])){//verification existance produit dans le panier
+
                 $produit = $panier[$id]['produit'];
                 $produit->setQuantite($quantite);
                 $panier[$id]['produit'] = $produit;

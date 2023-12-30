@@ -55,6 +55,12 @@ class Produit
      */
     private $stock;
 
+
+    public function __construct()
+    {
+        $this->stock = 0;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

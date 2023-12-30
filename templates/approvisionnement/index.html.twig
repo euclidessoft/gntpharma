@@ -29,7 +29,7 @@
                     <th>Reference</th>
                     <th>Designation</th>
                     <th>Fabriquant</th>
-                    <th> </th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,25 +40,37 @@
                         <td>{{ produit.fabriquant }}</td>
                         <td>
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-success {% if produit.id in inlist%} disabled {% endif %}" data-bs-toggle="modal" data-bs-target="#modal{{ produit.id }}" id="btn{{ produit.id }}">
-                               <i class="fa fa-plus"></i> Ajouter
+                            <button type="button"
+                                    class="btn btn-success {% if produit.id in inlist %} disabled {% endif %}"
+                                    data-bs-toggle="modal" data-bs-target="#modal{{ produit.id }}"
+                                    id="btn{{ produit.id }}">
+                                <i class="fa fa-plus"></i> Ajouter
                             </button>
 
                             <!-- Modal -->
-                            <div class="modal fade" id="modal{{ produit.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="modal{{ produit.id }}" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog text-center">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                            {{ produit.reference }} {{ produit.desigantion }} {{ produit.fabriquant }}</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                {{ produit.reference }} {{ produit.desigantion }} {{ produit.fabriquant }}</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body px-5">
-                                           Renseignez la quantité: <input type="number" class="form-control" id="quant{{ produit.id }}">
+                                            Renseignez la quantité: <input type="number" class="form-control"
+                                                                           id="quant{{ produit.id }}">
                                         </div>
                                         <div class="modal-footer px-5 py-4">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="annuler{{ produit.id }}">Annuler</button>
-                                            <button type="button" class="btn btn-success ms-3" id="ajouter{{ produit.id }}" onclick="Quantite({{ produit.id }})"><i class="fa fa-plus"></i> Ajouter</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                                    id="annuler{{ produit.id }}">Annuler
+                                            </button>
+                                            <button type="button" class="btn btn-success ms-3"
+                                                    id="ajouter{{ produit.id }}" onclick="ajouter({{ produit.id }})"><i
+                                                        class="fa fa-plus"></i> Ajouter
+                                            </button>
+                                            <div id="modification{{ produit.id }}"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -74,7 +86,8 @@
             </table>
         </div>
         <div class="col-lg-5 mt-5">
-            <a href="{{ path("commande_panier_valider") }}" class="btn btn-success float-right mb-3"
+            <a href="{{ path("commande_panier_valider") }}"
+               class="btn btn-success float-right mb-3 {% if inlist|length == 0 %} disabled {% endif %}" id="valider1"
                title="Valider">
                 <i class="fa fa-check"></i> Valider
             </a>
@@ -92,33 +105,35 @@
                 </thead>
                 <tbody id="selectprod">
                 {% for produit in panier %}
-                    <tr>
+                    <tr id="tr{{ produit['produit'].id }}">
                         <td>{{ produit['produit'].reference }}</td>
                         <td>{{ produit['produit'].desigantion }}</td>
                         <td>{{ produit['produit'].fabriquant }}</td>
 
-                            <td class="text-center" id="tdprod{{ produit.produit.id }}">
-
+                        <td class="text-center">
+<span id="changequantite{{ produit.produit.id }}">
 
                                 {{ produit['produit'].quantite }}
+</span>
+
+                        </td>
+                        <td>
 
 
-                            </td>
-                            <td>
 
-
-
-
+<span id='btnmodf{{ produit.produit.id }}'>
                                 <button class="btn btn-success"
-                                   title="Supprimer cet article" onclick="modif({{ produit.produit.id }})">
+                                        title="Supprimer cet article"
+                                        onclick="modif({{ produit.produit.id }},{{ produit['produit'].quantite }})">
                                     <i class="fa fa-edit"></i>
                                 </button>
-                                <button class="btn btn-danger"
-                                   title="Supprimer cet article" onclick="supprim({{ produit.produit.id }})">
-                                    <i class="fa fa-trash"></i>
-                                </button>
+</span>
+                            <button class="btn btn-danger"
+                                    title="Supprimer cet article" onclick="supprim({{ produit.produit.id }})">
+                                <i class="fa fa-trash"></i>
+                            </button>
 
-                            </td>
+                        </td>
                     </tr>
 
                 {% else %}
@@ -128,7 +143,8 @@
                 </tbody>
             </table>
 
-            <a href="{{ path("commande_panier_valider") }}" class="btn btn-success float-right"
+            <a href="{{ path("commande_panier_valider") }}"
+               class="btn btn-success float-right  {% if inlist|length == 0 %} disabled {% endif %}" id="valider2"
                title="Valider">
                 <i class="fa fa-check"></i> Valider
             </a>
@@ -139,35 +155,38 @@
 {% endblock %}
 {% block scripts %}
     <script>
-        function Quantite(produit) {
-            var prdt = $("#quant"+produit);
-            if(prdt.val() > 0){
-            $("#ajouter"+produit).html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
+        function ajouter(produit) {
+
+            var quant = $("#quant" + produit);
+            if (quant.val() > 0) {
+                $("#ajouter" + produit).html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
                 $.ajax({
                     type: "POST",
                     url: "{{ path('stock_appro_add') }}",
-                    data: "prod=" + produit + "&quantite=" + prdt.val(),
+                    data: "prod=" + produit + "&quantite=" + quant.val(),
                     success: function (data) {
                         if (data['id'] == 'ok') {
-                            $('#selectprod').append(" <tr id='tr"+produit+"'>\n" +
-                                "                        <td>"+data['ref']+"</td>\n" +
-                                "                        <td>"+data['designation']+"</td>\n" +
-                                "                        <td>"+data['fabriquant']+"</td>\n" +
-                                "                        <td>"+data['quantite']+"</td>\n" +
-                                "                        <td><button class='btn btn-success'\n" +
-                            "                                   title='Supprimer cet article' onclick='modif("+produit+")'>\n" +
-                            "                                    <i class='fa fa-edit'></i>\n" +
-                            "                                </button>\n" +
-                            "                                <button class='btn btn-danger'\n" +
-                            "                                   title='Supprimer cet article' onclick='supprim("+produit+")'>\n" +
-                            "                                    <i class='fa fa-trash'></i>\n" +
-                            "                                </button></td>\n" +
+                            $('#selectprod').append(" <tr id='tr" + produit + "'>\n" +
+                                "                        <td>" + data['ref'] + "</td>\n" +
+                                "                        <td>" + data['designation'] + "</td>\n" +
+                                "                        <td>" + data['fabriquant'] + "</td>\n" +
+                                "                        <td class='text-center'><span id='changequantite" + produit + "'>" + data['quantite'] + "</span></td>\n" +
+                                "                        <td><span id='btnmodf" + produit + "'><button class='btn btn-success'\n" +
+                                "                                   title='Supprimer cet article' onclick='modif(" + produit + "," + quant.val() + ")'>\n" +
+                                "                                    <i class='fa fa-edit'></i>\n" +
+                                "                                </button></span>\n" +
+                                "                                <button class='btn btn-danger'\n" +
+                                "                                   title='Supprimer cet article' onclick='supprim(" + produit + ")'>\n" +
+                                "                                    <i class='fa fa-trash'></i>\n" +
+                                "                                </button></td>\n" +
                                 "\n" +
                                 "                    </tr>");
                             $('#btn' + produit).addClass('disabled');
-                            $("#annuler"+produit).trigger('click');
+                            $('#valider1').removeClass('disabled');
+                            $('#valider2').removeClass('disabled');
+                            $("#annuler" + produit).trigger('click');
                             prdt.val("");
-                            $("#ajouter"+produit).html("<i class='fa fa-plus'></i> Ajouter");
+                            $("#ajouter" + produit).html("<i class='fa fa-plus'></i> Ajouter");
                         } else {
                             alert("{{ 'verifier la quantite saisie'|trans }}")
                         }
@@ -176,12 +195,12 @@
                         alert("{{ 'La requête n a pas abouti'|trans }}");
                     }
                 });
-            }
-            else{
+            } else {
                 alert("veuillez bien renseigner la quantité");
             }
         }
-        function supprim(produit){
+
+        function supprim(produit) {
 
             if (confirm("Etes-vous sur de vouloir supprimer?")) {
                 $.ajax({
@@ -190,8 +209,12 @@
                     data: "prod=" + produit,
                     success: function (data) {
                         if (data['id'] == 'ok') {
-                            $("#tr"+produit).remove();
+                            $("#tr" + produit).remove();
                             $('#btn' + produit).removeClass('disabled');
+                            if (data['nb'] == 0) {
+                                $('#valider1').addClass('disabled');
+                                $('#valider2').addClass('disabled');
+                            }
                         }
                     },
                     error: function () {
@@ -199,6 +222,43 @@
                     }
                 });
             }
+        }
+
+        function modif(produit, quantite) {// fonction declenchement modification
+            $("#quant" + produit).val(quantite);
+            $("#ajouter" + produit).hide();
+            /* remplissage div modification*/
+            $("#modification" + produit).html("<button type='button' class='btn btn-success ms-3' id='modifier" + produit + "' onclick=modifier(" + produit + ")><i class='fa fa-edit'></i> Modifier</button>");
+            $("#btn" + produit).trigger('click');// declenchement modification
+        }
+
+        function modifier(produit) {//fonction modification
+            var quant = $("#quant" + produit);
+            if (quant.val() > 0) {
+                $("#modifier" + produit).html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('stock_edit') }}",
+                    data: "prod=" + produit + "&quantite=" + quant.val(),
+                    success: function (data) {
+                        if (data['id'] == 'ok') {
+                            $('#changequantite' + produit).html($("#quant" + produit).val());
+                            $('#btnmodf' + produit).html("<button class='btn btn-success'\n" +
+                                "                                   title='Modifier cet article' onclick='modif(" + produit + "," + quant.val() + ")'>\n" +
+                                "                                    <i class='fa fa-edit'></i>\n" +
+                                "                                </button>");
+                            $("#annuler" + produit).trigger('click');
+                            prdt.val("");
+                        }
+                    },
+                    error: function () {
+                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                    }
+                });
+            } else {
+                alert("veuillez bien renseigner la quantité");
+            }
+
         }
 
     </script>
