@@ -56,7 +56,7 @@
                             {{ tamp }}
                         {% else %}
                             <input type="number" id="text{{ produit.id }}" class="form-control"
-                                                                             onfocus="focu({{ produit.id }})" onblur="nofocu()" style="padding:0 10px">
+                                                                             onfocus="focu({{ produit.id }})" onblur="nofocu()" style="padding:0 10px" {% if produit.stock <= produit.mincommande %} disabled {%  endif %}>
                             <label for="text{{ produit.id }}"></label>
                         {% endif %}
                     </td>
@@ -66,8 +66,8 @@
                                 <i class="fa fa-cart-shopping"></i>
                             </button>
                         {% else %}
-                            <button type="button" class="btn btn-primary" id="btn{{ produit.id }}"
-                                    onclick="addprod({{ produit.id }}, {{ produit.mincommande }})">
+                            <button type="button" class="btn btn-success{% if produit.stock <= produit.mincommande %} disabled {%  endif %}" id="btn{{ produit.id }}"
+                                    onclick="addprod({{ produit.id }}, {{ produit.mincommande }}, {{ produit.stock }})">
                                 <i class="fa fa-cart-shopping"></i>
                             </button>
                         {% endif %}

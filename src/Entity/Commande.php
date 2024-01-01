@@ -50,6 +50,7 @@ class Commande
     {
         $this->date = new \Datetime();
         $this->ref = 'hhfhfhf';
+        $this->suivi = false;
     }
 
 

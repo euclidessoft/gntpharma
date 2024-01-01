@@ -48,7 +48,7 @@
 
                     </td>
                     <td class="text-center" id="soustotal{{ produit.produit.id }}">
-                        {{ produit['produit'].prix * produit['produit'].quantite }}
+                        {{ (produit['produit'].prix * produit['produit'].quantite)|number_format(0, '' , ' ') }}
                         {% set total = total + (produit.produit.prix * produit['produit'].quantite) %}
                         {#<div class="input-group align-center" style="width:100px">
                             <input type="number" id="text{{ produit.produit.id }}" class="form-control"
@@ -65,7 +65,7 @@
                     </td>
                     <td>
                         <div style="display: inline;" id="btnaction{{ produit.produit.id }}">
-                            <button onclick="edit({{ produit.produit.id }}, {{ produit.produit.quantite }}, {{ produit.produit.mincommande }}, {{ produit.produit.prix }})"
+                            <button onclick="edit({{ produit.produit.id }}, {{ produit.produit.quantite }}, {{ produit.produit.mincommande }}, {{ produit.produit.prix }}, {{ produit.produit.stock }})"
                                     class="btn btn-success" title="Modifier quantite">
                                 <i class="fa fa-edit"></i>
                             </button>
@@ -91,8 +91,8 @@
             <td colspan="7" class="text-lg-end">
                 {{ "Total"|trans }}
             </td>
-            <td>
-                <span id="total">{{ total }}</span>
+            <td class="text-center">
+                <span id="total">{{ total|number_format(0, '' , ' ') }}</span>
                 <input type="hidden" value="{{ total }}" id="totaltamp"/>
             </td>
             <td>
@@ -119,33 +119,33 @@
 {% endblock %}
 {% block scripts %}
     <script>
-        function edit(id, quantite, min, prix) {
+        function edit(id, quantite, min, prix, st) {// fonction initialisation modification quantite dans panier
             if ($('#tampon').val() == 'ok') {// verification si auccun autre ligne est entrain d' etre modifier
                 $('#tdprod' + id).html("<div class=\"input-group align-center\" style=\"width:100px\">\n" +
                     "                            <input type=\"number\"  value='" + quantite + "'  id=\"text" + id + "\" class=\"form-control\"\n" +
                     "                                   style=\"padding:0 10px\">\n" +
                     "                            <div class=\"input-group-append\">\n" +
                     "                                            <span class=\"input-group-text bg-primaire text-light\"\n" +
-                    "                                                  onclick=\"editprod(" + id + "," + min + "," + quantite +"," + prix + ")\"\n" +
+                    "                                                  onclick=\"editprod(" + id + "," + min + "," + quantite +"," + prix + "," + st + ")\"\n" +
                     "                                                  id=\"bt" + id + "\">\n" +
                     "                                                <i class=\"fa fa-save\"></i>\n" +
                     "                                            </span>\n" +
                     "                            </div>\n" +
                     "                        </div>");
-                $('#btnaction' + id).html("<button onclick=\"cancel(" + id + "," + quantite + "," + min +"," + prix + ")\" class=\"btn bg-warning\" title=\"Annuler modification\">\n" +
+                $('#btnaction' + id).html("<button onclick=\"cancel(" + id + "," + quantite + "," + min +"," + prix + "," + st + ")\" class=\"btn bg-warning\" title=\"Annuler modification\">\n" +
                     "                            <i class=\"fa fa-undo\"></i>\n" +
                     "                        </button>");
                 $('#tampon').val('no');
             } else alert('Terminer la premiere operation' | trans);
         }
 
-        function editprod(id, mincom, quantite, prix) {
+        function editprod(id, mincom, quantite, prix, st) {
             if (quantite != $('#text' + id).val()) {
                 var reg = new RegExp("^[0-9]+$");
                 let newval= $('#text' + id).val();
                 let totale = $('#totaltamp').val();
                 if (reg.test(newval) && mincom <= newval) {
-
+                    if (st >= $('#text' + id).val()){
                         // $('#btnaction' + id).html("<button class=\"btn bg-warning\"><i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i></button>");
                         $.ajax({
                             type: "POST",
@@ -162,7 +162,7 @@
                                         $('#total').html(Number(totale) - prix * (quantite - newval));
                                         $('#totaltamp').val(Number(totale) - prix * (quantite - newval));
                                     }
-                                    $('#btnaction' + id).html("<button onclick=\"edit(" + id + "," + data['panier'] + "," + mincom + "," + prix + ")\" class=\"btn btn-success\" title=\"Modifier quantite\">\n" +
+                                    $('#btnaction' + id).html("<button onclick=\"edit(" + id + "," + data['panier'] + "," + mincom + "," + prix + "," + st + ")\" class=\"btn btn-success\" title=\"Modifier quantite\">\n" +
                                         "                            <i class=\"fa fa-edit\"></i>\n" +
                                         "                        </button>");
                                     $('#tampon').val('ok');
@@ -174,14 +174,21 @@
                                 alert("{{ 'La requête n a pas abouti'|trans }}");
                             }
                         });
-                    } else alert("{{ 'verifier la quantite saisie'|trans }}");
+                } else {
+                    var mess = "Maximum disponible  " + st;
+                    alert(mess);
+                }
+            } else {
+                var mess = "Commande minimun " + mincom;
+                alert(mess);
+            }
 
             }
         }
 
-        function cancel(id, quantite, min, prix) {
+        function cancel(id, quantite, min, prix, st) {
             $('#tdprod' + id).html(quantite);
-            $('#btnaction' + id).html("<button onclick=\"edit(" + id + "," + quantite + "," + min +"," + prix + ")\" class=\"btn btn-success\" title=\"Modifier quantite\">\n" +
+            $('#btnaction' + id).html("<button onclick=\"edit(" + id + "," + quantite + "," + min +"," + prix + "," + st + ")\" class=\"btn btn-success\" title=\"Modifier quantite\">\n" +
                 "                            <i class=\"fa fa-edit\"></i>\n" +
                 "                        </button>");
             $('#tampon').val('ok');

@@ -79,13 +79,15 @@ class CommandeController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $commande = new Commande();
                 $commande->setUser($this->getUser());
-                $em->persist($commande);
+               $montant = 0;
                 foreach ($panier as $product) {
                     $produit = $produitRepository->find($product['produit']->getId());
-
+                    $montant = $montant + $product['produit']->getQuantite() * $produit->getPrix();
                     $commandeproduit = new CommandeProduit($produit, $commande, $produit->getPrix(), $produit->getPrixpublic(), $product['produit']->getQuantite());
                     $em->persist($commandeproduit);
                 }
+                $commande->setMontant($montant);
+                $em->persist($commande);
                 $em->flush();
                 $session->remove("panier");
             }
