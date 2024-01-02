@@ -17,6 +17,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.compat.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     {% block photobox_css %} {% endblock %}
 
     <!-- Site Stylesheet -->
@@ -129,103 +130,6 @@
 </div>
 <!-- Footer Start -->
 <footer class="text-light mt-5">
-    <div class="container-fluid footer pt-3 mt-5">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="footer-tittle">{{ "Contact"|trans }}</h4>
-                    <p class="mb-2 fw-medium">
-                        <i class="fa fa-map-marker-alt fa-lg me-2 text-secondaire"></i>
-                        BP 15746 Douala Akwa, Cameroun
-                    </p>
-                    <p class="mb-2">
-                        <a href="tel:+237621117743" class="footer-link fw-medium">
-                            <i class="fa fa-phone fa-lg me-2 text-secondaire"></i>
-                            +237 6 21 11 77 43
-                        </a>
-                    </p>
-                    <p class="mb-2">
-                        <a href="mailto:lnatlantiscameroon@gmail.com" class="footer-link fw-medium">
-                            <i class="fa fa-envelope fa-lg me-2 text-secondaire"></i>
-                            info@gntpharma.com
-                        </a>
-                    </p>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="footer-tittle">{{ "Liens utiles"|trans }}</h4>
-                    <a class="btn btn-link" href="{{ path('About') }}">{{ "A propos"|trans }}</a>
-                    {#                    <a class="btn btn-link" href="#">{{ "Metiers"|trans}}</a>#}
-                    <a class="btn btn-link" href="#">{{ "Actualité et événements"|trans }}</a>
-                    <a class="btn btn-link" href="{{ path('produit_index') }}">{{ "Commande"|trans }}</a>
-                    <a class="btn btn-link" href="{{ path('Contact') }}">{{ "Contact"|trans }}</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="footer-tittle">{{ "Réseaux sociaux"|trans }}</h4>
-                    <div class="row">
-                        <div class="col-12">
-                            <a class="socialink" href="#">
-                                <span class="socialink-facebook">
-                                    gnt-pharma
-                                </span>
-                                <i class="fab fa-facebook-square fa-2x"></i>
-                            </a>
-                        </div>
-                        <div class="col-12">
-                            <a class="socialink" href="#">
-                                <span class="socialink-twitter">
-                                    gnt-pharma
-                                </span>
-                                <i class="fab fa-twitter fa-2x"></i>
-                            </a>
-                        </div>
-                        <div class="col-12">
-                            <a class="socialink" href="#">
-                                <span class="socialink-instagram">
-                                    gnt-pharma
-                                </span>
-                                <i class="fab fa-instagram fa-2x"></i>
-                            </a>
-                        </div>
-                        <div class="col-12">
-                            <a class="socialink" href="#">
-                                <span class="socialink-youtube">
-                                    gnt-pharma
-                                </span>
-                                <i class="fab fa-youtube fa-2x"></i>
-                            </a>
-                        </div>
-                        <div class="col-12">
-                            <a class="socialink" href="#">
-                                <span class="socialink-linkedin">
-                                    gnt-pharma
-                                </span>
-                                <i class="fab fa-linkedin fa-2x"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="footer-tittle">Newsletter</h4>
-                    <p class="mb-3">
-                        {{ "Abonnez-vous à notre liste de diffusion pour recevoir les dernières actualités"|trans }}
-                    </p>
-                    <div class="subcriber-box">
-                        <form id="nl-form" class="mc-form">
-                            <div class="newsletter-form">
-                                <div class="input-group mb-3">
-                                    <input type="email" class="form-control" placeholder="Adresse email"
-                                           aria-label="Adresse email" aria-describedby="email">
-                                    <span class="input-group-text" id="email">
-                                        <i class="fa fa-paper-plane"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="container-fluid copyright px-0">
         <div class="d-flex flex-column flex-md-row justify-content-between">
             <div class="py-4 px-5 text-center text-md-start">
@@ -253,6 +157,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" async></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js" async></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js" async></script>
 {% block photobox_js %} {% endblock %}
 
 
@@ -265,7 +170,7 @@
 
 
             responsive: true,
-            pageLength: 25,
+            pageLength: 100,
             buttons: [{
                 extend: 'excelHtml5',
                 text: '<i class="fa fa-file-excel fa-lg"></i> Exporter vers Excel',

@@ -40,8 +40,8 @@
                 <td>{{ produit.fabriquant }}</td>
                 {% if is_granted('ROLE_ADMIN') %}
                     <td>
-                        <a href="{{ path('produit_show', {'id': produit.id}) }}">show</a>
-                        <a href="{{ path('produit_edit', {'id': produit.id}) }}">edit</a>
+                        <a class="btn btn-success" href="{{ path('produit_show', {'id': produit.id}) }}"><i class="fa fa-list-check"></i> Afficher</a>
+                        <a class="btn btn-success" href="{{ path('produit_edit', {'id': produit.id}) }}"><i class="fa fa-edit"></i> Modifier</a>
                     </td>
                 {% else %}
                     {% set tamp ='no' %}

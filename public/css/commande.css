@@ -1,3 +1,6 @@
+body{
+    min-height: 100vh;
+}
 /*** Navbar ***/
 .navbar .nav-item .dropdown-menu {
 
