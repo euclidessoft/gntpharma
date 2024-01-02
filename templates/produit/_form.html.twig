@@ -1,4 +1,30 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-success"><i class="fa fa-save"></i> {{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr' : { 'id' : 'form'}}) }}
+
+<div class="col-lg-8 offset-lg-2">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            {{ form_row(form.reference) }}
+        </div>
+        <div class="col-md-6 mb-4">
+            {{ form_row(form.desigantion) }}
+        </div>
+        <div class="col-md-6 mb-4">
+            {{ form_row(form.prix) }}
+        </div>
+        <div class="col-md-6 mb-4">
+                {{ form_row(form.prixpublic) }}
+        </div>
+        <div class="col-md-6 mb-4">
+            {{ form_row(form.mincommande) }}
+        </div>
+        <div class="col-md-6 mb-4">
+            {{ form_row(form.fabriquant) }}
+        </div>
+        {{ form_rest(form) }}
+
+    </div>
+<button class="btn btn-success"><i class="fa fa-save"></i> {{ button_label|default('Save') }}</button>
+<a class="btn btn-success" href="{{ path('produit_index') }}"><i class="fa fa-undo"></i> Retour</a>
+
 {{ form_end(form) }}
+</div>

@@ -1,6 +1,4 @@
-body{
-    min-height: 100vh;
-}
+
 /*** Navbar ***/
 .navbar .nav-item .dropdown-menu {
 
@@ -87,6 +85,15 @@ body{
     /*box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);*/
     /*backdrop-filter: blur(5px);*/
     /*-webkit-backdrop-filter: blur(5px);*/
+}
+footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 100000;
+}
+.main{
+    margin-bottom: 74px;
 }
 
 
