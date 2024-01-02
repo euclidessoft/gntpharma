@@ -76,10 +76,6 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="champ obligatoire")
-     * @Assert\Regex(
-     * pattern= "/^((3[03]\s?[89]\d{2}(\s?\d{2}){2})|(7[0768]\s?\d{3}(\s?\d{2}){2}))$/",
-     * match = true,
-     * message = "numero incorrect")
      */
     private $phone;
 
