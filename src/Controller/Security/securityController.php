@@ -487,7 +487,7 @@ class securityController extends AbstractController
      */
     public function admin_new(Request $request, UserPasswordEncoderInterface $encoder, TokenGeneratorInterface $tokenGenerator, \Swift_Mailer $mail)
     {
-        if($this->get('security.authorization_checker')->isGranted('ROLE_MODIF_ADMIN_CELL'))
+        if($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
         {
             $manager = $this->getDoctrine()->getManager();
             $user = new User();
@@ -500,15 +500,14 @@ class securityController extends AbstractController
                 //$password = $user->getPassword();
                 $user->setPassword($hashpass);
 
-                $user->setDatenaiss(date_create_from_format('j/m/Y', $user->getBirthday()));//creation de la date de naissance
+//                $user->setDatenaiss(date_create_from_format('j/m/Y', $user->getBirthday()));//creation de la date de naissance
 
-                $user->setRoles(['ROLE_MEMBRE']);
-                $user->setZone($user->getRegion()->getZone());
+                $user->setRoles(['ROLE_ADMIN']);
 
-                if($this->get('security.authorization_checker')->isGranted('ROLE_MODIF_ADMIN_CELL') && !$this->get('security.authorization_checker')->isGranted('ROLE_MODIF_ADMIN_BEN'))
-                {
-                    $user->setCellule($this->getUser()->getCellule());
-                }
+//                if($this->get('security.authorization_checker')->isGranted('ROLE_MODIF_ADMIN_CELL') && !$this->get('security.authorization_checker')->isGranted('ROLE_MODIF_ADMIN_BEN'))
+//                {
+//                    $user->setCellule($this->getUser()->getCellule());
+//                }
                 /* $pro = $manager->getRepository(Cotisation::class)->find(1);
                  $lic = $manager->getRepository(Cotisation::class)->find(2);
                  $mas = $manager->getRepository(Cotisation::class)->find(3);
@@ -529,28 +528,24 @@ class securityController extends AbstractController
                     $user->setCotisation($pro);
                 }*/
 
-                //$user->setAgence($agence);
                 // envoie mail
                 $token = $tokenGenerator->generateToken();
                 $user->setResetToken($token);
-                $user->setEnabled(true);
                 $manager->persist($user);
                 $manager->flush();
-                //$url = $this->generateUrl('security_activation', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
+                $url = $this->generateUrl('security_activation', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $message = (new \Swift_Message('Activation compte utilisateur'))
                     ->setFrom('support@gntpharma-cameroun.com')
                     ->setTo($user->getEmail())
-                    ->setBody("Vous êtes inscrit sur le site", 'text/html');
-//                $message = (new \Swift_Message('Activation compte utilisateur'))
-//                 ->setFrom('support@gntpharma-cameroun.com')
-//                 ->setTo($user->getEmail())
-//                 ->setBody($this->renderView('licence/facture.html.twig'), 'text/html');
+                    ->setBody("Cliquez sur le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
+
 
                 $mail->send($message);
                 // fin envoie mail
 
-                $this->addFlash('notice', 'Enregistrement effectué');
+                $this->addFlash('notice', 'Utilisateur créé, un message a été envoyé à son adresse mail pour l\'activation du compte');
+
                 //return $this->redirectToRoute('security_profile');
                 return $this->redirectToRoute('security_admin_register');
 
