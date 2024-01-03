@@ -1,0 +1,32 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ "Livraison"|trans }} - GNT Pharma {% endblock %}
+{% block order %}active{% endblock %}
+
+{% block body %}
+    <h1 class="mt-4">Livrer index</h1>
+
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
+        <thead>
+            <tr>
+                <th>no commande </th>
+                <th>Date</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for commande in commandes %}
+            <tr>
+                <td>{{ commande.id }}</td>
+                <td>{{ commande.date|date('d/m/Y') }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('livraison_show', {'id': commande.id}) }}"><i class="fa fa-gears"></i> Livraison</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

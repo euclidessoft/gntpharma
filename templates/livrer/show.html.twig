@@ -1,0 +1,29 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ "Traitement commande pour Livraison"|trans }} - GNT Pharma {% endblock %}
+{% block order %}active{% endblock %}
+
+{% block body %}
+    <h1 class="mt-4">traitement commande pour Livraison</h1>
+
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
+        <thead>
+        <tr>
+            <th>reference</th>
+            <th>designation</th>
+            <th>Quantite Commande</th>
+            <th>Stock disponible</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for commande in commandes %}
+                <tr>
+                    <td>{{ commande.produit.reference }}</td>
+                    <td>{{ commande.produit.desigantion }}</td>
+                    <td>{{ commande.quantite }}</td>
+                    <td> </td>
+        {% else %}
+        {% endfor %}
+    </table>
+
+    <a class="btn btn-success" href="{{ path('livraison_index') }}"><i class="fa fa-undo"></i> Retour</a>
+{% endblock %}

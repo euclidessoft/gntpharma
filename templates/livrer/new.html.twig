@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+
+<title>New Livrer</title>
+
+{% block body %}
+    <h1>Create new Livrer</h1>
+
+    {{ include('livrer/_form.html.twig') }}
+
+    <a href="{{ path('livrer_index') }}">back to list</a>
+{% endblock %}

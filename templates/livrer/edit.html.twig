@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit Livrer</title>
+
+{% block body %}
+    <h1>Edit Livrer</h1>
+
+    {{ include('livrer/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('livrer_index') }}">back to list</a>
+
+    {{ include('livrer/_delete_form.html.twig') }}
+{% endblock %}
