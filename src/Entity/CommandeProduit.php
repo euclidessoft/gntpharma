@@ -42,6 +42,9 @@ class CommandeProduit
      */
     private $quantite;
 
+
+    private $stock;
+
     /**
      * Constructor
      */
@@ -124,6 +127,17 @@ class CommandeProduit
     public function setCommande(?Commande $commande): self
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(?int $stock): self
+    {
+        $this->stock = $stock;
 
         return $this;
     }

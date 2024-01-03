@@ -8,6 +8,7 @@ use App\Form\LivrerType;
 use App\Repository\CommandeProduitRepository;
 use App\Repository\CommandeRepository;
 use App\Repository\LivrerRepository;
+use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,17 +56,25 @@ class LivrerController extends AbstractController
     /**
      * @Route("/{id}", name="show", methods={"GET"})
      */
-    public function show(Commande $commande, CommandeProduitRepository $repository): Response
+    public function show(Commande $commande, CommandeProduitRepository $comprodrepository,ProduitRepository $repository ): Response
     {// traitement livraison
+        $commandeproduits = $comprodrepository->findBy(['commande' => $commande]);
+        $listcommande = [];
+        foreach ($commandeproduits as $commandeproduit){
+            $stock = $repository->find($commandeproduit->getProduit()->getId())->getStock();
+            $commandeproduit->setStock($stock);
+            $listcommande[]= $commandeproduit;
+        }
         return $this->render('livrer/show.html.twig', [
-            'commandes' => $repository->findBy(['commande' => $commande]),
+            'commandes' => $listcommande,
+            'commande' => $commande,
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
+     * @Route("/Valider", name="alider", methods={"GET","POST"})
      */
-    public function edit(Request $request, Livrer $livrer): Response
+    public function valider(Request $request, Livrer $livrer): Response
     {
         $form = $this->createForm(LivrerType::class, $livrer);
         $form->handleRequest($request);
