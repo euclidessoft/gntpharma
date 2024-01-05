@@ -101,6 +101,44 @@
 
     }
 
+    function addprod(id, mincom, st) {// fonction pour ajouter un produit dans le panier
+        var reg = new RegExp("^[0-9]+$");
+        if (reg.test($('#text' + id).val()) && mincom <= $('#text' + id).val()) {
+            if (st >= $('#text' + id).val()) {
+                $('#btn' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('commande_add') }}",
+                    data: "prod=" + id + "&quantite=" + $('#text' + id).val(),
+                    success: function (data) {
+                        if (data['id'] == 'ok') {
+                            $('#tdprod' + id).html($('#text' + id).val());
+                            $('#gest_panier').html(data['panier']);
+                            $('#btn' + id).html("<i class='fa fa-cart-shopping'></i>");
+                            $('#btn' + id).addClass('disabled');
+                        } else {
+                            alert("{{ 'verifier la quantite saisie 1'|trans }}")
+                        }
+                    },
+                    error: function () {
+                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                    }
+                });
+            } else {
+                var mess = "Maximum disponible  " + st;
+                alert(mess);
+            }
+        } else {
+            var mess = "Commande minimun " + mincom;
+            alert(mess);
+        }
+
+    }
+
+    function nofocu(id) {
+        $('#tampon').val('');
+    }
+
     //message systeme
     function advert() {
         $('#advertiser').trigger('click');
@@ -164,46 +202,7 @@
 
     $(document).ready(function () {
         positionlangue();
-        $('#courtierlist').hide();
-        $('#agencelist').hide();
-        $('#espreduct').hide();
-        $('#mecquebundle_image_file').hide();
-        $('#btnversement').hide();
-        $('#versement').hide();
-        $('#tampon').hide();
-        $('#mecquebundle_pelerin_remark').hide();
-        $('#decl').hide();
-        $('#agency').hide();
-        $('#vol').hide();
-        $('#annule').hide();
-        $('#Passeport').hide();
-        $('#date').hide();
-        $('#mecquebundle_image_file').change(function () {
-            $('#selectimage').html("<div class='ajax-loader'></div>");
-            $('#form').submit();
-        });
-        $('#mecquebundle_chambre_nombre').keyup(function () {
-            var reg = new RegExp("^[0-9]+$");
-            if (reg.test($('#mecquebundle_chambre_nombre').val()) && $('#mecquebundle_chambre_nombre').val() != 0 && $('#mecquebundle_chambre_nombre').val() <= 100) {
-                $('#submitchambre').html("<div class='col-12'><div class='centrer'><div class='row'><button type='button' class='btn btn-shadow btn-normal btn-green mb-2 mr-3' id='send' onclick='envoie()'><i class='fa fa-save'></i> Valider </button><button type='button' class='btn btn-shadow btn-normal btn-warning mb-2' data-dismiss='modal'><i class='fa fa-undo'></i> Annuler</button></div></div></div>");
-            } else $('#submitchambre').html('');
-        });
-        $('#mecquebundle_chambremecque_nombre').keyup(function () {
-            var reg = new RegExp("^[0-9]+$");
-            if (reg.test($('#mecquebundle_chambremecque_nombre').val()) && $('#mecquebundle_chambremecque_nombre').val() != 0 && $('#mecquebundle_chambremecque_nombre').val() <= 100) {
-                $('#submitchambre').html("<div class='col-12'><div class='centrer'><div class='row'><button type='button' class='btn btn-shadow btn-normal btn-green mb-2 mr-3' id='send' onclick='envoie()'><i class='fa fa-save'></i> Valider </button> <button type='button' class='btn btn-shadow btn-normal btn-warning mb-2' data-dismiss='modal'><i class='fa fa-undo'></i> Annuler</button></div></div></div>");
-            } else $('#submitchambre').html('');
-        });
-        $('#mecquebundle_versement_montant').change(function () {
-            var reg = new RegExp("^[0-9]+$");
-            if (reg.test($('#mecquebundle_versement_montant').val())) {
-                $('#tamp').val('ok');
-                if ($('#tamp1').val() != '') $('#btnversement').show();
-            } else {
-                $('#tamp').val('');
-                $('#btnversement').hide();
-            }
-        });
+
 /*
         var keys = {};
         $(window).on("keyup keydown", function (e) {
