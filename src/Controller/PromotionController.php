@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/promotion")
+ * @Route("/{_locale}/Commande_Promotion")
  */
 class PromotionController extends AbstractController
 {

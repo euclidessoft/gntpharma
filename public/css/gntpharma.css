@@ -20,7 +20,7 @@ body:after {
     left: 0;
     right: 0;
     z-index: -1;
-    background-image: url(../images/background.jpg);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(246, 236, 236, 0.7)), url(../images/pharmacy.avif);
     background-position: center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
