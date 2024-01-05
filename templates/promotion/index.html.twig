@@ -3,12 +3,11 @@
 {% block order %}active{% endblock %}
 
 {% block body %}
-    <h1>Promotion index</h1>
+    <h1>Liste des promotions</h1>
 
-    <table class="table">
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Designation</th>
                 <th>Debut</th>
                 <th>Fin</th>
@@ -19,7 +18,6 @@
         <tbody>
         {% for promotion in promotions %}
             <tr>
-                <td>{{ promotion.id }}</td>
                 <td>{{ promotion.designation }}</td>
                 <td>{{ promotion.debut ? promotion.debut|date('Y-m-d') : '' }}</td>
                 <td>{{ promotion.fin ? promotion.fin|date('Y-m-d') : '' }}</td>
@@ -37,5 +35,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('promotion_new') }}">Create new</a>
 {% endblock %}

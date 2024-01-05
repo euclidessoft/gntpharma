@@ -11,7 +11,7 @@
         <div id="sidenav" class="sidenav" onclick="openNav()">
             <ul class="navbar-nav">
                 <li {% block home %} class="nav-item" {% endblock %} title="{{ 'Accueil'|trans }}">
-                    <a class="nav-link" href="{{ path('Accueil') }}">
+                    <a class="nav-link" href="{{ path('commande_index') }}">
                         <div class="icone">
                             <i class="fas fa-dashboard fa-lg"></i>
                         </div>
@@ -32,7 +32,7 @@
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="pelerin">
                         <li class="dropdown-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ path('produit_index') }}">
                                 <i class="fas fa-user-plus mr-2"></i>
                                 {{ 'Tous les produits'|trans }}
                             </a>
@@ -68,7 +68,7 @@
                             </a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="https://www.dicofm.com/mediquick8/search.php" target="_blank">
                                 <i class="fas fa-user-clock mr-1"></i>
                                 {{ 'Base Médicamenteuse Mediquick'|trans }}
                             </a>
@@ -85,15 +85,36 @@
                         </div>
                     </a>
                 </li>
-                <li {% block commande %} class="nav-item" {% endblock %} title="{{ 'Commande'|trans }}">
-                    <a class="nav-link" href="{{ path('commande_index') }}">
+                <li {% block commande %} class="nav-item dropright" {% endblock %} title="{{ 'Commande'|trans }}">
+                    <a class="nav-link dropdown-toggle" href="#" id="commande" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
-                            <i class="fas fa-shopping-cart fa-lg"></i>
+                            <i class="fa fa-shopping-cart fa-lg"></i>
                         </div>
                         <div class="title">
                             {{ 'Commande'|trans }}
                         </div>
                     </a>
+                    <ul class=" dropdown-menu" aria-labelledby="pelerin">
+                        <li class="dropdown-item">
+                            <a class="nav-link" href="{{ path('commande_panier_history') }}">
+                                <i class="fas fa-user-plus mr-2"></i>
+                                {{ 'Vos Commandes'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-users mr-2"></i>
+                                {{ 'Commandes Extranet'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-list mr-2"></i>
+                                {{ 'en preparation'|trans }}
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
 
@@ -109,13 +130,13 @@
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="pelerin">
                         <li class="dropdown-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ path('reclamation_new') }}">
                                 <i class="fas fa-user-plus mr-2"></i>
                                 {{ 'Creer une reclamation'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ path('reclamation_index') }}">
                                 <i class="fas fa-user-plus mr-2"></i>
                                 {{ 'Vos reclamations'|trans }}
                             </a>
@@ -223,7 +244,7 @@
             </div>
             <div class="topbar-item">
                 <div class="row">
-                    <div class="col-lg-6 col-md-3 col-6 text-nowrap">
+                    <div class="col-lg-4 col-md-2 col-6 text-nowrap">
                         <span class="history-box">
                             <i class="fa fa-arrow-circle-left history-btn" title="Page précédente" onclick="window.history.back()"></i>
                             <i class="fa fa-arrow-circle-right history-btn ml-3" title="Page suivante" onclick="window.history.forward()"></i>
@@ -232,6 +253,14 @@
                         {{ 'Bienvenue'|trans }}
                         <strong> {{ app.user.username }} </strong>
                         <button type="button" id="install_button" onclick="installApp()" hidden></button>
+                    </div>
+                    <div class="col-lg-2 col-md-1 col-6 text-nowrap">
+                    <a href="{{ path('commande_panier_panier') }}">
+                    <span id="gest_panier" class="badge badge-danger">
+                            {{ panier|length }}
+                    </span>
+                        <i class="fa fa-cart-shopping"></i>
+                    </a>
                     </div>
                     <div class="col-lg-2 col-md-3 col-6 text-nowrap">
                         <div class="float-right">

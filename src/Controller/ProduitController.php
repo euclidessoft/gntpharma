@@ -8,6 +8,7 @@ use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,9 +19,34 @@ class ProduitController extends AbstractController
     /**
      * @Route("/", name="produit_index", methods={"GET"})
      */
-    public function index(ProduitRepository $produitRepository): Response
+    public function index(SessionInterface $session, ProduitRepository $produitRepository): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+
+            $panier = $session->get("panier", []);
+            $dataPanier = [];
+
+            foreach($panier as $commande){
+                $dataPanier[] = [
+                    "produit" => $commande['produit'],
+                ];
+            }
+
+            $response = $this->render('produit/index.html.twig', [
+                'produits' => $produitRepository->findAll(),
+                'panier' => $dataPanier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+        else if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 
             $response = $this->render('produit/index.html.twig', [
                 'produits' => $produitRepository->findAll(),

@@ -8,6 +8,7 @@ use App\Repository\PromotionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,10 +19,19 @@ class PromotionController extends AbstractController
     /**
      * @Route("/", name="promotion_index", methods={"GET"})
      */
-    public function index(PromotionRepository $promotionRepository): Response
+    public function index(SessionInterface $session,PromotionRepository $promotionRepository): Response
     {
+        $panier = $session->get("panier", []);
+        $dataPanier = [];
+
+        foreach($panier as $commande){
+            $dataPanier[] = [
+                "produit" => $commande['produit'],
+            ];
+        }
         return $this->render('promotion/index.html.twig', [
             'promotions' => $promotionRepository->findAll(),
+            'panier' => $dataPanier,
         ]);
     }
 

@@ -1,0 +1,394 @@
+{% extends "commande.html.twig" %}
+{% block home %} class="nav-item active" {% endblock %}
+{% block facture %} onload="advert()" {% endblock %}
+{% block body %}
+    <h1>Dashdord</h1>
+
+{#    {% for message in app.session.flashbag.get('notice') %}#}
+{#        <div class="container mt-5 mb-5">#}
+{#            <div class="alert alert-danger alert-dismissible">#}
+{#                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>#}
+{#                {{ message|trans }}#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endfor %}#}
+{#    <div class="col-md-8 offset-md-2 mt-5 mb-5">#}
+{#        <div class="row">#}
+{#            <div class="col-lg-3 col-md-4 col-sm-6 mt-3 mb-3">#}
+{#                <div class="card border-green">#}
+{#                    <div class="card-header bg-green text-white">#}
+{#                        <div class="row">#}
+{#                            <div class="col-12">#}
+{#                                <i class="fa fa-users fa-5x"></i>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col-12 text-right">#}
+{#                                <div class="text-bold">{{ nombre}}</div>#}
+{#                                <div>#}
+{#                                    {% if nombre > 1 %}#}
+{#                                        {{ 'Pèlerins'|trans }}#}
+{#                                        <br>#}
+{#                                        {{ 'enregistrés'|trans }}#}
+{#                                    {% else %}#}
+{#                                        {{ 'Pèlerin'|trans }}#}
+{#                                        <br>#}
+{#                                        {{ 'enregistré'|trans }}#}
+{#                                    {% endif %}#}
+{#                                    <br>#}
+{#                                    &nbsp;#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="card-footer bg-light bt-green">#}
+{#                    <span class="float-left">#}
+{#                        <a href="{{ path('Mecque_ChefPelerinList') }}" class="text-green">#}
+{#                            {{ 'Voir les détails'|trans }}#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <span class="float-right">#}
+{#                        <a href="{{ path('Mecque_ChefPelerinList') }}" class="text-green">#}
+{#                            <i class="fa fa-arrow-circle-right fa-lg"></i>#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <div class="clearfix"></div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-lg-3 col-md-4 col-sm-6 mt-3 mb-3">#}
+{#                <div class="card border-green">#}
+{#                    <div class="card-header bg-success-light text-green">#}
+{#                        <div class="row">#}
+{#                            <div class="col-12">#}
+{#                                <i class="fa fa-money-bill fa-5x"></i>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col-12 text-right">#}
+{#                                <div class="text-bold">{{ enregle }}</div>#}
+{#                                <div>#}
+{#                                    {% if enregle > 1 %}#}
+{#                                        {{ 'Pèlerins'|trans }}#}
+{#                                    {% else %}#}
+{#                                        {{ 'Pèlerin'|trans }}#}
+{#                                    {% endif %}#}
+{#                                    <br>#}
+{#                                    {{ 'en règle'|trans }}#}
+{#                                    <br>#}
+{#                                    &nbsp;#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="card-footer bg-light bt-green">#}
+{#                    <span class="float-left">#}
+{#                        <a href="{{ path('Mecque_PelerinOk') }}" class="text-green">{{ 'Voir les détails'|trans }}#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <span class="float-right">#}
+{#                        <a href="{{ path('Mecque_PelerinOk') }}" class="text-green">#}
+{#                            <i class="fa fa-arrow-circle-right fa-lg"></i>#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <div class="clearfix"></div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+
+{#            <div class="col-lg-3 col-md-4 col-sm-6 mt-3 mb-3">#}
+{#                <div class="card border-warning">#}
+{#                    <div class="card-header bg-warning-light text-warning">#}
+{#                        <div class="row">#}
+{#                            <div class="col-12">#}
+{#                                <i class="fa fa-money-bill fa-5x"></i>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col-12 text-right">#}
+{#                                <div class="text-bold">{{ accompte }}</div>#}
+{#                                <div>#}
+{#                                    {% if accompte > 1 %}#}
+{#                                        {{ 'Pèlerins'|trans }}#}
+{#                                    {% else %}#}
+{#                                        {{ 'Pèlerin'|trans }}#}
+{#                                    {% endif %}#}
+{#                                    <br>#}
+{#                                    {{ 'avec acompte'|trans }}#}
+{#                                    <br>#}
+{#                                    &nbsp;#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="card-footer bg-light bt-warning">#}
+{#                    <span class="float-left">#}
+{#                        <a href="{{ path('Mecque_PelerinNotOk') }}" class="text-warning">#}
+{#                            {{ 'Voir les détails'|trans }}#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <span class="float-right">#}
+{#                        <a href="{{ path('Mecque_PelerinNotOk') }}" class="text-warning">#}
+{#                            <i class="fa fa-arrow-circle-right fa-lg"></i>#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <div class="clearfix"></div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-lg-3 col-md-4 col-sm-6 mt-3 mb-3">#}
+{#                <div class="card border-danger">#}
+{#                    <div class="card-header bg-danger-light text-danger">#}
+{#                        <div class="row">#}
+{#                            <div class="col-12">#}
+{#                                <i class="fa fa-money-bill fa-5x"></i>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col-12 text-right">#}
+{#                                <div class="text-bold">{{ pasenregle }}</div>#}
+{#                                <div>#}
+{#                                    {% if pasenregle > 1 %}#}
+{#                                        {{ 'Pèlerins'|trans }}#}
+{#                                    {% else %}#}
+{#                                        {{ 'Pèlerin'|trans }}#}
+{#                                    {% endif %}#}
+{#                                    <br>#}
+{#                                    {{ 'sans versement'|trans }}#}
+{#                                    <br>#}
+{#                                    &nbsp;#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="card-footer bg-light bt-danger">#}
+{#                    <span class="float-left">#}
+{#                        <a href="{{ path('Mecque_PelerinConfirmer') }}" class="text-danger">#}
+{#                            {{ 'Voir les détails'|trans }}#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <span class="float-right">#}
+{#                        <a href="{{ path('Mecque_PelerinConfirmer') }}" class="text-danger">#}
+{#                            <i class="fa fa-arrow-circle-right fa-lg">#}
+
+{#                            </i>#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <div class="clearfix"></div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+
+{#            <div class="col-lg-3 col-md-4 col-sm-6 mt-3 mb-3">#}
+{#                <div class="card border-secondary">#}
+{#                    <div class="card-header bg-default bb-secondary">#}
+{#                        <div class="row">#}
+{#                            <div class="col-12">#}
+{#                                <i class="fa fa-user-clock fa-5x"></i>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col-12 text-right">#}
+{#                                <div class="text-bold">{{ attente }}</div>#}
+{#                                <div>#}
+{#                                    {% if attente > 1 %}#}
+{#                                        {{ 'Réservations'|trans }}#}
+{#                                    {% else %}#}
+{#                                        {{ 'Réservation'|trans }}#}
+{#                                    {% endif %}#}
+{#                                    <br>#}
+{#                                    {{ 'en attente'|trans }}#}
+{#                                    <br>#}
+{#                                    &nbsp;#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="card-footer bg-light bt-default">#}
+{#                    <span class="float-left">#}
+{#                        <a href="{{ path('Mecque_PelerinWating') }}" class="text-dark">#}
+{#                            {{ 'Voir les détails'|trans }}#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <span class="float-right">#}
+{#                        <a href="{{ path('Mecque_PelerinWating') }}" class="text-dark">#}
+{#                            <i class="fa fa-arrow-circle-right fa-lg"></i>#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <div class="clearfix"></div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-lg-3 col-md-4 col-sm-6 mt-3 mb-3">#}
+{#                <div class="card border-danger">#}
+{#                    <div class="card-header bg-danger text-white">#}
+{#                        <div class="row">#}
+{#                            <div class="col-12">#}
+{#                                <i class="fa fa-user-md fa-5x"></i>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col-12 text-right">#}
+{#                                <div class="text-bold">{{ remark }}</div>#}
+{#                                <div>#}
+{#                                    {% if remark > 1 %}#}
+{#                                        {{ 'Pèlerins'|trans }}#}
+{#                                    {% else %}#}
+{#                                        {{ 'Pèlerin'|trans }}#}
+{#                                    {% endif %}#}
+{#                                    <br>#}
+{#                                    {{ 'avec remarque'|trans }}#}
+{#                                    <br>#}
+{#                                    &nbsp;#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="card-footer bg-light bt-danger">#}
+{#                    <span class="float-left">#}
+{#                        <a href="{{ path('Mecque_PelerinRemark') }}" class="text-danger">#}
+{#                            {{ 'Voir les détails'|trans }}#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <span class="float-right">#}
+{#                        <a href="{{ path('Mecque_PelerinRemark') }}" class="text-danger">#}
+{#                            <i class="fa fa-arrow-circle-right fa-lg"></i>#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <div class="clearfix"></div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-lg-3 col-md-4 col-sm-6 mt-3 mb-3">#}
+{#                <div class="card border-info">#}
+{#                    <div class="card-header bg-info-light text-info">#}
+{#                        <div class="row">#}
+{#                            <div class="col-12">#}
+{#                                <i class="fa fa-university fa-5x"></i>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col-12 text-right">#}
+{#                                <div class="text-bold">{{ soldeagence }}</div>#}
+{#                                <div>#}
+{#                                    {% if soldeagence > 1 %}#}
+{#                                        {{ 'Pèlerins'|trans }}#}
+{#                                    {% else %}#}
+{#                                        {{ 'Pèlerin'|trans }}#}
+{#                                    {% endif %}#}
+{#                                    <br>#}
+{#                                    {{ 'regroupement'|trans }}#}
+{#                                    <br>#}
+{#                                    &nbsp;#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="card-footer bg-light bt-info">#}
+{#                    <span class="float-left">#}
+{#                        <a href="{{ path('Mecque_PelerinOtherAgencies') }}" class="text-info">#}
+{#                            {{ 'Voir les détails'|trans }}#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <span class="float-right">#}
+{#                        <a href="{{ path('Mecque_PelerinOtherAgencies') }}" class="text-info">#}
+{#                            <i class="fa fa-arrow-circle-right fa-lg"></i>#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <div class="clearfix"></div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-lg-3 col-md-4 col-sm-6 mt-3 mb-3">#}
+{#                <div class="card border-warning">#}
+{#                    <div class="card-header bg-warning">#}
+{#                        <div class="row">#}
+{#                            <div class="col-12">#}
+{#                                <i class="fa fa-folder-open fa-5x"></i>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col-12 text-right">#}
+{#                                <div class="text-bold">{{ dossier }}</div>#}
+{#                                <div>#}
+{#                                    {% if dossier > 1 %}#}
+{#                                        {{ 'Informations'|trans }}#}
+{#                                        <br>#}
+{#                                        {{ 'incomplètes'|trans }}#}
+{#                                    {% else %}#}
+{#                                        {{ 'Information'|trans }}#}
+{#                                        <br>#}
+{#                                        {{ 'incomplète'|trans }}#}
+{#                                    {% endif %}#}
+{#                                    <br>#}
+{#                                    &nbsp;#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="card-footer bg-light bt-warning">#}
+{#                    <span class="float-left">#}
+{#                        <a href="{{ path('Mecque_PelerinDossier') }}" class="text-dark">#}
+{#                            {{ 'Voir les détails'|trans }}#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <span class="float-right">#}
+{#                        <a href="{{ path('Mecque_PelerinDossier') }}" class="text-dark">#}
+{#                            <i class="fa fa-arrow-circle-right fa-lg"></i>#}
+{#                        </a>#}
+{#                    </span>#}
+{#                        <div class="clearfix"></div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#    {% if app.user.agence.licence == 0 %}#}
+{#        <button data-toggle="modal" data-target="#pub" class="btn btn-green mt-4" id="advertiser" type="hidden">#}
+{#            <i class="fa fa-money-bill-wave"></i>#}
+{#        </button>#}
+{#        <div class="modal fade mt-5" id="pub" role="dialog">#}
+{#            <div class="modal-dialog modal-lg" role="document">#}
+{#                <div class="modal-content radius-10">#}
+{#                    <div class="float-right mr-4 mt-4">#}
+{#                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                            <span aria-hidden="true">&times;</span>#}
+{#                        </button>#}
+{#                    </div>#}
+{#                    <div class="modal-body">#}
+{#                        <div class="row">#}
+{#                            <div class="col-lg-6">#}
+{#                                <img src="{{ asset('images/Hajjalbayt.png')}}" alt="Logo" class="img-fluid mt-n4 mb-4" style="display: block;margin: 0 auto">#}
+{#                            </div>#}
+{#                            <div class="col-lg-6">#}
+{#                                <h4 class="mt-4 mb-5 text-danger pl-2 pr-2">#}
+{#                                    <p class="text-center">#}
+{#                                        {{ 'Vous utilisez la version gratuite de HAJJALBAYT avec des fonctionnalités limitées.'|trans }}#}
+{#                                    </p>#}
+{#                                    <p class="text-center">#}
+{#                                        {{ 'Veuillez acheter une licence pour disposer de la version complète avec toutes les fonctionnalités.'|trans }}#}
+{#                                    </p>#}
+{#                                    <p class="mt-4 text-center text-bold">#}
+{#                                        <a href="{{ path('licence')}}" class="text-green">#}
+{#                                            <i class="fa fa-shopping-cart ml-1"></i>#}
+{#                                            {{ 'Acheter maintenant'|trans }}#}
+{#                                        </a>#}
+{#                                    </p>#}
+{#                                </h4>#}
+{#                            </div>#}
+{#                            <div class="col-lg-12 pl-4 pr-4">#}
+{#                                {% for message in app.session.flashbag.get('licence') %}#}
+{#                                    <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black mb-2">#}
+{#                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>#}
+{#                                        {{ message|trans }}#}
+{#                                    </div>#}
+{#                                {% endfor %}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endif %}#}
+
+{% endblock%}

@@ -24,17 +24,14 @@ class PanierController extends AbstractController
 
             $panier = $session->get("panier", []);
             $dataPanier = [];
-            $total = 0;
 
             foreach($panier as $commande){
-//                $product = $produitRepository->find($id);
                 $dataPanier[] = [
                     "produit" => $commande['produit'],
                 ];
-//                $total += $product->getPrix() * $quantite;
             }
 
-            $response = $this->render('produit/index.html.twig', [
+            $response = $this->render('commande/dashbord.html.twig', [
                 'produits' => $produitRepository->findAll(),
                 'panier' => $dataPanier,
             ]);

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<title>Reclamation</title>
+
+{% block body %}
+    <h1>Reclamation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ reclamation.id }}</td>
+            </tr>
+            <tr>
+                <th>Reference</th>
+                <td>{{ reclamation.reference }}</td>
+            </tr>
+            <tr>
+                <th>Creation</th>
+                <td>{{ reclamation.creation ? reclamation.creation|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ reclamation.status ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Cloture</th>
+                <td>{{ reclamation.cloture ? reclamation.cloture|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('reclamation_index') }}">back to list</a>
+
+    <a href="{{ path('reclamation_edit', {'id': reclamation.id}) }}">edit</a>
+
+    {{ include('reclamation/_delete_form.html.twig') }}
+{% endblock %}
