@@ -1,268 +1,41 @@
 <!DOCTYPE html>
-<html lang="{{ app.request.locale }}">
+<html lang="fr">
+
 <head>
-    <meta charset="utf-8">
-    <title>
-        {% block title %} GNT Pharma - Leader dans la distribution des produits pharmaceutiques {% endblock %}
-    </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="GNT Pharma">
-    <meta name="description" content="Leader dans la distribution des produits pharmaceutiques">
-    <meta name="author" content="EUCLIDES">
 
-    <!-- Favicon -->
-    <!--    <link href="images/favicon.ico" rel="icon"> -->
+    {{ include('head.html.twig') }}
 
-    <!-- Libraries Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.compat.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    {% block photobox_css %} {% endblock %}
+    <title> {% block title %} Gntpharma -  {% endblock %} </title>
 
-    <!-- Site Stylesheet -->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/commande.css') }}" rel="stylesheet">
+    {% block stylesheets %}
+        <link href="{{ asset('DataTables/datatables.css') }}" rel="stylesheet">
+        <link href="{{ asset('fontawesome/css/all.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap-4plus.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/accueil.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/gntpharma.css') }}" rel="stylesheet">
+    {% endblock %}
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+
+    <!--[if lt IE 9]>
+    <script src="{{ asset('js/html5shiv.js') }}"></script>
+    <script src="{{ asset('js/respond.min.js') }}"></script>
+    <![endif]-->
+
 </head>
 
-<body>
-<!-- Navbar Start -->
-<nav class="navbar navbar-expand-lg navbar-light sticky-top p-0">
-    <a href="{{ path('Accueil') }}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-        <h2 class="m-0 logo fw-bold">
-            <i class="fa-solid fa-staff-snake fa-lg me-2"></i>GNT PHARMA
-        </h2>
-    </a>
-    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#main-nav">
-        <i class="fa fa-bars fa-lg"></i>
-    </button>
-    <div class="collapse navbar-collapse pe-5" id="main-nav">
-        <div class="navbar-nav ms-auto d-flex align-items-center p-4 p-lg-0">
-            <a href="{{ path('Accueil') }}"
-               class="nav-item nav-link {% block home %} {% endblock %}">{{ "Accueil"|trans }}</a>
-            <a href="{{ path('About') }}"
-               class="nav-item nav-link {% block about %} {% endblock %}">{{ "A propos"|trans }}</a>
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle {% block metiers %} {% endblock %}"
-                   data-bs-toggle="dropdown" aria-expanded="false">{{ "Nos métiers"|trans }}</a>
-                <div class="dropdown-menu m-0">
-                    <a href="{{ path('Logistique') }}"
-                       class="dropdown-item {% block logistique %} {% endblock %}">{{ "Logistique"|trans }}</a>
-                    <a href="{{ path('Distribution') }}"
-                       class="dropdown-item {% block distribution %} {% endblock %}">{{ "Distribution"|trans }}</a>
-                    <a href="{{ path('Promotion') }}"
-                       class="dropdown-item {% block promotion %} {% endblock %}">{{ "Promotion"|trans }}</a>
-                </div>
-            </div>
-            <a href="{{ path('produit_index') }}"
-               class="nav-item nav-link {% block commande %} {% endblock %}">{{ "Commande"|trans }}</a>
-            <a href="{{ path('Carriere') }}"
-               class="nav-item nav-link {% block carriere %} {% endblock %}">{{ "Carrières"|trans }}</a>
-            <a href="{{ path('Contact') }}"
-               class="nav-item nav-link {% block contact %} {% endblock %}">{{ "Contact"|trans }}</a>
-            <button id="changelang" class="lang-button">
-            </button>
-        </div>
-    </div>
-</nav>
-<!-- Navbar End -->
+<body {% block facture %} {% endblock %}>
 
-<!-- Topbar Start -->
-{% if app.user != null %}
-    <div class="container-fluid bg-secondaire topbar">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-2 col-sm-6">
-                    <a href="{{ path('security_logout') }}">
-                        {{ "Deconnexion"|trans }}
-                    </a>
-                </div>
-                <div class="col-lg-2 col-sm-6">
-                    <a href="{{ path('security_profile') }}">
-                        {{ "Profil"|trans }}
-                    </a>
-                </div>
+{{ include('body.html.twig') }}
 
-                {% if is_granted('ROLE_ADMIN') %}
-                    <div class="col-lg-2 col-sm-6">
-                        <a href="{{ path('commande_panier_suivi', {'user' : app.user.id}) }}">
-                            {{ "suivi commande"|trans }}
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-sm-6 text-lg-end">
-                        <a href="{{ path('produit_index', {'user' : app.user.id}) }}">
-                            {{ "Produits"|trans }}
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-sm-6">
-                        <a href="{{ path('stock_index') }}">
-                            {{ "Stock"|trans }}
-                        </a>
-                    </div>
-                {% else %}
-                    <div class="col-lg-3 col-sm-6">
-                        <a href="{{ path('commande_panier_history') }}"> historique commande</a>
-                    </div>
-                {% endif %}
-
-
-                {% if is_granted('ROLE_CLIENT') %}
-                    <div class="col-lg-3 col-sm-6 text-lg-end">
-                        <a href="{{ path('commande_panier_panier') }}">
-                    <span id="gest_panier" class="badge text-bg-danger">
-                            {{ panier|length }}
-                    </span>
-                            <i class="fa fa-cart-shopping fa-2x"></i>
-                        </a>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    </div>
-{% endif %}
-<!-- Topbar End -->
-<div class="container main">
+<div id="main" class="container-fluid main pt-5">
     {% block body %}
-
 
     {% endblock %}
 </div>
-<!-- Footer Start -->
-<footer class="text-light mt-5">
-    <div class="container-fluid copyright px-0">
-        <div class="d-flex flex-column flex-md-row justify-content-between">
-            <div class="py-4 px-5 text-center text-md-start">
-                <p class="mb-0">&copy; 2023 GNT Pharma, {{ "Tout droits réservés."|trans }}</p>
-            </div>
-            <div class="py-4 px-5 bg-secondaire footer-shape position-relative text-center text-md-end">
-                <p class="mb-0 text-primaire">
-                    Designed By
-                    <a class="fw-bold text-primaire" href="https://euclideservices.com" target="_blank">EUCLIDES</a>
-                </p>
-            </div>
-        </div>
-    </div>
-</footer>
-<!-- Footer End -->
 
-<!-- Back to Top -->
-<a href="#" class="btn btn-lg back-to-top">
-    <i class="fa-solid fa-chevron-up"></i>
-</a>
+{{ include('javascript.html.twig') }}
 
-<!-- JavaScript Libraries -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" async></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js" async></script>
-<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js" async></script>
-{% block photobox_js %} {% endblock %}
-
-
-<!-- Main Javascript -->
-<script src="{{ asset('js/main.js') }}"></script>
-<script src="{{ asset('js/commande.min.js') }}"></script>
-<script>
-    $(document).ready(function () {
-        var table = $('#liste').DataTable({
-
-
-            responsive: true,
-            pageLength: 100,
-            buttons: [{
-                extend: 'excelHtml5',
-                text: '<i class="fa fa-file-excel fa-lg"></i> Exporter vers Excel',
-                attr: {
-                    class: 'btn btn-success'
-                },
-            }],
-            language: {
-                processing: "Traitement en cours...",
-                search: "Rechercher&nbsp;:",
-                lengthMenu: "Afficher _MENU_ &eacute;l&eacute;ments",
-                info: "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
-                infoEmpty: "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
-                infoFiltered: "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
-                infoPostFix: "",
-                loadingRecords: "Chargement en cours...",
-                zeroRecords: "Aucun &eacute;l&eacute;ment &agrave; afficher",
-                emptyTable: "Aucune donnée disponible dans le tableau",
-                paginate: {
-                    first: "Premier",
-                    previous: "Pr&eacute;c&eacute;dent",
-                    next: "Suivant",
-                    last: "Dernier"
-                },
-                aria: {
-                    sortAscending: ": activer pour trier la colonne par ordre croissant",
-                    sortDescending: ": activer pour trier la colonne par ordre décroissant"
-                }
-            }
-
-        });
-        // table.buttons().container().appendTo('#exportexcel');
-        selectAllstart();
-    });
-
-    function selectAllstart() { //selectionner tous les produits
-        if ($("#tous").is(':checked')) {
-            $("input[type=checkbox]").attr('checked', true);
-            $("input[type=checkbox]").each(
-                function () {
-                    if ($(this).is(':checked')) {
-
-                    } else {
-                        $(this).trigger('click')
-                    }
-                    trselect($(this).attr("id"));
-                });
-        }
-    }
-
-    function addprod(id, mincom, st) {// fonction pour ajouter un produit dans le panier
-        var reg = new RegExp("^[0-9]+$");
-        if (reg.test($('#text' + id).val()) && mincom <= $('#text' + id).val()) {
-            if (st >= $('#text' + id).val()) {
-                $('#btn' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
-                $.ajax({
-                    type: "POST",
-                    url: "{{ path('commande_add') }}",
-                    data: "prod=" + id + "&quantite=" + $('#text' + id).val(),
-                    success: function (data) {
-                        if (data['id'] == 'ok') {
-                            $('#tdprod' + id).html($('#text' + id).val());
-                            $('#gest_panier').html(data['panier']);
-                            $('#btn' + id).html("<i class='fa fa-cart-shopping'></i>");
-                            $('#btn' + id).addClass('disabled');
-                        } else {
-                            alert("{{ 'verifier la quantite saisie 1'|trans }}")
-                        }
-                    },
-                    error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
-                    }
-                });
-            } else {
-                var mess = "Maximum disponible  " + st;
-                alert(mess);
-            }
-        } else {
-            var mess = "Commande minimun " + mincom;
-            alert(mess);
-        }
-
-    }
-
-    function nofocu(id) {
-        $('#tampon').val('');
-    }
-
-</script>
-{% block scripts %}
-
-{% endblock %}
 </body>
 
 </html>

@@ -1,0 +1,350 @@
+<div class="menu-overlay" id="menu-overlay" onclick="openNav()">
+
+</div>
+<div id="overlay" class="overlay" onclick="closeNav()">
+
+</div>
+{% block javascripts %}
+{#    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>#}
+{#    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>#}
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('DataTables/datatables.js') }}"></script>
+    <script src="{{ asset('fontawesome/js/all.js') }}"></script>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}
+
+<script>
+
+    function openNav() {
+        document.getElementById("navmenu").style.width = "230px";
+        document.getElementById("closebtn").style.visibility = "visible";
+        document.getElementById("sidenav").style.overflow = "visible";
+        document.getElementById("session").style.visibility = "visible";
+        document.getElementById("overlay").style.visibility = "visible";
+        document.getElementById("menu-overlay").style.visibility = "hidden";
+        if (document.body.clientWidth <= 768) {
+            document.getElementById("navbtn").style.visibility = "hidden";
+        }
+    }
+
+    function closeNav() {
+        document.getElementById("closebtn").style.visibility = "hidden";
+        document.getElementById("sidenav").style.overflow = "hidden";
+        document.getElementById("session").style.visibility = "hidden";
+        document.getElementById("overlay").style.visibility = "hidden";
+        document.getElementById("menu-overlay").style.visibility = "visible";
+        if (document.body.clientWidth <= 768) {
+            document.getElementById("navmenu").style.width = "0px";
+            document.getElementById("navbtn").style.visibility = "visible";
+        } else {
+            document.getElementById("navmenu").style.width = "50px";
+        }
+    }
+
+    if (document.body.clientWidth <= 768) {
+        $('#closebtn').html("<i class='fas fa-times fa-lg'></i>");
+    } else {
+        $('#closebtn').html('<i class="fas fa-arrow-left fa-lg"></i>');
+    }
+
+    //langue systeme
+    function choixlangue() {
+        var url = $(location).attr("href");
+        var index;
+        var langselect = $('#langue option:selected');
+        if (langselect.val() === 'Francais') {
+            index = url.indexOf("/en/");
+            if (index !== -1) {
+                url = url.replace("/en/", "/fr/");
+            } else {
+                url = url.replace("/ar/", "/fr/");
+            }
+        } else if (langselect.val() === 'English') {
+            index = url.indexOf("/fr/");
+            if (index !== -1) {
+                url = url.replace("/fr/", "/en/");
+            } else {
+                url = url.replace("/ar/", "/en/");
+            }
+        } else {
+            index = url.indexOf("/en/");
+            if (index !== -1) {
+                url = url.replace("/en/", "/ar/");
+            } else {
+                url = url.replace("/fr/", "/ar/");
+            }
+        }
+        document.location.href = url;
+    }
+
+    function positionlangue() {
+
+        var url = $(location).attr("href");
+        var fr = url.indexOf("/fr/");
+        var en = url.indexOf("/en/");
+        if (fr !== -1) {
+            $("#langue").html("<option value='Francais'>Français</option><option value='English'>English</option><option value='Arabe'>العربية</option>")
+
+        } else if (en !== -1) {
+            $("#langue").html("<option value='English'>English</option><option value='Francais'>Français</option><option value='Arabe'>العربية</option>")
+
+
+        } else {
+            $("#langue").html("<option value='Arabe'>العربية</option><option value='Francais'>Français</option><option value='English'>English</option>")
+
+        }
+
+    }
+
+    //message systeme
+    function advert() {
+        $('#advertiser').trigger('click');
+        return false;
+    }
+
+    //exporter vers excel
+    function allexcel() {
+        $('button').trigger('click');
+        return false;
+
+    }
+
+    //rattraper une operation oublié
+    function rattrapage() {
+        if ($('#datecheck').is(':checked')) {
+            $('#date').show();
+        } else {
+            $('#date').hide();
+        }
+    }
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker
+            .register('/sw.js')
+            .then(function (registration) {
+                console.log(
+                    'Service Worker registration successful with scope:', registration.scope
+                );
+            })
+            .catch(function (err) {
+                console.log('Service Worker registration failed:', err);
+            });
+    }
+
+    let deferredPrompt;
+    const installButton = document.getElementById("install_button");
+
+    window.addEventListener("beforeinstallprompt", e => {
+        console.log("beforeinstallprompt fired");
+        e.preventDefault();
+        deferredPrompt = e;
+        installButton.hidden = false;
+        installButton.addEventListener("click", installApp);
+    });
+
+    function installApp() {
+        deferredPrompt.prompt();
+        installButton.disabled = true;
+        deferredPrompt.userChoice.then(choiceResult => {
+            if (choiceResult.outcome === "accepté") {
+                console.log("Installation de l'application acceptée");
+                installButton.hidden = true;
+            } else {
+                console.log("Installation de l'application rejetée");
+            }
+            installButton.disabled = false;
+            deferredPrompt = null;
+        });
+    }
+
+    $(document).ready(function () {
+        positionlangue();
+        $('#courtierlist').hide();
+        $('#agencelist').hide();
+        $('#espreduct').hide();
+        $('#mecquebundle_image_file').hide();
+        $('#btnversement').hide();
+        $('#versement').hide();
+        $('#tampon').hide();
+        $('#mecquebundle_pelerin_remark').hide();
+        $('#decl').hide();
+        $('#agency').hide();
+        $('#vol').hide();
+        $('#annule').hide();
+        $('#Passeport').hide();
+        $('#date').hide();
+        $('#mecquebundle_image_file').change(function () {
+            $('#selectimage').html("<div class='ajax-loader'></div>");
+            $('#form').submit();
+        });
+        $('#mecquebundle_chambre_nombre').keyup(function () {
+            var reg = new RegExp("^[0-9]+$");
+            if (reg.test($('#mecquebundle_chambre_nombre').val()) && $('#mecquebundle_chambre_nombre').val() != 0 && $('#mecquebundle_chambre_nombre').val() <= 100) {
+                $('#submitchambre').html("<div class='col-12'><div class='centrer'><div class='row'><button type='button' class='btn btn-shadow btn-normal btn-green mb-2 mr-3' id='send' onclick='envoie()'><i class='fa fa-save'></i> Valider </button><button type='button' class='btn btn-shadow btn-normal btn-warning mb-2' data-dismiss='modal'><i class='fa fa-undo'></i> Annuler</button></div></div></div>");
+            } else $('#submitchambre').html('');
+        });
+        $('#mecquebundle_chambremecque_nombre').keyup(function () {
+            var reg = new RegExp("^[0-9]+$");
+            if (reg.test($('#mecquebundle_chambremecque_nombre').val()) && $('#mecquebundle_chambremecque_nombre').val() != 0 && $('#mecquebundle_chambremecque_nombre').val() <= 100) {
+                $('#submitchambre').html("<div class='col-12'><div class='centrer'><div class='row'><button type='button' class='btn btn-shadow btn-normal btn-green mb-2 mr-3' id='send' onclick='envoie()'><i class='fa fa-save'></i> Valider </button> <button type='button' class='btn btn-shadow btn-normal btn-warning mb-2' data-dismiss='modal'><i class='fa fa-undo'></i> Annuler</button></div></div></div>");
+            } else $('#submitchambre').html('');
+        });
+        $('#mecquebundle_versement_montant').change(function () {
+            var reg = new RegExp("^[0-9]+$");
+            if (reg.test($('#mecquebundle_versement_montant').val())) {
+                $('#tamp').val('ok');
+                if ($('#tamp1').val() != '') $('#btnversement').show();
+            } else {
+                $('#tamp').val('');
+                $('#btnversement').hide();
+            }
+        });
+/*
+        var keys = {};
+        $(window).on("keyup keydown", function (e) {
+            keys[e.keyCode] = e.type === 'keydown';
+            if (keys[17] || keys[80]) {
+                e.preventDefault();
+            }
+        });
+        $(window).bind('keydown keypress', 'ctrl+s', function () {
+            $('#save').click();
+            return false;
+        });
+        $(document).bind('contextmenu', false);
+
+        $(window).on(' copy dragstart drop', function (e) {
+            e.preventDefault();
+            return false;
+        });*/
+    });
+
+    function envoie() {
+        var valider=$('#send');
+        valider.addClass("disabled");
+        valider.html("<div class='ajax-loader'></div>");
+        $('#form').submit();
+    }
+
+
+    function facture() {
+        $('#decl').trigger('click');
+        return false;
+    }
+
+    //selection d'une ligne de données
+    function trselect(id) {
+        if ($("#" + id).is(':checked')) {
+            $("#tr" + id).css('background', '#c5fbae');
+        } else {
+            $("#tr" + id).css('background', '');
+        }
+    }
+
+    //selection de tous les pelerins
+    function selectAll() {
+        if ($("#tous").is(':checked')) {
+            $("input[type=checkbox]").attr('checked', true);
+            $("input[type=checkbox]").each(
+                function () {
+                    if ($(this).is(':checked')) {
+
+                    } else {
+                        $(this).trigger('click')
+                    }
+                    trselect($(this).attr("id"));
+                });
+        } else {
+            $("input[type=checkbox]").attr('checked', false);
+            $("input[type=checkbox]").each(
+                function () {
+                    if ($(this).is(':checked')) {
+                        $(this).trigger('click')
+                    }
+                    trselect($(this).attr("id"));
+                });
+        }
+    }
+
+    var table = $('#list').DataTable({
+
+        responsive: true,
+        "pageLength": 100,
+        buttons: [{
+            extend: 'excelHtml5',
+            text: '<i class="fa fa-file-excel fa-lg"></i> {{ "Exporter vers Excel"|trans }}',
+            attr: {
+                class: 'btn btn-shadow btn-green'
+            },
+        }],
+        language: {
+            processing: "Traitement en cours...",
+            search: "Rechercher&nbsp;:",
+            lengthMenu: "Afficher _MENU_ &eacute;l&eacute;ments",
+            info: "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+            infoEmpty: "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+            infoFiltered: "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+            infoPostFix: "",
+            loadingRecords: "Chargement en cours...",
+            zeroRecords: "Aucun &eacute;l&eacute;ment &agrave; afficher",
+            emptyTable: "Aucune donnée disponible dans le tableau",
+            paginate: {
+                first: "Premier",
+                previous: "Pr&eacute;c&eacute;dent",
+                next: "Suivant",
+                last: "Dernier"
+            },
+            aria: {
+                sortAscending: ": activer pour trier la colonne par ordre croissant",
+                sortDescending: ": activer pour trier la colonne par ordre décroissant"
+            }
+        }
+
+    });
+    table.buttons().container().appendTo('#exportexcel');
+
+    //gestion des tableaux multiples
+    function reponse() {
+        var table = $('table').DataTable({
+
+            responsive: true,
+            "pageLength": 25,
+            buttons: [{
+                extend: 'excelHtml5',
+                text: '<i class="fa fa-file-excel fa-lg"></i> Exporter vers Excel',
+                attr: {
+                    class: 'btn btn-shadow btn-green'
+                },
+            }],
+            language: {
+                processing: "Traitement en cours...",
+                search: "Rechercher &nbsp;:",
+                lengthMenu: "Afficher _MENU_ &eacute;l&eacute;ments",
+                info: "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+                infoEmpty: "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+                infoFiltered: "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+                infoPostFix: "",
+                loadingRecords: "Chargement en cours...",
+                zeroRecords: "Aucun &eacute;l&eacute;ment &agrave; afficher",
+                emptyTable: "Aucune donnée disponible dans le tableau",
+                paginate: {
+                    first: "Premier",
+                    previous: "Pr&eacute;c&eacute;dent",
+                    next: "Suivant",
+                    last: "Dernier"
+                },
+                aria: {
+                    sortAscending: ": activer pour trier la colonne par ordre croissant",
+                    sortDescending: ": activer pour trier la colonne par ordre décroissant"
+                }
+            }
+
+        });
+    }
+
+</script>
