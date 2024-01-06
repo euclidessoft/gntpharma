@@ -1,8 +1,14 @@
 {% extends 'commande.html.twig' %}
 {% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
-{% block order %}active{% endblock %}
+{% block commande %}active{% endblock %}
 
-{% block body %}    <a href="{{ path('commande_panier_history', {'_locale': 'fr'}) }}" class="btn btn-success mb-3"><i class="fa fa-chevron-left"></i> {{ "Retour"|trans }} </a>
+{% block body %}<div class="container-fluid mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-shopping-cart mr-2"></i>
+        {{ "Details commande"|trans }}
+    </h3>
+
+    <a href="{{ path('commande_panier_history', {'_locale': 'fr'}) }}" class="btn btn-success mb-3"><i class="fa fa-chevron-left"></i> {{ "Retour"|trans }} </a>
 
     <div class="row justify-content-end">
         <div class="col-lg-4">
@@ -61,7 +67,7 @@
             </tr>
         {% endfor %}
         <tr>
-            <td colspan="7" class="text-lg-end">
+            <td colspan="7" class="text-right">
                 {{ "Total"|trans }}
             </td>
             <td>
@@ -70,7 +76,18 @@
         </tr>
         </tbody>
     </table>
-    <a href="{{ path('commande_panier_history', {'_locale': 'fr'}) }}" class="btn btn-success float-end"><i class="fa fa-print"></i> {{ "Imprimer"|trans }} </a>
+    </div>
+    <div class="container-fluid mt-4 mb-5 pt-3 pb-1 fond-7">
+        <div class="centrer">
+            <div class="row">
 
+                    <a href="#" class="btn btn-success float-end">
+                        <i class="fa fa-print"></i> {{ "Imprimer"|trans }}
+                    </a>
+
+
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

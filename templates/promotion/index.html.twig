@@ -1,9 +1,13 @@
 {% extends 'commande.html.twig' %}
 {% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
-{% block order %}active{% endblock %}
+{% block promotion %}active{% endblock %}
 
 {% block body %}
-    <h1>Liste des promotions</h1>
+<div class="container-fluid mt-4 fond-7 pb-3">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-shopping-cart mr-2"></i>
+        {{ "Liste des promotions"|trans }}
+    </h3>
 
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
@@ -29,10 +33,10 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="6">Aucune promotion</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
+</div>
 {% endblock %}

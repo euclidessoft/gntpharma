@@ -58,26 +58,9 @@
         var index;
         var langselect = $('#langue option:selected');
         if (langselect.val() === 'Francais') {
-            index = url.indexOf("/en/");
-            if (index !== -1) {
-                url = url.replace("/en/", "/fr/");
-            } else {
-                url = url.replace("/ar/", "/fr/");
-            }
-        } else if (langselect.val() === 'English') {
-            index = url.indexOf("/fr/");
-            if (index !== -1) {
-                url = url.replace("/fr/", "/en/");
-            } else {
-                url = url.replace("/ar/", "/en/");
-            }
-        } else {
-            index = url.indexOf("/en/");
-            if (index !== -1) {
-                url = url.replace("/en/", "/ar/");
-            } else {
-                url = url.replace("/fr/", "/ar/");
-            }
+            url = url.replace("/en/", "/fr/");
+        } else{
+            url = url.replace("/fr/", "/en/");
         }
         document.location.href = url;
     }
@@ -88,14 +71,11 @@
         var fr = url.indexOf("/fr/");
         var en = url.indexOf("/en/");
         if (fr !== -1) {
-            $("#langue").html("<option value='Francais'>Français</option><option value='English'>English</option><option value='Arabe'>العربية</option>")
+            $("#langue").html("<option value='Francais'>Français</option><option value='English'>English</option>")
 
         } else if (en !== -1) {
-            $("#langue").html("<option value='English'>English</option><option value='Francais'>Français</option><option value='Arabe'>العربية</option>")
+            $("#langue").html("<option value='English'>English</option><option value='Francais'>Français</option>")
 
-
-        } else {
-            $("#langue").html("<option value='Arabe'>العربية</option><option value='Francais'>Français</option><option value='English'>English</option>")
 
         }
 

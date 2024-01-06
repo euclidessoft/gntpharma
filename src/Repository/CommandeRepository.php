@@ -19,6 +19,15 @@ class CommandeRepository extends ServiceEntityRepository
         parent::__construct($registry, Commande::class);
     }
 
+    public function current($user)
+    {
+        // On passe par le QueryBuilder vide de l'EntityManager pour l'exemple
+        $query = $this ->createQueryBuilder('a')
+            ->Where('a.user = :user')
+            ->setParameter('user', $user)					;
+        return $query;
+    }
+
     // /**
     //  * @return Commande[] Returns an array of Commande objects
     //  */

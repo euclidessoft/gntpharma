@@ -1,0 +1,177 @@
+:root {
+    --primaire: #039c4f;
+    --primaire-rgb: 3, 156, 79;
+    --primaire-soft: #5ffdad;
+    --primaire-soft-rgb: 95, 253, 173;
+    --secondaire: #c5fbae;
+    --secondaire-rgb: 197, 251, 174;
+    --secondaire-soft: #efffe9;
+    --secondaire-soft-rgb: 239, 255, 233;
+    --blanc: #ffffff; /*  rgb(255, 255, 255)  */
+    --gris: #959595; /*  rgb(255, 255, 255)  */
+    --gris-clair: #e5e4e4; /*  rgb(255, 255, 255)  */
+    --gris-fonce: #2b2b2b; /*  rgb(255, 255, 255)  */
+    --twitter: #1d9bf0; /*  rgb(29, 155, 240)  */
+    --facebook: #385898; /*  rgb(56, 88, 152)  */
+    --linkedin: #004182; /*  rgb(0, 65, 130)  */
+    --instagram: #e83e8c; /*  rgb(232, 62, 140)  */
+    --youtube: #ff0000; /*  rgb(232, 62, 140)  */
+    --duree: 2000ms;
+    --vert: #039c4f;
+    --vert-clair: #c5fbae;
+    --gris-hover: #444;
+    --vert-hover: #036f38;
+    --blanc: #fff;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+body:after {
+    content: "";
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: -1;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(246, 236, 236, 0.7)), url(../images/pharmacy.avif);
+    background-position: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.fond {
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid transparent;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 10px rgb(0 0 0 / 0.4);
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+}
+
+.form-signin {
+    width: 100%;
+    max-width: 90%;
+    padding: 15px;
+    margin: auto;
+}
+
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+
+.input-group,
+.form-control {
+    border-radius: 10px;
+    border: 1px solid #039c4f;
+}
+
+.input-group > .form-control:not(:last-child),
+.input-group > .custom-select:not(:last-child) {
+    border: 1px solid transparent !important;
+}
+
+.input-group > .form-control:not(:first-child),
+.input-group > .custom-select:not(:first-child) {
+    border: 1px solid transparent !important;
+}
+
+.input-group-text {
+    border-radius: 9px;
+}
+
+.form-control {
+    padding: 0.3rem;
+}
+
+.form-control:focus,
+select:focus {
+    border: 1px solid #039c4f;
+    box-shadow: 0 0 10px rgba(3, 156, 79, 0.9);
+}
+
+.btn {
+    border-radius: 10px;
+}
+
+a {
+    color: #039c4f;
+}
+
+a:hover {
+    color: #039c4f;
+    text-decoration: none;
+    text-shadow: 0 0 1px #036f38;
+}
+
+#install_button {
+    background: transparent;
+    border: none;
+}
+.bg-secondaire{
+    background-color: var(--secondaire);
+}
+.text-primaire{
+    color: var(--primaire);
+}
+.fwb{
+    font-weight: bold;
+}
+footer{
+    position: fixed;
+    background-color: var(--vert) !important;
+    bottom: 0;
+    width: 100%;
+    z-index: 100000;
+}
+
+.copyright {
+    border-top: 2px solid var(--secondaire) !important;
+}
+
+.footer .copyright a {
+    color: var(--light);
+}
+
+.footer-shape::before {
+    position: absolute;
+    content: "";
+    width: 80px;
+    height: 100%;
+    top: 0;
+    left: -40px;
+    background: var(--secondaire);
+    transform: skew(40deg);
+}
+
+@media screen and (max-width: 768px) {
+
+    body {
+        font-size: 12px;
+        margin-left: 0;
+    }
+
+    body:after {
+        background-image: url(../images/background-small.jpg);
+    }
+
+    .form-signin {
+        max-width: 100%;
+    }
+}

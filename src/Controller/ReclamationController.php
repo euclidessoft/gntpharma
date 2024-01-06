@@ -49,7 +49,7 @@ class ReclamationController extends AbstractController
             ];
         }
         $reclamation = new Reclamation();
-        $form = $this->createForm(ReclamationType::class, $reclamation);
+        $form = $this->createForm(ReclamationType::class, $reclamation, ['id' => $this->getUser()->getId()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
