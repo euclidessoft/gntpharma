@@ -1,9 +1,9 @@
-{% extends 'commande.html.twig' %}
+{% extends 'admin.html.twig' %}
 {% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
-{% block order %}active{% endblock %}
+{% block produit %}active{% endblock %}
 
 {% block body %}
-    <h1>{{"Modifier Produit"|trans}}</h1>
+
     {% for message in app.flashes('notice') %}
         <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
@@ -13,9 +13,9 @@
         </div>
     {% endfor %}
 
-    {{ include('produit/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('produit/admin/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('produit_index') }}">back to list</a>
 
-    {{ include('produit/_delete_form.html.twig') }}
+
+
 {% endblock %}

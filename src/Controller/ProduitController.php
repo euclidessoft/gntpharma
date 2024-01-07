@@ -48,7 +48,7 @@ class ProduitController extends AbstractController
         }
         else if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 
-            $response = $this->render('produit/index.html.twig', [
+            $response = $this->render('produit/admin/index.html.twig', [
                 'produits' => $produitRepository->findAll(),
             ]);
             $response->setSharedMaxAge(0);
@@ -96,22 +96,28 @@ class ProduitController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($produit);
-                $entityManager->flush();
+                if($produit->getPrix() < $produit->getPrixpublic()) {
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($produit);
+                    $entityManager->flush();
+                    $this->addFlash('notice', 'Nouveau Produit Ajouté');
 
-                $response = $this->redirectToRoute('produit_index', [], Response::HTTP_SEE_OTHER);
-                $response->setSharedMaxAge(0);
-                $response->headers->addCacheControlDirective('no-cache', true);
-                $response->headers->addCacheControlDirective('no-store', true);
-                $response->headers->addCacheControlDirective('must-revalidate', true);
-                $response->setCache([
-                    'max_age' => 0,
-                    'private' => true,
-                ]);
-                return $response;
+                    $response = $this->redirectToRoute('produit_index', [], Response::HTTP_SEE_OTHER);
+                    $response->setSharedMaxAge(0);
+                    $response->headers->addCacheControlDirective('no-cache', true);
+                    $response->headers->addCacheControlDirective('no-store', true);
+                    $response->headers->addCacheControlDirective('must-revalidate', true);
+                    $response->setCache([
+                        'max_age' => 0,
+                        'private' => true,
+                    ]);
+                    return $response;
+                }
+                else{
+                    $this->addFlash('notice', 'Prix publique doit etre strictement superieur au prix de session');
+                }
             }
-            $response = $this->render('produit/new.html.twig', [
+            $response = $this->render('produit/admin/new.html.twig', [
                 'produit' => $produit,
                 'form' => $form->createView(),
             ]);
@@ -144,6 +150,20 @@ class ProduitController extends AbstractController
     public function show(Produit $produit): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+            $response = $this->render('produit/admin/show.html.twig', [
+                'produit' => $produit,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_ROLE')) {
 
             $response = $this->render('produit/show.html.twig', [
                 'produit' => $produit,
@@ -200,13 +220,13 @@ class ProduitController extends AbstractController
 
                 }
                 else{
-                    $this->addFlash('notice', 'Prix publique doit etre strictement superieur au prix de cession');
+                    $this->addFlash('notice', 'Prix publique doit etre strictement superieur au prix de session');
                 }
 
 
             }
 
-            $response = $this->render('produit/edit.html.twig', [
+            $response = $this->render('produit/admin/edit.html.twig', [
                 'produit' => $produit,
                 'form' => $form->createView(),
             ]);

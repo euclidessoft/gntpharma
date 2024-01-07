@@ -1,122 +1,131 @@
-{% extends 'commande.html.twig' %}
+{% extends 'admin.html.twig' %}
 {% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
-{% block order %}active{% endblock %}
+{% block stock %}active{% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-lg-7">
-            {% for message in app.flashes('notice') %}
-                <div class="alert alert-primaire alert-dismissible fade show radius-10 shadow-black">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                        &times;
-                    </button>
-                    {{ message|trans }}
-                </div>
-            {% endfor %}
-            <h1>Approvisionnement</h1>
+    <div class="container-fluid mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-shop mr-2"></i>
+            {{ "Approvisionnement"|trans }}
+        </h3>
+        <div class="row">
+            <div class="col-lg-7">
+                {% for message in app.flashes('notice') %}
+                    <div class="alert alert-primaire alert-dismissible fade show radius-10 shadow-black">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                            &times;
+                        </button>
+                        {{ message|trans }}
+                    </div>
+                {% endfor %}
 
-            {% set inlist = [] %}
-            {% for produit in panier %}
+                {% set inlist = [] %}
+                {% for produit in panier %}
 
-                {% set inlist = inlist|merge([produit['produit'].id]) %}
-            {% else %}
+                    {% set inlist = inlist|merge([produit['produit'].id]) %}
+                {% else %}
 
-            {% endfor %}
+                {% endfor %}
 
-            <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
-                <thead>
-                <tr>
-                    <th>Reference</th>
-                    <th>Designation</th>
-                    <th>Fabriquant</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for produit in produits %}
-                    <tr id="listprod{{ produit.id }}">
-                        <td>{{ produit.reference }}</td>
-                        <td>{{ produit.desigantion }}</td>
-                        <td>{{ produit.fabriquant }}</td>
-                        <td>
-                            <!-- Button trigger modal -->
-                            <button type="button"
-                                    class="btn btn-success {% if produit.id in inlist %} disabled {% endif %}"
-                                    data-bs-toggle="modal" data-bs-target="#modal{{ produit.id }}"
-                                    id="btn{{ produit.id }}">
-                                <i class="fa fa-plus"></i> Ajouter
-                            </button>
+                <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+                    <thead>
+                    <tr>
+                        <th>Reference</th>
+                        <th>Designation</th>
+                        <th>Fabriquant</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for produit in produits %}
+                        <tr id="listprod{{ produit.id }}">
+                            <td>{{ produit.reference }}</td>
+                            <td>{{ produit.desigantion }}</td>
+                            <td>{{ produit.fabriquant }}</td>
+                            <td>
 
-                            <!-- Modal -->
-                            <div class="modal fade" id="modal{{ produit.id }}" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog text-center">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                {{ produit.reference }} {{ produit.desigantion }} {{ produit.fabriquant }}</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body px-5">
-                                            Renseignez la quantité: <input type="number" class="form-control"
-                                                                           id="quant{{ produit.id }}">
-                                        </div>
-                                        <div class="modal-footer px-5 py-4">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                                    id="annuler{{ produit.id }}">Annuler
-                                            </button>
-                                            <button type="button" class="btn btn-success ms-3"
-                                                    id="ajouter{{ produit.id }}" onclick="ajouter({{ produit.id }})"><i
-                                                        class="fa fa-plus"></i> Ajouter
-                                            </button>
-                                            <div id="modification{{ produit.id }}"></div>
+                                <!-- Button trigger modal -->
+                                <button type="button"
+                                        class="btn btn-success {% if produit.id in inlist %} disabled {% endif %}"
+                                        data-toggle="modal" data-target="#modal{{ produit.id }}"
+                                        id="btn{{ produit.id }}">
+                                    <i class="fa fa-plus"></i> Ajouter
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="modal{{ produit.id }}" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog text-center">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                    {{ produit.reference }} {{ produit.desigantion }} {{ produit.fabriquant }}</h1>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body px-5">
+                                                Renseignez la quantité: <input type="number" class="form-control"
+                                                                               id="quant{{ produit.id }}">
+                                            </div>
+                                            <div class="modal-footer px-5 py-4">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                                        id="annuler{{ produit.id }}">Annuler
+                                                </button>
+                                                <button type="button" class="btn btn-success ms-3"
+                                                        id="ajouter{{ produit.id }}"
+                                                        onclick="ajouter({{ produit.id }})"><i
+                                                            class="fa fa-plus"></i> Ajouter
+                                                </button>
+                                                <div id="modification{{ produit.id }}"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                {% else %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-5 mt-5">
+                <button onclick="validerappro()"
+                        class="btn btn-success float-right mb-3 {% if inlist|length == 0 %} disabled {% endif %}"
+                        id="valider1"
+                        title="Valider">
+                    <i class="fa fa-check"></i> Valider
+                </button>
+
+                <table class="table table-success-light table-bordered table-hover table-striped w-100" id="aprovision">
+                    <thead>
                     <tr>
-                        <td colspan="3">no records found</td>
+                        <th>Reference</th>
+                        <th>Designation</th>
+                        <th>Fabriquant</th>
+                        <th>Quantite</th>
+
+                        <th>actions</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="col-lg-5 mt-5">
-            <button onclick="validerappro()"  class="btn btn-success float-right mb-3 {% if inlist|length == 0 %} disabled {% endif %}" id="valider1"
-               title="Valider">
-                <i class="fa fa-check"></i> Valider
-            </button>
+                    </thead>
+                    <tbody id="selectprod">
+                    {% for produit in panier %}
+                        <tr id="tr{{ produit['produit'].id }}">
+                            <td>{{ produit['produit'].reference }}</td>
+                            <td>{{ produit['produit'].desigantion }}</td>
+                            <td>{{ produit['produit'].fabriquant }}</td>
 
-            <table class="table table-success-light table-bordered table-hover table-striped w-100" id="aprovision">
-                <thead>
-                <tr>
-                    <th>Reference</th>
-                    <th>Designation</th>
-                    <th>Fabriquant</th>
-                    <th>Quantite</th>
-
-                    <th>actions</th>
-                </tr>
-                </thead>
-                <tbody id="selectprod">
-                {% for produit in panier %}
-                    <tr id="tr{{ produit['produit'].id }}">
-                        <td>{{ produit['produit'].reference }}</td>
-                        <td>{{ produit['produit'].desigantion }}</td>
-                        <td>{{ produit['produit'].fabriquant }}</td>
-
-                        <td class="text-center">
+                            <td class="text-center">
 <span id="changequantite{{ produit.produit.id }}">
 
                                 {{ produit['produit'].quantite }}
 </span>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
 
 
@@ -127,30 +136,30 @@
                                     <i class="fa fa-edit"></i>
                                 </button>
 </span>
-                            <button class="btn btn-danger"
-                                    title="Supprimer cet article" onclick="supprim({{ produit.produit.id }})">
-                                <i class="fa fa-trash"></i>
-                            </button>
+                                <button class="btn btn-danger"
+                                        title="Supprimer cet article" onclick="supprim({{ produit.produit.id }})">
+                                    <i class="fa fa-trash"></i>
+                                </button>
 
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
 
-                {% else %}
+                    {% else %}
 
-                {% endfor %}
+                    {% endfor %}
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
-            <a href="{{ path("commande_panier_valider") }}"
-               class="btn btn-success float-right  {% if inlist|length == 0 %} disabled {% endif %}" id="valider2"
-               title="Valider">
-                <i class="fa fa-check"></i> Valider
-            </a>
+                <a href="{{ path("commande_panier_valider") }}"
+                   class="btn btn-success float-right  {% if inlist|length == 0 %} disabled {% endif %}" id="valider2"
+                   title="Valider">
+                    <i class="fa fa-check"></i> Valider
+                </a>
 
+            </div>
         </div>
     </div>
-
 {% endblock %}
 {% block scripts %}
     <script>
@@ -259,8 +268,9 @@
             }
 
         }
-        function validerappro(){
-            if(confirm("Confirmation validation?")){
+
+        function validerappro() {
+            if (confirm("Confirmation validation?")) {
                 document.location.href = "{{ path('stock_valider') }}";
             }
         }

@@ -1,0 +1,42 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block promotion %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-4 fond-7 pb-3">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-shopping-cart mr-2"></i>
+        {{ "Liste des promotions"|trans }}
+    </h3>
+
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>Designation</th>
+                <th>Debut</th>
+                <th>Fin</th>
+                <th>Type</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for promotion in promotions %}
+            <tr>
+                <td>{{ promotion.designation }}</td>
+                <td>{{ promotion.debut ? promotion.debut|date('Y-m-d') : '' }}</td>
+                <td>{{ promotion.fin ? promotion.fin|date('Y-m-d') : '' }}</td>
+                <td>{{ promotion.type }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('promotion_show', {'id': promotion.id}) }}"><i class="fa fa-list"></i> Afficher </a>
+                    <a class="btn btn-success" href="{{ path('promotion_edit', {'id': promotion.id}) }}"><i class="fa fa-edit"></i> Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Aucune promotion</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

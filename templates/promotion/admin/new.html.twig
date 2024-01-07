@@ -1,0 +1,12 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Promorion"|trans }} - GNT Pharma {% endblock %}
+{% block promotion %}active{% endblock %}
+
+
+
+{% block body %}
+    <h1>Create new Promotion</h1>
+
+    {{ include('promotion/admin/_form.html.twig') }}
+
+{% endblock %}

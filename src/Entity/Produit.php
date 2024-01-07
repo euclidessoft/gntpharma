@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProduitRepository::class)
@@ -19,26 +20,31 @@ class Produit
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message = "Champ obligatoire")
      */
     private $reference;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message = "Champ obligatoire")
      */
     private $desigantion;
 
     /**
      * @ORM\Column(type="integer")
+      * @Assert\NotBlank(message = "Champ obligatoire")
      */
     private $prix;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+      * @Assert\NotBlank(message = "Champ obligatoire")
      */
     private $mincommande;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+      * @Assert\NotBlank(message = "Champ obligatoire")
      */
     private $fabriquant;
 
@@ -47,6 +53,7 @@ class Produit
 
     /**
      * @ORM\Column(type="integer")
+      * @Assert\NotBlank(message = "Champ obligatoire")
      */
     private $prixpublic;
 

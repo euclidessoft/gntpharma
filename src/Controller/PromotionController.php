@@ -21,6 +21,29 @@ class PromotionController extends AbstractController
      */
     public function index(SessionInterface $session,PromotionRepository $promotionRepository): Response
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+//        $panier = $session->get("panier", []);
+//        $dataPanier = [];
+//
+//        foreach($panier as $commande){
+//            $dataPanier[] = [
+//                "produit" => $commande['produit'],
+//            ];
+//        }
+        $response = $this->render('promotion/admin/index.html.twig', [
+            'promotions' => $promotionRepository->findAll(),
+//            'panier' => $dataPanier,
+        ]);
+        $response->setSharedMaxAge(0);
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('no-store', true);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->setCache([
+            'max_age' => 0,
+            'private' => true,
+        ]);
+        return $response;
+    } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
         $panier = $session->get("panier", []);
         $dataPanier = [];
 
@@ -29,10 +52,31 @@ class PromotionController extends AbstractController
                 "produit" => $commande['produit'],
             ];
         }
-        return $this->render('promotion/index.html.twig', [
+        $response = $this->render('promotion/index.html.twig', [
             'promotions' => $promotionRepository->findAll(),
             'panier' => $dataPanier,
         ]);
+        $response->setSharedMaxAge(0);
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('no-store', true);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->setCache([
+            'max_age' => 0,
+            'private' => true,
+        ]);
+        return $response;
+    } else {
+$response = $this->redirectToRoute('security_login');
+$response->setSharedMaxAge(0);
+$response->headers->addCacheControlDirective('no-cache', true);
+$response->headers->addCacheControlDirective('no-store', true);
+$response->headers->addCacheControlDirective('must-revalidate', true);
+$response->setCache([
+'max_age' => 0,
+'private' => true,
+]);
+return $response;
+}
     }
 
     /**
@@ -52,7 +96,7 @@ class PromotionController extends AbstractController
             return $this->redirectToRoute('promotion_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('promotion/new.html.twig', [
+        return $this->render('promotion/admin/new.html.twig', [
             'promotion' => $promotion,
             'form' => $form->createView(),
         ]);
@@ -82,7 +126,7 @@ class PromotionController extends AbstractController
             return $this->redirectToRoute('promotion_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('promotion/edit.html.twig', [
+        return $this->render('promotion/admin/edit.html.twig', [
             'promotion' => $promotion,
             'form' => $form->createView(),
         ]);

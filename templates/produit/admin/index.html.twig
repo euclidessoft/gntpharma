@@ -1,0 +1,57 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block produit %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa-brands fa-product-hunt mr-2"></i>
+        {{ "Liste Produits"|trans }}
+    </h3>
+    {% for message in app.flashes('notice') %}
+        <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                &times;
+            </button>
+            {{ message|trans }}
+        </div>
+    {% endfor %}
+
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+        <tr>
+            <th>Reference</th>
+            <th>Designation</th>
+            <th>Session</th>
+            <th>Publique</th>
+            <th>Commande<br> Minimum</th>
+            <th>Fabriquant</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            <tr>
+                <td>{{ produit.reference }}</td>
+                <td>{{ produit.desigantion }}</td>
+                <td>{{ produit.prix }}</td>
+                <td>{{ produit.prixpublic }}</td>
+                <td>{{ produit.mincommande }}</td>
+                <td>{{ produit.fabriquant }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('produit_show', {'id': produit.id}) }}"><i class="fa fa-list-check"></i> Afficher</a>
+                    <a class="btn btn-success" href="{{ path('produit_edit', {'id': produit.id}) }}"><i class="fa fa-edit"></i> Modifier</a>
+                    {{ include('produit/admin/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+</div>
+{% endblock %}

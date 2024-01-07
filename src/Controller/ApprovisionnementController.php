@@ -29,7 +29,7 @@ class ApprovisionnementController extends AbstractController
     }
 
     /**
-     * @Route("/Approvisionnent", name="appro_index", methods={"GET"})
+     * @Route("/Approvisionnement", name="appro_index", methods={"GET"})
      */
     public function index(SessionInterface $session, ApprovisionnementRepository $approvisionnementRepository, ProduitRepository $produitRepository): Response
     {
@@ -237,12 +237,13 @@ class ApprovisionnementController extends AbstractController
     /**
      * @Route("/{id}", name="show", methods={"GET"})
      */
-    public function show(Approvisionner $approvisionner): Response
+    public function show(Approvisionner $approvisionner, ApprovisionnementRepository $repository): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 
-            $response = $this->render('approvisionner/show.html.twig', [
+            $response = $this->render('approvisionnement/show.html.twig', [
                 'approvisionner' => $approvisionner,
+                'approvisionnements' => $repository->findBy(['approvisionner' => $approvisionner]),
             ]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);

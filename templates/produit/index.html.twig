@@ -26,9 +26,7 @@
             <th>Publique</th>
             <th>Commande<br> Minimum</th>
             <th>Fabriquant</th>
-            {% if is_granted('ROLE_CLIENT') %}
                 <th>Quantite</th>
-            {% endif %}
 
             <th>actions</th>
         </tr>
@@ -42,12 +40,6 @@
                 <td>{{ produit.prixpublic }}</td>
                 <td>{{ produit.mincommande }}</td>
                 <td>{{ produit.fabriquant }}</td>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <td>
-                        <a class="btn btn-success" href="{{ path('produit_show', {'id': produit.id}) }}"><i class="fa fa-list-check"></i> Afficher</a>
-                        <a class="btn btn-success" href="{{ path('produit_edit', {'id': produit.id}) }}"><i class="fa fa-edit"></i> Modifier</a>
-                    </td>
-                {% else %}
                     {% set tamp ='no' %}
                     <td class="text-center" id="tdprod{{ produit.id }}">
 
@@ -76,7 +68,6 @@
                             </button>
                         {% endif %}
                     </td>
-                {% endif %}
             </tr>
         {% else %}
             <tr>
@@ -86,8 +77,5 @@
         </tbody>
     </table>
     <input type="hidden" id="tampon"/>
-    {% if is_granted('ROLE_ADMIN') %}
-        <a class="btn btn-success" href="{{ path('produit_new') }}">Nouveau Produit</a>
-    {% endif %}
 </div>
 {% endblock %}

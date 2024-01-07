@@ -14,9 +14,7 @@
     <script src="{{ asset('fontawesome/js/all.js') }}"></script>
 {% endblock %}
 
-{% block scripts %}
 
-{% endblock %}
 
 <script>
 
@@ -206,7 +204,7 @@
     function envoie() {
         var valider=$('#send');
         valider.addClass("disabled");
-        valider.html("<div class='ajax-loader'></div>");
+        valider.html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
         $('#form').submit();
     }
 
