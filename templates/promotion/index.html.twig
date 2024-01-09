@@ -27,8 +27,7 @@
                 <td>{{ promotion.fin ? promotion.fin|date('Y-m-d') : '' }}</td>
                 <td>{{ promotion.type }}</td>
                 <td>
-                    <a href="{{ path('promotion_show', {'id': promotion.id}) }}">show</a>
-                    <a href="{{ path('promotion_edit', {'id': promotion.id}) }}">edit</a>
+                    <a class="btn btn-success" href="{{ path('promotion_show', {'id': promotion.id}) }}"><i class="fa fa-list"></i> Afficher</a>
                 </td>
             </tr>
         {% else %}

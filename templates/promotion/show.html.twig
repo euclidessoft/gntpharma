@@ -1,33 +1,101 @@
-{% extends 'admin.html.twig' %}
-{% block title %} {{ "Promorion"|trans }} - GNT Pharma {% endblock %}
-{% block promotion %}active{% endblock %}
 
-{% block body %}
-    <h1>Promotion</h1>
+{% extends 'commande.html.twig' %}
+    {% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+    {% block promotion %}active{% endblock %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ promotion.id }}</td>
-            </tr>
-            <tr>
-                <th>Designation</th>
-                <td>{{ promotion.designation }}</td>
-            </tr>
-            <tr>
-                <th>Debut</th>
-                <td>{{ promotion.debut ? promotion.debut|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Fin</th>
-                <td>{{ promotion.fin ? promotion.fin|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ promotion.type }}</td>
-            </tr>
-        </tbody>
-    </table>
+    {% block body %}
+        <div class="container mt-4 fond-7">
+            <h3 class="mt-4 mb-5 text-bold">
+                <i class="fa fa-shop mr-2"></i>
+                {{ "Promotion"|trans }}
+            </h3>
+            <table class="table table-success-light table-bordered table-hover table-striped w-100">
+                <thead>
+                <tr>
+                    <th>Designation</th>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
+                    <th>Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ promotion.designation }}</td>
+                    <td>{{ promotion.debut ? promotion.debut|date('Y-m-d') : '' }}</td>
+                    <td>{{ promotion.fin ? promotion.fin|date('Y-m-d') : '' }}</td>
+                    <td>{{ promotion.type }}</td>
 
-{% endblock %}
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="container mt-4 fond-7">
+            <h3 class="mt-4 mb-5 text-bold">
+                <i class="fa-brands fa-product-hunt mr-2"></i>
+                {{ "Produits"|trans }}
+            </h3>
+
+            <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+                <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>Designation</th>
+                    <th>Session</th>
+                    <th>Publique</th>
+                    <th>Commande<br> Minimum</th>
+                    <th>Fabriquant</th>
+                    <th>Quantite</th>
+
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for promotionproduit in produitspromotion %}
+                    <tr>
+                        <td>{{ promotionproduit.produit.reference }}</td>
+                        <td>{{ promotionproduit.produit.desigantion }}</td>
+                        <td>{{ promotionproduit.produit.prix }}</td>
+                        <td>{{ promotionproduit.produit.prixpublic }}</td>
+                        <td>{{ promotionproduit.produit.mincommande }}</td>
+                        <td>{{ promotionproduit.produit.fabriquant }}</td>
+                        {% set tamp ='no' %}
+                        <td class="text-center" id="tdprod{{ promotionproduit.produit.id }}">
+
+                            {% for pan in panier %}
+                                {% if pan['produit'].id == promotionproduit.produit.id %}
+                                    {% set tamp = pan['produit'].quantite %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if tamp != 'no' %}
+                                {{ tamp }}
+                            {% else %}
+                                <input type="number" id="text{{ promotionproduit.produit.id }}" class="form-control"
+                                       onfocus="focu({{ promotionproduit.produit.id }})" onblur="nofocu()" style="padding:0 10px" {% if promotionproduit.produit.stock <= promotionproduit.produit.mincommande %} disabled {%  endif %}>
+                                <label for="text{{ promotionproduit.produit.id }}"></label>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if tamp != 'no' %}
+                                <button type="button" class="btn btn-success disabled" id="btn{{ promotionproduit.produit.id }}">
+                                    <i class="fa fa-cart-shopping"></i>
+                                </button>
+                            {% else %}
+                                <button type="button" class="btn btn-success{% if promotionproduit.produit.stock <= promotionproduit.produit.mincommande %} disabled {%  endif %}" id="btn{{ promotionproduit.produit.id }}"
+                                        onclick="addprod({{ promotionproduit.produit.id }}, {{ promotionproduit.produit.mincommande }}, {{ promotionproduit.produit.stock }})">
+                                    <i class="fa fa-cart-shopping"></i>
+                                </button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <input type="hidden" id="tampon"/>
+
+        </div>
+    {% endblock %}

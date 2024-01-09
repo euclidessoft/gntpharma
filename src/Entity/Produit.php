@@ -62,6 +62,11 @@ class Produit
      */
     private $stock;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $creation;
+
 
     public function __construct()
     {
@@ -171,6 +176,18 @@ class Produit
     public function approvisionner(int $quantite): self
     {
         $this->stock = $this->stock + $quantite;
+
+        return $this;
+    }
+
+    public function getCreation(): ?\DateTimeInterface
+    {
+        return $this->creation;
+    }
+
+    public function setCreation(\DateTimeInterface $creation): self
+    {
+        $this->creation = $creation;
 
         return $this;
     }

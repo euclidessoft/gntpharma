@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Promotion;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,8 +14,8 @@ class PromotionType extends AbstractType
     {
         $builder
             ->add('designation')
-            ->add('debut')
-            ->add('fin')
+            ->add('debut', DateType::class, array( 'widget' => 'single_text', 'attr' => ['title' => 'Date de début'],))
+            ->add('fin', DateType::class, array( 'widget' => 'single_text', 'attr' => ['title' => 'Date de fin'],))
             ->add('type')
         ;
     }

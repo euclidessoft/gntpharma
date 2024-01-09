@@ -60,7 +60,8 @@
                                             <div class="modal-header">
                                                 <h1 class="modal-title fs-5" id="exampleModalLabel">
                                                     {{ produit.reference }} {{ produit.desigantion }} {{ produit.fabriquant }}</h1>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -151,11 +152,12 @@
                     </tbody>
                 </table>
 
-                <a href="{{ path("commande_panier_valider") }}"
-                   class="btn btn-success float-right  {% if inlist|length == 0 %} disabled {% endif %}" id="valider2"
-                   title="Valider">
+                <button onclick="validerappro()"
+                        class="btn btn-success float-right  {% if inlist|length == 0 %} disabled {% endif %}"
+                        id="valider2"
+                        title="Valider">
                     <i class="fa fa-check"></i> Valider
-                </a>
+                </button>
 
             </div>
         </div>

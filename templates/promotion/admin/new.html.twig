@@ -1,12 +1,172 @@
-{% extends 'admin.html.twig' %}
-{% block title %} {{ "Promorion"|trans }} - GNT Pharma {% endblock %}
-{% block promotion %}active{% endblock %}
+
+    {% extends 'admin.html.twig' %}
+    {% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+    {% block promotion %}active{% endblock %}
+
+    {% block body %}
+        <div class="container-fluid mt-4 fond-7">
+            <h3 class="mt-4 mb-5 text-bold">
+                <i class="fa fa-shop mr-2"></i>
+                {{ "Nouvelle Promotion"|trans }}
+            </h3>
+            <div class="row">
+                <div class="col-lg-7">
+                    {% for message in app.flashes('notice') %}
+                        <div class="alert alert-primaire alert-dismissible fade show radius-10 shadow-black">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                &times;
+                            </button>
+                            {{ message|trans }}
+                        </div>
+                    {% endfor %}
+
+                    {% set inlist = [] %}
+                    {% for produit in panier %}
+
+                        {% set inlist = inlist|merge([produit['produit'].id]) %}
+                    {% else %}
+
+                    {% endfor %}
+
+                    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+                        <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Designation</th>
+                            <th>Fabriquant</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for produit in produits %}
+                            <tr id="listprod{{ produit.id }}">
+                                <td>{{ produit.reference }}</td>
+                                <td>{{ produit.desigantion }}</td>
+                                <td>{{ produit.fabriquant }}</td>
+                                <td>
+
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-success {% if produit.id in inlist %} disabled {% endif %}"
+                                            id="ajouter{{ produit.id }}" onclick="ajouter_promotion({{ produit.id }})">
+                                        <i class="fa fa-plus"></i> Ajouter
+                                    </button>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-5 mt-5">
+
+                    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="aprovision">
+                        <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Designation</th>
+                            <th>Fabriquant</th>
+
+                            <th>actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="selectprod">
+                        {% for produit in panier %}
+                            <tr id="tr{{ produit['produit'].id }}">
+                                <td>{{ produit['produit'].reference }}</td>
+                                <td>{{ produit['produit'].desigantion }}</td>
+                                <td>{{ produit['produit'].fabriquant }}</td>
+
+
+                                <td>
+                                    <button class="btn btn-danger"
+                                            title="Supprimer cet article" onclick="supprim_prod({{ produit.produit.id }})">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+
+                                </td>
+                            </tr>
+
+                        {% else %}
+
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                    {{ include('promotion/admin/_form.html.twig') }}
+                </div>
+
+            </div>
+        </div>
+    {% endblock %}
+    {% block scripts %}
+        <script>
+            function ajouter_promotion(produit) {
 
 
 
-{% block body %}
-    <h1>Create new Promotion</h1>
+                    $("#ajouter" + produit).html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('promotion_add') }}",
+                        data: "prod=" + produit,
+                        success: function (data) {
+                            if (data['id'] == 'ok') {
+                                $('#selectprod').append(" <tr id='tr" + produit + "'>\n" +
+                                    "                        <td>" + data['ref'] + "</td>\n" +
+                                    "                        <td>" + data['designation'] + "</td>\n" +
+                                    "                        <td>" + data['fabriquant'] + "</td>\n" +
+                                    "                        <td>" +
+                                    "                                <button class='btn btn-danger'\n" +
+                                    "                                   title='Supprimer cet article' onclick='supprim_prod(" + produit + ")'>\n" +
+                                    "                                    <i class='fa fa-trash'></i>\n" +
+                                    "                                </button></td>\n" +
+                                    "\n" +
+                                    "                    </tr>");
+                                $('#ajouter' + produit).addClass('disabled');
+                                $('#valider1').removeClass('disabled');
+                                $('#valider2').removeClass('disabled');
+                                $("#annuler" + produit).trigger('click');
+                                $("#ajouter" + produit).html("<i class='fa fa-plus'></i> Ajouter");
+                            } else {
+                                alert("{{ 'verifier la quantite saisie'|trans }}")
+                            }
+                        },
+                        error: function () {
+                            alert("{{ 'La requête n a pas abouti'|trans }}");
+                        }
+                    });
+            }
 
-    {{ include('promotion/admin/_form.html.twig') }}
+            function supprim_prod(produit) {
 
-{% endblock %}
+                if (confirm("Etes-vous sur de vouloir supprimer?")) {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('promotion_delete') }}",
+                        data: "prod=" + produit,
+                        success: function (data) {
+                            if (data['id'] == 'ok') {
+                                $("#tr" + produit).remove();
+                                $('#ajouter' + produit).removeClass('disabled');
+                                if (data['nb'] == 0) {
+                                    $('#valider1').addClass('disabled');
+                                    $('#valider2').addClass('disabled');
+                                }
+                            }
+                        },
+                        error: function () {
+                            alert("{{ 'La requête n a pas abouti'|trans }}");
+                        }
+                    });
+                }
+            }
+
+        </script>
+
+
+    {% endblock %}
+
