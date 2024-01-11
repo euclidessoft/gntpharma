@@ -19,21 +19,19 @@ class ProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, Produit::class);
     }
 
-    public function noveaute()
+    public function nouveaute()
     {
-//        $date=date_create("2013-03-15");
-//        date_sub($date,date_interval_create_from_date_string("40 days"));
-//        echo date_format($date,"Y-m-d");
+        $date = new \Datetime();
+        date_sub($date,date_interval_create_from_date_string("30 days"));
+       $creation = date_format($date,"Y-m-d");
 
-//
-//
-//        $query = $this->createQueryBuilder('a')
-//            ->Where('a.creation < :genre')
-//            ->setParameter('genre', date('Y-m-d'))
-//            ->andWhere('a.cellule = :cellule')
-//            ->setParameter('cellule', $cellule)
-//            ->getQuery();
-//        return $query->getResult();
+
+
+        $query = $this->createQueryBuilder('a')
+            ->Where('a.creation > :date')
+            ->setParameter('date', $creation)
+            ->getQuery();
+        return $query->getResult();
     }
 
     /*

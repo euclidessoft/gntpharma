@@ -5,10 +5,11 @@
 
     {% block body %}
         <div class="container-fluid mt-4 fond-7">
-            <h3 class="mt-4 mb-5 text-bold">
+            <h3 class="mt-4 text-bold">
                 <i class="fa fa-shop mr-2"></i>
                 {{ "Nouvelle Promotion"|trans }}
             </h3>
+            {{ include('promotion/admin/_form.html.twig') }}
             <div class="row">
                 <div class="col-lg-7">
                     {% for message in app.flashes('notice') %}
@@ -96,7 +97,7 @@
                         </tbody>
                     </table>
 
-                    {{ include('promotion/admin/_form.html.twig') }}
+
                 </div>
 
             </div>

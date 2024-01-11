@@ -3,7 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Produit;
+use App\Entity\User;
 use App\Form\ProduitType;
+use App\Repository\ApprovisionnementRepository;
+use App\Repository\ApprovisionnerRepository;
+use App\Repository\CommandeProduitRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,18 +64,7 @@ class ProduitController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT'))   {
-            $response = $this->redirectToRoute('commande_index');
-            $response->setSharedMaxAge(0);
-            $response->headers->addCacheControlDirective('no-cache', true);
-            $response->headers->addCacheControlDirective('no-store', true);
-            $response->headers->addCacheControlDirective('must-revalidate', true);
-            $response->setCache([
-                'max_age' => 0,
-                'private' => true,
-            ]);
-            return $response;
-        }else  {
+        } else  {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
@@ -131,6 +124,198 @@ class ProduitController extends AbstractController
             ]);
             return $response;
         } else {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/Nouveaute", name="produit_nouveaute", methods={"GET"})
+     */
+    public function nouveaute(SessionInterface $session, ProduitRepository $produitRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+
+            $panier = $session->get("panier", []);
+            $dataPanier = [];
+
+            foreach($panier as $commande){
+                $dataPanier[] = [
+                    "produit" => $commande['produit'],
+                ];
+            }
+
+            $response = $this->render('produit/nouveaute.html.twig', [
+                'produits' => $produitRepository->nouveaute(),
+                'panier' => $dataPanier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }else  {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/Arrivage", name="produit_arrivage", methods={"GET"})
+     */
+    public function arrivage(SessionInterface $session, ApprovisionnerRepository $approvisionnerRepository, ApprovisionnementRepository $approvisionnementRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+
+            $panier = $session->get("panier", []);
+            $dataPanier = [];
+
+            foreach($panier as $commande){
+                $dataPanier[] = [
+                    "produit" => $commande['produit'],
+                ];
+            }
+            $approvisionner = $approvisionnerRepository->arrivage();//recuperation des approvisioonement de moins de 7 jours
+            if(count($approvisionner) > 1){ // si plus d' un appron
+                $appro = [];
+                foreach ($approvisionner as $item){// mettre les id approvisionner dans un tableau
+                    $appro[] = $item->getId();
+                }
+                $approvisionnements = $approvisionnementRepository->arrivage($appro);// recuperation des approvisionnement des id dans le tableau
+            }else{
+                $approvisionnements = $approvisionnementRepository->findBy(['approvisionner' => $approvisionner]);
+            }
+
+            $response = $this->render('produit/arrivage.html.twig', [
+                'approvisionnements' => $approvisionnements,
+                'panier' => $dataPanier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }else  {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/Vente", name="produit_vente", methods={"GET"})
+     */
+    public function vente(SessionInterface $session, CommandeProduitRepository $repository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+
+            $panier = $session->get("panier", []);
+            $dataPanier = [];
+
+            foreach($panier as $commande){
+                $dataPanier[] = [
+                    "produit" => $commande['produit'],
+                ];
+            }
+
+            $ventemensuel = $repository->ventemensuel();
+            $venteannuel = $repository->venteannuel();//
+
+
+            $response = $this->render('produit/vente.html.twig', [
+                'ventemensuel' => $ventemensuel,
+                'venteannuel' => $venteannuel,
+                'panier' => $dataPanier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }else  {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/MonTop", name="produit_top", methods={"GET"})
+     */
+    public function top(SessionInterface $session, CommandeProduitRepository $repository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+
+            $panier = $session->get("panier", []);
+            $dataPanier = [];
+
+            foreach($panier as $commande){
+                $dataPanier[] = [
+                    "produit" => $commande['produit'],
+                ];
+            }
+
+            $topmensuel = $repository->topmensuel($this->getUser());
+//            $venteannuel = $repository->topannuel($this->getUser());//
+
+
+            $response = $this->render('produit/top.html.twig', [
+                'ventemensuel' => $topmensuel,
+//                'venteannuel' => $venteannuel,
+                'panier' => $dataPanier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }else  {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
@@ -253,6 +438,8 @@ class ProduitController extends AbstractController
         }
     }
 
+
+
     /**
      * @Route("/{id}", name="produit_delete", methods={"POST"})
      */
@@ -266,4 +453,6 @@ class ProduitController extends AbstractController
 
         return $this->redirectToRoute('produit_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }

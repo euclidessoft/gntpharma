@@ -71,6 +71,7 @@ class Produit
     public function __construct()
     {
         $this->stock = 0;
+        $this->creation = new \Datetime();
     }
 
     public function getId(): ?int

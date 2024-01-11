@@ -36,15 +36,19 @@ class ApprovisionnerRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Approvisionner
+
+    public function arrivage()
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $date = new \Datetime();
+        date_sub($date,date_interval_create_from_date_string("7 days"));
+        $creation = date_format($date,"Y-m-d");
+
+
+
+        $query = $this->createQueryBuilder('a')
+            ->Where('a.date > :date')
+            ->setParameter('date', $creation)
+            ->getQuery();
+        return $query->getResult();
     }
-    */
 }

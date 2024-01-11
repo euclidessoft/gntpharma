@@ -1,0 +1,81 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block produit %}active{% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa-brands fa-product-hunt mr-2"></i>
+            {{ "Mon Top"|trans }}
+        </h3>
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-primaire alert-dismissible fade show radius-10 shadow-black">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    &times;
+                </button>
+                {{ message|trans }}
+            </div>
+        {% endfor %}
+
+        <table class="table table-success-light table-bordered table-hover table-striped w-100">
+            <thead>
+            <tr>
+                <th>Reference</th>
+                <th>Designation</th>
+                <th>Session</th>
+                <th>Publique</th>
+                <th>Commande<br> Minimum</th>
+                <th>Fabriquant</th>
+                <th>Quantite</th>
+
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for approvisionnement in ventemensuel %}
+                <tr>
+                    <td>{{ approvisionnement.produit.reference }}</td>
+                    <td>{{ approvisionnement.produit.desigantion }}</td>
+                    <td>{{ approvisionnement.produit.prix }}</td>
+                    <td>{{ approvisionnement.produit.prixpublic }}</td>
+                    <td>{{ approvisionnement.produit.mincommande }}</td>
+                    <td>{{ approvisionnement.produit.fabriquant }}</td>
+                    {% set tamp ='no' %}
+                    <td class="text-center" id="tdprod{{ approvisionnement.produit.id }}">
+
+                        {% for pan in panier %}
+                            {% if pan['produit'].id == approvisionnement.produit.id %}
+                                {% set tamp = pan['produit'].quantite %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if tamp != 'no' %}
+                            {{ tamp }}
+                        {% else %}
+                            <input type="number" id="text{{ approvisionnement.produit.id }}" class="form-control"
+                                   onfocus="focu({{ approvisionnement.produit.id }})" onblur="nofocu()" style="padding:0 10px" {% if approvisionnement.produit.stock <= approvisionnement.produit.mincommande %} disabled {%  endif %}>
+                            <label for="text{{ approvisionnement.produit.id }}"></label>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if tamp != 'no' %}
+                            <button type="button" class="btn btn-success disabled" id="btn{{ approvisionnement.produit.id }}">
+                                <i class="fa fa-cart-shopping"></i>
+                            </button>
+                        {% else %}
+                            <button type="button" class="btn btn-success{% if approvisionnement.produit.stock <= approvisionnement.produit.mincommande %} disabled {%  endif %}" id="btn{{ approvisionnement.produit.id }}"
+                                    onclick="addprod({{ approvisionnement.produit.id }}, {{ approvisionnement.produit.mincommande }}, {{ approvisionnement.produit.stock }})">
+                                <i class="fa fa-cart-shopping"></i>
+                            </button>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <input type="hidden" id="tampon"/>
+    </div>
+{% endblock %}
