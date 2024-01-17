@@ -86,7 +86,7 @@
                             </ul>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link" href="{{ path('promotion_index') }}">
+                            <a class="nav-link" href="{{ path('livraison_index') }}">
                                 <i class="fas fa-shop mr-2"></i>
                                 {{ 'Livraison'|trans }}
                             </a>
@@ -177,7 +177,7 @@
                         <li class="dropdown-item">
                             <a class="nav-link" href="{{ path('commande_panier_history') }}">
                                 <i class="fas fa-user-plus mr-2"></i>
-                                {{ 'Vos Commandes'|trans }}
+                                {{ 'Suivi Commande'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
@@ -196,30 +196,15 @@
                 </li>
 
 
-                <li class="nav-item dropright {% block reclamation %}{% endblock %}" title="{{ 'Reclamations'|trans }}">
-                    <a class="nav-link dropdown-toggle" href="#" id="Produits" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
+                <li  class="nav-item {% block reclamation %} {% endblock %}" title="{{ 'Réclamation'|trans }}">
+                    <a class="nav-link" href="{{ path('reclamation_index') }}">
                         <div class="icone">
-                            <i class="fas fa-rotate fa-lg"></i>
+                            <i class="fas fa-tags fa-lg"></i>
                         </div>
                         <div class="title">
                             {{ 'Réclamation'|trans }}
                         </div>
                     </a>
-                    <ul class=" dropdown-menu" aria-labelledby="pelerin">
-                        <li class="dropdown-item">
-                            <a class="nav-link" href="{{ path('reclamation_new') }}">
-                                <i class="fas fa-user-plus mr-2"></i>
-                                {{ 'Creer une reclamation'|trans }}
-                            </a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a class="nav-link" href="{{ path('reclamation_index') }}">
-                                <i class="fas fa-user-plus mr-2"></i>
-                                {{ 'Vos reclamations'|trans }}
-                            </a>
-                        </li>
-                    </ul>
                 </li>
                 <li class="nav-item dropright {% block officine %}{% endblock %}" title="{{ 'Officine'|trans }}">
                     <a class="nav-link dropdown-toggle" href="#" id="Produits" data-toggle="dropdown"

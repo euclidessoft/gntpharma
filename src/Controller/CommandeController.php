@@ -53,7 +53,7 @@ class CommandeController extends AbstractController
             ]);
             return $response;
         } else {
-            $response = $this->redirectToRoute('security_login');
+            $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);
@@ -65,7 +65,8 @@ class CommandeController extends AbstractController
             return $response;
         }
     }
-        /**
+
+    /**
      * @Route("/valider", name="valider")
      */
     public function valider(SessionInterface $session, ProduitRepository $produitRepository)
@@ -106,7 +107,7 @@ class CommandeController extends AbstractController
             ]);
             return $response;
         } else {
-            $response = $this->redirectToRoute('security_login');
+            $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);
@@ -141,8 +142,24 @@ class CommandeController extends AbstractController
                 'private' => true,
             ]);
             return $response;
+        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+//            $panier = $session->get("panier", []);
+
+            $response = $this->render('commande/admin/history.html.twig', [
+                'commandes' => $repository->findBy(['suivi' => false]),
+//                'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } else {
-            $response = $this->redirectToRoute('security_login');
+            $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);
@@ -182,7 +199,7 @@ class CommandeController extends AbstractController
             ]);
             return $response;
         } else {
-            $response = $this->redirectToRoute('security_login');
+            $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);
@@ -222,8 +239,25 @@ class CommandeController extends AbstractController
                 'private' => true,
             ]);
             return $response;
+        } else  if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            $panier = $session->get("panier", []);
+
+            $response = $this->render('commande/admin/details.html.twig', [
+                'commandeproduits' => $repository->findBy(['commande' => $commande]),
+                'commande' => $commande,
+                'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } else {
-            $response = $this->redirectToRoute('security_login');
+            $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);
@@ -263,7 +297,7 @@ class CommandeController extends AbstractController
             ]);
             return $response;
         } else {
-            $response = $this->redirectToRoute('security_login');
+            $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);
@@ -304,7 +338,7 @@ class CommandeController extends AbstractController
             ]);
             return $response;
         } else {
-            $response = $this->redirectToRoute('security_login');
+            $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);

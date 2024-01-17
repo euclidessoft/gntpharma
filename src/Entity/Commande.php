@@ -17,6 +17,12 @@ class Commande
     private $user;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $livreur;
+
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -42,6 +48,11 @@ class Commande
      * @ORM\Column(type="boolean")
      */
     private $suivi;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $livraison;
 
     /**
      * Constructor
@@ -116,6 +127,30 @@ class Commande
     public function setSuivi(bool $suivi): self
     {
         $this->suivi = $suivi;
+
+        return $this;
+    }
+
+    public function getLivreur(): ?User
+    {
+        return $this->livreur;
+    }
+
+    public function setLivreur(?User $livreur): self
+    {
+        $this->livreur = $livreur;
+
+        return $this;
+    }
+
+    public function getLivraison(): ?bool
+    {
+        return $this->livraison;
+    }
+
+    public function setLivraison(bool $livraison): self
+    {
+        $this->livraison = $livraison;
 
         return $this;
     }

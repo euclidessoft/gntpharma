@@ -174,9 +174,17 @@ class Produit
 
         return $this;
     }
+
     public function approvisionner(int $quantite): self
     {
         $this->stock = $this->stock + $quantite;
+
+        return $this;
+    }
+
+    public function livraison(int $quantite): self
+    {
+        $this->stock = $this->stock - $quantite;
 
         return $this;
     }

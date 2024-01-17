@@ -1,9 +1,13 @@
-{% extends 'commande.html.twig' %}
+{% extends 'admin.html.twig' %}
 {% block title %} {{ "Traitement commande pour Livraison"|trans }} - GNT Pharma {% endblock %}
-{% block order %}active{% endblock %}
+{% block stock %}active{% endblock %}
 
 {% block body %}
-    <h1 class="mt-4">traitement commande pour Livraison</h1>
+<div class="container mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-shopping-cart mr-2"></i>
+        {{ "traitement commande pour Livraison"|trans }}
+    </h3>
     <div class="row justify-content-end">
         <div class="col-lg-4">
             <table class="table table-success-light table-bordered table-hover table-striped">
@@ -14,8 +18,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <td>{{ commande.date|date('d/m/Y') }}</td>
-                <td>{{ commande.id }}</td>
+                <td>{{ commandereference.date|date('d/m/Y') }}</td>
+                <td>{{ commandereference.id }}</td>
                 </tbody>
             </table>
         </div>
@@ -38,17 +42,98 @@
             <td>{{ commande.produit.desigantion }}</td>
             <td>{{ commande.quantite }}</td>
             <td class="text-center">
+                <span id="quantite{{ commande.produit.id }}">
                 {% if commande.stock > commande.quantite %}
                     {{ commande.quantite }}
                 {% else %}
                     {{ commande.stock }}
                 {% endif %}
-                <button class="btn btn-success ms-3"><i class="fa fa-edit"></i> modifier</button>
+                    </span>
+                <button type="button"
+                        class="btn btn-success"
+                        data-toggle="modal" data-target="#modal{{ commande.produit.id }}"
+                        id="btn{{ commande.produit.id }}">
+                    <i class="fa fa-edit"></i>
+                </button>
+                <div class="modal fade" id="modal{{ commande.produit.id }}" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog text-center">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                    {{ commande.produit.reference }} {{ commande.produit.desigantion }} {{ commande.produit.fabriquant }}</h1>
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body px-5">
+                                Renseignez la quantité: <input type="number" class="form-control"
+                                                               id="text{{ commande.produit.id }}">
+                            </div>
+                            <div class="modal-footer px-5 py-4">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                        id="annuler{{ commande.produit.id }}">Annuler
+                                </button>
+                                <button type="button" class="btn btn-success ms-3"
+                                        id="ajouter{{ commande.produit.id }}"
+                                        onclick="modifquantite({{ commande.produit.id }}, {{ commande.quantite }}, {{ commande.stock }})"><i
+                                            class="fa fa-edit"></i> Modifier
+                                </button>
+                                <div id="modification{{ commande.produit.id }}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </td>
             <td class="text-center">{{ commande.stock }}</td>
             {% else %}
             {% endfor %}
     </table>
+<a class="btn btn-success mb-4" href="{{ path('livraison_valider', {'id': commandereference.id}) }}"><i class="fa fa-check"></i> Valider </a>
 
-    <a class="btn btn-success" href="{{ path('livraison_index') }}"><i class="fa fa-undo"></i> Retour</a>
+    <!-- Modal -->
+
+
+</div>
+{% block scripts %}
+    <script>
+        function modifquantite(id, quantite, st) {// fonction pour ajouter un produit dans le panier
+            var reg = new RegExp("^[0-9]+$");
+            if (reg.test($('#text' + id).val()) && quantite > $('#text' + id).val()) {
+                if (st >= $('#text' + id).val()) {
+                    // $('#btn' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                    $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('livraison_modif') }}",
+                        data: "prod=" + id + "&quantite=" + $('#text' + id).val(),
+                        success: function (data) {
+                            if (data['id'] == 'ok') {
+                                $('#quantite' + id).html($('#text' + id).val());
+                                $('#annuler' + id).trigger('click');
+                                $('#text' + id).val('');
+                                $('#ajouter' + id).html("<i class='fa fa-edit'></i>");
+
+                            } else {
+                                alert("{{ 'verifier la quantite saisie'|trans }}")
+                            }
+                        },
+                        error: function () {
+                            alert("{{ 'La requête n a pas abouti'|trans }}");
+                        }
+                    });
+                } else {
+                    var mess = "Stock indisponible  " + st;
+                    alert(mess);
+                }
+            } else {
+                var mess = "Quantité supérieure à la commande initiale";
+                alert(mess);
+            }
+
+        }
+    </script>
+
+{% endblock %}
 {% endblock %}
