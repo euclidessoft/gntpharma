@@ -1,0 +1,69 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Traitement commande pour Livraison"|trans }} - GNT Pharma {% endblock %}
+{% block stock %}active{% endblock %}
+
+{% block body %}
+<div class="container mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-shopping-cart mr-2"></i>
+        {{ "Commande déjà Livraison"|trans }}
+    </h3>
+    {% for message in app.flashes('echec') %}
+        <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                &times;
+            </button>
+            {{ message|trans }}
+        </div>
+    {% endfor %}
+    <div class="row justify-content-end">
+        <div class="col-lg-4">
+            <table class="table table-success-light table-bordered table-hover table-striped">
+                <thead>
+                <tr>
+                    <th>Numero Commande</th>
+                    <th>Date de commande </th>
+                    <th>Date de livraison</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <td>{{ commandereference.id }}</td>
+                <td>{{ commandereference.date|date('d/m/Y') }}</td>
+                <td>{{ livrer.date|date('d/m/Y') }}</td>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
+        <thead>
+        <tr>
+            <th>reference</th>
+            <th>designation</th>
+            <th>Quantite Commande</th>
+            <th>Quantite livrée</th>
+            <th>Quantite restante</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for commande in commandes %}
+        <tr>
+            <td>{{ commande.produit.reference }}</td>
+            <td>{{ commande.produit.desigantion }}</td>
+            <td>{{ commande.quantitecommander }}</td>
+            <td class="text-center">
+                    {{ commande.quantitelivrer }}
+            </td>
+            <td class="text-center">
+                    {{ commande.quantitecommander - commande.quantitelivrer }}
+            </td>
+            {% else %}
+            {% endfor %}
+    </table>
+
+
+
+</div>
+{% endblock %}

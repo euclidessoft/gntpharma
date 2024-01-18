@@ -182,11 +182,15 @@ class Produit
         return $this;
     }
 
-    public function livraison(int $quantite): self
+    public function livraison(int $quantite)
     {
         $this->stock = $this->stock - $quantite;
+        $res = false;
+        if($this->stock >= 0){
+            $res = true;
+        }
 
-        return $this;
+        return $res;
     }
 
     public function getCreation(): ?\DateTimeInterface

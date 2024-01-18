@@ -8,18 +8,30 @@
         <i class="fa fa-shopping-cart mr-2"></i>
         {{ "traitement commande pour Livraison"|trans }}
     </h3>
+    {% for message in app.flashes('echec') %}
+        <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                &times;
+            </button>
+            {{ message|trans }}
+        </div>
+    {% endfor %}
     <div class="row justify-content-end">
         <div class="col-lg-4">
             <table class="table table-success-light table-bordered table-hover table-striped">
                 <thead>
                 <tr>
-                    <th>Date</th>
                     <th>Numero Commande</th>
+                    <th>Date</th>
+                    <th>Client</th>
+
                 </tr>
                 </thead>
                 <tbody>
-                <td>{{ commandereference.date|date('d/m/Y') }}</td>
                 <td>{{ commandereference.id }}</td>
+                <td>{{ commandereference.date|date('d/m/Y') }}</td>
+                <td>{{ commandereference.user.nom }}</td>
+
                 </tbody>
             </table>
         </div>

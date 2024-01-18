@@ -35,6 +35,11 @@ class Livrer
     private $date;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $reste;
+
+    /**
      * Constructor
      */
     public function __construct(Commande $commande, User $user)
@@ -42,6 +47,7 @@ class Livrer
         $this->date = new \Datetime();
         $this->commande = $commande;
         $this->user = $user;
+        $this->reste = false;
     }
 
     public function getId(): ?int
@@ -81,6 +87,18 @@ class Livrer
     public function setCommande(?Commande $commande): self
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getReste(): ?bool
+    {
+        return $this->reste;
+    }
+
+    public function setReste(bool $reste): self
+    {
+        $this->reste = $reste;
 
         return $this;
     }

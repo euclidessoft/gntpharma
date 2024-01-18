@@ -36,7 +36,14 @@ class LivrerProduit
     /**
      * @ORM\Column(type="integer")
      */
-    private $quantite;
+    private $quantitelivrer;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+
+    private $quantitecommander;
+
     /**
      * @ORM\Column(type="integer")
      */
@@ -45,13 +52,13 @@ class LivrerProduit
     /**
      * Constructor
      */
-    public function __construct(Livrer $livrer, Produit $produit, $quantite, $archive)
+    public function __construct(Livrer $livrer, Produit $produit, $quantitecommander, $quantitelivrer, $archive)
     {
         $this->date = new \Datetime();
         $this->produit = $produit;
-//        $this->commande = $commande;
+        $this->quantitecommander = $quantitecommander;
         $this->archive = $archive;
-        $this->quantite = $quantite;
+        $this->quantitelivrer = $quantitelivrer;
         $this->livrer = $livrer;
     }
 
@@ -67,17 +74,6 @@ class LivrerProduit
         return $this;
     }
 
-    public function getQuantite(): ?int
-    {
-        return $this->quantite;
-    }
-
-    public function setQuantite(int $quantite): self
-    {
-        $this->quantite = $quantite;
-
-        return $this;
-    }
 
     public function getArchive(): ?int
     {
@@ -123,6 +119,30 @@ class LivrerProduit
     public function setLivrer(?Livrer $livrer): self
     {
         $this->livrer = $livrer;
+
+        return $this;
+    }
+
+    public function getQuantitelivrer(): ?int
+    {
+        return $this->quantitelivrer;
+    }
+
+    public function setQuantitelivrer(int $quantitelivrer): self
+    {
+        $this->quantitelivrer = $quantitelivrer;
+
+        return $this;
+    }
+
+    public function getQuantitecommander(): ?int
+    {
+        return $this->quantitecommander;
+    }
+
+    public function setQuantitecommander(int $quantitecommander): self
+    {
+        $this->quantitecommander = $quantitecommander;
 
         return $this;
     }
