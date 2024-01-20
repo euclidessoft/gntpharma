@@ -6,7 +6,7 @@
 <div class="container mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fa fa-shopping-cart mr-2"></i>
-        {{ "Commande déjà Livraison"|trans }}
+        {{ "Commande déjà Livrée"|trans }}
     </h3>
     {% for message in app.flashes('echec') %}
         <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
@@ -23,21 +23,19 @@
                 <tr>
                     <th>Numero Commande</th>
                     <th>Date de commande </th>
-                    <th>Date de livraison</th>
 
                 </tr>
                 </thead>
                 <tbody>
                 <td>{{ commandereference.id }}</td>
                 <td>{{ commandereference.date|date('d/m/Y') }}</td>
-                <td>{{ livrer.date|date('d/m/Y') }}</td>
 
                 </tbody>
             </table>
         </div>
     </div>
 
-    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
+    <table class="table table-success-light table-bordered table-hover table-striped w-100 text-center" id="list">
         <thead>
         <tr>
             <th>reference</th>
@@ -45,6 +43,8 @@
             <th>Quantite Commande</th>
             <th>Quantite livrée</th>
             <th>Quantite restante</th>
+            <th>Date de Livraison</th>
+            <th>N° Bordereau</th>
         </tr>
         </thead>
         <tbody>
@@ -57,8 +57,10 @@
                     {{ commande.quantitelivrer }}
             </td>
             <td class="text-center">
-                    {{ commande.quantitecommander - commande.quantitelivrer }}
+                    {{ commande.restealivrer }}
             </td>
+            <td>{{ commande.date|date('d/m/Y') }}</td>
+            <td>{{ commande.livrer.id }}</td>
             {% else %}
             {% endfor %}
     </table>

@@ -32,7 +32,7 @@
                     <td>{{ livrer.commande.id }}</td>
                     <td>{{ livrer.commande.date|date('d/m/Y') }}</td>
                     <td>
-                        <a class="btn btn-success" href="{{ path('livraison_historique_show', {'id': livrer.id}) }}"><i class="fa fa-list"></i> Afficher</a>
+                        <a class="btn btn-success" href="{{ path('livraison_historique_show', {'id': livrer.commande.id}) }}"><i class="fa fa-list"></i> Afficher</a>
                     </td>
                 </tr>
             {% else %}

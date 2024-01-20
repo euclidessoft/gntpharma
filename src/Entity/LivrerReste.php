@@ -142,4 +142,11 @@ class LivrerReste
         return $this;
     }
 
+    public function reste()
+    {
+
+
+        return $this->quantite - $this->quantitelivre;
+    }
+
 }

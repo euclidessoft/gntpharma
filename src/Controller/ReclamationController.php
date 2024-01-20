@@ -21,17 +21,9 @@ class ReclamationController extends AbstractController
      */
     public function index(SessionInterface $session, ReclamationRepository $reclamationRepository): Response
     {
-        $panier = $session->get("panier", []);
-        $dataPanier = [];
 
-        foreach($panier as $commande){
-            $dataPanier[] = [
-                "produit" => $commande['produit'],
-            ];
-        }
-        return $this->render('reclamation/index.html.twig', [
+        return $this->render('reclamation/admin/index.html.twig', [
             'reclamations' => $reclamationRepository->findAll(),
-            'panier' => $dataPanier,
         ]);
     }
 

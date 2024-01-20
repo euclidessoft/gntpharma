@@ -55,6 +55,11 @@ class Commande
     private $livraison;
 
     /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $datelivrer;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -62,6 +67,7 @@ class Commande
         $this->date = new \Datetime();
         $this->ref = 'hhfhfhf';
         $this->suivi = false;
+        $this->livraison = false;
     }
 
 
@@ -151,6 +157,18 @@ class Commande
     public function setLivraison(bool $livraison): self
     {
         $this->livraison = $livraison;
+
+        return $this;
+    }
+
+    public function getDatelivrer(): ?\DateTimeInterface
+    {
+        return $this->datelivrer;
+    }
+
+    public function setDatelivrer(\DateTimeInterface $datelivrer): self
+    {
+        $this->datelivrer = $datelivrer;
 
         return $this;
     }

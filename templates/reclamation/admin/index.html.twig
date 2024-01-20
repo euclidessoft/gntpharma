@@ -1,0 +1,44 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande-Reclamation"|trans }} - GNT Pharma {% endblock %}
+{% block reclamation %} active{% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-rotate mr-2"></i>
+            {{ 'Réclamations'|trans }}
+        </h3>
+
+        <table class="table table-success-light table-bordered table-hover table-striped" id="list">
+            <thead>
+            <tr>
+                <th>Reference</th>
+                <th>Date de Creation</th>
+                <th>Status</th>
+                <th>Date de  Cloture</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for reclamation in reclamations %}
+                <tr>
+                    <td>RECL{{ reclamation.id }}</td>
+                    <td>{{ reclamation.creation ? reclamation.creation|date('Y-m-d') : '' }}</td>
+                    <td>{{ reclamation.status ? 'Yes' : 'No' }}</td>
+                    <td>{{ reclamation.cloture ? reclamation.cloture|date('Y-m-d') : '' }}</td>
+                    <td>
+                        <a class="btn btn-success" href="{{ path('reclamation_show', {'id': reclamation.id}) }}"><i class="fa fa-list"></i> Afficher</a>
+                        {#                    <a href="{{ path('reclamation_edit', {'id': reclamation.id}) }}">edit</a>#}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Aucune réclamation</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

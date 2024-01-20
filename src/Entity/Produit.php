@@ -186,7 +186,7 @@ class Produit
     {
         $this->stock = $this->stock - $quantite;
         $res = false;
-        if($this->stock >= 0){
+        if($this->stock >= 0 ){
             $res = true;
         }
 

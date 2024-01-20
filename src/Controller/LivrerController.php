@@ -58,6 +58,7 @@ class LivrerController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/Historique/", name="historique")
      */
@@ -67,7 +68,7 @@ class LivrerController extends AbstractController
             //$panier = $session->get("panier", []);
 
             $response = $this->render('livrer/history.html.twig', [
-                'livrers' => $repository->findAll(),
+                'livrers' => $repository->historique(),
                 //'panier' => $panier,
             ]);
             $response->setSharedMaxAge(0);
@@ -103,7 +104,7 @@ class LivrerController extends AbstractController
      */
     public function show(Commande $commande, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session): Response
     {// traitement livraison
-        if($commande->getLivraison()){
+        if ($commande->getLivraison()) {
             $this->addFlash('notice', 'Livraison deja traite');
             $response = $this->redirectToRoute('livraison_index');
             $response->setSharedMaxAge(0);
@@ -126,9 +127,9 @@ class LivrerController extends AbstractController
         }
 
         $response = $this->render('livrer/show.html.twig', [
-        'commandes' => $listcommande,
-        'commandereference' => $commande,
-    ]);
+            'commandes' => $listcommande,
+            'commandereference' => $commande,
+        ]);
         $response->setSharedMaxAge(0);
         $response->headers->addCacheControlDirective('no-cache', true);
         $response->headers->addCacheControlDirective('no-store', true);
@@ -143,7 +144,7 @@ class LivrerController extends AbstractController
     /**
      * @Route("/Reste/{id}", name="reste_show", methods={"GET"})
      */
-    public function reste(Commande $commande,LivrerResteRepository $livrerResteRepository, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session): Response
+    public function reste(Commande $commande, LivrerResteRepository $livrerResteRepository, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session): Response
     {// traitement livraison
 
         $session->remove("livraison", []);
@@ -155,10 +156,10 @@ class LivrerController extends AbstractController
             $listcommande[] = $commandeproduit;
         }
 
-        $response = $this->render('livrer/show.html.twig', [
-        'commandes' => $listcommande,
-        'commandereference' => $commande,
-    ]);
+        $response = $this->render('livrer/reste_show.html.twig', [
+            'commandes' => $listcommande,
+            'commandereference' => $commande,
+        ]);
         $response->setSharedMaxAge(0);
         $response->headers->addCacheControlDirective('no-cache', true);
         $response->headers->addCacheControlDirective('no-store', true);
@@ -173,16 +174,22 @@ class LivrerController extends AbstractController
     /**
      * @Route("/Historique/{id}", name="historique_show", methods={"GET"})
      */
-    public function history_show(Livrer $livrer, LivrerProduitRepository $livrerProduitRepository, ProduitRepository $repository, SessionInterface $session): Response
+    public function history_show(Commande $commande, LivrerRepository $livrerRepository, LivrerProduitRepository $livrerProduitRepository, ProduitRepository $repository, SessionInterface $session): Response
     {// traitement livraison
-        if($livrer->getCommande()->getLivraison()){
-            $commandeproduits = $livrerProduitRepository->findBy(['livrer' => $livrer]);
+        if ($commande->getLivraison()) {
+            $livrer = $livrerRepository->findBy(['commande' => $commande]);
+            $histo = [];
+            foreach ($livrer as $item) {
+                $histo[] = $item->getId();
+            }
+
+            $commandeproduits = $livrerProduitRepository->historique($histo);
 
 
             $response = $this->render('livrer/history_show.html.twig', [
                 'commandes' => $commandeproduits,
-                'commandereference' => $livrer->getCommande(),
-                'livrer' => $livrer,
+                'commandereference' => $commande,
+//                'livrer' => $livrer,
             ]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
@@ -247,50 +254,160 @@ class LivrerController extends AbstractController
 
             $livrer = new Livrer($commande, $this->getUser());
             $commande->setLivraison(true);
+            $commande->setDatelivrer(new \DateTime());
+
+            foreach ($commandeproduits as $commandeproduit) {
+                $produit = $repository->find($commandeproduit->getProduit()->getId());
+
+                if (empty($panier[$produit->getId()])) {// livraison totale
+                    if ($commandeproduit->getQuantite() > $produit->getStock() && $produit->getStock() > 0) {// livraison totale
+                        $quantite = $produit->getStock();
+                        if ($produit->livraison($produit->getStock())) {
+                            $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite, $produit->getStock());
+                            $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $quantite);
+                            $livrerProduit->setReste(true);
+                            $em->persist($reste);
+                            $em->persist($livrerProduit);
+                            $livrer->setReste(true);
+                        } else {
+                            goto terminer;
+                        }
+
+                    }else {
+
+                        if (($produit->getStock() - $commandeproduit->getQuantite()) > 0) {
+                            $produit->livraison($commandeproduit->getQuantite());
+                            $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $commandeproduit->getQuantite(), $produit->getStock());
+                            $em->persist($livrerProduit);
+                        } else {
+                            goto terminer;
+                        }
+                    }
+
+                } else {// livraison partielle
+                    if (($produit->getStock() - $panier[$produit->getId()]) > 0) {
+                        $produit->livraison($panier[$produit->getId()]);
+                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()], $produit->getStock());
+                        $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()]);
+                        $livrerProduit->setReste(true);
+                        $em->persist($reste);
+                        $em->persist($livrerProduit);
+                        $livrer->setReste(true);
+                    } else {
+                        goto terminer;
+                    }
+                }
+                $em->persist($produit);
+            }
+
+            $em->persist($livrer);
+            $em->persist($commande);
+            $em->flush();
+            $this->addFlash('notice', 'Livraison enregistrée avec succés');
+            $response = $this->redirectToRoute('livraison_index');
+
+            $session->remove('livraison');
+
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+
+            terminer:
+            $this->addFlash('echec', 'verifier les quantités avant validation');
+            $response = $this->redirectToRoute('livraison_show', ['id' => $commande->getId()]);
+
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/restevalider/{id}", name="reste_valider")
+     */
+    public function reste_valider(Commande $commande, LivrerRepository $livrerrepository, LivrerResteRepository $livrerResteRepository, ProduitRepository $repository, SessionInterface $session)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+            $panier = $session->get("livraison", []);
+            $em = $this->getDoctrine()->getManager();
+            $commandeproduits = $livrerResteRepository->findBy(['commande' => $commande]);
+            $oldlivrer = $livrerrepository->findOneBy(['commande' => $commande]);
+            $oldlivrer->setReste(false);
+            $em->persist($oldlivrer);
+
+            $livrer = new Livrer($commande, $this->getUser());
+            $commande->setLivraison(true);
             $reussi = false;
             foreach ($commandeproduits as $commandeproduit) {
                 $produit = $repository->find($commandeproduit->getProduit()->getId());
 
                 if (empty($panier[$produit->getId()])) {// livraison totale
 
-                    if($produit->livraison($commandeproduit->getQuantite())){
-                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $commandeproduit->getQuantite(), $produit->getStock());
+                    if ($produit->livraison($commandeproduit->reste())) {
+                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $commandeproduit->reste(), $produit->getStock());
+                        $livrerProduit->setRestealivrer(0);
                         $em->persist($livrerProduit);
                         $reussi = true;
                     }
 
-                } elseif ($commandeproduit->getQuantite() > $produit->getStock()) {// livraison totale
-
-                    if($produit->livraison($produit->getStock())){
-                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $produit->getStock(), $produit->getStock());
-                        $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()]);
-                        $em->persist($reste);
-                        $em->persist($livrerProduit);
-                        $livrer->setReste(true);
-                        $reussi = true;
-                    }
-
-                } else {// livraison partielle
-                    if($produit->livraison($panier[$produit->getId()])) {
-                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()], $produit->getStock());
-                        $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()]);
-                        $em->persist($reste);
-                        $em->persist($livrerProduit);
-                        $livrer->setReste(true);
-                        $reussi = true;
-                    }
                 }
+//                elseif ($commandeproduit->getQuantite() > $produit->getStock()) {// livraison totale
+//
+//                    if($produit->livraison($produit->getStock())){
+//                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $produit->getStock(), $produit->getStock());
+//                        $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()]);
+//                        $em->persist($reste);
+//                        $em->persist($livrerProduit);
+//                        $livrer->setReste(true);
+//                        $reussi = true;
+//                    }
+//
+//                }
+//                else {// livraison partielle
+//                    if($produit->livraison($panier[$produit->getId()])) {
+//                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()], $produit->getStock());
+//                        $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()]);
+//                        $em->persist($reste);
+//                        $em->persist($livrerProduit);
+//                        $livrer->setReste(true);
+//                        $reussi = true;
+//                    }
+//                }
                 $em->persist($produit);
             }
-            if($reussi) {
+            if ($reussi) {
                 $em->persist($livrer);
                 $em->persist($commande);
                 $em->flush();
                 $this->addFlash('notice', 'Livraison enregistrée avec succés');
                 $response = $this->redirectToRoute('livraison_index');
-            }else{
+            } else {
                 $this->addFlash('echec', 'verifier les quantités avant validation');
-                $response = $this->redirectToRoute('livraison_show',['id'=>$commande->getId()]);
+                $response = $this->redirectToRoute('livraison_reste_show', ['id' => $commande->getId()]);
             }
 
             $session->remove('livraison');
@@ -317,8 +434,6 @@ class LivrerController extends AbstractController
             return $response;
         }
     }
-
-
 
 
     /**`

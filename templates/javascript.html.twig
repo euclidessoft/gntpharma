@@ -199,6 +199,19 @@
             e.preventDefault();
             return false;
         });*/
+        $('#btnversement').hide();
+        $('#versement').hide();
+        $('#tampon').hide();
+        $('#paiement_form_montant').change(function () {
+            var reg = new RegExp("^[0-9]+$");
+            if (reg.test($('#paiement_form_montant').val())) {
+                $('#tamp').val('ok');
+                if ($('#tamp1').val() != '') $('#btnversement').show();
+            } else {
+                $('#tamp').val('');
+                $('#btnversement').hide();
+            }
+        });
     });
 
     function envoie() {

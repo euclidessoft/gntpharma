@@ -19,6 +19,14 @@ class LivrerProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, LivrerProduit::class);
     }
 
+    public function historique(array $appro)
+    {
+        $query = $this->createQueryBuilder('a');
+        return $query->where($query->expr()->in('a.livrer', $appro))
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return LivrerProduit[] Returns an array of LivrerProduit objects
     //  */

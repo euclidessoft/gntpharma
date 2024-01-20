@@ -6,7 +6,7 @@
 <div class="container mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fa fa-shopping-cart mr-2"></i>
-        {{ "traitement commande pour Livraison"|trans }}
+        {{ "traitement commande pour Livraison restante"|trans }}
     </h3>
     {% for message in app.flashes('echec') %}
         <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
@@ -17,7 +17,7 @@
         </div>
     {% endfor %}
     <div class="row justify-content-end">
-        <div class="col-lg-5">
+        <div class="col-lg-4">
             <table class="table table-success-light table-bordered table-hover table-striped">
                 <thead>
                 <tr>
@@ -41,9 +41,10 @@
         <thead>
         <tr>
             <th>reference</th>
-            <th>designation</th>
-            <th>Quantite Commande</th>
-            <th>Quantite à livrée</th>
+            <th>désignation</th>
+            <th>Quantite Commandée</th>
+            <th>Quantite déjà livrée</th>
+            <th>reste à livrer</th>
             <th>Stock disponible</th>
         </tr>
         </thead>
@@ -54,55 +55,57 @@
             <td>{{ commande.produit.desigantion }}</td>
             <td>{{ commande.quantite }}</td>
             <td class="text-center">
-                <span id="quantite{{ commande.produit.id }}">
-                {% if commande.stock > commande.quantite %}
-                    {{ commande.quantite }}
-                {% else %}
-                    {{ commande.stock }}
-                {% endif %}
-                    </span>
-                <button type="button"
-                        class="btn btn-success"
-                        data-toggle="modal" data-target="#modal{{ commande.produit.id }}"
-                        id="btn{{ commande.produit.id }}">
-                    <i class="fa fa-edit"></i>
-                </button>
-                <div class="modal fade" id="modal{{ commande.produit.id }}" tabindex="-1" role="dialog"
-                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog text-center">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                    {{ commande.produit.reference }} {{ commande.produit.desigantion }} {{ commande.produit.fabriquant }}</h1>
-                                <button type="button" class="close" data-dismiss="modal"
-                                        aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body px-5">
-                                Renseignez la quantité: <input type="number" class="form-control"
-                                                               id="text{{ commande.produit.id }}">
-                            </div>
-                            <div class="modal-footer px-5 py-4">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                        id="annuler{{ commande.produit.id }}">Annuler
-                                </button>
-                                <button type="button" class="btn btn-success ms-3"
-                                        id="ajouter{{ commande.produit.id }}"
-                                        onclick="modifquantite({{ commande.produit.id }}, {{ commande.quantite }}, {{ commande.stock }})"><i
-                                            class="fa fa-edit"></i> Modifier
-                                </button>
-                                <div id="modification{{ commande.produit.id }}"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {{ commande.quantitelivre }}
+{#                <span id="quantite{{ commande.produit.id }}">#}
+{#                {% if commande.stock > commande.quantite %}#}
+{#                    {{ commande.quantite }}#}
+{#                {% else %}#}
+{#                    {{ commande.stock }}#}
+{#                {% endif %}#}
+{#                    </span>#}
+{#                <button type="button"#}
+{#                        class="btn btn-success"#}
+{#                        data-toggle="modal" data-target="#modal{{ commande.produit.id }}"#}
+{#                        id="btn{{ commande.produit.id }}">#}
+{#                    <i class="fa fa-edit"></i>#}
+{#                </button>#}
+{#                <div class="modal fade" id="modal{{ commande.produit.id }}" tabindex="-1" role="dialog"#}
+{#                     aria-labelledby="exampleModalLabel" aria-hidden="true">#}
+{#                    <div class="modal-dialog text-center">#}
+{#                        <div class="modal-content">#}
+{#                            <div class="modal-header">#}
+{#                                <h1 class="modal-title fs-5" id="exampleModalLabel">#}
+{#                                    {{ commande.produit.reference }} {{ commande.produit.desigantion }} {{ commande.produit.fabriquant }}</h1>#}
+{#                                <button type="button" class="close" data-dismiss="modal"#}
+{#                                        aria-label="Close">#}
+{#                                    <span aria-hidden="true">&times;</span>#}
+{#                                </button>#}
+{#                            </div>#}
+{#                            <div class="modal-body px-5">#}
+{#                                Renseignez la quantité: <input type="number" class="form-control"#}
+{#                                                               id="text{{ commande.produit.id }}">#}
+{#                            </div>#}
+{#                            <div class="modal-footer px-5 py-4">#}
+{#                                <button type="button" class="btn btn-secondary" data-dismiss="modal"#}
+{#                                        id="annuler{{ commande.produit.id }}">Annuler#}
+{#                                </button>#}
+{#                                <button type="button" class="btn btn-success ms-3"#}
+{#                                        id="ajouter{{ commande.produit.id }}"#}
+{#                                        onclick="modifquantite({{ commande.produit.id }}, {{ commande.quantite }}, {{ commande.stock }})"><i#}
+{#                                            class="fa fa-edit"></i> Modifier#}
+{#                                </button>#}
+{#                                <div id="modification{{ commande.produit.id }}"></div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
             </td>
+            <td class="text-center">{{ commande.quantite - commande.quantitelivre }}</td>
             <td class="text-center">{{ commande.stock }}</td>
             {% else %}
             {% endfor %}
     </table>
-<a class="btn btn-success mb-4" href="{{ path('livraison_valider', {'id': commandereference.id}) }}"><i class="fa fa-check"></i> Valider </a>
+<a class="btn btn-success mb-4" href="{{ path('livraison_reste_valider', {'id': commandereference.id}) }}"><i class="fa fa-check"></i> Valider </a>
 
     <!-- Modal -->
 

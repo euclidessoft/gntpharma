@@ -19,22 +19,17 @@ class LivrerRepository extends ServiceEntityRepository
         parent::__construct($registry, Livrer::class);
     }
 
-    // /**
-    //  * @return Livrer[] Returns an array of Livrer objects
-    //  */
-    /*
-    public function findByExampleField($value)
+
+    public function historique()
     {
         return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
+            ->groupBy('l.commande')
+            ->orderBy('l.id', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Livrer

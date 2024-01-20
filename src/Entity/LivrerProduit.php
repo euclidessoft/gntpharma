@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LivrerProduit
 {
+
+
     /**
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="App\Entity\Produit")
@@ -27,6 +29,10 @@ class LivrerProduit
 //     * @ORM\ManyToOne(targetEntity="App\Entity\Commande")
 //     */
 //    private $commande;
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $reste;
 
     /**
      * @ORM\Column(type="date")
@@ -37,6 +43,10 @@ class LivrerProduit
      * @ORM\Column(type="integer")
      */
     private $quantitelivrer;
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $restealivrer;
 
     /**
      * @ORM\Column(type="integer")
@@ -60,6 +70,8 @@ class LivrerProduit
         $this->archive = $archive;
         $this->quantitelivrer = $quantitelivrer;
         $this->livrer = $livrer;
+        $this->reste = false;
+        $this->restealivrer = $quantitecommander - $quantitelivrer;
     }
 
     public function getDate(): ?\DateTimeInterface
@@ -143,6 +155,30 @@ class LivrerProduit
     public function setQuantitecommander(int $quantitecommander): self
     {
         $this->quantitecommander = $quantitecommander;
+
+        return $this;
+    }
+
+    public function getReste(): ?bool
+    {
+        return $this->reste;
+    }
+
+    public function setReste(bool $reste): self
+    {
+        $this->reste = $reste;
+
+        return $this;
+    }
+
+    public function getRestealivrer(): ?int
+    {
+        return $this->restealivrer;
+    }
+
+    public function setRestealivrer(int $restealivrer): self
+    {
+        $this->restealivrer = $restealivrer;
 
         return $this;
     }
