@@ -45,7 +45,7 @@ class PromotionController extends AbstractController
 
             foreach ($panier as $commande) {
                 $dataPanier[] = [
-                    "produit" => $commande['produit'],
+                    'produit' => $commande['produit'],
                 ];
             }
             $response = $this->render('promotion/index.html.twig', [

@@ -14,6 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Reclamation
 {
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Reponse", mappedBy="reclamation")
+     */
+    private $reponses;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Commande")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank(message = "Champ obligatoire")
@@ -81,6 +86,7 @@ class Reclamation
         $this->produits = new ArrayCollection();
         $this->status = false;
         $this->creation = new \Datetime();
+        $this->reponses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -180,6 +186,36 @@ class Reclamation
     public function setMotif(string $motif): self
     {
         $this->motif = $motif;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Reponse[]
+     */
+    public function getReponses(): Collection
+    {
+        return $this->reponses;
+    }
+
+    public function addReponse(Reponse $reponse): self
+    {
+        if (!$this->reponses->contains($reponse)) {
+            $this->reponses[] = $reponse;
+            $reponse->setReclamation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReponse(Reponse $reponse): self
+    {
+        if ($this->reponses->removeElement($reponse)) {
+            // set the owning side to null (unless already changed)
+            if ($reponse->getReclamation() === $this) {
+                $reponse->setReclamation(null);
+            }
+        }
 
         return $this;
     }
