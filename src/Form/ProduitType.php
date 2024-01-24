@@ -18,6 +18,9 @@ class ProduitType extends AbstractType
             ->add('prixpublic')
             ->add('mincommande')
             ->add('fabriquant')
+            ->add('telephone')
+            ->add('adresse')
+            ->add('description')
         ;
     }
 
