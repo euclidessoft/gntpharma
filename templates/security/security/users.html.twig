@@ -3,6 +3,11 @@
 {% block ag %} class="btn btn-primary mt-3" {% endblock %}
 
 {% block body %}
+<div class="container-fluid mt-4 py-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-user mr-2"></i>
+        {{ 'Profil Utilisateur'|trans }}
+    </h3>
     {{ include('security/security/boutons.html.twig') }}
     <h3 class="text-bold">
         <i class="fa fa-users"></i>
@@ -80,7 +85,7 @@
             {% endfor %}
         </tbody>
     </table>
-
+</div>
     {% block scripts %}
         <script>
             function userdisable(id) {

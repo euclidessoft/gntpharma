@@ -126,7 +126,7 @@ class securityController extends AbstractController
      */
     public function profile(SessionInterface $session)
     {
-        if ($this->getUser() !== null) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
             $panier = $session->get("panier", []);
             $response = $this->render('security/security/profile.html.twig', [
                 'user' => $this->getUser(),
@@ -141,7 +141,23 @@ class securityController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        } else {
+        }
+        else if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+            $response = $this->render('security/security/admin/profile.html.twig', [
+                'user' => $this->getUser(),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+        else {
             $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_login');
         }
@@ -152,7 +168,7 @@ class securityController extends AbstractController
      */
     public function edit(SessionInterface $session,Request $request)
     {
-        if ($this->getUser() !== null) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
             $panier = $session->get("panier", []);
             $em = $this->getDoctrine()->getManager();
             $user = $em->getRepository(User::class)->find($this->getUser()->getId());
@@ -180,7 +196,36 @@ class securityController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        } else {
+        }elseif ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find($this->getUser()->getId());
+        $form = $this->createForm(UserType::class, $user);
+        $form->remove('username');
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('notice', 'Profil modifié avec succès');
+            return $this->redirectToRoute('security_profile', ['id' => $user->getId()]);
+
+        }
+        $response = $this->render('security/security/admin/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+        $response->setSharedMaxAge(0);
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('no-store', true);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->setCache([
+            'max_age' => 0,
+            'private' => true,
+        ]);
+        return $response;
+    }
+
+        else {
             $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_login');
         }
