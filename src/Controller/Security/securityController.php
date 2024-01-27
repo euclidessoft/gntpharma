@@ -59,7 +59,8 @@ class securityController extends AbstractController
                 $message = (new \Swift_Message('Activation compte utilisateur'))
                     ->setFrom('support@gntpharma-cameroun.com')
                     ->setTo($user->getEmail())
-                    ->setBody("Cliquez sur le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
+                    ->setBody($this->renderView('security/security/mail/active.html.twig', [ 'url' => $url ]), 'text/html');
+//                    ->setBody("Cliquez su->setBody($this->renderView('security/security/mail/active.html.twig', [ 'url' => $url ]), 'text/html');r le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
 //                $message = (new \Swift_Message('Activation compte utilisateur'))
 //                 ->setFrom('support@gntpharma-cameroun.com')
 //                 ->setTo($user->getEmail())
@@ -308,7 +309,8 @@ class securityController extends AbstractController
             $message = (new \Swift_Message('Réinitialisation mot de passe'))
                 ->setFrom('support@gntpharma-cameroun.com')
                 ->setTo($user->getEmail())
-                ->setBody("Cliquez sur le lien suivant pour réinitialiser votre mot de passe " . $url, 'text/html');
+                ->setBody($this->renderView('security/security/mail/forget.html.twig', [ 'url' => $url ]), 'text/html');
+//                ->setBody("Cliquez sur le lien suivant pour réinitialiser votre mot de passe " . $url, 'text/html');
 
             $mail->send($message);
             $this->addFlash('change', 'Un message a été envoyé à votre adresse email, veuillez consulter votre boite de réception');
@@ -581,7 +583,8 @@ class securityController extends AbstractController
                 $message = (new \Swift_Message('Activation compte utilisateur'))
                     ->setFrom('support@gntpharma-cameroun.com')
                     ->setTo($user->getEmail())
-                    ->setBody("Cliquez sur le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
+                    ->setBody($this->renderView('security/security/mail/active.html.twig', [ 'url' => $url ]), 'text/html');
+//                    ->setBody("Cliquez sur le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
 
 
                 $mail->send($message);
