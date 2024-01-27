@@ -23,8 +23,12 @@ class User implements UserInterface
 {
 
     const jobs = [
+
+        'Administrateur' => 'Administrateur',
         'Client' => 'Client' ,
-        'Administrateur' => 'Administrateur'
+        'Financier' => 'Financier' ,
+        'Gestionnaire de stock' => 'Gestionnaire de stock' ,
+        'Livreur' => 'Livreur' ,
     ];
 
     /**
@@ -86,7 +90,7 @@ class User implements UserInterface
     private $adresse;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $fonction;
 

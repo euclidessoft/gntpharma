@@ -6,7 +6,8 @@ security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     role_hierarchy:
         ROLE_CLIENT:     [ROLE_USER]
-        ROLE_ADMIN:       [ROLE_USER]
+        ROLE_STOCK:       [ROLE_LIVREUR]
+        ROLE_ADMIN:       [ROLE_USER, ROLE_FINANCE, ROLE_STOCK, ROLE_LIVREUR]
 
 
 

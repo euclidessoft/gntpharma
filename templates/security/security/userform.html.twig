@@ -2,6 +2,11 @@
     {{ form_start(form, {'attr' : { 'id' : 'form'}}) }}
 
     <div class="row">
+        <div class="col-md-12">
+            <div class="form-group mb-4">
+                {{ form_widget(form.fonction) }}
+            </div>
+        </div>
         <div class="col-md-6">
             {{ form_errors(form.prenom) }}
         </div>

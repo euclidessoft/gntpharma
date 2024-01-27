@@ -24,7 +24,12 @@ class RegistrationType extends AbstractType
         ->add('prenom', null,['label' => 'Prenom'])
         ->add('nom', null,['label' => 'Nom'])
         //->add('datenaiss', DateType::class, array( 'label' => "Date de naissance",'widget' => 'single_text','attr' => ['title' => 'Date de naissance'],))
-       
+        ->add('fonction', ChoiceType::class, [
+            'choices' => User::jobs,
+            'placeholder' => 'types d\'utilisateur *',
+            'label' => false,
+            'required' => true
+        ])
 
             ->add('phone', null,['label' => false])
             ->add('email', null,['label' => false])

@@ -549,30 +549,28 @@ class securityController extends AbstractController
 
                 $user->setRoles(['ROLE_ADMIN']);
 
-//                if($this->get('security.authorization_checker')->isGranted('ROLE_MODIF_ADMIN_CELL') && !$this->get('security.authorization_checker')->isGranted('ROLE_MODIF_ADMIN_BEN'))
-//                {
-//                    $user->setCellule($this->getUser()->getCellule());
-//                }
-                /* $pro = $manager->getRepository(Cotisation::class)->find(1);
-                 $lic = $manager->getRepository(Cotisation::class)->find(2);
-                 $mas = $manager->getRepository(Cotisation::class)->find(3);
-                 $doc = $manager->getRepository(Cotisation::class)->find(4);
-                 if($user->getProfession() == null)// definition profession etudiant si
-                 {
-                     $user->setProfession("Etudiant");
-                    if($user->getClasse() == "L1" || $user->getClasse() == "L2" || $user->getClasse() == "L3"){
-                        $user->setCotisation($lic);
+                switch($user->getFonction()){
+                    case 'Administrateur':{
+                        $user->setRoles(['ROLE_ADMIN']);
+                        break;
                     }
-                    elseif($user->getClasse() == "M1" || $user->getClasse() == "M2"){
-                        $user->setCotisation($mas);
+                    case 'Client':{
+                        $user->setRoles(['ROLE_CLIENT']);
+                        break;
                     }
-                    else{
-                        $user->setCotisation($doc);
+                    case 'Financier':{
+                        $user->setRoles(['ROLE_FINANCE']);
+                        break;
                     }
-                 }else{
-                    $user->setCotisation($pro);
-                }*/
-
+                    case 'Gestionnaire de stock':{
+                        $user->setRoles(['ROLE_STOCK']);
+                        break;
+                    }
+                    case 'Livreur':{
+                        $user->setRoles(['ROLE_LIVREUR']);
+                        break;
+                    }
+                }
                 // envoie mail
                 $token = $tokenGenerator->generateToken();
                 $user->setResetToken($token);
