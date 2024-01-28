@@ -77,17 +77,13 @@ class ReclamationController extends AbstractController
     /**
      * @Route("/{id}", name="reclamation_show", methods={"GET"})
      */
-    public function show(Reclamation $reclamation, LivrerRepository $livrerRepository, LivrerProduitRepository $livrerProduitRepository, SessionInterface $session): Response
+    public function show(Reclamation $reclamation, LivrerProduitRepository $livrerProduitRepository, SessionInterface $session): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 
-            $livrer = $livrerRepository->findBy(['commande' => $reclamation->getCommande()]);
-            $histo []= 0;
-            foreach ($livrer as $item) {
-                $histo[] = $item->getId();
-            }
 
-            $commandeproduits = $livrerProduitRepository->historique($histo);
+
+            $commandeproduits = $livrerProduitRepository->findBy(['commande' => $reclamation->getCommande()]);
             return $this->render('reclamation/admin/show.html.twig', [
                 'reclamation' => $reclamation,
                 'commandes' => $commandeproduits,
@@ -103,13 +99,8 @@ class ReclamationController extends AbstractController
             }
 
 
-            $livrer = $livrerRepository->findBy(['commande' => $reclamation->getCommande()]);
-            $histo = [];
-            foreach ($livrer as $item) {
-                $histo[] = $item->getId();
-            }
 
-            $commandeproduits = $livrerProduitRepository->historique($histo);
+            $commandeproduits = $livrerProduitRepository->findBy(['commande' => $reclamation->getCommande()]);
             return $this->render('reclamation/show.html.twig', [
                 'reclamation' => $reclamation,
                 'commandes' => $commandeproduits,

@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LivrerProduit
 {
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Commande")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $commande;
 
 
     /**
@@ -62,10 +67,11 @@ class LivrerProduit
     /**
      * Constructor
      */
-    public function __construct(Livrer $livrer, Produit $produit, $quantitecommander, $quantitelivrer, $archive)
+    public function __construct(Livrer $livrer, Produit $produit, $quantitecommander, $quantitelivrer, $archive, Commande $commande)
     {
         $this->date = new \Datetime();
         $this->produit = $produit;
+        $this->commande = $commande;
         $this->quantitecommander = $quantitecommander;
         $this->archive = $archive;
         $this->quantitelivrer = $quantitelivrer;
@@ -179,6 +185,18 @@ class LivrerProduit
     public function setRestealivrer(int $restealivrer): self
     {
         $this->restealivrer = $restealivrer;
+
+        return $this;
+    }
+
+    public function getCommande(): ?Commande
+    {
+        return $this->commande;
+    }
+
+    public function setCommande(?Commande $commande): self
+    {
+        $this->commande = $commande;
 
         return $this;
     }

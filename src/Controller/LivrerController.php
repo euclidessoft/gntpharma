@@ -263,7 +263,7 @@ class LivrerController extends AbstractController
                     if ($commandeproduit->getQuantite() > $produit->getStock() && $produit->getStock() > 0) {// livraison totale
                         $quantite = $produit->getStock();
                         if ($produit->livraison($produit->getStock())) {
-                            $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite, $produit->getStock());
+                            $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite, $produit->getStock(), $commande);
                             $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $quantite);
                             $livrerProduit->setReste(true);
                             $em->persist($reste);
@@ -277,7 +277,7 @@ class LivrerController extends AbstractController
 
                         if (($produit->getStock() - $commandeproduit->getQuantite()) > 0) {
                             $produit->livraison($commandeproduit->getQuantite());
-                            $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $commandeproduit->getQuantite(), $produit->getStock());
+                            $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $commandeproduit->getQuantite(), $produit->getStock(), $commande);
                             $em->persist($livrerProduit);
                         } else {
                             goto terminer;
@@ -287,7 +287,7 @@ class LivrerController extends AbstractController
                 } else {// livraison partielle
                     if (($produit->getStock() - $panier[$produit->getId()]) > 0) {
                         $produit->livraison($panier[$produit->getId()]);
-                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()], $produit->getStock());
+                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()], $produit->getStock(), $commande);
                         $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()]);
                         $livrerProduit->setReste(true);
                         $em->persist($reste);
@@ -368,7 +368,7 @@ class LivrerController extends AbstractController
                 if (empty($panier[$produit->getId()])) {// livraison totale
 
                     if ($produit->livraison($commandeproduit->reste())) {
-                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $commandeproduit->reste(), $produit->getStock());
+                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $commandeproduit->reste(), $produit->getStock(), $commande);
                         $livrerProduit->setRestealivrer(0);
                         $em->persist($livrerProduit);
                         $reussi = true;
