@@ -82,7 +82,7 @@ class ReclamationController extends AbstractController
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 
             $livrer = $livrerRepository->findBy(['commande' => $reclamation->getCommande()]);
-            $histo = [];
+            $histo []= 0;
             foreach ($livrer as $item) {
                 $histo[] = $item->getId();
             }
