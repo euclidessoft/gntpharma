@@ -132,8 +132,8 @@ class CommandeController extends AbstractController
         if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
             $panier = $session->get("panier", []);
 
-            $response = $this->render('commande/admin/suivi.html.twig', [
-                'commandes' => $repository->findBy(['user' => $this->getUser()->getId()]),
+            $response = $this->render('commande/suivi.html.twig', [
+                'commandes' => $repository->findBy(['user' => $this->getUser()->getId(), 'suivi' => false]),
                 'panier' => $panier,
             ]);
             $response->setSharedMaxAge(0);
@@ -191,6 +191,22 @@ class CommandeController extends AbstractController
             $response = $this->render('commande/admin/history.html.twig', [
                 'commandes' => $repository->findBy(['suivi' => true]),
 //                'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+            $panier = $session->get("panier", []);
+
+            $response = $this->render('commande/history.html.twig', [
+                'commandes' => $repository->findBy(['user' => $this->getUser()->getId(), 'suivi' => true]),
+                'panier' => $panier,
             ]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);

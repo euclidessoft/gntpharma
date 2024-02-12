@@ -36,6 +36,9 @@
             <th class="text-center">
                 {{ 'Téléphone'|trans }}
             </th>
+            <th class="text-center">
+                {{ 'Email'|trans }}
+            </th>
             {% if is_granted("ROLE_ADMIN") %}
                 <th>
                     {{ 'Actions'|trans }}
@@ -57,15 +60,20 @@
                         {{ user.phone }}
                     </a></b>
             </td>
+            <td data-label="{{ 'email'|trans }}" class="phone">
+                <b> <a href="{{ path('security_user', { user : user.id }) }}">
+                        {{ user.email }}
+                    </a></b>
+            </td>
             {% if is_granted("ROLE_ADMIN") %}
                 <td>
                     <button class="btn btn-normal btn-danger mb-2 mr-2 l-5" onclick="del({{ user.id }})" id="btn">
                         <i class="fa fa-trash"></i>
-                        {{ 'Supprimer Utilisateur'|trans }}
+                        {{ 'Supprimer'|trans }}
                     </button>
 
                     {% if user.enabled == 1 %}
-                        <button class="btn btn-shadow btn-td btn-normal mb-2 btn-warning" id="btn{{ user.id }}"
+                        <button class="btn btn-shadow btn-normal mb-2 btn-warning" id="btn{{ user.id }}"
                                 onclick="userdisable({{ user.id }})">
                             <i class="fa fa-user-lock"></i>
                             {{ 'Désactiver'|trans }}
