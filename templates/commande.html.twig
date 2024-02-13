@@ -152,7 +152,7 @@
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="pelerin">
                         <li class="dropdown-item">
-                            <a class="nav-link" href="{{ path('reclamation_new') }}">
+                            <a class="nav-link" href="{{ path('reclamation_new', { 'user' : app.user.id }) }}">
                                 <i class="fas fa-user-plus mr-2"></i>
                                 {{ 'Creer une reclamation'|trans }}
                             </a>

@@ -48,9 +48,9 @@ class ReclamationController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="reclamation_new", methods={"GET","POST"})
+     * @Route("/new/{user}", name="reclamation_new", methods={"GET","POST"})
      */
-    public function new(SessionInterface $session, Request $request): Response
+    public function new(SessionInterface $session, Request $request, User $user): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
             $panier = $session->get("panier", []);
@@ -62,6 +62,7 @@ class ReclamationController extends AbstractController
                 ];
             }
             $reclamation = new Reclamation();
+            $reclamation->setUser($user);
             $form = $this->createForm(ReclamationType::class, $reclamation, ['id' => $this->getUser()->getId()]);
             $form->handleRequest($request);
 
@@ -70,14 +71,33 @@ class ReclamationController extends AbstractController
                 $entityManager->persist($reclamation);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('reclamation_index', [], Response::HTTP_SEE_OTHER);
+
+                $response = $this->redirectToRoute('reclamation_index', ['user' => $user->getId()], Response::HTTP_SEE_OTHER);
+                $response->setSharedMaxAge(0);
+                $response->headers->addCacheControlDirective('no-cache', true);
+                $response->headers->addCacheControlDirective('no-store', true);
+                $response->headers->addCacheControlDirective('must-revalidate', true);
+                $response->setCache([
+                    'max_age' => 0,
+                    'private' => true,
+                ]);
+                return $response;
             }
 
-            return $this->render('reclamation/new.html.twig', [
+            $response = $this->render('reclamation/new.html.twig', [
                 'reclamation' => $reclamation,
                 'form' => $form->createView(),
                 'panier' => $dataPanier,
             ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
