@@ -24,16 +24,90 @@ class ReclamationController extends AbstractController
      */
     public function index(SessionInterface $session, ReclamationRepository $reclamationRepository, User $user): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
-            return $this->render('reclamation/admin/index.html.twig', [
-                'reclamations' => $reclamationRepository->findBy(['user' => $user]),
-            ]);
-        }else if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            return $this->render('reclamation/admin/index.html.twig', [
-                'reclamations' => $reclamationRepository->findAll(),
-            ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 
-        }else {
+            $response = $this->render('reclamation/admin/index.html.twig', [
+                'reclamations' => $reclamationRepository->findBy(['cloture' => null]),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+
+        }else if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+            $panier = $session->get("panier", []);
+            $dataPanier = [];
+
+            $response = $this->render('reclamation/index.html.twig', [
+                'reclamations' => $reclamationRepository->findBy(['user' => $user, 'cloture' => null]),
+                'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }else  {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/Cloturer/{user}", name="reclamation_index_cloturer", methods={"GET"})
+     */
+    public function clo(SessionInterface $session, ReclamationRepository $reclamationRepository, User $user): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+            $response = $this->render('reclamation/admin/cloturer.html.twig', [
+                'reclamations' => $reclamationRepository->findBy(['status' => true]),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+
+        }elseif ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+            $panier = $session->get("panier", []);
+            $dataPanier = [];
+
+            $response = $this->render('reclamation/cloturer.html.twig', [
+                'reclamations' => $reclamationRepository->findBy(['user' =>$user->getId(), 'status' => true]),
+                'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }else  {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
@@ -113,7 +187,46 @@ class ReclamationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="reclamation_show", methods={"GET"})
+     * @Route("/Traiter/{reclamation}", name="reclamation_cloturer", methods={"GET","POST"})
+     */
+    public function cloturer(SessionInterface $session, Request $request, Reclamation $reclamation): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            $em = $this->getDoctrine()->getManager();
+            $reclamation->setCloture(new \DateTime());
+            $reclamation->setUsercloture($this->getUser());
+            $reclamation->setStatus(true);
+
+            $this->addFlash('notice', 'Reclamation  clocturée');
+            $em->persist($reclamation);
+            $em->flush();
+                $response = $this->redirectToRoute('reclamation_index', ['user' => $this->getUser()->getId()], Response::HTTP_SEE_OTHER);
+                $response->setSharedMaxAge(0);
+                $response->headers->addCacheControlDirective('no-cache', true);
+                $response->headers->addCacheControlDirective('no-store', true);
+                $response->headers->addCacheControlDirective('must-revalidate', true);
+                $response->setCache([
+                    'max_age' => 0,
+                    'private' => true,
+                ]);
+                return $response;
+
+        } else {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/{id}/{user}", name="reclamation_show", methods={"GET"})
      */
     public function show(Reclamation $reclamation, LivrerProduitRepository $livrerProduitRepository, SessionInterface $session): Response
     {

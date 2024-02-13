@@ -43,7 +43,7 @@ class ReponseController extends AbstractController
                 $entityManager->persist($reponse);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('reclamation_show', ['id' => $reclamation->getId()], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('reclamation_show', ['id' => $reclamation->getId(), 'user'=> $this->getUser()->getId()], Response::HTTP_SEE_OTHER);
             }
 
             return $this->render('reponse/admin/new.html.twig', [
@@ -73,7 +73,7 @@ class ReponseController extends AbstractController
                 $entityManager->persist($reponse);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('reclamation_show', ['id' => $reclamation->getId()], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('reclamation_show', ['id' => $reclamation->getId(), 'user'=> $this->getUser()->getId()], Response::HTTP_SEE_OTHER);
             }
 
             return $this->render('reponse/new.html.twig', [

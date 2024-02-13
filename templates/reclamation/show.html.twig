@@ -62,13 +62,29 @@
     {% endfor %}
 </div>
 
+    {% if reclamation.usercloture is null  %}
 
-    <div class="col-md-6 offset-md-3 mt-4 mb-5 pt-3 pb-2 fond-7">
-        <div class="centrer">
-            <a href="{{ path('reponse_new', {'reclamation' : reclamation.id }) }}" class="btn btn-success"><i class="fa fa-edit"></i> Répondre</a>
+        <div class="col-md-6 offset-md-3 mt-4 mb-5 pt-3 pb-2 fond-7">
+            <div class="centrer">
 
+                <a href="{{ path('reponse_new', {'reclamation' : reclamation.id }) }}" class="btn btn-success"><i class="fa fa-edit"></i> Répondre</a>
+
+
+            </div>
         </div>
-    </div>
+        {% else %}
+
+        <div class="col-md-6 offset-md-3 mt-4 mb-5 pt-3 pb-2 fond-7">
+            <div class="centrer">
+
+               Cloturer le {{ reclamation.cloture|date('d/m/Y') }}
+
+
+            </div>
+        </div>
+
+
+    {% endif %}
 
 
 

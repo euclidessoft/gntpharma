@@ -9,7 +9,22 @@
             <i class="fa fa-rotate mr-2"></i>
             {{ 'Réclamations'|trans }}
         </h3>
-
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">En cours</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('reclamation_index_cloturer', {'user': app.user.id}) }}">Cloturées</a>
+            </li>
+        </ul>
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    &times;
+                </button>
+                {{ message|trans }}
+            </div>
+        {% endfor %}
         <table class="table table-success-light table-bordered table-hover table-striped" id="list">
             <thead>
             <tr>
@@ -28,7 +43,7 @@
                     <td>{{ reclamation.status ? 'Yes' : 'No' }}</td>
                     <td>{{ reclamation.cloture ? reclamation.cloture|date('Y-m-d') : '' }}</td>
                     <td>
-                        <a class="btn btn-success" href="{{ path('reclamation_show', {'id': reclamation.id}) }}"><i class="fa fa-list"></i> Afficher</a>
+                        <a class="btn btn-success" href="{{ path('reclamation_show', {'id': reclamation.id, 'user' : app.user.id}) }}"><i class="fa fa-list"></i> Afficher</a>
                         {#                    <a href="{{ path('reclamation_edit', {'id': reclamation.id}) }}">edit</a>#}
                     </td>
                 </tr>

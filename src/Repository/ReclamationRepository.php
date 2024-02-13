@@ -22,19 +22,33 @@ class ReclamationRepository extends ServiceEntityRepository
     // /**
     //  * @return Reclamation[] Returns an array of Reclamation objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function userCloturer($value)
     {
         return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
+            ->Where('r.user = :val')
             ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('r.cloture = :clo')
+            ->setParameter('clo', true)
+//            ->orderBy('r.id', 'ASC')
+//            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+    public function Cloturer()
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.cloture != :clo')
+            ->setParameter('clo', true)
+//            ->orderBy('r.id', 'ASC')
+//            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Reclamation

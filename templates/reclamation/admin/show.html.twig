@@ -41,29 +41,49 @@
         <div class="row mt-4">
             {% if 'ROLE_CLIENT' in reponse.user.roles %}
 
-                <div class="col-md-7  py-4 fond-7"> {{ reponse.message }}</div>
+                <div class="col-md-7  py-4 fond-7">
+                    {{ reponse.user.nom  }} | {{ reponse.date|date("d/m/Y") }}
+                    <hr class="text-secondaire">
+                    {{ reponse.message }}
+                </div>
                 <div class="col-md-5"> </div>
 
             {% else %}
                 <div class="col-md-5"> </div>
-                <div class="col-md-6  py-4  fond-7">{{ reponse.message }}</div>
+                <div class="col-md-7  py-4 fond-7">
+                    {{ reponse.user.nom  }} | {{ reponse.date|date("d/m/Y") }}
+                    <hr class="text-secondaire">
+                    {{ reponse.message }}
+                </div>
             {% endif %}
         </div>
     {% else %}
     {% endfor %}
 </div>
 
+    {% if reclamation.usercloture is null %}
 
     <div class="col-md-6 offset-md-3 mt-4 mb-5 pt-3 pb-2 fond-7">
         <div class="centrer">
+
             <a href="{{ path('reponse_new', {'reclamation' : reclamation.id }) }}" class="btn btn-success"><i class="fa fa-edit"></i> Répondre</a>
 
-            <a href="{{ path('reponse_new', {'reclamation' : reclamation.id }) }}" class="btn btn-success ml-3 float-right"><i class="fa fa-edit"></i> Cloturer</a>
+            <a href="{{ path('reclamation_cloturer', {'reclamation' : reclamation.id }) }}" class="btn btn-success ml-3 float-right"><i class="fa fa-edit"></i> Cloturer</a>
 
         </div>
     </div>
+    {% else %}
+
+        <div class="col-md-6 offset-md-3 mt-4 mb-5 pt-3 pb-2 fond-7">
+            <div class="centrer">
+
+                Cloturer le {{ reclamation.cloture|date('d/m/Y') }}
 
 
+            </div>
+        </div>
+
+    {% endif %}
 
     <div class="modal fade" id="modal" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalLabel" aria-hidden="true">

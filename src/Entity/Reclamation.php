@@ -15,6 +15,12 @@ class Reclamation
 {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $usercloture;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -234,6 +240,18 @@ class Reclamation
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getUsercloture(): ?User
+    {
+        return $this->usercloture;
+    }
+
+    public function setUsercloture(?User $usercloture): self
+    {
+        $this->usercloture = $usercloture;
 
         return $this;
     }
