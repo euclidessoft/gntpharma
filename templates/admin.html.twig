@@ -211,7 +211,7 @@
 
 
                 <li  class="nav-item {% block reclamation %} {% endblock %}" title="{{ 'Réclamation'|trans }}">
-                    <a class="nav-link" href="{{ path('reclamation_index') }}">
+                    <a class="nav-link" href="{{ path('reclamation_index',{'user':app.user.id}) }}">
                         <div class="icone">
                             <i class="fas fa-rotate fa-lg"></i>
                         </div>

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Reclamation;
+use App\Entity\User;
 use App\Form\ReclamationType;
 use App\Repository\LivrerProduitRepository;
 use App\Repository\LivrerRepository;
@@ -19,14 +20,31 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReclamationController extends AbstractController
 {
     /**
-     * @Route("/", name="reclamation_index", methods={"GET"})
+     * @Route("/{user}", name="reclamation_index", methods={"GET"})
      */
-    public function index(SessionInterface $session, ReclamationRepository $reclamationRepository): Response
+    public function index(SessionInterface $session, ReclamationRepository $reclamationRepository, User $user): Response
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+            return $this->render('reclamation/admin/index.html.twig', [
+                'reclamations' => $reclamationRepository->findBy(['user' => $user]),
+            ]);
+        }else if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            return $this->render('reclamation/admin/index.html.twig', [
+                'reclamations' => $reclamationRepository->findAll(),
+            ]);
 
-        return $this->render('reclamation/admin/index.html.twig', [
-            'reclamations' => $reclamationRepository->findAll(),
-        ]);
+        }else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
