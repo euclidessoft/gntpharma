@@ -158,7 +158,7 @@
                             </a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link" href="{{ path('reclamation_index') }}">
+                            <a class="nav-link" href="{{ path('reclamation_index',{'user':app.user.id}) }}">
                                 <i class="fas fa-user-plus mr-2"></i>
                                 {{ 'Vos reclamations'|trans }}
                             </a>
