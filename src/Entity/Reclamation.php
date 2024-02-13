@@ -14,6 +14,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Reclamation
 {
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Reponse", mappedBy="reclamation")
      */
     private $reponses;
@@ -216,6 +222,18 @@ class Reclamation
                 $reponse->setReclamation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
