@@ -21,6 +21,11 @@ class Commande
      * @ORM\JoinColumn(nullable=true)
      */
     private $livreur;
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Paiement")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $paiement;
 
     /**
      * @ORM\Id
@@ -169,6 +174,18 @@ class Commande
     public function setDatelivrer(\DateTimeInterface $datelivrer): self
     {
         $this->datelivrer = $datelivrer;
+
+        return $this;
+    }
+
+    public function getPaiement(): ?Paiement
+    {
+        return $this->paiement;
+    }
+
+    public function setPaiement(?Paiement $paiement): self
+    {
+        $this->paiement = $paiement;
 
         return $this;
     }

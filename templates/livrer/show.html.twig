@@ -17,20 +17,24 @@
         </div>
     {% endfor %}
     <div class="row justify-content-end">
-        <div class="col-lg-5">
+        <div class="col-lg-8">
             <table class="table table-success-light table-bordered table-hover table-striped">
                 <thead>
                 <tr>
                     <th>Numero Commande</th>
-                    <th>Date</th>
+                    <th>Date Commande</th>
+                    <th>Date Paiement</th>
                     <th>Client</th>
+                    <th>Date prevu pour la livraison Livraison</th>
 
                 </tr>
                 </thead>
                 <tbody>
                 <td>{{ commandereference.id }}</td>
-                <td>{{ commandereference.date|date('d/m/Y') }}</td>
+                <td>{{ commandereference.date ? commandereference.date|date('d/m/Y') : ''}}</td>
+                <td>{{ commandereference.paiement ? commandereference.paiement.date|date('d/m/Y') : '' }}</td>
                 <td>{{ commandereference.user.nom }}</td>
+                <td><input type="date" class="form-control" id="datelivraison"/></td>
 
                 </tbody>
             </table>

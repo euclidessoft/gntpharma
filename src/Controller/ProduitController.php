@@ -234,6 +234,50 @@ class ProduitController extends AbstractController
     }
 
     /**
+     * @Route("/Arrivage_admin", name="produit_arrivage_admin", methods={"GET"})
+     */
+    public function arrivage_admin(SessionInterface $session, ApprovisionnerRepository $approvisionnerRepository, ApprovisionnementRepository $approvisionnementRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+            $approvisionner = $approvisionnerRepository->arrivage();//recuperation des approvisioonement de moins de 7 jours
+            if(count($approvisionner) > 1){ // si plus d' un appron
+                $appro = [];
+                foreach ($approvisionner as $item){// mettre les id approvisionner dans un tableau
+                    $appro[] = $item->getId();
+                }
+                $approvisionnements = $approvisionnementRepository->arrivage($appro);// recuperation des approvisionnement des id dans le tableau
+            }else{
+                $approvisionnements = $approvisionnementRepository->findBy(['approvisionner' => $approvisionner]);
+            }
+
+            $response = $this->render('produit/admin/arrivage.html.twig', [
+                'approvisionnements' => $approvisionnements,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }else  {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
      * @Route("/Vente", name="produit_vente", methods={"GET"})
      */
     public function vente(SessionInterface $session, CommandeProduitRepository $repository): Response
@@ -257,6 +301,45 @@ class ProduitController extends AbstractController
                 'ventemensuel' => $ventemensuel,
                 'venteannuel' => $venteannuel,
                 'panier' => $dataPanier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }else  {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+ /**
+     * @Route("/Vente_admin", name="produit_vente_admin", methods={"GET"})
+     */
+    public function vente_admin(SessionInterface $session, CommandeProduitRepository $repository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+
+            $ventemensuel = $repository->ventemensuel();
+            $venteannuel = $repository->venteannuel();//
+
+
+            $response = $this->render('produit/admin/vente.html.twig', [
+                'ventemensuel' => $ventemensuel,
+                'venteannuel' => $venteannuel,
             ]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);

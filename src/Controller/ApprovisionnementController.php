@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Approvisionnement;
 use App\Entity\Approvisionner;
+use App\Entity\Produit;
 use App\Repository\ApprovisionnementRepository;
 use App\Repository\ApprovisionnerRepository;
 use App\Repository\ProduitRepository;
@@ -52,6 +53,55 @@ class ApprovisionnementController extends AbstractController
             'panier' => $dataPanier,
         ]);
     }
+
+
+    /**
+     * @Route("/{id}", name="produit_show", methods={"GET"})
+     */
+    public function produit(Produit $produit): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+            $response = $this->render('approvisionnement/produit_show.html.twig', [
+                'produit' => $produit,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_ROLE')) {
+
+            $response = $this->render('produit/show.html.twig', [
+                'produit' => $produit,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
     /**
      * @Route("/Historique", name="historique", methods={"GET"})
      */

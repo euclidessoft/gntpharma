@@ -221,6 +221,11 @@
                         if (data['id'] == 'ok') {
                             $("#tr" + produit).remove();
                             $('#btn' + produit).removeClass('disabled');
+                            $("#quant" + produit).val('');// vider le champ quantite dans modal ajouter
+                            $("#ajouter" + produit).show();// afficher le bouton ajouter
+                            $("#ajouter" + produit).html("<i class=\"fa fa-plus\"></i> Ajouter");// afficher le bouton ajouter
+
+                            $("#modification" + produit).html("");// vider div modification
                             if (data['nb'] == 0) {
                                 $('#valider1').addClass('disabled');
                                 $('#valider2').addClass('disabled');

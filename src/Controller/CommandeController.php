@@ -310,6 +310,7 @@ class CommandeController extends AbstractController
                 $paiement->setUser($this->getUser());
                 $paiement->setCommande($commande);
                 $commande->setSuivi(true);
+                $commande->setPaiement($paiement);
                 $entityManager->persist($commande);
                 $entityManager->persist($paiement);
                 $entityManager->flush();
