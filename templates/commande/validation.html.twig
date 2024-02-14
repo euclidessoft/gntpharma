@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    {{ include('head.html.twig') }}
+
+    <title> {% block title %} Gntpharma -  {% endblock %} </title>
+
+    {% block stylesheets %}
+        <link href="{{ asset('DataTables/datatables.css') }}" rel="stylesheet">
+        <link href="{{ asset('fontawesome/css/all.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap-4plus.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/accueil.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/gntpharma.css') }}" rel="stylesheet">
+    {% endblock %}
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+
+    <!--[if lt IE 9]>
+    <script src="{{ asset('js/html5shiv.js') }}"></script>
+    <script src="{{ asset('js/respond.min.js') }}"></script>
+    <![endif]-->
+
+</head>
+
+<body onload="window.print()" onafterprint="">
+<div class="container mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-shopping-cart mr-2"></i>
+        {{ "Details commande"|trans }}
+    </h3>
+
+
+    <div class="row justify-content-end">
+        <div class="col-lg-5">
+            <table class="table table-success-light table-bordered table-hover table-striped">
+                <thead>
+                <tr>
+                    <th>Numero Commande</th>
+                    <th>Date</th>
+                    <th>Client</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <td>{{ commande.id }}</td>
+                <td>{{ commande.date|date('d/m/Y') }}</td>
+                <td>{{ commande.user.nom }}</td>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% set total=0 %}
+    <table class="table table-success-light table-bordered table-hover table-striped w-100">
+        <thead>
+        <tr>
+            <th>Code Produit</th>
+            <th>Desigantion</th>
+            <th>Quantite Commandee</th>
+            <th>Prix Cession</th>
+            <th>Prix Public</th>
+            <th>Montant</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for commandeproduit in commandeproduits %}
+            <tr>
+                <td> {{ commandeproduit.produit.id }} </td>
+                <td>{{ commandeproduit.produit.desigantion }} </td>
+                <td> {{ commandeproduit.quantite }} </td>
+                <td>{{ commandeproduit.session|number_format(0, '' , ' ') }}</td>
+                <td>{{ commandeproduit.publique|number_format(0, '' , ' ') }}</td>
+                <td>
+                    {{ (commandeproduit.quantite * commandeproduit.session)|number_format(0, '' , ' ') }}
+                    {% set total = total + (commandeproduit.quantite * commandeproduit.session) %}
+                </td>
+
+
+
+            </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="8">Aucune commande</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="5" class="text-right">
+                {{ "Total"|trans }}
+            </td>
+            <td>
+                <span id="total">{{ total|number_format(0, '' , ' ') }}</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+
+
+{{ include('javascript.html.twig') }}
+
+</body>
+
+</html>

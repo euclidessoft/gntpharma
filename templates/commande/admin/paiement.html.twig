@@ -84,9 +84,7 @@
     <div class="container mt-4 mb-5 py-3 fond-7">
         <div class="centrer">
             <div class="row">
-                <button type="button" class="btn btn-success mr-3"
-                ><i class="fa fa-edit"></i> Modifier
-                </button>
+
 
                 <button type="button"
                         class="btn btn-success"
@@ -94,6 +92,8 @@
                         id="btn">
                     <i class="fa fa-money-bill"></i> Paiement
                 </button>
+
+
                 <div class="modal fade" id="modal" tabindex="-1" role="dialog"
                      aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog text-center">
@@ -113,7 +113,7 @@
                                 <div class="form-group mt-2">
                                     {{ form_errors(form.montant) }}
                                     <div class="input-group">
-                                        {{ form_widget(form.montant, {'label':false, 'attr' : {'id' : 'nombre', 'placeholder':'Montant'}}) }}
+                                        {{ form_widget(form.montant, {'label':false, 'attr' : {'id' : 'nombre', 'placeholder':'Montant', 'value': total}}) }}
                                         <input type="hidden" id="tamp"/>
                                         <input type="hidden" id="tamp1"/>
                                         <div class="input-group-append">
@@ -162,15 +162,17 @@
     <script>
         function number() {
             var reg = new RegExp("^[0-9]{3,9}$");
-            if (reg.test($('#paiement_form_montant').val())) {
+            if (reg.test($('#paiement_form_montant').val()) ) {
                 if ($('#paiement_form_type option:selected').val() == 'Cheque' || $('#paiement_form_type option:selected').val() == 'Virement') {
                     if ($('#paiement_form_banque').val() != '' && $('#paiement_form_numero').val() != '') {
                         $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                         $('#form').submit();
                     } else alert('Veuillez renseigner tous les champs');
                 } else {
-                    $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
-                    $('#form').submit();
+                    if ($('#paiement_form_banque').val() != '' && $('#paiement_form_numero').val() != '') {
+                        $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                        $('#form').submit();
+                    } else alert('Veuillez renseigner tous les champs');
                 }
             } else alert("{{ 'Nombre compris entre 3 et 9 chiffres'|trans }}");
 

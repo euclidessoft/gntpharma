@@ -175,6 +175,7 @@ class securityController extends AbstractController
             $user = $em->getRepository(User::class)->find($this->getUser()->getId());
             $form = $this->createForm(UserType::class, $user);
             $form->remove('username');
+            $form->remove('fonction');
 
             $form->handleRequest($request);
 
@@ -203,6 +204,7 @@ class securityController extends AbstractController
         $user = $em->getRepository(User::class)->find($this->getUser()->getId());
         $form = $this->createForm(UserType::class, $user);
         $form->remove('username');
+        $form->remove('fonction');
 
         $form->handleRequest($request);
 
@@ -597,7 +599,7 @@ class securityController extends AbstractController
 
             }
 
-            $response = $this->render('security/security/admin_add.html.twig', [
+            $response = $this->render('security/security/admin/admin_add.html.twig', [
                 'form' => $form->createView(),
             ]);
             $response->setSharedMaxAge(0);

@@ -19,6 +19,12 @@ class UserType extends AbstractType
             ->add('nom')
             ->add('phone', null, ['attr' =>['placeholder' => 'xx xxx xx xx', 'required' => false]])
             ->add('adresse')
+            ->add('fonction', ChoiceType::class, [
+                'choices' => User::jobs,
+                'placeholder' => 'types d\'utilisateur *',
+                'label' => false,
+                'required' => true
+            ])
         ;
     }
 

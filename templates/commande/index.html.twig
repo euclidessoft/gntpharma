@@ -122,115 +122,116 @@
         <a href="{{ path('produit_new') }}">Create new</a>
     {% endif %}
 </div>
-{% endblock %}
-{% block scripts %}
-    <script>
-        function edit(id, quantite, min, prix, st) {// fonction initialisation modification quantite dans panier
-            if ($('#tampon').val() == 'ok') {// verification si auccun autre ligne est entrain d' etre modifier
-                $('#tdprod' + id).html("<div class=\"input-group align-center\" style=\"width:100px\">\n" +
-                    "                            <input type=\"number\"  value='" + quantite + "'  id=\"text" + id + "\" class=\"form-control\"\n" +
-                    "                                   style=\"padding:0 10px\">\n" +
-                    "                            <div class=\"input-group-append\">\n" +
-                    "                                            <span class=\"input-group-text bg-primaire text-light\"\n" +
-                    "                                                  onclick=\"editprod(" + id + "," + min + "," + quantite +"," + prix + "," + st + ")\"\n" +
-                    "                                                  id=\"bt" + id + "\">\n" +
-                    "                                                <i class=\"fa fa-save\"></i>\n" +
-                    "                                            </span>\n" +
-                    "                            </div>\n" +
-                    "                        </div>");
-                $('#btnaction' + id).html("<button onclick=\"cancel(" + id + "," + quantite + "," + min +"," + prix + "," + st + ")\" class=\"btn bg-warning\" title=\"Annuler modification\">\n" +
-                    "                            <i class=\"fa fa-undo\"></i>\n" +
-                    "                        </button>");
-                $('#tampon').val('no');
-            } else alert('Terminer la premiere operation' | trans);
-        }
+    {% block scripts %}
+        <script>
+            function edit(id, quantite, min, prix, st) {// fonction initialisation modification quantite dans panier
+                if ($('#tampon').val() == 'ok') {// verification si auccun autre ligne est entrain d' etre modifier
+                    $('#tdprod' + id).html("<div class=\"input-group align-center\" style=\"width:100px\">\n" +
+                        "                            <input type=\"number\"  value='" + quantite + "'  id=\"text" + id + "\" class=\"form-control\"\n" +
+                        "                                   style=\"padding:0 10px\">\n" +
+                        "                            <div class=\"input-group-append\">\n" +
+                        "                                            <span class=\"input-group-text bg-success text-light\"\n" +
+                        "                                                  onclick=\"editprod(" + id + "," + min + "," + quantite +"," + prix + "," + st + ")\"\n" +
+                        "                                                  id=\"bt" + id + "\">\n" +
+                        "                                                <i class=\"fa fa-save\"></i>\n" +
+                        "                                            </span>\n" +
+                        "                            </div>\n" +
+                        "                        </div>");
+                    $('#btnaction' + id).html("<button onclick=\"cancel(" + id + "," + quantite + "," + min +"," + prix + "," + st + ")\" class=\"btn bg-warning\" title=\"Annuler modification\">\n" +
+                        "                            <i class=\"fa fa-undo\"></i>\n" +
+                        "                        </button>");
+                    $('#tampon').val('no');
+                } else alert('Terminer la premiere operation' | trans);
+            }
 
-        function editprod(id, mincom, quantite, prix, st) {
-            if (quantite != $('#text' + id).val()) {
-                var reg = new RegExp("^[0-9]+$");
-                let newval= $('#text' + id).val();
-                let totale = $('#totaltamp').val();
-                if (reg.test(newval) && mincom <= newval) {
-                    if (st >= $('#text' + id).val()){
-                        // $('#btnaction' + id).html("<button class=\"btn bg-warning\"><i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i></button>");
-                        $.ajax({
-                            type: "POST",
-                            url: "{{ path('commande_edit') }}",
-                            data: "prod=" + id + "&quantite=" + newval,
-                            success: function (data) {
-                                if (data['id'] == 'ok') {
-                                    $('#tdprod' + id).html(newval);
-                                    $('#soustotal' + id).html( prix * newval);// changement de la valeur sous total
-                                    if(newval > quantite){//changement de la valeur total
-                                        $('#total').html( Number(totale) + prix * (newval - quantite));
-                                        $('#totaltamp').val(Number(totale) + prix * (newval - quantite));
-                                    }else{
-                                        $('#total').html(Number(totale) - prix * (quantite - newval));
-                                        $('#totaltamp').val(Number(totale) - prix * (quantite - newval));
+            function editprod(id, mincom, quantite, prix, st) {
+                if (quantite != $('#text' + id).val()) {
+                    var reg = new RegExp("^[0-9]+$");
+                    let newval= $('#text' + id).val();
+                    let totale = $('#totaltamp').val();
+                    if (reg.test(newval) && mincom <= newval) {
+                        if (st >= $('#text' + id).val()){
+                            // $('#btnaction' + id).html("<button class=\"btn bg-warning\"><i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i></button>");
+                            $.ajax({
+                                type: "POST",
+                                url: "{{ path('commande_edit') }}",
+                                data: "prod=" + id + "&quantite=" + newval,
+                                success: function (data) {
+                                    if (data['id'] == 'ok') {
+                                        $('#tdprod' + id).html(newval);
+                                        $('#soustotal' + id).html( prix * newval);// changement de la valeur sous total
+                                        if(newval > quantite){//changement de la valeur total
+                                            $('#total').html( Number(totale) + prix * (newval - quantite));
+                                            $('#totaltamp').val(Number(totale) + prix * (newval - quantite));
+                                        }else{
+                                            $('#total').html(Number(totale) - prix * (quantite - newval));
+                                            $('#totaltamp').val(Number(totale) - prix * (quantite - newval));
+                                        }
+                                        $('#btnaction' + id).html("<button onclick=\"edit(" + id + "," + data['panier'] + "," + mincom + "," + prix + "," + st + ")\" class=\"btn btn-success\" title=\"Modifier quantite\">\n" +
+                                            "                            <i class=\"fa fa-edit\"></i>\n" +
+                                            "                        </button>");
+                                        $('#tampon').val('ok');
+                                    } else {
+                                        alert("{{ 'verifier la quantite saisie'|trans }}")
                                     }
-                                    $('#btnaction' + id).html("<button onclick=\"edit(" + id + "," + data['panier'] + "," + mincom + "," + prix + "," + st + ")\" class=\"btn btn-success\" title=\"Modifier quantite\">\n" +
-                                        "                            <i class=\"fa fa-edit\"></i>\n" +
-                                        "                        </button>");
-                                    $('#tampon').val('ok');
-                                } else {
-                                    alert("{{ 'verifier la quantite saisie'|trans }}")
+                                },
+                                error: function () {
+                                    alert("{{ 'La requête n a pas abouti'|trans }}");
                                 }
-                            },
-                            error: function () {
-                                alert("{{ 'La requête n a pas abouti'|trans }}");
-                            }
-                        });
-                } else {
-                    var mess = "Maximum disponible  " + st;
-                    alert(mess);
+                            });
+                        } else {
+                            var mess = "Maximum disponible  " + st;
+                            alert(mess);
+                        }
+                    } else {
+                        var mess = "Commande minimun " + mincom;
+                        alert(mess);
+                    }
+
                 }
-            } else {
-                var mess = "Commande minimun " + mincom;
-                alert(mess);
             }
 
+            function cancel(id, quantite, min, prix, st) {
+                $('#tdprod' + id).html(quantite);
+                $('#btnaction' + id).html("<button onclick=\"edit(" + id + "," + quantite + "," + min +"," + prix + "," + st + ")\" class=\"btn btn-success\" title=\"Modifier quantite\">\n" +
+                    "                            <i class=\"fa fa-edit\"></i>\n" +
+                    "                        </button>");
+                $('#tampon').val('ok');
             }
-        }
+            {#function focu(id, quantite, min) {#}
+            {#    $('#tamp').val(id);#}
+            {#}#}
 
-        function cancel(id, quantite, min, prix, st) {
-            $('#tdprod' + id).html(quantite);
-            $('#btnaction' + id).html("<button onclick=\"edit(" + id + "," + quantite + "," + min +"," + prix + "," + st + ")\" class=\"btn btn-success\" title=\"Modifier quantite\">\n" +
-                "                            <i class=\"fa fa-edit\"></i>\n" +
-                "                        </button>");
-            $('#tampon').val('ok');
-        }
-        {#function focu(id, quantite, min) {#}
-        {#    $('#tamp').val(id);#}
-        {#}#}
+            {#function nofocu(id, quantite, min) {#}
+            {#    $('#tamp').val('');#}
+            {#}#}
+            {#function validchambre() {#}
+            {#    var id = $('#tampon').val();#}
+            {#    if (id != '' && window.event.keyCode == 13) {//validation dela chambre par appui sur bouton entrer#}
+            {#        var reg = new RegExp("^[0-9]+$");#}
+            {#        if (reg.test($('#text' + id).val())) {#}
+            {#            $('#bt' + id).html("<img src='{{ asset('images/ajax-loader.gif')}}' width='20' />");#}
+            {#            $.ajax({#}
+            {#                type: "POST",#}
+            {#                url: "{{ path('') }}",#}
+            {#                data: "elv=" + id + "&numero=" + $('#text' + id).val(),#}
+            {#                success: function(data) {#}
+            {#                    if (data['id'] == 'ok') {#}
+            {#                        $('#tdnumch' + id).html($('#text' + id).val());#}
+            {#                    } else {#}
+            {#                        alert("{{'Une autre chambre du même hôtel possède déjà ce numéro'|trans }}");#}
+            {#                        $('#bt' + id).html("<i class='fa fa-save'></i>");#}
+            {#                    }#}
+            {#                },#}
+            {#                error: function() {#}
+            {#                    alert("{{'La requête n a pas abouti'|trans }}");#}
+            {#                }#}
+            {#            });#}
+            {#        } else alert("{{'invalide'|trans }}");#}
+            {#    }#}
+            {#}#}
+        </script>
 
-        {#function nofocu(id, quantite, min) {#}
-        {#    $('#tamp').val('');#}
-        {#}#}
-        {#function validchambre() {#}
-        {#    var id = $('#tampon').val();#}
-        {#    if (id != '' && window.event.keyCode == 13) {//validation dela chambre par appui sur bouton entrer#}
-        {#        var reg = new RegExp("^[0-9]+$");#}
-        {#        if (reg.test($('#text' + id).val())) {#}
-        {#            $('#bt' + id).html("<img src='{{ asset('images/ajax-loader.gif')}}' width='20' />");#}
-        {#            $.ajax({#}
-        {#                type: "POST",#}
-        {#                url: "{{ path('') }}",#}
-        {#                data: "elv=" + id + "&numero=" + $('#text' + id).val(),#}
-        {#                success: function(data) {#}
-        {#                    if (data['id'] == 'ok') {#}
-        {#                        $('#tdnumch' + id).html($('#text' + id).val());#}
-        {#                    } else {#}
-        {#                        alert("{{'Une autre chambre du même hôtel possède déjà ce numéro'|trans }}");#}
-        {#                        $('#bt' + id).html("<i class='fa fa-save'></i>");#}
-        {#                    }#}
-        {#                },#}
-        {#                error: function() {#}
-        {#                    alert("{{'La requête n a pas abouti'|trans }}");#}
-        {#                }#}
-        {#            });#}
-        {#        } else alert("{{'invalide'|trans }}");#}
-        {#    }#}
-        {#}#}
-    </script>
-
+    {% endblock %}
 {% endblock %}
+

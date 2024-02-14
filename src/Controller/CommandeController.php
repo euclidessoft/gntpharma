@@ -72,16 +72,17 @@ class CommandeController extends AbstractController
     /**
      * @Route("/valider", name="valider")
      */
-    public function valider(SessionInterface $session, ProduitRepository $produitRepository)
+    public function valider(SessionInterface $session, ProduitRepository $produitRepository, CommandeProduitRepository $repository)
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 
             $panier = $session->get("panier", []);
             $dataPanier = [];
+            $em = $this->getDoctrine()->getManager();
+            $commande = new Commande();
 
             if (count($panier) >= 1) {
-                $em = $this->getDoctrine()->getManager();
-                $commande = new Commande();
+
                 $commande->setUser($this->getUser());
                 $montant = 0;
                 foreach ($panier as $product) {
@@ -94,21 +95,21 @@ class CommandeController extends AbstractController
                 $em->persist($commande);
                 $em->flush();
                 $session->remove("panier");
+                $response = $this->redirectToRoute('commande_panier_imprimer', [
+                    'commande' => $commande->getId(),
+                ]);
+                $response->setSharedMaxAge(0);
+                $response->headers->addCacheControlDirective('no-cache', true);
+                $response->headers->addCacheControlDirective('no-store', true);
+                $response->headers->addCacheControlDirective('must-revalidate', true);
+                $response->setCache([
+                    'max_age' => 0,
+                    'private' => true,
+                ]);
+                return $response;
             }
 
-            $response = $this->render('commande/payment.html.twig', [
-                'produits' => $produitRepository->findAll(),
-                'panier' => $dataPanier,
-            ]);
-            $response->setSharedMaxAge(0);
-            $response->headers->addCacheControlDirective('no-cache', true);
-            $response->headers->addCacheControlDirective('no-store', true);
-            $response->headers->addCacheControlDirective('must-revalidate', true);
-            $response->setCache([
-                'max_age' => 0,
-                'private' => true,
-            ]);
-            return $response;
+
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
@@ -474,4 +475,48 @@ class CommandeController extends AbstractController
 
          return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
     }
+    /**
+     * @Route("/Imprimer/{commande}", name="imprimer")
+     */
+    public function imprimer(Request $request, SessionInterface $session, CommandeProduitRepository $repository, Commande $commande)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+
+
+
+            $panier = $session->get("panier", []);
+
+            $response = $this->render('commande/validation.html.twig', [
+                'commandeproduits' => $repository->findBy(['commande' => $commande]),
+                'commande' => $commande,
+                'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+
+
+        /* // On "fabrique" les données
+
+         return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
+    }
+
 }
