@@ -54,6 +54,16 @@ class ApprovisionnementController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/Historique", name="historique", methods={"GET"})
+     */
+    public function historique(ApprovisionnerRepository $repository): Response
+    {
+        return $this->render('approvisionnement/historique.html.twig', [
+            'approvisionnements' => $repository->findAll(),
+        ]);
+    }
+
 
     /**
      * @Route("/{id}", name="produit_show", methods={"GET"})
@@ -102,15 +112,7 @@ class ApprovisionnementController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/Historique", name="historique", methods={"GET"})
-     */
-    public function historique(ApprovisionnerRepository $repository): Response
-    {
-        return $this->render('approvisionnement/historique.html.twig', [
-            'approvisionnements' => $repository->findAll(),
-        ]);
-    }
+
 
     /**
      * @Route("/add/", name="appro_add")
