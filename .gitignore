@@ -1,7 +1,7 @@
 
 ###> symfony/framework-bundle ###
-/.htaccess
-/.env
+.htaccess
+.env
 /public/bundles/
 /var/
 /vendor/
