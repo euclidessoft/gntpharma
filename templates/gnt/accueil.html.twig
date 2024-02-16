@@ -221,17 +221,17 @@
                             </h1>
                         </div>
                         <div class="ms-lg-5 ms-md-4 ms-3">
-                        <p class="fs-5 pe-5 wow fadeInLeft" data-wow-delay="0.5s">
-                            {{ "Chez GNT Pharma, nous croyons fermement que la réussite d'une entreprise repose sur une culture d'entreprise solide et sur le bien-être de ses employés."|trans }}
-                        </p>
-                        <p class="fs-5 pe-5 wow fadeInLeft" data-wow-delay="0.7s">
-                            {{ "Notre culture est façonnée par des valeurs fondamentales et une vision commune, créant un environnement de travail dynamique et positif où chaque employé peut s'épanouir."|trans }}
-                        </p>
-                        <div class="text-center">
-                            <a class="btn btn-secondaire btn-effect mt-5 mb-5" href="{{ path('Carriere') }}">
-                                {{ "Plus de détails ..."|trans }}
-                            </a>
-                        </div>
+                            <p class="fs-5 pe-5 wow fadeInLeft" data-wow-delay="0.5s">
+                                {{ "Chez GNT Pharma, nous croyons fermement que la réussite d'une entreprise repose sur une culture d'entreprise solide et sur le bien-être de ses employés."|trans }}
+                            </p>
+                            <p class="fs-5 pe-5 wow fadeInLeft" data-wow-delay="0.7s">
+                                {{ "Notre culture est façonnée par des valeurs fondamentales et une vision commune, créant un environnement de travail dynamique et positif où chaque employé peut s'épanouir."|trans }}
+                            </p>
+                            <div class="text-center">
+                                <a class="btn btn-secondaire btn-effect mt-5 mb-5" href="{{ path('Carriere') }}">
+                                    {{ "Plus de détails ..."|trans }}
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -240,114 +240,227 @@
     </div>
     <!-- Carriere End -->
 
-    <!-- Actualite Start -->
+    {#    <!-- Actualite Start -->#}
+    {#    <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">#}
+    {#        <div class="container">#}
+    {#            <div class="text-center mb-5 mt-5">#}
+    {#                <h2 class="section-title bg-white text-center text-secondaire px-3 mb-5">#}
+    {#                    {{ "Actualité"|trans }}#}
+    {#                </h2>#}
+    {#            </div>#}
+    {#            <div class="row g-5">#}
+    {#                <div class="col-md-6">#}
+    {#                    <div class="banner wow fadeInUp shadow" data-wow-delay="0.3s">#}
+    {#                        <div class="row">#}
+    {#                            <div class="col-lg-4 wow fadeInLeft" data-wow-delay="0.5s">#}
+    {#                                <div class="h-100">#}
+    {#                                    <img class="img-fluid w-100 h-100 fit-cover"#}
+    {#                                         src="{{ asset('images/event_1.avif') }}" alt="">#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                            <div class="col-lg-8 text-center">#}
+    {#                                <h3 class="fw-bold mt-4 fs-4 wow fadeInRight" data-wow-delay="0.7s">#}
+    {#                                    {{ "Titre de l'article 1"|trans }}#}
+    {#                                </h3>#}
+    {#                                <p class="text-lg-start mt-3 px-3 wow fadeInRight" data-wow-delay="0.7s">#}
+    {#                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab accusantium#}
+    {#                                    cupiditate#}
+    {#                                    distinctio, dolor explicabo fugiat illo illum inventore minima necessitatibus#}
+    {#                                    possimus#}
+    {#                                </p>#}
+    {#                                <a class="btn btn-primaire btn-effect px-4 py-2 mt-lg-2 mt-3 mb-lg-3 mb-5 me-3 float-lg-end" href="#">#}
+    {#                                    {{ "En savoir plus ..."|trans }}#}
+    {#                                </a>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <div class="col-md-6">#}
+    {#                    <div class="banner wow fadeInUp shadow" data-wow-delay="0.3s">#}
+    {#                        <div class="row">#}
+    {#                            <div class="col-lg-4 wow fadeInLeft" data-wow-delay="0.5s">#}
+    {#                                <div class="h-100">#}
+    {#                                    <img class="img-fluid w-100 h-100 fit-cover"#}
+    {#                                         src="{{ asset('images/event_2.avif') }}" alt="">#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                            <div class="col-lg-8 text-center">#}
+    {#                                <h3 class="fw-bold mt-4 fs-4 wow fadeInRight" data-wow-delay="0.7s">#}
+    {#                                    {{ "Titre de l'article 2"|trans }}#}
+    {#                                </h3>#}
+    {#                                <p class="text-lg-start mt-3 px-3 wow fadeInRight" data-wow-delay="0.7s">#}
+    {#                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab accusantium#}
+    {#                                    cupiditate#}
+    {#                                    distinctio, dolor explicabo fugiat illo illum inventore minima necessitatibus#}
+    {#                                    possimus#}
+    {#                                </p>#}
+    {#                                <a class="btn btn-primaire btn-effect px-4 py-2 mt-lg-2 mt-3 mb-lg-3 mb-5 me-3 float-lg-end" href="#">#}
+    {#                                    {{ "En savoir plus ..."|trans }}#}
+    {#                                </a>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <div class="col-md-6">#}
+    {#                    <div class="banner wow fadeInUp shadow" data-wow-delay="0.3s">#}
+    {#                        <div class="row">#}
+    {#                            <div class="col-lg-4 wow fadeInLeft" data-wow-delay="0.5s">#}
+    {#                                <div class="h-100">#}
+    {#                                    <img class="img-fluid w-100 h-100 fit-cover"#}
+    {#                                         src="{{ asset('images/event_3.avif') }}" alt="">#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                            <div class="col-lg-8 text-center">#}
+    {#                                <h3 class="fw-bold mt-4 fs-4 wow fadeInRight" data-wow-delay="0.7s">#}
+    {#                                    {{ "Titre de l'article 3"|trans }}#}
+    {#                                </h3>#}
+    {#                                <p class="text-lg-start mt-3 px-3 wow fadeInRight" data-wow-delay="0.7s">#}
+    {#                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab accusantium#}
+    {#                                    cupiditate#}
+    {#                                    distinctio, dolor explicabo fugiat illo illum inventore minima necessitatibus#}
+    {#                                    possimus#}
+    {#                                </p>#}
+    {#                                <a class="btn btn-primaire btn-effect px-4 py-2 mt-lg-2 mt-3 mb-lg-3 mb-5 me-3 float-lg-end" href="#">#}
+    {#                                    {{ "En savoir plus ..."|trans }}#}
+    {#                                </a>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <div class="col-md-6">#}
+    {#                    <div class="banner wow fadeInUp shadow" data-wow-delay="0.3s">#}
+    {#                        <div class="row">#}
+    {#                            <div class="col-lg-4 wow fadeInLeft" data-wow-delay="0.5s">#}
+    {#                                <div class="h-100">#}
+    {#                                    <img class="img-fluid w-100 h-100 fit-cover"#}
+    {#                                         src="{{ asset('images/event_4.avif') }}" alt="">#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                            <div class="col-lg-8 text-center">#}
+    {#                                <h3 class="fw-bold mt-4 fs-4 wow fadeInRight" data-wow-delay="0.7s">#}
+    {#                                    {{ "Titre de l'article 4"|trans }}#}
+    {#                                </h3>#}
+    {#                                <p class="text-lg-start mt-3 px-3 wow fadeInRight" data-wow-delay="0.7s">#}
+    {#                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab accusantium#}
+    {#                                    cupiditate#}
+    {#                                    distinctio, dolor explicabo fugiat illo illum inventore minima necessitatibus#}
+    {#                                    possimus#}
+    {#                                </p>#}
+    {#                                <a class="btn btn-primaire btn-effect px-4 py-2 mt-lg-2 mt-3 mb-lg-3 mb-5 me-3 float-lg-end" href="#">#}
+    {#                                    {{ "En savoir plus ..."|trans }}#}
+    {#                                </a>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <!-- Actualite End -->#}
+    <!-- Equipe dirigeante Start -->
     <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container">
             <div class="text-center mb-5 mt-5">
                 <h2 class="section-title bg-white text-center text-secondaire px-3 mb-5">
-                    {{ "Actualité"|trans }}
+                    {{ "Equipe dirigeante"|trans }}
                 </h2>
-            </div>
-            <div class="row g-5">
-                <div class="col-md-6">
-                    <div class="banner wow fadeInUp shadow" data-wow-delay="0.3s">
-                        <div class="row">
-                            <div class="col-lg-4 wow fadeInLeft" data-wow-delay="0.5s">
-                                <div class="h-100">
-                                    <img class="img-fluid w-100 h-100 fit-cover"
-                                         src="{{ asset('images/event_1.avif') }}" alt="">
-                                </div>
+                <div class="row gy-5">
+                    <div class="col-lg-3 col-md-6 tab-bloc">
+                        <div class="bloc-team wow animated fadeInUp" data-wow-delay="0.1s">
+                            <div class="bloc-team-img">
+                                <img src="{{ asset ('images/team_1.avif') }}" alt="">
                             </div>
-                            <div class="col-lg-8 text-center">
-                                <h3 class="fw-bold mt-4 fs-4 wow fadeInRight" data-wow-delay="0.7s">
-                                    {{ "Titre de l'article 1"|trans }}
-                                </h3>
-                                <p class="text-lg-start mt-3 px-3 wow fadeInRight" data-wow-delay="0.7s">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab accusantium
-                                    cupiditate
-                                    distinctio, dolor explicabo fugiat illo illum inventore minima necessitatibus
-                                    possimus
-                                </p>
-                                <a class="btn btn-primaire btn-effect px-4 py-2 mt-lg-2 mt-3 mb-lg-3 mb-5 me-3 float-lg-end" href="#">
-                                    {{ "En savoir plus ..."|trans }}
+                            <div class="bloc-team-text">
+                                <h4>Michel Ovono</h4>
+                                <h6>Directeur Général</h6>
+                            </div>
+                            <div class="bloc-team-icon">
+                                <a href="#">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-brands fa-x-twitter"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-brands fa-linkedin"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="banner wow fadeInUp shadow" data-wow-delay="0.3s">
-                        <div class="row">
-                            <div class="col-lg-4 wow fadeInLeft" data-wow-delay="0.5s">
-                                <div class="h-100">
-                                    <img class="img-fluid w-100 h-100 fit-cover"
-                                         src="{{ asset('images/event_2.avif') }}" alt="">
-                                </div>
+                    <div class="col-lg-3 col-md-6 tab-bloc">
+                        <div class="bloc-team wow animated fadeInUp" data-wow-delay="0.3s">
+                            <div class="bloc-team-img">
+                                <img src="{{ asset ('images/team_2.avif') }}" alt="">
                             </div>
-                            <div class="col-lg-8 text-center">
-                                <h3 class="fw-bold mt-4 fs-4 wow fadeInRight" data-wow-delay="0.7s">
-                                    {{ "Titre de l'article 2"|trans }}
-                                </h3>
-                                <p class="text-lg-start mt-3 px-3 wow fadeInRight" data-wow-delay="0.7s">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab accusantium
-                                    cupiditate
-                                    distinctio, dolor explicabo fugiat illo illum inventore minima necessitatibus
-                                    possimus
-                                </p>
-                                <a class="btn btn-primaire btn-effect px-4 py-2 mt-lg-2 mt-3 mb-lg-3 mb-5 me-3 float-lg-end" href="#">
-                                    {{ "En savoir plus ..."|trans }}
+                            <div class="bloc-team-text">
+                                <h4>Yves Ondoa</h4>
+                                <h6>Directeur Commercial</h6>
+                            </div>
+                            <div class="bloc-team-icon">
+                                <a href="#">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-brands fa-x-twitter"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-brands fa-linkedin"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="banner wow fadeInUp shadow" data-wow-delay="0.3s">
-                        <div class="row">
-                            <div class="col-lg-4 wow fadeInLeft" data-wow-delay="0.5s">
-                                <div class="h-100">
-                                    <img class="img-fluid w-100 h-100 fit-cover"
-                                         src="{{ asset('images/event_3.avif') }}" alt="">
-                                </div>
+                    <div class="col-lg-3 col-md-6 tab-bloc">
+                        <div class="bloc-team wow animated fadeInUp" data-wow-delay="0.5s">
+                            <div class="bloc-team-img">
+                                <img src="{{ asset ('images/team_3.avif') }}" alt="">
                             </div>
-                            <div class="col-lg-8 text-center">
-                                <h3 class="fw-bold mt-4 fs-4 wow fadeInRight" data-wow-delay="0.7s">
-                                    {{ "Titre de l'article 3"|trans }}
-                                </h3>
-                                <p class="text-lg-start mt-3 px-3 wow fadeInRight" data-wow-delay="0.7s">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab accusantium
-                                    cupiditate
-                                    distinctio, dolor explicabo fugiat illo illum inventore minima necessitatibus
-                                    possimus
-                                </p>
-                                <a class="btn btn-primaire btn-effect px-4 py-2 mt-lg-2 mt-3 mb-lg-3 mb-5 me-3 float-lg-end" href="#">
-                                    {{ "En savoir plus ..."|trans }}
+                            <div class="bloc-team-text">
+                                <h4>Didier Njako</h4>
+                                <h6>Directeur Marketing</h6>
+                            </div>
+                            <div class="bloc-team-icon">
+                                <a href="#">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-brands fa-x-twitter"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-brands fa-linkedin"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="banner wow fadeInUp shadow" data-wow-delay="0.3s">
-                        <div class="row">
-                            <div class="col-lg-4 wow fadeInLeft" data-wow-delay="0.5s">
-                                <div class="h-100">
-                                    <img class="img-fluid w-100 h-100 fit-cover"
-                                         src="{{ asset('images/event_4.avif') }}" alt="">
-                                </div>
+                    <div class="col-lg-3 col-md-6 tab-bloc">
+                        <div class="bloc-team wow animated fadeInUp" data-wow-delay="0.7s">
+                            <div class="bloc-team-img">
+                                <img src="{{ asset ('images/team_4.avif') }}" alt="">
                             </div>
-                            <div class="col-lg-8 text-center">
-                                <h3 class="fw-bold mt-4 fs-4 wow fadeInRight" data-wow-delay="0.7s">
-                                    {{ "Titre de l'article 4"|trans }}
-                                </h3>
-                                <p class="text-lg-start mt-3 px-3 wow fadeInRight" data-wow-delay="0.7s">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab accusantium
-                                    cupiditate
-                                    distinctio, dolor explicabo fugiat illo illum inventore minima necessitatibus
-                                    possimus
-                                </p>
-                                <a class="btn btn-primaire btn-effect px-4 py-2 mt-lg-2 mt-3 mb-lg-3 mb-5 me-3 float-lg-end" href="#">
-                                    {{ "En savoir plus ..."|trans }}
+                            <div class="bloc-team-text">
+                                <h4>Amelia Konga</h4>
+                                <h6>Ressources humaines</h6>
+                            </div>
+                            <div class="bloc-team-icon">
+                                <a href="#">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-brands fa-x-twitter"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-brands fa-linkedin"></i>
                                 </a>
                             </div>
                         </div>
@@ -356,6 +469,8 @@
             </div>
         </div>
     </div>
-    <!-- Actualite End -->
 
+
+
+    <!-- Equipe dirigeante End -->
 {% endblock %}

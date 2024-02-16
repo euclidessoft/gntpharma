@@ -23,7 +23,7 @@
     --gris: #959595; /*  rgb(255, 255, 255)  */
     --gris-clair: #e5e4e4; /*  rgb(255, 255, 255)  */
     --gris-fonce: #2b2b2b; /*  rgb(255, 255, 255)  */
-    --twitter: #1d9bf0; /*  rgb(29, 155, 240)  */
+    --twitter: #2b2b2b; /*  rgb(29, 155, 240)  */
     --facebook: #385898; /*  rgb(56, 88, 152)  */
     --linkedin: #004182; /*  rgb(0, 65, 130)  */
     --instagram: #e83e8c; /*  rgb(232, 62, 140)  */
@@ -630,7 +630,7 @@
     position: absolute;
     content: "\f30a";
     font-family: "Font Awesome 6 Free", sans-serif;
-    top: -10px;
+    top: 0;
     left: -30px;
     z-index: -1;
     /*font-size: xxx-large;*/
@@ -641,7 +641,7 @@
     position: absolute;
     content: "\f30b";
     font-family: "Font Awesome 6 Free", sans-serif;
-    top: -10px;
+    top: 0;
     right: -30px;
     z-index: -1;
     /*font-size: xxx-large;*/
@@ -743,6 +743,84 @@
     margin-top: -23px
 }
 
+/**** Team Starts*/
+.bloc-team {
+    border: 1px solid var(--primaire);
+
+    box-shadow: 2px 4px 10px 0 rgba(0, 0, 0, 0.2);
+    /*box-shadow: 10px 10px 10px rgba(var(--gris-fonce), 0.1);*/
+    padding: 3rem;
+    height: 100%;
+}
+.bloc-team:hover{
+    box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
+}
+
+.bloc-team .bloc-team-img {
+    width: 100%;
+    aspect-ratio: 1 /1;
+    margin: 0 auto 20px;
+}
+
+.bloc-team .bloc-team-img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.bloc-team .bloc-team-text {
+    margin-bottom: 20px;
+}
+
+.bloc-team .bloc-team-text h4 {
+    color: var(--primaire);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.bloc-team .bloc-team-text h6 {
+    color: var(--gris-fonce);
+    font-size: 1.2rem;
+    font-weight: normal;
+    text-align: center;
+    font-style: italic;
+}
+
+.bloc-team .bloc-team-icon {
+    border-top: 1px solid var(--primaire);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*margin-top: 26px;*/
+}
+
+.bloc-team .bloc-team-icon a {
+    text-decoration: none;
+    color: var(--primaire);
+    margin: 10px;
+    font-size: 28px;
+    box-sizing: border-box;
+}
+
+.bloc-team .bloc-team-icon .fa-facebook:hover {
+    color: var(--facebook);
+}
+
+.bloc-team .bloc-team-icon .fa-instagram:hover {
+    color: var(--instagram);
+}
+
+.bloc-team .bloc-team-icon .fa-x-twitter:hover {
+    color: var(--twitter);
+}
+
+.bloc-team .bloc-team-icon .fa-linkedin:hover {
+    color: var(--linkedin);
+}
+
+/************* Team Ends *****************/
 
 /*** Testimonial ***/
 .testimonial-carousel::before {

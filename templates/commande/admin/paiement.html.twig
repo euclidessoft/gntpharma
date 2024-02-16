@@ -183,7 +183,7 @@
             var reg = new RegExp("^[0-9]{3,9}$");
             if (reg.test($('#paiement_form_montant').val()) ) {
                 if ($('#paiement_form_type option:selected').val() == 'Cheque' || $('#paiement_form_type option:selected').val() == 'Virement') {
-                    if ($('#paiement_form_banque').val() != '' && $('#paiement_form_numero').val() != '') {
+                    if ($('#paiement_form_montant').val() != '' && $('#paiement_form_type').val() != '') {
                         $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                         $('#form').submit();
                     } else alert('Veuillez renseigner tous les champs');
