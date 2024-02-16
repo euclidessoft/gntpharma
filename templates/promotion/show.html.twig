@@ -12,10 +12,11 @@
             <table class="table table-success-light table-bordered table-hover table-striped w-100">
                 <thead>
                 <tr>
-                    <th>Designation</th>
+                    <th>Désignation</th>
                     <th>Date de début</th>
                     <th>Date de fin</th>
                     <th>Type</th>
+                    <th>Avantages</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -24,6 +25,16 @@
                     <td>{{ promotion.debut ? promotion.debut|date('Y-m-d') : '' }}</td>
                     <td>{{ promotion.fin ? promotion.fin|date('Y-m-d') : '' }}</td>
                     <td>{{ promotion.type }}</td>
+                    <td>
+                        {% if promotion.premier is null %}
+                            {{ promotion.reduction }} % de réduction
+
+                        {% else %}
+                            {{ promotion.premier }} pour {{ promotion.ugpremier }} gratuits<br>
+                            {{ promotion.deuxieme }} pour {{ promotion.ugdeuxieme }} gratuits<br>
+                            {{ promotion.troisieme }} pour {{ promotion.ugtroisieme }} gratuits<br>
+                        {% endif %}
+                    </td>
 
 
                 </tr>

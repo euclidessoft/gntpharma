@@ -50,6 +50,11 @@ class Commande
     private $Montant;
 
     /**
+     * @ORM\Column(type="float")
+     */
+    private $reduction;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $suivi;
@@ -73,6 +78,7 @@ class Commande
         $this->ref = 'hhfhfhf';
         $this->suivi = false;
         $this->livraison = false;
+        $this->reduction = 0;
     }
 
 
@@ -186,6 +192,18 @@ class Commande
     public function setPaiement(?Paiement $paiement): self
     {
         $this->paiement = $paiement;
+
+        return $this;
+    }
+
+    public function getReduction(): ?float
+    {
+        return $this->reduction;
+    }
+
+    public function setReduction(?float $reduction): self
+    {
+        $this->reduction = $reduction;
 
         return $this;
     }

@@ -193,7 +193,7 @@ class PromotionController extends AbstractController
      */
     public function courante(SessionInterface $session, PromotionRepository $promotionRepository): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
 
             $response = $this->render('promotion/admin/encours.html.twig', [

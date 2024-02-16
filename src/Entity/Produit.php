@@ -12,6 +12,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Produit
 {
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Promotion")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $promotion;
+
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -252,6 +258,18 @@ class Produit
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getPromotion(): ?Promotion
+    {
+        return $this->promotion;
+    }
+
+    public function setPromotion(?Promotion $promotion): self
+    {
+        $this->promotion = $promotion;
 
         return $this;
     }

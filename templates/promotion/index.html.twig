@@ -23,8 +23,8 @@
         {% for promotion in promotions %}
             <tr>
                 <td>{{ promotion.designation }}</td>
-                <td>{{ promotion.debut ? promotion.debut|date('Y-m-d') : '' }}</td>
-                <td>{{ promotion.fin ? promotion.fin|date('Y-m-d') : '' }}</td>
+                <td>{{ promotion.debut ? promotion.debut|date('d/m/Y') : '' }}</td>
+                <td>{{ promotion.fin ? promotion.fin|date('d/m/Y') : '' }}</td>
                 <td>{{ promotion.type }}</td>
                 <td>
                     <a class="btn btn-success" href="{{ path('promotion_show', {'id': promotion.id}) }}"><i class="fa fa-list"></i> Afficher</a>

@@ -11,6 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
 class CommandeProduit
 {
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Promotion")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $promotion;
+
+    /**
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="App\Entity\Produit")
      */
@@ -138,6 +144,18 @@ class CommandeProduit
     public function setStock(?int $stock): self
     {
         $this->stock = $stock;
+
+        return $this;
+    }
+
+    public function getPromotion(): ?Promotion
+    {
+        return $this->promotion;
+    }
+
+    public function setPromotion(?Promotion $promotion): self
+    {
+        $this->promotion = $promotion;
 
         return $this;
     }

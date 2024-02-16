@@ -37,6 +37,7 @@
         </div>
     </div>
     {% set total=0 %}
+    {% set reduction=0 %}
     <table class="table table-success-light table-bordered table-hover table-striped w-100">
         <thead>
         <tr>
@@ -54,7 +55,17 @@
                 <td> {{ commandeproduit.produit.id }} </td>
                 <td>{{ commandeproduit.produit.desigantion }} </td>
                 <td> {{ commandeproduit.quantite }} </td>
-                <td>{{ commandeproduit.session|number_format(0, '' , ' ') }}</td>
+                <td>
+                    {{ commandeproduit.session|number_format(0, '' , ' ') }}
+                    {% if commandeproduit.produit.promotion is not null %}
+                        {% if commandeproduit.produit.promotion.reduction is not null %}
+                            {% set reduction =  reduction + (commandeproduit.quantite * commandeproduit.session * commandeproduit.produit.promotion.reduction /100) %}
+                            <span class="badge badge-danger">
+                                    -{{ commandeproduit.produit.promotion.reduction }}%
+                            </span>
+                        {% endif %}
+                    {% endif %}
+                </td>
                 <td>{{ commandeproduit.publique|number_format(0, '' , ' ') }}</td>
                 <td>
                     {{ (commandeproduit.quantite * commandeproduit.session)|number_format(0, '' , ' ') }}
@@ -76,6 +87,14 @@
             </td>
             <td>
                 <span id="total">{{ total|number_format(0, '' , ' ') }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5" class="text-right">
+                {{ "Net à payer"|trans }}
+            </td>
+            <td>
+                <span id="total">{{ (total-reduction)|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
         </tbody>
@@ -113,7 +132,7 @@
                                 <div class="form-group mt-2">
                                     {{ form_errors(form.montant) }}
                                     <div class="input-group">
-                                        {{ form_widget(form.montant, {'label':false, 'attr' : {'id' : 'nombre', 'placeholder':'Montant', 'value': total}}) }}
+                                        {{ form_widget(form.montant, {'label':false, 'attr' : {'id' : 'nombre', 'placeholder':'Montant', 'value': total-reduction}}) }}
                                         <input type="hidden" id="tamp"/>
                                         <input type="hidden" id="tamp1"/>
                                         <div class="input-group-append">
