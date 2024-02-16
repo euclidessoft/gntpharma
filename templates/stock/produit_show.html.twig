@@ -14,32 +14,26 @@
 
             <tr>
                 <th>Code Produit</th>
-                <td>{{ produit.reference }}</td>
+                <td>{{ produit.reference }}</td><th class="text-center">Quantite en stock</th>
             </tr>
-            <tr>
-                <th>Desigantion</th>
+
+            <tr><th>Desigantion</th>
                 <td>{{ produit.desigantion }}</td>
+                <td rowspan="5" class="text-center text-bold"><h5>{{ produit.stock }}</h5></td></tr>
+            <tr> <th>Prix Session</th>
+                <td>{{ produit.prix }}</td></tr>
+            <tr><th>Prix Public</th>
+                <td>{{ produit.prixpublic }}</td></tr>
+            <tr> <th>Mincommande</th>
+                <td>{{ produit.mincommande }}</td></tr>
+            <tr> <th>Fabriquant</th>
+                <td>{{ produit.fabriquant }}</td></tr>
+
+            <tr> </tr>
             </tr>
-            <tr>
-                <th>Prix Session</th>
-                <td>{{ produit.prix }}</td>
-            </tr>
-            <tr>
-                <th>Prix Public</th>
-                <td>{{ produit.prixpublic }}</td>
-            </tr>
-            <tr>
-                <th>Mincommande</th>
-                <td>{{ produit.mincommande }}</td>
-            </tr>
-            <tr>
-                <th>Fabriquant</th>
-                <td>{{ produit.fabriquant }}</td>
-            </tr>
-            <tr>
-                <th>Quantite en stock</th>
-                <td>{{ produit.stock }}</td>
-            </tr>
+
+
+
         </tbody>
     </table>
 

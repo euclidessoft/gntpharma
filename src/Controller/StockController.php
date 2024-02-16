@@ -23,7 +23,7 @@ class StockController extends AbstractController
      */
     public function stock(ProduitRepository $produitRepository): Response
     {
-        return $this->render('approvisionnement/stock.html.twig', [
+        return $this->render('stock/stock.html.twig', [
             'produits' => $produitRepository->findAll(),
         ]);
     }
@@ -36,7 +36,7 @@ class StockController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 
-            $response = $this->render('approvisionnement/produit_show.html.twig', [
+            $response = $this->render('stock/produit_show.html.twig', [
                 'produit' => $produit,
             ]);
             $response->setSharedMaxAge(0);

@@ -16,6 +16,7 @@
             <th>Date de début</th>
             <th>Date de fin</th>
             <th>Type</th>
+            <th>Avantages</th>
         </tr>
         </thead>
         <tbody>
@@ -24,6 +25,16 @@
                 <td>{{ promotion.debut ? promotion.debut|date('Y-m-d') : '' }}</td>
                 <td>{{ promotion.fin ? promotion.fin|date('Y-m-d') : '' }}</td>
                 <td>{{ promotion.type }}</td>
+                <td>
+                    {% if promotion.premier is null %}
+                        {{ promotion.reduction }} % de réduction
+
+                    {% else %}
+                        {{ promotion.premier }} pour {{ promotion.ugpremier }} gratuit<br>
+                        {{ promotion.deuxieme }} pour {{ promotion.ugdeuxieme }} gratuit<br>
+                        {{ promotion.troisieme }} pour {{ promotion.ugtroisieme }} gratuit<br>
+                    {% endif %}
+                </td>
 
 
         </tr>
@@ -45,7 +56,6 @@
                     <th>Publique</th>
                     <th>Commande<br> Minimum</th>
                     <th>Fabriquant</th>
-                    <th>actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -57,9 +67,6 @@
                         <td>{{ promotionproduit.produit.prixpublic }}</td>
                         <td>{{ promotionproduit.produit.mincommande }}</td>
                         <td>{{ promotionproduit.produit.fabriquant }}</td>
-                        <td>
-
-                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

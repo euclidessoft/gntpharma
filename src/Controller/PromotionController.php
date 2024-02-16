@@ -82,12 +82,11 @@ class PromotionController extends AbstractController
     {
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            $promo = $session->get("promo", []);
+
             $produits = $produitRepository->findAll();
 
             $promo = $session->get("promo", []);
             $dataPanier = [];
-            $total = 0;
 
             foreach ($promo as $commande) {
                 $dataPanier[] = [
@@ -123,6 +122,8 @@ class PromotionController extends AbstractController
                         'private' => true,
                     ]);
                     return $response;
+                }else{
+                    $this->addFlash('danger', 'Veuillez ajouter des produits à la promotion');
                 }
             }
 
@@ -174,6 +175,40 @@ class PromotionController extends AbstractController
             ]);
             return $response;
         } else {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/PromotionsCourantes", name="promotion_courante", methods={"GET","POST"})
+     */
+    public function courante(SessionInterface $session, PromotionRepository $promotionRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+
+            $response = $this->render('promotion/admin/encours.html.twig', [
+                'promotions' => $promotionRepository->Courante(),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }  else {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
@@ -340,17 +375,22 @@ class PromotionController extends AbstractController
         ]);
     }
 
-//    /**
-//     * @Route("/{id}", name="promotion_delete", methods={"POST"})
-//     */
-//    public function delete(Request $request, Promotion $promotion): Response
-//    {
-//        if ($this->isCsrfTokenValid('delete' . $promotion->getId(), $request->request->get('_token'))) {
-//            $entityManager = $this->getDoctrine()->getManager();
-//            $entityManager->remove($promotion);
-//            $entityManager->flush();
-//        }
-//
-//        return $this->redirectToRoute('promotion_index', [], Response::HTTP_SEE_OTHER);
-//    }
+    /**
+     * @Route("/cancel/{id}", name="promotion_cancel", methods={"POST"})
+     */
+    public function cancel(Request $request, Promotion $promotion): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $promotion->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+           $promotionproduits = $entityManager->getRepository(PromotionProduit::class)->findBy(['promotion' => $promotion]);
+           foreach ($promotionproduits as $promotionproduit){
+               $entityManager->remove($promotionproduit);
+            }
+            $entityManager->remove($promotion);
+            $entityManager->flush();
+            $this->addFlash('notice', 'Promotion supprimée');
+        }
+
+        return $this->redirectToRoute('promotion_index', [], Response::HTTP_SEE_OTHER);
+    }
 }
