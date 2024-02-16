@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Promotion;
+use App\Form\Type\promoType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,7 +17,15 @@ class PromotionType extends AbstractType
             ->add('designation')
             ->add('debut', DateType::class, array( 'widget' => 'single_text', 'attr' => ['title' => 'Date de début'],))
             ->add('fin', DateType::class, array( 'widget' => 'single_text', 'attr' => ['title' => 'Date de fin'],))
-            ->add('type')
+            ->add('type', promoType::class, ['placeholder' => 'types de promotion *',
+                'label' => false,] )
+            ->add('premier'  )
+            ->add('ugpremier' )
+            ->add('deuxieme'  )
+            ->add('ugdeuxieme' )
+            ->add('troisieme'  )
+            ->add('ugtroisieme' )
+            ->add('reduction' )
         ;
     }
 

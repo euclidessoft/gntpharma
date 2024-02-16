@@ -548,6 +548,7 @@ class securityController extends AbstractController
                 //$hashpass = $encoder->encodePassword($user, $user->getPassword());
                 //$password = $user->getPassword();
                 $user->setPassword($hashpass);
+                $user->setUsername($user->getNom());
 
 //                $user->setDatenaiss(date_create_from_format('j/m/Y', $user->getBirthday()));//creation de la date de naissance
 

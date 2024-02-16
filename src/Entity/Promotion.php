@@ -50,6 +50,40 @@ class Promotion
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $premier;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $ugpremier;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $deuxieme;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $ugdeuxieme;
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $troisieme;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $ugtroisieme;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $reduction;
+
 
     public function getId(): ?int
     {
@@ -112,6 +146,90 @@ class Promotion
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPremier(): ?int
+    {
+        return $this->premier;
+    }
+
+    public function setPremier(int $premier): self
+    {
+        $this->premier = $premier;
+
+        return $this;
+    }
+
+    public function getUgpremier(): ?int
+    {
+        return $this->ugpremier;
+    }
+
+    public function setUgpremier(int $ugpremier): self
+    {
+        $this->ugpremier = $ugpremier;
+
+        return $this;
+    }
+
+    public function getDeuxieme(): ?int
+    {
+        return $this->deuxieme;
+    }
+
+    public function setDeuxieme(int $deuxieme): self
+    {
+        $this->deuxieme = $deuxieme;
+
+        return $this;
+    }
+
+    public function getUgdeuxieme(): ?int
+    {
+        return $this->ugdeuxieme;
+    }
+
+    public function setUgdeuxieme(int $ugdeuxieme): self
+    {
+        $this->ugdeuxieme = $ugdeuxieme;
+
+        return $this;
+    }
+
+    public function getTroisieme(): ?int
+    {
+        return $this->troisieme;
+    }
+
+    public function setTroisieme(int $troisieme): self
+    {
+        $this->troisieme = $troisieme;
+
+        return $this;
+    }
+
+    public function getUgtroisieme(): ?int
+    {
+        return $this->ugtroisieme;
+    }
+
+    public function setUgtroisieme(int $ugtroisieme): self
+    {
+        $this->ugtroisieme = $ugtroisieme;
+
+        return $this;
+    }
+
+    public function getReduction(): ?int
+    {
+        return $this->reduction;
+    }
+
+    public function setReduction(int $reduction): self
+    {
+        $this->reduction = $reduction;
 
         return $this;
     }

@@ -204,7 +204,9 @@
         $('#btnversement').hide();
         $('#versement').hide();
         $('#tampon').hide();
-        $('#paiement_form_montant').change(function () {
+        $('#reduction').hide();// cacher la partie redution a l'affichage
+        $('#tranche').hide();// cacher les tranches redution a l'affichage
+        $('#paiement_form_montant').change(function () {// controle montant paiement
             var reg = new RegExp("^[0-9]+$");
             if (reg.test($('#paiement_form_montant').val())) {
                 $('#tamp').val('ok');
@@ -214,6 +216,21 @@
                 $('#btnversement').hide();
             }
         });
+
+        $('#promotion_type').change(function () {//changement type de promotion
+            if ($('#promotion_type option:selected').val() == 'Unités Gratuites') {
+                $('#tranche').show();
+                $('#reduction').hide();
+
+            }else if ($('#promotion_type option:selected').val() == 'Réduction') {
+                $('#tranche').hide();
+                $('#reduction').show();
+            }else{
+                $('#tranche').hide();
+                $('#reduction').hide();
+            }
+        });
+
     });
 
     function envoie() {
@@ -222,7 +239,36 @@
         valider.html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
         $('#form').submit();
     }
+    function promosubmit() {
+        var valider=$('#send');
+        // valider.addClass("disabled");
+        if ($('#promotion_type option:selected').val() == 'Unités Gratuites') {
 
+            if($('#promotion_premier').val() != '' &&
+                $('#promotion_ugpremier').val() != '' &&
+                $('#promotion_deuxieme').val() != '' &&
+                $('#promotion_ugdeuxieme').val() != '' &&
+                $('#promotion_troisieme').val() != '' &&
+                $('#promotion_ugtroisieme').val() != '' &&
+                $('#promotion_debut').val() != '' &&
+                $('#promotion_fin').val() != '') {
+                valider.html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                $('#form').submit();
+            }
+
+        }else if ($('#promotion_type option:selected').val() == 'Réduction') {
+
+            if($('#promotion_reduction').val() != ''&&
+                $('#promotion_debut').val() != '' &&
+                $('#promotion_fin').val() != '') {
+                valider.html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                $('#form').submit();
+            }
+        }else {
+            alert('Veuillez saisir tous les champs');
+        }
+
+    }
 
     function facture() {
         $('#decl').trigger('click');

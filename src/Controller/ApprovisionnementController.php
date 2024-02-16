@@ -15,22 +15,13 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{_locale}/Stock" , name="stock_")
+ * @Route("/{_locale}/Stock/Approvisionnement" , name="stock_")
  */
 class ApprovisionnementController extends AbstractController
 {
-    /**
-     * @Route("/", name="index", methods={"GET"})
-     */
-    public function stock(ProduitRepository $produitRepository): Response
-    {
-        return $this->render('approvisionnement/stock.html.twig', [
-            'produits' => $produitRepository->findAll(),
-        ]);
-    }
 
     /**
-     * @Route("/Approvisionnement", name="appro_index", methods={"GET"})
+     * @Route("/Approvisionnement/", name="appro_index", methods={"GET"})
      */
     public function index(SessionInterface $session, ApprovisionnementRepository $approvisionnementRepository, ProduitRepository $produitRepository): Response
     {
@@ -55,7 +46,7 @@ class ApprovisionnementController extends AbstractController
     }
 
     /**
-     * @Route("/Historique", name="historique", methods={"GET"})
+     * @Route("/Historique/", name="historique", methods={"GET"})
      */
     public function historique(ApprovisionnerRepository $repository): Response
     {
@@ -65,52 +56,7 @@ class ApprovisionnementController extends AbstractController
     }
 
 
-    /**
-     * @Route("/{id}", name="produit_show", methods={"GET"})
-     */
-    public function produit(Produit $produit): Response
-    {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 
-            $response = $this->render('approvisionnement/produit_show.html.twig', [
-                'produit' => $produit,
-            ]);
-            $response->setSharedMaxAge(0);
-            $response->headers->addCacheControlDirective('no-cache', true);
-            $response->headers->addCacheControlDirective('no-store', true);
-            $response->headers->addCacheControlDirective('must-revalidate', true);
-            $response->setCache([
-                'max_age' => 0,
-                'private' => true,
-            ]);
-            return $response;
-        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_ROLE')) {
-
-            $response = $this->render('produit/show.html.twig', [
-                'produit' => $produit,
-            ]);
-            $response->setSharedMaxAge(0);
-            $response->headers->addCacheControlDirective('no-cache', true);
-            $response->headers->addCacheControlDirective('no-store', true);
-            $response->headers->addCacheControlDirective('must-revalidate', true);
-            $response->setCache([
-                'max_age' => 0,
-                'private' => true,
-            ]);
-            return $response;
-        } else {
-            $response = $this->redirectToRoute('security_login');
-            $response->setSharedMaxAge(0);
-            $response->headers->addCacheControlDirective('no-cache', true);
-            $response->headers->addCacheControlDirective('no-store', true);
-            $response->headers->addCacheControlDirective('must-revalidate', true);
-            $response->setCache([
-                'max_age' => 0,
-                'private' => true,
-            ]);
-            return $response;
-        }
-    }
 
 
 
@@ -156,7 +102,7 @@ class ApprovisionnementController extends AbstractController
     }
 
     /**
-     * @Route("/edit", name="edit")
+     * @Route("/edit/", name="edit")
      */
     public function edit(Request $request, SessionInterface $session)
     {
@@ -193,7 +139,7 @@ class ApprovisionnementController extends AbstractController
     }
 
     /**
-     * @Route("/delete", name="delete")
+     * @Route("/delete/", name="delete")
      */
     public function delete(Request $request, ProduitRepository $repository, SessionInterface $session)
     {
@@ -217,7 +163,7 @@ class ApprovisionnementController extends AbstractController
     }
 
     /**
-     * @Route("/delete", name="delete_all")
+     * @Route("/deleteAll/", name="delete_all")
      */
     public function deleteAll(SessionInterface $session)
     {
@@ -237,7 +183,7 @@ class ApprovisionnementController extends AbstractController
     }
 
    /**
- * @Route("/valider", name="valider")
+ * @Route("/valider/", name="valider")
  */
     public function valider(SessionInterface $session, ProduitRepository $produitRepository)
     {
@@ -286,8 +232,9 @@ class ApprovisionnementController extends AbstractController
         }
     }
 
+
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/Details/{id}", name="show", methods={"GET"})
      */
     public function show(Approvisionner $approvisionner, ApprovisionnementRepository $repository): Response
     {
