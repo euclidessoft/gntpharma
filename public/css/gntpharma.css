@@ -1335,7 +1335,7 @@ select#transfert_date_time_minute {
 
 /*************Paiement***********/
 
-.container {
+.container_paiement {
     width: 600px;
     border-radius: 8px;
     padding: 40px;
@@ -1344,16 +1344,16 @@ select#transfert_date_time_minute {
     0 18px 36px -6px rgba(0, 0, 0, 0.1);
 }
 
-.container .title {
+.container_paiement  .title {
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.container form input {
+.container_paiement  form input {
     display: none;
 }
 
-.container form .category {
+.container_paiement  form .category {
     margin-top: 10px;
     padding-top: 20px;
     display: grid;
@@ -1361,7 +1361,7 @@ select#transfert_date_time_minute {
     grid-gap: 15px;
 }
 
-.category label {
+.container_paiement .category label {
     width: 100%;
     height: 145px;
     padding: 20px;
@@ -1388,7 +1388,7 @@ select#transfert_date_time_minute {
 }
 
 
-label .imgName {
+.container_paiement label .imgName {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1397,7 +1397,7 @@ label .imgName {
     gap: 10px;
 }
 
-.imgName span {
+.container_paiement .imgName span {
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
     top: 72%;
@@ -1405,7 +1405,7 @@ label .imgName {
     transform: translateY(-72%);
 }
 
-.imgName .imgContainer {
+.container_paiement .imgName .imgContainer {
     width: 50px;
     display: flex;
     justify-content: center;
@@ -1414,28 +1414,28 @@ label .imgName {
     transform: translateY(-35%);
 }
 
-img {
+.container_paiement img {
     width: 80px;
     height: auto;
 }
 
-.carte_bancaire img {
+.container_paiement .carte_bancaire img {
     width: 80px;
 }
 
-.virement img {
+.container_paiement .virement img {
     width: 80px;
 }
 
-.omoney img {
+.container_paiement .omoney img {
     width: 80px;
 }
 
-.espece img {
+.container_paiement .espece img {
     width: 80px;
 }
 
-.check {
+.container_paiement .check {
     display: none;
     position: absolute;
     top: -3px;
