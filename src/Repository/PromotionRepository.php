@@ -46,5 +46,16 @@ class PromotionRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function CouranteClient()
+    {
+        return $this->createQueryBuilder('p')
+            ->Where('p.debut <= :debut')
+            ->setParameter('debut', date('Y-m-d'))
+            ->andWhere('p.fin >= :fin')
+            ->setParameter('fin', date('Y-m-d'))
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 }

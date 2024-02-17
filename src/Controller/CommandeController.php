@@ -135,9 +135,9 @@ class CommandeController extends AbstractController
 
 
     /**
-     * @Route("/Suivi/", name="suivi")
+     * @Route("/VosCommande/", name="suivi")
      */
-    public function Suivi(SessionInterface $session, CommandeRepository $repository)
+    public function voscommande(SessionInterface $session, CommandeRepository $repository)
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
             $panier = $session->get("panier", []);
@@ -285,6 +285,89 @@ class CommandeController extends AbstractController
 
          return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
     }
+
+    /**
+     * @Route("/Paiement_commande/{commande}", name="paiement_client")
+     */
+    public function paiementClient(SessionInterface $session, CommandeProduitRepository $repository, Commande $commande, PaiementRepository $paiementRepository)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT') && $commande->getUser() == $this->getUser()) {
+            $panier = $session->get("panier", []);
+
+            $response = $this->render('commande/payment.html.twig', [
+                'commandeproduits' => $repository->findBy(['commande' => $commande]),
+                'commande' => $commande,
+                'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+
+
+        /* // On "fabrique" les données
+
+         return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
+    }
+
+    /**
+     * @Route("/Choix_Paiement/{commande}", name="choix_paiement")
+     */
+    public function paiementChoix(SessionInterface $session, CommandeProduitRepository $repository, Commande $commande, PaiementRepository $paiementRepository)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT') && $commande->getUser() == $this->getUser()) {
+            $panier = $session->get("panier", []);
+
+            $response = $this->render('commande/traitement.html.twig', [
+                'commandeproduits' => $repository->findBy(['commande' => $commande]),
+                'commande' => $commande,
+                'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+
+
+        /* // On "fabrique" les données
+
+         return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
+    }
+
 
     /**
      * @Route("/Suivi/{commande}", name="paiement")

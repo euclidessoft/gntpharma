@@ -57,11 +57,11 @@
                 <td> {{ commandeproduit.quantite }} </td>
                 <td>
                     {{ commandeproduit.produit.prix|number_format(0, '' , ' ') }}
-                    {% if commandeproduit.produit.promotion is not null %}
-                        {% if commandeproduit.produit.promotion.reduction is not null %}
-                            {% set reduction =  reduction + (commandeproduit.quantite * commandeproduit.session * commandeproduit.produit.promotion.reduction /100) %}
+                    {% if commandeproduit.promotion is not null %}
+                        {% if commandeproduit.promotion.reduction is not null %}
+                            {% set reduction =  reduction + (commandeproduit.quantite * commandeproduit.session * commandeproduit.promotion.reduction /100) %}
                             <span class="badge badge-danger">
-                                    -{{ commandeproduit.produit.promotion.reduction }}%
+                                    -{{ commandeproduit.promotion.reduction }}%
                             </span>
                         {% endif %}
                     {% endif %}
@@ -89,6 +89,16 @@
                 <span id="total">{{ total|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
+        {% if reduction != 0 %}
+            <tr>
+                <td colspan="5" class="text-right">
+                    {{ "Réduction"|trans }}
+                </td>
+                <td>
+                    <span id="total">{{ reduction|number_format(0, '' , ' ') }}</span>
+                </td>
+            </tr>
+        {% endif %}
         <tr>
             <td colspan="5" class="text-right">
                 {{ "Net à payer"|trans }}

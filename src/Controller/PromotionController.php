@@ -193,11 +193,26 @@ class PromotionController extends AbstractController
      */
     public function courante(SessionInterface $session, PromotionRepository $promotionRepository): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 
 
             $response = $this->render('promotion/admin/encours.html.twig', [
                 'promotions' => $promotionRepository->Courante(),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }  else if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+
+
+            $response = $this->render('promotion/admin/encours.html.twig', [
+                'promotions' => $promotionRepository->CouranteClient(),
             ]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
