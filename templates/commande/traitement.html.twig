@@ -3,7 +3,68 @@
 {% block commande %}active{% endblock %}
 
 {% block body %}
+    <div class="container mt-4 fond-7 text-center">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa-solid fa-list-check mr-2"></i>
+            {{ "Choisissez un moyen de Paiement"|trans }}
+        </h3>
+        <form action="#">
+            <input type="radio" name="payment" id="visa">
+            <input type="radio" name="payment" id="mastercard">
+            <input type="radio" name="payment" id="paypal">
+            <input type="radio" name="payment" id="AMEX">
 
 
+            <div class="category">
+                <label for="visa" class="visaMethod">
+                    <div class="imgName">
+                        <div class="imgContainer carte_bancaire">
+                            <img src="{{ asset('images/carte_bancaire.png') }}" alt="">
+                        </div>
+                        <span class="name">Carte Bancaire</span>
+                    </div>
+                    <span class="check">
+                    <i class="fa-solid fa-circle-check"></i>
+                </span>
+                </label>
+
+                <label for="mastercard" class="mastercardMethod">
+                    <div class="imgName">
+                        <div class="imgContainer virement">
+                            <img src="{{ asset('images/virement.png') }}" alt="">
+                        </div>
+                        <span class="name">Virement</span>
+                    </div>
+                    <span class="check"><i class="fa-solid fa-circle-check"></i></span>
+                </label>
+
+                <label for="paypal" class="paypalMethod">
+                    <div class="imgName">
+                        <div class="imgContainer omoney">
+                            <img src="{{ asset('images/om.png') }}" alt="">
+                        </div>
+                        <span class="name">Orange Money</span>
+                    </div>
+                    <span class="check"><i class="fa-solid fa-circle-check"></i></span>
+                </label>
+
+                <label for="AMEX" class="amexMethod">
+                    <div class="imgName">
+                        <div class="imgContainer espece">
+                            <img src="{{ asset('images/cash.png') }}" alt="">
+                        </div>
+                        <span class="name">ESPECE</span>
+                    </div>
+                    <span class="check"><i class="fa-solid fa-circle-check"></i></span>
+                </label>
+            </div>
+
+            <button class="btn btn-success mt-3">
+                <i class="fa fa-money-bill"></i>
+                Validez
+            </button>
+        </form>
+
+    </div>
 
 {% endblock %}
