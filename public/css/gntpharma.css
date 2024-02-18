@@ -1,4 +1,4 @@
-:root{
+:root {
     --vert: #039c4f;
     --vert-clair: #c5fbae;
     --gris-hover: #444;
@@ -217,7 +217,8 @@ tr {
     width: calc(100% - 50px);
     padding: 0 5px;
 }
-.panier:hover{
+
+.panier:hover {
     background-color: var(--vert);
     color: var(--vert-clair);
     height: 100% !important;
@@ -266,12 +267,14 @@ tr {
 .nav-item > .nav-link:focus,
 .nav-item > .nav-link:hover {
     background: var(--vert-clair);
-    color: var(--vert); !important;
+    color: var(--vert);
+!important;
 }
 
 .nav-item.active .nav-link {
     background: var(--vert-clair);
-    color: var(--vert); !important;
+    color: var(--vert);
+!important;
 }
 
 .dropdown-item > .nav-link {
@@ -283,7 +286,8 @@ tr {
 .dropdown-item > .nav-link:focus,
 .dropdown-item > .nav-link:hover {
     background: var(--vert-clair);
-    color: var(--vert); !important;
+    color: var(--vert);
+!important;
 }
 
 .dropdown-item {
@@ -313,7 +317,8 @@ tr {
 
 .dropdown-item.submenu:hover > a {
     background: var(--vert-clair);
-    color: var(--vert); !important;
+    color: var(--vert);
+!important;
 }
 
 .dropdown-toggle[aria-expanded="true"]:after {
@@ -577,7 +582,8 @@ td[data-label="colspan"] {
 }
 
 .OK {
-    background: var(--vert-clair); !important;
+    background: var(--vert-clair);
+!important;
     color: var(--vert);
     font-weight: bold;
     text-align: center;
@@ -1278,7 +1284,8 @@ select#transfert_date_time_minute {
     }
 
     .table-bordered {
-        border: 1px solid var(--gris-hover); !important;
+        border: 1px solid var(--gris-hover);
+    !important;
     }
 
     .shadow-black,
@@ -1288,7 +1295,8 @@ select#transfert_date_time_minute {
     }
 
     .border-imp {
-        border: 1px solid var(--gris-hover); !important;
+        border: 1px solid var(--gris-hover);
+    !important;
     }
 
     .trait {
@@ -1311,13 +1319,130 @@ select#transfert_date_time_minute {
 
     th,
     td {
-        border: 1px solid var(--gris-hover); !important;
+        border: 1px solid var(--gris-hover);
+    !important;
     }
 
     tr[data-label="couple"],
     td[data-label="couple"] {
-        border-left: 1px solid var(--blanc); !important;
-        border-right: 1px solid var(--blanc); !important;
+        border-left: 1px solid var(--blanc);
+    !important;
+        border-right: 1px solid var(--blanc);
+    !important;
         background: transparent !important;
     }
 }
+
+/*************Paiement***********/
+
+.container_paiement {
+    width: 600px;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1),
+    0 5px 12px -2px rgba(0, 0, 0, 0.1),
+    0 18px 36px -6px rgba(0, 0, 0, 0.1);
+}
+
+.container_paiement  .title {
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container_paiement  form input {
+    display: none;
+}
+
+.container_paiement  form .category {
+    margin-top: 10px;
+    padding-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 15px;
+}
+
+.container_paiement .category label {
+    width: 100%;
+    height: 145px;
+    padding: 20px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 5px;
+    position: relative;
+}
+
+#visa:checked ~ .category .visaMethod,
+#mastercard:checked ~ .category .mastercardMethod,
+#paypal:checked ~ .category .paypalMethod,
+#AMEX:checked ~ .category .amexMethod {
+    box-shadow: 0 0 0 1px var(--vert-hover);
+}
+#visa:checked ~ .category .visaMethod .check,
+#mastercard:checked ~ .category .mastercardMethod .check,
+#paypal:checked ~ .category .paypalMethod .check,
+#AMEX:checked ~ .category .amexMethod .check {
+    display: block;
+}
+
+
+.container_paiement label .imgName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.container_paiement .imgName span {
+    font-family: Arial, Helvetica, sans-serif;
+    position: absolute;
+    top: 72%;
+    font-weight: 600;
+    transform: translateY(-72%);
+}
+
+.container_paiement .imgName .imgContainer {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    transform: translateY(-35%);
+}
+
+.container_paiement img {
+    width: 80px;
+    height: auto;
+}
+
+.container_paiement .carte_bancaire img {
+    width: 80px;
+}
+
+.container_paiement .virement img {
+    width: 80px;
+}
+
+.container_paiement .omoney img {
+    width: 80px;
+}
+
+.container_paiement .espece img {
+    width: 80px;
+}
+
+.container_paiement .check {
+    display: none;
+    position: absolute;
+    top: -3px;
+    right: 2px;
+    color: var(--vert-hover);
+    font-size: 20px;
+}
+
+
+/*************Paiement***********/
