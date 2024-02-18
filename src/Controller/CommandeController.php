@@ -327,18 +327,63 @@ class CommandeController extends AbstractController
 
          return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
     }
+    /**
+     * @Route("/ConfirmationPaiement/", name="confirm_paiement_client")
+     */
+    public function confirm(SessionInterface $session)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 
+            $panier = $session->get("panier", []);
+            $dataPanier = [];
+            $total = 0;
+
+            foreach ($panier as $commande) {
+//                $product = $produitRepository->find($id);
+                $dataPanier[] = [
+                    "produit" => $commande['produit']
+                ];
+//                $total += $product->getPrix() * $quantite;
+            }
+
+            $response = $this->render('commande/confirm.html.twig', [
+//                'produits' => $produitRepository->findAll(),
+                'panier' => $dataPanier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
     /**
      * @Route("/Choix_Paiement/{commande}", name="choix_paiement")
      */
-    public function paiementChoix(SessionInterface $session, CommandeProduitRepository $repository, Commande $commande, PaiementRepository $paiementRepository)
+    public function paiementChoix(SessionInterface $session, CommandeProduitRepository $repository, $commande, PaiementRepository $paiementRepository)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT') && $commande->getUser() == $this->getUser()) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
             $panier = $session->get("panier", []);
+
 
             $response = $this->render('commande/traitement.html.twig', [
                 'commandeproduits' => $repository->findBy(['commande' => $commande]),
-                'commande' => $commande,
+                'commande' => $this->getDoctrine()->getRepository(Commande::class)->find($commande),
                 'panier' => $panier,
             ]);
             $response->setSharedMaxAge(0);
@@ -469,6 +514,7 @@ class CommandeController extends AbstractController
 
          return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
     }
+
 
     /**
      * @Route("/Details_commande/{commande}", name="Detail")

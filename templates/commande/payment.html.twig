@@ -34,8 +34,6 @@
             <th>Code Produit</th>
             <th>Desigantion</th>
             <th>Quantite Commandee</th>
-            <th>Quantite Livree</th>
-            <th>Quantite Restante</th>
             <th>Prix Cession</th>
             <th>Prix Public</th>
             <th>Montant</th>
@@ -47,8 +45,6 @@
                 <td> {{ commandeproduit.produit.id }} </td>
                 <td>{{ commandeproduit.produit.desigantion }} </td>
                 <td> {{ commandeproduit.quantite }} </td>
-                <td> </td>
-                <td> </td>
                 <td>
                     {{ commandeproduit.produit.prix|number_format(0, '' , ' ') }}
                     {% if commandeproduit.promotion is not null %}
@@ -72,11 +68,11 @@
 
         {% else %}
             <tr>
-                <td colspan="8">Aucune commande</td>
+                <td colspan="6">Aucune commande</td>
             </tr>
         {% endfor %}
         <tr>
-            <td colspan="7" class="text-right">
+            <td colspan="5" class="text-right">
                 {{ "Total"|trans }}
             </td>
             <td>
@@ -85,7 +81,7 @@
         </tr>
         {% if reduction != 0 %}
             <tr>
-                <td colspan="7" class="text-right">
+                <td colspan="5" class="text-right">
                     {{ "Réduction"|trans }}
                 </td>
                 <td>
@@ -94,7 +90,7 @@
             </tr>
         {% endif %}
         <tr>
-            <td colspan="7" class="text-right">
+            <td colspan="5" class="text-right">
                 {{ "Net à payer"|trans }}
             </td>
             <td>

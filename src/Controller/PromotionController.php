@@ -210,9 +210,11 @@ class PromotionController extends AbstractController
             return $response;
         }  else if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 
+            $panier = $session->get("panier", []);
 
-            $response = $this->render('promotion/admin/encours.html.twig', [
+            $response = $this->render('promotion/encours.html.twig', [
                 'promotions' => $promotionRepository->CouranteClient(),
+                'panier' => $panier,
             ]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);

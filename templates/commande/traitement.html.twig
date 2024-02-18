@@ -9,10 +9,10 @@
             {{ "Choisissez un moyen de Paiement"|trans }}
         </h3>
         <form action="#">
-            <input type="radio" name="payment" id="visa">
-            <input type="radio" name="payment" id="mastercard">
-            <input type="radio" name="payment" id="paypal">
-            <input type="radio" name="payment" id="AMEX">
+            <input type="radio" name="payment" id="visa" value="visa">
+            <input type="radio" name="payment" id="mastercard" value="mastercard">
+            <input type="radio" name="payment" id="paypal" value="paypal">
+            <input type="radio" name="payment" id="AMEX" value="AMEX">
 
 
             <div class="category">
@@ -59,12 +59,27 @@
                 </label>
             </div>
 
-            <button class="btn btn-success mt-3">
+            <button type="button" class="btn btn-success mt-3" onclick="choix()">
                 <i class="fa fa-money-bill"></i>
                 Validez
             </button>
         </form>
 
     </div>
+    {% block scripts %}
+        <script>
+            function choix() {
+                if ($('input[type=radio][name=payment]:checked').val() == 'AMEX') {
+                    var url = $(location).attr("href");
+                    url = url.replace("/Choix_Paiement/0", "/ConfirmationPaiement/");
+                    document.location.href = url;
+
+                }else alert('Bientot disponible')
+
+            }
+
+
+        </script>
+        {% endblock %}
 
 {% endblock %}
