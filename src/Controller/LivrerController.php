@@ -258,9 +258,56 @@ class LivrerController extends AbstractController
 
             foreach ($commandeproduits as $commandeproduit) {
                 $produit = $repository->find($commandeproduit->getProduit()->getId());
+                $ug = 0;
+                // traitement promotion floor()
+                if (!empty($commandeproduit->getPromotion())) {
+                    if (!empty($commandeproduit->getPromotion()->getPremier())) {
+                        if ($commandeproduit->getQuantite() / $commandeproduit->getPromotion()->getTroisieme() >= 1) {
 
-                if (empty($panier[$produit->getId()])) {// livraison totale
-                    if ($commandeproduit->getQuantite() > $produit->getStock() && $produit->getStock() > 0) {// livraison totale
+                            $unite = /*(*/$commandeproduit->getQuantite() / $commandeproduit->getPromotion()->getTroisieme()/*)|round(0, 'floor')*/;
+                            $ug = $ug + $unite * $commandeproduit->getPromotion()->getUgtroisieme();
+                            $suite = $commandeproduit->getQuantite() - $unite * $commandeproduit->getPromotion()->getTroisieme();
+
+                            if ($suite / $commandeproduit->getPromotion()->getDeuxieme() >= 1) {
+
+                                $unite = $suite / $commandeproduit->getPromotion()->getDeuxieme();//round
+                                $ug = $ug + $unite * $commandeproduit->getPromotion()->getUgdeuxieme();
+                                $suite = $suite - $unite * $commandeproduit->getPromotion()->getDeuxieme();
+
+                                if ($suite / $commandeproduit->getPromotion()->getPremier() >= 1) {
+                                    $unite = $suite / $commandeproduit->getPromotion()->getPremier();//round
+                                    $ug = $ug + $unite * $commandeproduit->getPromotion()->getUgpremier();
+                                }
+
+                            } elseif ($suite / $commandeproduit->getPromotion()->getPremier() >= 1) {
+                                $unite = $suite / $commandeproduit->getPromotion()->getPremier();//round
+                                $ug = $ug + $unite * $commandeproduit->getPromotion()->getUgpremier();
+                            }
+
+                        }
+                        elseif ($commandeproduit->getQuantite() / $commandeproduit->getPromotion()->getDeuxieme() >= 1) {
+
+
+                            $unite = $commandeproduit->getQuantite() / $commandeproduit->getPromotion()->getDeuxieme();//round
+                            $ug = $ug + $unite * $commandeproduit->getPromotion()->getUgdeuxieme();
+                            $suite = $commandeproduit->getQuantite() - $unite * $commandeproduit->getPromotion()->getDeuxieme();
+
+                            if ($suite / $commandeproduit->getPromotion()->getPremier() >= 1) {
+                                $unite = $suite / $commandeproduit->getPromotion()->getPremier();//round
+                                $ug = $ug + $unite * $commandeproduit->getPromotion()->getUgpremier();
+                            }
+                        }
+                        elseif ($commandeproduit->getQuantite() / $commandeproduit->getPromotion()->getPremier() >= 1) {
+                            $unite = $commandeproduit->getQuantite() / $commandeproduit->getPromotion()->getPremier();//round
+                            $ug = $ug + $unite * $commandeproduit->getPromotion()->getUgpremier();
+
+                        }
+                    }
+                }
+                // fin traitement promotion
+
+                if (empty($panier[$produit->getId()])) {// livraison sans modification du gestionnaire
+                    if ($commandeproduit->getQuantite() > $produit->getStock() && $produit->getStock() > 0) {// livraison quantite superieur au stock
                         $quantite = $produit->getStock();
                         if ($produit->livraison($produit->getStock())) {
                             $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite, $produit->getStock(), $commande);
@@ -273,18 +320,19 @@ class LivrerController extends AbstractController
                             goto terminer;
                         }
 
-                    }else {
+                    } else {// livraison normale
 
-                        if (($produit->getStock() - $commandeproduit->getQuantite()) > 0) {
-                            $produit->livraison($commandeproduit->getQuantite());
-                            $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $commandeproduit->getQuantite(), $produit->getStock(), $commande);
+                        if (($produit->getStock() - ($commandeproduit->getQuantite() + $ug)) > 0) {
+                            $produit->livraison($commandeproduit->getQuantite()+$ug);
+                            $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $commandeproduit->getQuantite()+ $ug, $produit->getStock(), $commande);
+                            if($ug != 0) $livrerProduit->setPromotion($commandeproduit->getPromotion());
                             $em->persist($livrerProduit);
                         } else {
                             goto terminer;
                         }
                     }
 
-                } else {// livraison partielle
+                } else {// livraison avce modification du gestionnaire
                     if (($produit->getStock() - $panier[$produit->getId()]) > 0) {
                         $produit->livraison($panier[$produit->getId()]);
                         $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()], $produit->getStock(), $commande);

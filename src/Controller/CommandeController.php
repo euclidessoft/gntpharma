@@ -94,8 +94,9 @@ class CommandeController extends AbstractController
                     if(!empty($produit->getPromotion())){
                         if(!empty($produit->getPromotion()->getReduction())){
                             $reduction = $reduction + $product['produit']->getQuantite() * $produit->getPrix() * $produit->getPromotion()->getReduction() / 100;
-                            $commandeproduit->setPromotion($produit->getPromotion());
+
                         }
+                        $commandeproduit->setPromotion($produit->getPromotion());
                     }
                     $em->persist($commandeproduit);
                 }
@@ -473,6 +474,64 @@ class CommandeController extends AbstractController
      * @Route("/Details_commande/{commande}", name="Detail")
      */
     public function details(SessionInterface $session, CommandeProduitRepository $repository, Commande $commande, PaiementRepository $paiementRepository)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT') && $commande->getUser() == $this->getUser()) {
+            $panier = $session->get("panier", []);
+
+            $response = $this->render('commande/details.html.twig', [
+                'commandeproduits' => $repository->findBy(['commande' => $commande]),
+                'commande' => $commande,
+                'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+
+            $response = $this->render('commande/admin/details.html.twig', [
+                'commandeproduits' => $repository->findBy(['commande' => $commande]),
+                'commande' => $commande,
+                'paiement' => $paiementRepository->findOneBy(['commande' => $commande]),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+
+
+        /* // On "fabrique" les données
+
+         return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
+    }
+
+    /**
+     * @Route("/Pint_Details_commande/{commande}", name="print_Detail")
+     */
+    public function printdetails(SessionInterface $session, CommandeProduitRepository $repository, Commande $commande, PaiementRepository $paiementRepository)
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT') && $commande->getUser() == $this->getUser()) {
             $panier = $session->get("panier", []);

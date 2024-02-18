@@ -53,10 +53,62 @@
         </thead>
         <tbody>
         {% for commande in commandes %}
+        {% set ug = 0 %}
         <tr>
             <td>{{ commande.produit.reference }}</td>
             <td>{{ commande.produit.desigantion }}</td>
-            <td>{{ commande.quantitecommander }}</td>
+            <td>
+                {{ commande.quantitecommander }}
+                {% if commande.promotion is not null %}
+                    {% if commande.promotion.premier is not null %}
+                        {% if commande.quantitecommander / commande.promotion.troisieme >= 1 %}
+
+                            {% set unite = (commande.quantitecommander / commande.promotion.troisieme)|round(0, 'floor') %}
+                            {% set ug = ug + unite * commande.promotion.ugtroisieme %}
+                            {% set suite = commande.quantitecommander - unite * commande.promotion.troisieme %}
+
+                            {% if suite / commande.promotion.deuxieme >= 1 %}
+                                {% set unite = (suite / commande.promotion.deuxieme)|round(0, 'floor') %}
+                                {% set ug = ug + unite * commande.promotion.ugdeuxieme %}
+                                {% set suite = suite - unite * commande.promotion.deuxieme %}
+
+                                {% if suite / commande.promotion.premier >= 1 %}
+                                    {% set unite = (suite / commande.promotion.premier)|round(0, 'floor') %}
+                                    {% set ug = ug + unite * commande.promotion.ugpremier %}
+
+                                {% endif %}
+
+                            {% elseif suite / commande.promotion.premier >= 1 %}
+                                {% set unite = (suite / commande.promotion.premier)|round(0, 'floor') %}
+                                {% set ug = ug + unite * commande.promotion.ugpremier %}
+
+                            {% endif %}
+
+                        {% elseif commande.quantitecommander / commande.promotion.deuxieme >= 1 %}
+
+
+                            {% set unite = (commande.quantitecommander / commande.promotion.deuxieme)|round(0, 'floor') %}
+                            {% set ug = ug + unite * commande.promotion.ugdeuxieme %}
+                            {% set suite = commande.quantitecommander - unite * commande.promotion.deuxieme %}
+
+                            {% if suite / commande.promotion.premier >= 1 %}
+                                {% set unite = (suite / commande.promotion.premier)|round(0, 'floor') %}
+                                {% set ug = ug + unite * commande.promotion.ugpremier %}
+
+                            {% endif %}
+
+                        {% elseif commande.quantitecommander / commande.promotion.premier >= 1 %}
+
+                            {% set unite = (commande.quantitecommander / commande.promotion.premier)|round(0, 'floor') %}
+                            {% set ug = ug + unite * commande.promotion.ugpremier %}
+
+                        {% endif %}
+                        <span class="badge badge-danger">
+                                    +{{ ug }} U.G.
+                            </span>
+                    {% endif %}
+                {% endif %}
+            </td>
             <td class="text-center">
                     {{ commande.quantitelivrer }}
             </td>
