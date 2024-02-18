@@ -21,6 +21,7 @@ class RegistrationType extends AbstractType
       
         
         ->add('adresse', null,['label' => 'Adresse'])
+        ->add('password', PasswordType::class,['label' => 'Mot de password'])
         ->add('prenom', null,['label' => 'Prenom'])
         ->add('nom', null,['label' => 'Nom'])
         //->add('datenaiss', DateType::class, array( 'label' => "Date de naissance",'widget' => 'single_text','attr' => ['title' => 'Date de naissance'],))

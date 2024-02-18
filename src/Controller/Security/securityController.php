@@ -544,8 +544,8 @@ class securityController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $hashpass = $encoder->encodePassword($user, 'Moda2020');
-                //$hashpass = $encoder->encodePassword($user, $user->getPassword());
+//                $hashpass = $encoder->encodePassword($user, 'Moda2020');
+                $hashpass = $encoder->encodePassword($user, $user->getPassword());
                 //$password = $user->getPassword();
                 $user->setPassword($hashpass);
                 $user->setUsername($user->getNom());
@@ -621,4 +621,30 @@ class securityController extends AbstractController
 
     }
 
+    /**
+     * @Route("/delete_user/", name="security_user_delete")
+     */
+    public function delete_user(Request $request)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+
+            $em = $this->getDoctrine()->getManager();
+
+            $user = $em->getrepository(User::class)->find($request->get('usr'));
+            $em->remove($user);
+
+            $em->flush();
+            $this->addFlash('notice', 'Utilisateur suppriméé avec succés');
+            $res['ok'] =  $this->generateUrl('security_users', [], UrlGeneratorInterface::ABSOLUTE_URL);;
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+        } else {
+            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
+            return $this->redirectToRoute('security_logout');
+        }
+    }
 }

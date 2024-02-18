@@ -4,6 +4,11 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group mb-4">
+                {{ form_widget(form.password, {'attr' : { 'placeholder' : 'Mot de passe *'}}) }}
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group mb-4">
                 {{ form_widget(form.fonction) }}
             </div>
         </div>

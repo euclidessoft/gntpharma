@@ -140,6 +140,26 @@
 
             }
 
+            function del(id) {
+                if (confirm("{{ 'Voulez-vous vraiment supprimer cet utilisateur ?'|trans }}")) {
+                    $('#btn' + id).html("<img src='{{ asset('images/ajax-loader.gif') }}' width='24' />");
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('security_user_delete') }}",
+                        data: "usr=" + id,
+                        success: function (data) {
+                            if (data['ok'] != '') {
+                               document.location.href= data['ok'];
+                            }
+                        },
+                        error: function () {
+                            alert("{{ 'La requête n\'a pas abouti'|trans }}");
+                        }
+                    });
+                }
+
+            }
+
         </script>
     {% endblock %}
 {% endblock %}
