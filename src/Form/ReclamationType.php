@@ -25,7 +25,7 @@ class ReclamationType extends AbstractType
             ])
             ->add('commande', EntityType::class,
                 array( 'class' => Commande::class,
-                    'choice_label' => 'ref',
+                    'choice_label' => 'id',
                     'multiple' => false,
                     'query_builder' => function(CommandeRepository $repository) use ($id) { return $repository->current($id); },
                     'placeholder' => 'Selectionnez commande *'))

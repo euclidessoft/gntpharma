@@ -329,6 +329,44 @@ class PromotionController extends AbstractController
     }
 
     /**
+     * @Route("/arreter", name="promotion_arreter")
+     */
+    public function arreter(Request $request, ProduitRepository $repository, SessionInterface $session)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+        // On récupère le panier actuel
+        $promo = $session->get("promo", []);
+        $id = $repository->find($request->get('prod'))->getId();
+
+        if (!empty($promo[$id])) {
+            unset($promo[$id]);
+        }
+
+        // On sauvegarde dans la session
+        $session->set("promo", $promo);
+        $res['id'] = 'ok';
+        $res['nb'] = count($promo);
+        $response = new Response();
+        $response->headers->set('content-type', 'application/json');
+        $re = json_encode($res);
+        $response->setContent($re);
+        return $response;
+        } else {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
      * @Route("/{id}", name="promotion_show", methods={"GET"})
      */
     public function show(Promotion $promotion, PromotionProduitRepository $produitrepo, SessionInterface $session): Response
