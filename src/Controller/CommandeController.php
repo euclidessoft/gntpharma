@@ -68,6 +68,51 @@ class CommandeController extends AbstractController
             return $response;
         }
     }
+    /**
+     * @Route("/Extranet", name="extranet")
+     */
+    public function extranet(SessionInterface $session, ProduitRepository $produitRepository)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+            $panier = $session->get("panier", []);
+            $dataPanier = [];
+            $total = 0;
+
+            foreach ($panier as $commande) {
+//                $product = $produitRepository->find($id);
+                $dataPanier[] = [
+                    "produit" => $commande['produit']
+                ];
+//                $total += $product->getPrix() * $quantite;
+            }
+
+            $response = $this->render('commande/admin/index.html.twig', [
+                'produits' => $produitRepository->findAll(),
+                'panier' => $dataPanier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
 
     /**
      * @Route("/valider", name="valider")

@@ -24,7 +24,7 @@ class ReclamationController extends AbstractController
      */
     public function index(SessionInterface $session, ReclamationRepository $reclamationRepository, User $user): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
             $response = $this->render('reclamation/admin/index.html.twig', [
                 'reclamations' => $reclamationRepository->findBy(['cloture' => null]),
@@ -75,7 +75,7 @@ class ReclamationController extends AbstractController
      */
     public function clo(SessionInterface $session, ReclamationRepository $reclamationRepository, User $user): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
             $response = $this->render('reclamation/admin/cloturer.html.twig', [
                 'reclamations' => $reclamationRepository->findBy(['status' => true]),
@@ -191,7 +191,7 @@ class ReclamationController extends AbstractController
      */
     public function cloturer(SessionInterface $session, Request $request, Reclamation $reclamation): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
             $em = $this->getDoctrine()->getManager();
             $reclamation->setCloture(new \DateTime());
             $reclamation->setUsercloture($this->getUser());
@@ -230,7 +230,7 @@ class ReclamationController extends AbstractController
      */
     public function show(Reclamation $reclamation, LivrerProduitRepository $livrerProduitRepository, SessionInterface $session): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
 
 

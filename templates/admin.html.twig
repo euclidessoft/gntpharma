@@ -48,6 +48,7 @@
                         </div>
                     </a>
                 </li>
+                {% if is_granted('ROLE_STOCK') %}
                 <li  class="nav-item dropright {% block stock %}{% endblock %}"  title="{{ 'Stock'|trans }}">
                     <a class="nav-link dropdown-toggle" href="#" id="stock" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
@@ -107,6 +108,7 @@
                         </li>
                     </ul>
                 </li>
+                {% endif %}
                 <li class="nav-item dropright {% block produit %} {% endblock %}"  title="{{ 'Produits'|trans }}">
                     <a class="nav-link dropdown-toggle" href="#" id="Produits" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
@@ -162,12 +164,14 @@
                         </div>
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="pelerin">
+                        {% if is_granted('ROLE_ADMIN') %}
                         <li class="dropdown-item">
                             <a class="nav-link" href="{{ path('promotion_new') }}">
                                 <i class="fas fa-user-plus mr-2"></i>
                                 {{ 'Creer une promotion'|trans }}
                             </a>
                         </li>
+                        {% endif %}
                         <li class="dropdown-item">
                             <a class="nav-link" href="{{ path('promotion_courante') }}">
                                 <i class="fas fa-user-plus mr-2"></i>
@@ -182,7 +186,7 @@
                         </li>
                     </ul>
                 </li>
-
+                {% if is_granted('ROLE_FINANCE') %}
                 <li  class="nav-item dropright {% block commande %}{% endblock %}" title="{{ 'Commande'|trans }}">
                     <a class="nav-link dropdown-toggle" href="#" id="commande" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
@@ -201,7 +205,7 @@
                             </a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ path('commande_panier_extranet') }}">
                                 <i class="fas fa-users mr-2"></i>
                                 {{ 'Commandes Extranet'|trans }}
                             </a>
@@ -215,7 +219,7 @@
                     </ul>
                 </li>
 
-
+                {% endif %}
                 <li  class="nav-item {% block reclamation %} {% endblock %}" title="{{ 'Réclamation'|trans }}">
                     <a class="nav-link" href="{{ path('reclamation_index',{'user':app.user.id}) }}">
                         <div class="icone">

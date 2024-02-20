@@ -24,11 +24,7 @@
                 <th>Designation</th>
                 <th>Session</th>
                 <th>Publique</th>
-                <th>Commande<br> Minimum</th>
                 <th>Fabriquant</th>
-                <th>Quantite</th>
-
-                <th>actions</th>
             </tr>
             </thead>
             <tbody>
@@ -38,40 +34,11 @@
                     <td>{{ approvisionnement.produit.desigantion }}</td>
                     <td>{{ approvisionnement.produit.prix }}</td>
                     <td>{{ approvisionnement.produit.prixpublic }}</td>
-                    <td>{{ approvisionnement.produit.mincommande }}</td>
                     <td>{{ approvisionnement.produit.fabriquant }}</td>
-                    {% set tamp ='no' %}
-                    <td class="text-center" id="tdprod{{ approvisionnement.produit.id }}">
-
-                        {% for pan in panier %}
-                            {% if pan['produit'].id == approvisionnement.produit.id %}
-                                {% set tamp = pan['produit'].quantite %}
-                            {% endif %}
-                        {% endfor %}
-                        {% if tamp != 'no' %}
-                            {{ tamp }}
-                        {% else %}
-                            <input type="number" id="text{{ approvisionnement.produit.id }}" class="form-control"
-                                   onfocus="focu({{ approvisionnement.produit.id }})" onblur="nofocu()" style="padding:0 10px" {% if approvisionnement.produit.stock <= approvisionnement.produit.mincommande %} disabled {%  endif %}>
-                            <label for="text{{ approvisionnement.produit.id }}"></label>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if tamp != 'no' %}
-                            <button type="button" class="btn btn-success disabled" id="btn{{ approvisionnement.produit.id }}">
-                                <i class="fa fa-cart-shopping"></i>
-                            </button>
-                        {% else %}
-                            <button type="button" class="btn btn-success{% if approvisionnement.produit.stock <= approvisionnement.produit.mincommande %} disabled {%  endif %}" id="btn{{ approvisionnement.produit.id }}"
-                                    onclick="addprod({{ approvisionnement.produit.id }}, {{ approvisionnement.produit.mincommande }}, {{ approvisionnement.produit.stock }})">
-                                <i class="fa fa-cart-shopping"></i>
-                            </button>
-                        {% endif %}
-                    </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="7">no records found</td>
+                    <td colspan="6">no records found</td>
                 </tr>
             {% endfor %}
             </tbody>

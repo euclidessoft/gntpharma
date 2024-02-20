@@ -25,6 +25,7 @@ class ApprovisionnementController extends AbstractController
      */
     public function index(SessionInterface $session, ApprovisionnementRepository $approvisionnementRepository, ProduitRepository $produitRepository): Response
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
         $produits = $produitRepository->findAll();
 
         $approv = $session->get("approv", []);
@@ -43,6 +44,18 @@ class ApprovisionnementController extends AbstractController
             'produits' => $produits,
             'panier' => $dataPanier,
         ]);
+         } else {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -50,9 +63,22 @@ class ApprovisionnementController extends AbstractController
      */
     public function historique(ApprovisionnerRepository $repository): Response
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
         return $this->render('approvisionnement/historique.html.twig', [
             'approvisionnements' => $repository->findAll(),
         ]);
+         } else {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
 
@@ -187,7 +213,7 @@ class ApprovisionnementController extends AbstractController
  */
     public function valider(SessionInterface $session, ProduitRepository $produitRepository)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
             $produits = $produitRepository->findAll();
             $approv = $session->get("approv", []);
 
@@ -238,7 +264,7 @@ class ApprovisionnementController extends AbstractController
      */
     public function show(Approvisionner $approvisionner, ApprovisionnementRepository $repository): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
 
             $response = $this->render('approvisionnement/show.html.twig', [
                 'approvisionner' => $approvisionner,

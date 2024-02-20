@@ -50,7 +50,7 @@ class ProduitController extends AbstractController
             ]);
             return $response;
         }
-        else if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        else if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
             $response = $this->render('produit/admin/index.html.twig', [
                 'produits' => $produitRepository->findAll(),
@@ -83,7 +83,7 @@ class ProduitController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
             $produit = new Produit();
             $form = $this->createForm(ProduitType::class, $produit);
             $form->handleRequest($request);
@@ -238,7 +238,7 @@ class ProduitController extends AbstractController
      */
     public function arrivage_admin(SessionInterface $session, ApprovisionnerRepository $approvisionnerRepository, ApprovisionnementRepository $approvisionnementRepository): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
             $approvisionner = $approvisionnerRepository->arrivage();//recuperation des approvisioonement de moins de 7 jours
             if(count($approvisionner) > 1){ // si plus d' un appron
@@ -330,7 +330,7 @@ class ProduitController extends AbstractController
      */
     public function vente_admin(SessionInterface $session, CommandeProduitRepository $repository): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
 
             $ventemensuel = $repository->ventemensuel();
@@ -417,7 +417,7 @@ class ProduitController extends AbstractController
      */
     public function show(Produit $produit): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
             $response = $this->render('produit/admin/show.html.twig', [
                 'produit' => $produit,
@@ -431,7 +431,7 @@ class ProduitController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_ROLE')) {
+        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 
             $response = $this->render('produit/show.html.twig', [
                 'produit' => $produit,
@@ -465,7 +465,7 @@ class ProduitController extends AbstractController
     public function edit(Request $request, Produit $produit): Response
     {
 
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
             $form = $this->createForm(ProduitType::class, $produit);
             $form->handleRequest($request);
 

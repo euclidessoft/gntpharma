@@ -37,7 +37,9 @@
                 <td>{{ promotion.type }}</td>
                 <td>
                     <a class="btn btn-success" href="{{ path('promotion_show', {'id': promotion.id}) }}"><i class="fa fa-list"></i> Afficher </a>
-                {{ include('promotion/admin/_delete_form.html.twig') }}
+                {% if is_granted('ROLE_ADMIN') %}
+                    {{ include('promotion/admin/_delete_form.html.twig') }}
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

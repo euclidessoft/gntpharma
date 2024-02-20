@@ -44,7 +44,7 @@ class PanierController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
             $panier = $session->get("panier", []);
             $dataPanier = [];
 

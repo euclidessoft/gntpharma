@@ -24,7 +24,7 @@ class PromotionController extends AbstractController
      */
     public function index(SessionInterface $session, PromotionRepository $promotionRepository): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
 
             $response = $this->render('promotion/admin/index.html.twig', [
@@ -193,7 +193,7 @@ class PromotionController extends AbstractController
      */
     public function courante(SessionInterface $session, PromotionRepository $promotionRepository): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
 
             $response = $this->render('promotion/admin/encours.html.twig', [
@@ -371,7 +371,7 @@ class PromotionController extends AbstractController
      */
     public function show(Promotion $promotion, PromotionProduitRepository $produitrepo, SessionInterface $session): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
         return $this->render('promotion/admin/show.html.twig', [
             'promotion' => $promotion,

@@ -143,7 +143,7 @@ class securityController extends AbstractController
             ]);
             return $response;
         }
-        else if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        else if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
             $response = $this->render('security/security/admin/profile.html.twig', [
                 'user' => $this->getUser(),
@@ -198,7 +198,7 @@ class securityController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        }elseif ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        }elseif ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->find($this->getUser()->getId());
