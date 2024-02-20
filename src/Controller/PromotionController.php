@@ -105,6 +105,8 @@ class PromotionController extends AbstractController
                     $em->persist($promotion);
                     foreach ($promo as $product) {
                         $produit = $produitRepository->find($product['produit']->getId());
+                        $produit->setPromotion($promotion);
+                        $em->persist($produit);
                         $promotionproduit = new PromotionProduit($produit, $promotion);
 
                         $em->persist($promotionproduit);

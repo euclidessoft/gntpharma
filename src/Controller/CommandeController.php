@@ -73,7 +73,7 @@ class CommandeController extends AbstractController
      */
     public function extranet(SessionInterface $session, ProduitRepository $produitRepository)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
             $panier = $session->get("panier", []);
             $dataPanier = [];
@@ -201,7 +201,7 @@ class CommandeController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 //            $panier = $session->get("panier", []);
 
             $response = $this->render('commande/admin/suivi.html.twig', [
@@ -241,7 +241,7 @@ class CommandeController extends AbstractController
      */
     public function history(SessionInterface $session, CommandeRepository $repository)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 //            $panier = $session->get("panier", []);
 
             $response = $this->render('commande/admin/history.html.twig', [
@@ -297,7 +297,7 @@ class CommandeController extends AbstractController
      */
     public function histo_admin(SessionInterface $session, CommandeRepository $repository)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
             //$panier = $session->get("panier", []);
 
             $response = $this->render('commande/history_admin.html.twig', [
@@ -465,7 +465,7 @@ class CommandeController extends AbstractController
      */
     public function paiement(Request $request, SessionInterface $session, CommandeProduitRepository $repository, Commande $commande)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
             if ($commande->getSuivi()) {
                 $this->addFlash('notice', 'Paiement déjà effectué');
 
@@ -583,7 +583,7 @@ class CommandeController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
 
             $response = $this->render('commande/admin/details.html.twig', [
@@ -641,7 +641,7 @@ class CommandeController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
 
             $response = $this->render('commande/admin/details.html.twig', [
@@ -682,7 +682,7 @@ class CommandeController extends AbstractController
      */
     public function suivre(SessionInterface $session, User $user, CommandeRepository $repository)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
             $panier = $session->get("panier", []);
 

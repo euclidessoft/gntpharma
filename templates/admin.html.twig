@@ -120,12 +120,13 @@
                         </div>
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="pelerin">
-                        <li class="dropdown-item">
+                       {% if is_granted('ROLE_STOCK')%} <li class="dropdown-item">
                             <a class="nav-link" href="{{ path('produit_new') }}">
                                 <i class="fa fa-plus mr-2"></i>
                                 {{ 'Nouveau Produit'|trans }}
                             </a>
                         </li>
+                        {% endif %}
                         <li class="dropdown-item">
                             <a class="nav-link" href="{{ path('produit_index') }}">
                                 <i class="fas fa-user-plus mr-2"></i>

@@ -64,7 +64,7 @@ class LivrerController extends AbstractController
      */
     public function histo_admin(LivrerRepository $repository)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
             //$panier = $session->get("panier", []);
 
             $response = $this->render('livrer/history.html.twig', [
@@ -246,7 +246,7 @@ class LivrerController extends AbstractController
      */
     public function valider(Commande $commande, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
 
             $panier = $session->get("livraison", []);
             $em = $this->getDoctrine()->getManager();
@@ -404,7 +404,7 @@ class LivrerController extends AbstractController
      */
     public function reste_valider(Commande $commande, LivrerRepository $livrerrepository, LivrerResteRepository $livrerResteRepository, ProduitRepository $repository, SessionInterface $session)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
 
             $panier = $session->get("livraison", []);
             $em = $this->getDoctrine()->getManager();
