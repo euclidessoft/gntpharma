@@ -21,6 +21,7 @@ class ProduitType extends AbstractType
             ->add('telephone')
             ->add('adresse')
             ->add('description')
+            ->add('tva')
         ;
     }
 

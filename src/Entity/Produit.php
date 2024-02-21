@@ -88,11 +88,17 @@ class Produit
      */
     private $creation;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $tva;
+
 
     public function __construct()
     {
         $this->stock = 0;
         $this->creation = new \Datetime();
+        $this->tva = false;
     }
 
     public function getId(): ?int
@@ -270,6 +276,18 @@ class Produit
     public function setPromotion(?Promotion $promotion): self
     {
         $this->promotion = $promotion;
+
+        return $this;
+    }
+
+    public function getTva(): ?bool
+    {
+        return $this->tva;
+    }
+
+    public function setTva(bool $tva): self
+    {
+        $this->tva = $tva;
 
         return $this;
     }

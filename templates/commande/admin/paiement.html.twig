@@ -38,6 +38,7 @@
     </div>
     {% set total=0 %}
     {% set reduction=0 %}
+    {% set tva=0 %}
     <table class="table table-success-light table-bordered table-hover table-striped w-100">
         <thead>
         <tr>
@@ -45,45 +46,64 @@
             <th>Desigantion</th>
             <th>Quantite Commandee</th>
             <th>Prix Cession</th>
+            <th>Reduction</th>
+            <th>TVA</th>
             <th>Prix Public</th>
             <th>Montant</th>
         </tr>
         </thead>
         <tbody>
         {% for commandeproduit in commandeproduits %}
+            {% set reductionproduit = 0 %}
             <tr>
                 <td> {{ commandeproduit.produit.id }} </td>
                 <td>{{ commandeproduit.produit.desigantion }} </td>
                 <td> {{ commandeproduit.quantite }} </td>
                 <td>
-                    {{ commandeproduit.session|number_format(0, '' , ' ') }}
+                    {{ commandeproduit.produit.prix|number_format(0, '' , ' ') }}
+
+                </td>
+                <td>
                     {% if commandeproduit.promotion is not null %}
                         {% if commandeproduit.promotion.reduction is not null %}
-                            {% set reduction =  reduction + (commandeproduit.quantite * commandeproduit.session * commandeproduit.promotion.reduction /100) %}
+                            {% set reductionproduit =  commandeproduit.quantite * commandeproduit.session * commandeproduit.promotion.reduction /100 %}
+
+                            {% set reduction =  reduction + reductionproduit %}
                             <span class="badge badge-danger">
-                                    -{{ commandeproduit.promotion.reduction }}%
+                                    -{{ commandeproduit.session * commandeproduit.promotion.reduction /100 }} F
                             </span>
+                        {% else %}
+                            -
                         {% endif %}
+                    {% else %}
+                        -
                     {% endif %}
                 </td>
-                <td>{{ commandeproduit.publique|number_format(0, '' , ' ') }}</td>
                 <td>
-                    {{ (commandeproduit.quantite * commandeproduit.session)|number_format(0, '' , ' ') }}
-                    {% set total = total + (commandeproduit.quantite * commandeproduit.session) %}
+                    {% if commandeproduit.produit.tva == 1 %}
+                        {% set tva = tva + (((commandeproduit.quantite * commandeproduit.session) - reductionproduit) * 0.1925) %}
+                        {{ (commandeproduit.session - (commandeproduit.session * commandeproduit.promotion.reduction /100)) * 0.1925 }}
+                    {% else %}
+                        -
+                    {% endif %}
                 </td>
-
+                <td>{{ commandeproduit.produit.prixpublic|number_format(0, '' , ' ') }}</td>
+                <td>
+                    {{ (commandeproduit.quantite * commandeproduit.produit.prix)|number_format(0, '' , ' ') }}
+                    {% set total = total + (commandeproduit.quantite * commandeproduit.produit.prix) %}
+                </td>
 
 
             </tr>
 
         {% else %}
             <tr>
-                <td colspan="8">Aucune commande</td>
+                <td colspan="10">Aucune commande</td>
             </tr>
         {% endfor %}
-        <tr>
-            <td colspan="5" class="text-right">
-                {{ "Total"|trans }}
+        <tr class="text-bold">
+            <td colspan="7" class="text-right">
+                {{ "Total HT"|trans }}
             </td>
             <td>
                 <span id="total">{{ total|number_format(0, '' , ' ') }}</span>
@@ -91,21 +111,29 @@
         </tr>
         {% if reduction != 0 %}
             <tr>
-                    <td colspan="5" class="text-right">
-                        {{ "Réduction"|trans }}
-                    </td>
-                    <td>
-                        <span id="total">{{ reduction|number_format(0, '' , ' ') }}</span>
-                    </td>
-                </tr>
+                <td colspan="7" class="text-right">
+                    {{ "Total Réduction"|trans }}
+                </td>
+                <td>
+                    <span id="total">{{ reduction|number_format(0, '' , ' ') }}</span>
+                </td>
+            </tr>
         {% endif %}
-
         <tr>
-            <td colspan="5" class="text-right">
+            <td colspan="7" class="text-right">
+                {{ "Total TVA"|trans }}
+            </td>
+            <td>
+                <span id="total">{{ tva|number_format(0, '' , ' ') }}</span>
+            </td>
+        </tr>
+
+        <tr class="text-bold">
+            <td colspan="7" class="text-right">
                 {{ "Net à payer"|trans }}
             </td>
             <td>
-                <span id="total">{{ (total-reduction)|number_format(0, '' , ' ') }}</span>
+                <span id="total">{{ (total+ tva -reduction)|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
         </tbody>
@@ -143,7 +171,7 @@
                                 <div class="form-group mt-2">
                                     {{ form_errors(form.montant) }}
                                     <div class="input-group">
-                                        {{ form_widget(form.montant, {'label':false, 'attr' : {'id' : 'nombre', 'placeholder':'Montant', 'value': total-reduction}}) }}
+                                        {{ form_widget(form.montant, {'label':false, 'attr' : {'id' : 'nombre', 'placeholder':'Montant', 'value': total+ tva -reduction}}) }}
                                         <input type="hidden" id="tamp"/>
                                         <input type="hidden" id="tamp1"/>
                                         <div class="input-group-append">

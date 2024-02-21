@@ -37,8 +37,10 @@ class CommandeController extends AbstractController
             foreach ($panier as $commande) {
 //                $product = $produitRepository->find($id);
                 $dataPanier[] = [
-                    "produit" => $commande['produit']
+                    "produit" => $commande['produit'],
+                   "promotion" => $commande['promotion']
                 ];
+            //    var_dump($dataPanier);
 //                $total += $product->getPrix() * $quantite;
             }
 
@@ -386,7 +388,8 @@ class CommandeController extends AbstractController
             foreach ($panier as $commande) {
 //                $product = $produitRepository->find($id);
                 $dataPanier[] = [
-                    "produit" => $commande['produit']
+                    "produit" => $commande['produit'],
+                    "promotion" => $commande['promotion']
                 ];
 //                $total += $product->getPrix() * $quantite;
             }
@@ -728,7 +731,7 @@ class CommandeController extends AbstractController
 
             $panier = $session->get("panier", []);
 
-            $response = $this->render('commande/validation.html.twig', [
+            $response = $this->render('commande/confirm_print.html.twig', [
                 'commandeproduits' => $repository->findBy(['commande' => $commande]),
                 'commande' => $commande,
                 'panier' => $panier,

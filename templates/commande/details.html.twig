@@ -101,7 +101,9 @@
                         {% endif %}
                     {% endif %}
                 </td>
-                <td> </td>
+                <td>
+{#                {{ commande.livraison ? commance.quantitelivrer : '' }}#}
+                </td>
                 <td> </td>
                 <td>
                     {{ commandeproduit.produit.prix|number_format(0, '' , ' ') }}

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Produit;
 use App\Repository\ProduitRepository;
+use App\Repository\PromotionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,7 +88,7 @@ class PanierController extends AbstractController
     /**
      * @Route("/add/", name="add")
      */
-    public function add(Request $request, ProduitRepository $produitRepository, SessionInterface $session)
+    public function add(Request $request, ProduitRepository $produitRepository, SessionInterface $session, PromotionRepository $promotionRepository)
     {
         // On récupère le panier actuel
         $panier = $session->get("panier", []);
@@ -95,13 +96,20 @@ class PanierController extends AbstractController
         {// traitement de la requete ajax
             $id = $request->get('prod');// recuperation de id produit
             $quantite = $request->get('quantite');// recuperation de la quantite commamde
+            $reduction = 0;
             if(empty($panier[$id])){//verification existance produit dans le panier
                 $produit = $produitRepository->find($id); // recuperation de id produit dans la db
+                if(!empty($produit->getPromotion())) {// verification promo reduction
+                if(!empty($produit->getPromotion()->getReduction())) {
+                    $reduction = $produit->getPromotion()->getReduction();
+                }
+                }
                 if($produit->getMincommande() <= $quantite) {// verification quantite minimum
                     $produit->setQuantite($quantite);
 
                     $panier[$id] = [// placement produit et quantite dans le panier
                         "produit" => $produit,
+                        "promotion" => $reduction,
                     ];
 
                     // On sauvegarde dans la session
