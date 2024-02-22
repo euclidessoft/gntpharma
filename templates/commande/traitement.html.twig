@@ -9,15 +9,15 @@
             {{ "Choisissez un moyen de Paiement"|trans }}
         </h3>
         <form action="#">
-            <input type="radio" name="payment" id="visa" value="mobilMoney">
-            <input type="radio" name="payment" id="mobil" value="visa">
-            <input type="radio" name="payment" id="mastercard" value="mastercard">
-            <input type="radio" name="payment" id="paypal" value="paypal">
+            <input type="radio" name="payment" id="credit" value="creditMoney">
+            <input type="radio" name="payment" id="carte" value="cartebancaire">
+            <input type="radio" name="payment" id="virement" value="virementMethod">
+            <input type="radio" name="payment" id="mobil" value="mobileMoney">
             <input type="radio" name="payment" id="AMEX" value="AMEX">
 
 
             <div class="category">
-                <label for="visa" class="visaMethod">
+                <label for="carte" class="cartebancaire">
                     <div class="imgName">
                         <div class="imgContainer carte_bancaire">
                             <img src="{{ asset('images/carte_bancaire.png') }}" alt="">
@@ -28,9 +28,9 @@
                     <i class="fa-solid fa-circle-check"></i>
                 </span>
                 </label>
-                <label for="mobil" class="mobilMoney">
+                <label for="credit" class="creditMoney">
                     <div class="imgName">
-                        <div class="imgContainer mobilmoney">
+                        <div class="imgContainer credit">
 {#                            <img src="{{ asset('images/carte_bancaire.png') }}" alt="">#}
                             <i class="fa-solid fa-sack-dollar fa-4x text-green"></i>
                         </div>
@@ -41,7 +41,7 @@
                 </span>
                 </label>
 
-                <label for="mastercard" class="mastercardMethod">
+                <label for="virement" class="virementMethod">
                     <div class="imgName">
                         <div class="imgContainer virement">
                             <img src="{{ asset('images/virement.png') }}" alt="">
@@ -51,9 +51,9 @@
                     <span class="check"><i class="fa-solid fa-circle-check"></i></span>
                 </label>
 
-                <label for="paypal" class="paypalMethod">
+                <label for="mobil" class="mobilMoney">
                     <div class="imgName">
-                        <div class="imgContainer omoney">
+                        <div class="imgContainer mobil">
                             <img src="{{ asset('images/mobilMoney.png') }}" alt="">
                         </div>
                         <span class="name">Mobile Money</span>

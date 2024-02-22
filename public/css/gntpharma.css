@@ -1374,18 +1374,19 @@ select#transfert_date_time_minute {
     position: relative;
 }
 
-#visa:checked ~ .category .visaMethod,
+#carte:checked ~ .category .cartebancaire,
 #mobil:checked ~ .category .mobilMoney,
-#mastercard:checked ~ .category .mastercardMethod,
-#paypal:checked ~ .category .paypalMethod,
+#credit:checked ~ .category .creditMoney,
+#virement:checked ~ .category .virementMethod,
 #AMEX:checked ~ .category .amexMethod {
     box-shadow: 0 0 0 1px var(--vert-hover);
 }
-#visa:checked ~ .category .visaMethod .check,
-#mastercard:checked ~ .category .mastercardMethod .check,
-#paypal:checked ~ .category .paypalMethod .check,
-#AMEX:checked ~ .category .amexMethod .check,
-#mobil:checked ~ .category .mobilMoney .check {
+#carte:checked ~ .category .cartebancaire .check,
+#mobil:checked ~ .category .mobilMoney .check,
+#credit:checked ~ .category .creditMoney .check,
+#virement:checked ~ .category .virementMethod .check,
+#AMEX:checked ~ .category .amexMethod .check
+ {
     display: block;
 }
 
