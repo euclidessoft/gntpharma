@@ -6,7 +6,9 @@ use App\Entity\Commande;
 use App\Entity\CommandeProduit;
 use App\Entity\Paiement;
 use App\Entity\User;
+use App\Entity\Versement;
 use App\Form\PaiementFormType;
+use App\Form\VersementType;
 use App\Repository\CommandeProduitRepository;
 use App\Repository\CommandeRepository;
 use App\Repository\PaiementRepository;
@@ -38,9 +40,9 @@ class CommandeController extends AbstractController
 //                $product = $produitRepository->find($id);
                 $dataPanier[] = [
                     "produit" => $commande['produit'],
-                   "promotion" => $commande['promotion']
+                    "promotion" => $commande['promotion']
                 ];
-            //    var_dump($dataPanier);
+                //    var_dump($dataPanier);
 //                $total += $product->getPrix() * $quantite;
             }
 
@@ -70,6 +72,7 @@ class CommandeController extends AbstractController
             return $response;
         }
     }
+
     /**
      * @Route("/Extranet", name="extranet")
      */
@@ -131,26 +134,30 @@ class CommandeController extends AbstractController
             if (count($panier) >= 1) {
 
                 $commande->setUser($this->getUser());
+                if($session->get("credit")){
+                    $commande->setCredit(true);
+                    $session->remove('credit');
+                }
                 $montant = 0;
                 $reduction = 0;
                 $tva = 0;
                 foreach ($panier as $product) {
                     $reductionproduit = 0;
                     $produit = $produitRepository->find($product['produit']->getId());
-                    if(!empty($produit->getPromotion())) {//traitement de la promotion avec reduction
+                    if (!empty($produit->getPromotion())) {//traitement de la promotion avec reduction
                         if (!empty($produit->getPromotion()->getReduction())) {
                             $reductionproduit = $product['produit']->getQuantite() * $produit->getPrix() * $produit->getPromotion()->getReduction() / 100;
 
                             $reduction = $reduction + $reductionproduit;
                         }
                     }
-                    if( $produit->getTva() == true){
-                    $tva = $tva + ((($product['produit']->getQuantite() * $produit->getPrix()) - $reductionproduit) * 0.1925);
+                    if ($produit->getTva() == true) {
+                        $tva = $tva + ((($product['produit']->getQuantite() * $produit->getPrix()) - $reductionproduit) * 0.1925);
                     }
                     $montant = $montant + $product['produit']->getQuantite() * $produit->getPrix();
 
                     $commandeproduit = new CommandeProduit($produit, $commande, $produit->getPrix(), $produit->getPrixpublic(), $product['produit']->getQuantite());
-                    if(!empty($produit->getPromotion())){
+                    if (!empty($produit->getPromotion())) {
 
                         $commandeproduit->setPromotion($produit->getPromotion());
                     }
@@ -306,6 +313,109 @@ class CommandeController extends AbstractController
     }
 
     /**
+     * @Route("/Credit/", name="credit")
+     */
+    public function credit(SessionInterface $session, CommandeRepository $repository)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+//            $panier = $session->get("panier", []);
+
+            $response = $this->render('commande/admin/credit.html.twig', [
+                'commandes' => $repository->findBy(['paiement' => null, 'credit' => true]),
+//                'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+            $panier = $session->get("panier", []);
+
+            $response = $this->render('commande/credit.html.twig', [
+                'commandes' => $repository->findBy(['user' => $this->getUser()->getId(), 'suivi' => true]),
+                'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+
+    }
+    /**
+     * @Route("/ValidationCredit/", name="validation_credit")
+     */
+    public function validationcredit(SessionInterface $session, CommandeRepository $repository)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+//            $panier = $session->get("panier", []);
+
+            $response = $this->render('commande/admin/validation.html.twig', [
+                'commandes' => $repository->findBy(['suivi' => false, 'credit' => true]),
+//                'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+            $panier = $session->get("panier", []);
+
+            $response = $this->render('commande/credit.html.twig', [
+                'commandes' => $repository->findBy(['user' => $this->getUser()->getId(), 'suivi' => true]),
+                'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+
+    }
+
+    /**
      * @Route("/Historique_admin/", name="history_admin")
      */
     public function histo_admin(SessionInterface $session, CommandeRepository $repository)
@@ -385,6 +495,7 @@ class CommandeController extends AbstractController
 
          return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
     }
+
     /**
      * @Route("/ConfirmationPaiement/", name="confirm_paiement_client")
      */
@@ -431,6 +542,55 @@ class CommandeController extends AbstractController
             return $response;
         }
     }
+
+    /**
+     * @Route("/ConfirmationCredit/", name="confirm_credit_client")
+     */
+    public function confirmcredit(SessionInterface $session)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+
+            $panier = $session->get("panier", []);
+            $session->set("credit", 'credit');
+            $dataPanier = [];
+            $total = 0;
+
+            foreach ($panier as $commande) {
+//                $product = $produitRepository->find($id);
+                $dataPanier[] = [
+                    "produit" => $commande['produit'],
+                    "promotion" => $commande['promotion']
+                ];
+//                $total += $product->getPrix() * $quantite;
+            }
+
+            $response = $this->render('commande/confirm.html.twig', [
+//                'produits' => $produitRepository->findAll(),
+                'panier' => $dataPanier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
     /**
      * @Route("/Choix_Paiement/{commande}", name="choix_paiement")
      */
@@ -438,6 +598,7 @@ class CommandeController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
             $panier = $session->get("panier", []);
+            $session->remove('credit');
 
 
             $response = $this->render('commande/traitement.html.twig', [
@@ -540,12 +701,167 @@ class CommandeController extends AbstractController
             }
             $panier = $session->get("panier", []);
 
-            $response = $this->render('commande/admin/paiement.html.twig', [
+            $response = $this->render('commande/admin/paiementcredit.html.twig', [
                 'commandeproduits' => $repository->findBy(['commande' => $commande]),
                 'commande' => $commande,
                 'panier' => $panier,
                 'form' => $form->createView(),
             ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+
+
+        /* // On "fabrique" les données
+
+         return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
+    }
+
+    /**
+     * @Route("/SuiviCredit/{commande}", name="paiement_credit")
+     */
+    public function paiementcredit(Request $request, SessionInterface $session, CommandeProduitRepository $repository, Commande $commande)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+//            if ($commande->getSuivi()) {
+//                $this->addFlash('notice', 'Paiement déjà effectué');
+//
+//                $response = $this->redirectToRoute('commande_panier_history', [], Response::HTTP_SEE_OTHER);
+//                $response->setSharedMaxAge(0);
+//                $response->headers->addCacheControlDirective('no-cache', true);
+//                $response->headers->addCacheControlDirective('no-store', true);
+//                $response->headers->addCacheControlDirective('must-revalidate', true);
+//                $response->setCache([
+//                    'max_age' => 0,
+//                    'private' => true,
+//                ]);
+//                return $response;
+//
+//            }
+
+            $versement = new Versement();
+            $form = $this->createForm(VersementType::class, $versement);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $entityManager = $this->getDoctrine()->getManager();
+                if ($versement->getMontant() <= ($commande->getMontant() - $commande->getVersement())) {
+                    $commande->setVersement($commande->getVersement() + $versement->getMontant());
+                    $versement->setUser($this->getUser());
+                    $versement->setCommande($commande);
+//                    $commande->setSuivi(true);
+//                    $commande->setPaiement($versement);
+//                    $entityManager->persist($commande);
+                    $entityManager->persist($versement);
+                    $entityManager->flush();
+                    $this->addFlash('notice', 'Versement effectué avec succés');
+
+                    $response = $this->redirectToRoute('commande_panier_paiement_credit', ['commande' => $commande->getId()], Response::HTTP_SEE_OTHER);
+                    $response->setSharedMaxAge(0);
+                    $response->headers->addCacheControlDirective('no-cache', true);
+                    $response->headers->addCacheControlDirective('no-store', true);
+                    $response->headers->addCacheControlDirective('must-revalidate', true);
+                    $response->setCache([
+                        'max_age' => 0,
+                        'private' => true,
+                    ]);
+                    return $response;
+                } else {
+                    $this->addFlash('danger', 'Verifier le montant saisi');
+                    $response = $this->redirectToRoute('commande_panier_paiement_credit', ['commande' => $commande->getId()], Response::HTTP_SEE_OTHER);
+                    $response->setSharedMaxAge(0);
+                    $response->headers->addCacheControlDirective('no-cache', true);
+                    $response->headers->addCacheControlDirective('no-store', true);
+                    $response->headers->addCacheControlDirective('must-revalidate', true);
+                    $response->setCache([
+                        'max_age' => 0,
+                        'private' => true,
+                    ]);
+                    return $response;
+                }
+
+            }
+            $panier = $session->get("panier", []);
+
+            $response = $this->render('commande/admin/paiementcredit.html.twig', [
+                'commandeproduits' => $repository->findBy(['commande' => $commande]),
+                'commande' => $commande,
+                'panier' => $panier,
+                'form' => $form->createView(),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+
+
+        /* // On "fabrique" les données
+
+         return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
+    }
+
+    /**
+     * @Route("/ValiderCredit/{commande}", name="valider_credit")
+     */
+    public function validercredit(Request $request, SessionInterface $session, CommandeProduitRepository $repository, Commande $commande)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            if ($commande->getSuivi()) {
+                $this->addFlash('notice', 'Paiement déjà effectué');
+
+                $response = $this->redirectToRoute('commande_panier_credit', [], Response::HTTP_SEE_OTHER);
+                $response->setSharedMaxAge(0);
+                $response->headers->addCacheControlDirective('no-cache', true);
+                $response->headers->addCacheControlDirective('no-store', true);
+                $response->headers->addCacheControlDirective('must-revalidate', true);
+                $response->setCache([
+                    'max_age' => 0,
+                    'private' => true,
+                ]);
+                return $response;
+
+            }
+            $em = $this->getDoctrine()->getManager();
+            $commande->setSuivi(true);
+            $em->persist($commande);
+            $em->flush();
+            $response = $this->redirectToRoute('commande_panier_credit', [], Response::HTTP_SEE_OTHER);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);

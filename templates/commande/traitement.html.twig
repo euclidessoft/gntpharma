@@ -9,7 +9,7 @@
             {{ "Choisissez un moyen de Paiement"|trans }}
         </h3>
         <form action="#">
-            <input type="radio" name="payment" id="credit" value="creditMoney">
+            <input type="radio" name="payment" id="credit" value="Credit">
             <input type="radio" name="payment" id="carte" value="cartebancaire">
             <input type="radio" name="payment" id="virement" value="virementMethod">
             <input type="radio" name="payment" id="mobil" value="mobileMoney">
@@ -84,6 +84,11 @@
                 if ($('input[type=radio][name=payment]:checked').val() == 'AMEX') {
                     var url = $(location).attr("href");
                     url = url.replace("/Choix_Paiement/0", "/ConfirmationPaiement/");
+                    document.location.href = url;
+
+                } else if ($('input[type=radio][name=payment]:checked').val() == 'Credit') {
+                    var url = $(location).attr("href");
+                    url = url.replace("/Choix_Paiement/0", "/ConfirmationCredit/");
                     document.location.href = url;
 
                 } else alert('Bientot disponible')

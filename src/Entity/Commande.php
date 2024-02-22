@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommandeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Commande
 {
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Versement", mappedBy="commande")
+     */
+    private $versements;
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
@@ -52,6 +59,11 @@ class Commande
     /**
      * @ORM\Column(type="float")
      */
+    private $versement;
+
+    /**
+     * @ORM\Column(type="float")
+     */
     private $reduction;
 
     /**
@@ -87,9 +99,12 @@ class Commande
         $this->date = new \Datetime();
         $this->ref = 'hhfhfhf';
         $this->suivi = false;
+//        $this->credit = false;
         $this->livraison = false;
         $this->reduction = 0;
         $this->tva = 0;
+        $this->versements = new ArrayCollection();
+        $this->versement = 0;
     }
 
 
@@ -239,6 +254,48 @@ class Commande
     public function setCredit(bool $credit): self
     {
         $this->credit = $credit;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Versement[]
+     */
+    public function getVersements(): Collection
+    {
+        return $this->versements;
+    }
+
+    public function addVersement(Versement $versement): self
+    {
+        if (!$this->versements->contains($versement)) {
+            $this->versements[] = $versement;
+            $versement->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVersement(Versement $versement): self
+    {
+        if ($this->versements->removeElement($versement)) {
+            // set the owning side to null (unless already changed)
+            if ($versement->getCommande() === $this) {
+                $versement->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getVersement(): ?float
+    {
+        return $this->versement;
+    }
+
+    public function setVersement(float $versement): self
+    {
+        $this->versement = $versement;
 
         return $this;
     }

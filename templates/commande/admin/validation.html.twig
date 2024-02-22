@@ -10,10 +10,10 @@
         </h3>
         <ul class="nav nav-tabs mb-4">
             <li class="nav-item">
-                <a class="nav-link active" href="#">Validation paiement</a>
+                <a class="nav-link" href="{{ path('commande_panier_suivi') }}">Validation paiement</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('commande_panier_validation_credit') }}">Validation crédit</a>
+                <a class="nav-link active" href="#">Validation crédit</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('commande_panier_credit') }}">Commandes à crédit</a>
@@ -41,7 +41,7 @@
                     <td> {{ commande.user.nom }}</td>
                     <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
                     <td>
-                        <a href="{{ path('commande_panier_paiement', {'commande' : commande.id}) }}" class="btn btn-success">
+                        <a href="{{ path('commande_panier_paiement_credit', {'commande' : commande.id}) }}" class="btn btn-success">
                             <i class="fa fa-gears"></i> Traitement
                         </a>
                     </td>

@@ -2,10 +2,12 @@
 {% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
 {% block commande %}active{% endblock %}
 
-{% block body %}<div class="container mt-4 fond-7">
+{% block body %}
+
+    <div class="container mt-4  mb-5 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fa fa-shopping-cart mr-2"></i>
-        {{ "Details commande"|trans }}
+        {{ "Traitement commande à credit"|trans }}
     </h3>
     {% for message in app.flashes('danger') %}
         <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
@@ -150,14 +152,20 @@
     <div class="container mt-4 mb-5 py-3 fond-7">
         <div class="centrer">
             <div class="row">
+                {% if commande.suivi == 1 %}
 
                 <button type="button"
                         class="btn btn-success"
                         data-toggle="modal" data-target="#modal"
                         id="btn">
-                    <i class="fa fa-money-bill"></i> Paiement
+                    <i class="fa fa-money-bill"></i> Versement
                 </button>
-
+                {% else %}
+                    <a href="{{ path('commande_panier_valider_credit', {'commande': commande.id}) }}" type="button"
+                       class="btn btn-success">
+                        <i class="fa-solid fa-sack-dollar"></i> Valider Credit
+                    </a>
+                {% endif %}
 
 
                 <div class="modal fade" id="modal" tabindex="-1" role="dialog"
@@ -166,7 +174,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                    Paiement</h1>
+                                    Versement</h1>
                                 <button type="button" class="close" data-dismiss="modal"
                                         aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -222,20 +230,47 @@
             </div>
         </div>
     </div>
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-shopping-cart mr-2"></i>
+            {{ "Historiques des versements"|trans }}
+        </h3>
+        <table class="table table-success-light table-bordered table-hover table-striped">
+            <thead>
+            <tr>
+                <th>numero versement</th>
+                <th>Date</th>
+                <th>Montant</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for versement in  commande.versements %}
+                <tr>
+                    <td>{{ versement.id }}</td>
+                    <td>{{ versement.date|date('d/m/Y') }}</td>
+                    <td>{{ versement.montant|number_format(0, '' , ' ') }}</td>
+                </tr>
+            {% else %}
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
 
 {% endblock %}
 {% block scripts %}
     <script>
         function number() {
             var reg = new RegExp("^[0-9]{3,9}$");
-            if (reg.test($('#paiement_form_montant').val()) ) {
-                if ($('#paiement_form_type option:selected').val() == 'Cheque' || $('#paiement_form_type option:selected').val() == 'Virement') {
-                    if ($('#paiement_form_montant').val() != '' && $('#paiement_form_type').val() != '') {
+            if (reg.test($('#versement_montant').val()) ) {
+                if ($('#versement_type option:selected').val() == 'Cheque' || $('#versement_type option:selected').val() == 'Virement') {
+                    if ($('#versement_montant').val() != '' && $('#versement_type').val() != '') {
                         $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                         $('#form').submit();
                     } else alert('Veuillez renseigner tous les champs');
                 } else {
-                    if ($('#paiement_form_montant').val() != '' && $('#paiement_form_type').val() != '') {
+                    if ($('#versement_montant').val() != '' && $('#versement_type').val() != '') {
                         $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                         $('#form').submit();
                     } else alert('Veuillez renseigner tous les champs');
@@ -244,12 +279,12 @@
 
         }
         function typeversement() {
-            if ($('#paiement_form_type option:selected').val() == 'Cheque' || $('#paiement_form_type option:selected').val() == 'Virement') {
+            if ($('#versement_type option:selected').val() == 'Cheque' || $('#versement_type option:selected').val() == 'Virement') {
                 $('#versement').show();
-                $('#paiement_form_numero').val();
+                $('#versement_numero').val();
             } else {
                 $('#versement').hide();
-                $('#paiement_form_numero').val();
+                $('#versement_numero').val();
             }
         }
     </script>

@@ -10,7 +10,13 @@
     </h3>
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('commande_panier_suivi') }}">Commandes en attente de paiement</a>
+            <a class="nav-link" href="{{ path('commande_panier_suivi') }}">Validation paiement</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('commande_panier_validation_credit') }}">Validation crédit</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('commande_panier_credit') }}">Commandes à crédit</a>
         </li>
         <li class="nav-item">
             <a class="nav-link active" href="#">Commandes déjà payées</a>
@@ -32,6 +38,7 @@
             <th>Date de Livraison</th>
             <th>Client </th>
             <th>Montant</th>
+            <th>Paiement</th>
             <th> </th>
         </tr>
         </thead>
@@ -43,6 +50,9 @@
                 <td>{{ commande.datelivrer ? commande.datelivrer|date('d/m/Y') : '' }}</td>
                 <td> {{ commande.user.nom }}</td>
                 <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
+                <td>
+                    {{ commande.credit ? 'Credit' : 'Normal'}}
+                </td>
                 <td>
                     <a href="{{ path('commande_panier_Detail', {'commande' : commande.id}) }}" class="btn btn-success">
                         <i class="fa fa-list"></i> Details
