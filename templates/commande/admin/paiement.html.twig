@@ -82,7 +82,15 @@
                 <td>
                     {% if commandeproduit.produit.tva == 1 %}
                         {% set tva = tva + (((commandeproduit.quantite * commandeproduit.session) - reductionproduit) * 0.1925) %}
-                        {{ (commandeproduit.session - (commandeproduit.session * commandeproduit.promotion.reduction /100)) * 0.1925 }}
+                        {% if commandeproduit.promotion is not null %}
+                            {% if commandeproduit.promotion.reduction is not null %}
+                                {{ (commandeproduit.session - (commandeproduit.session * commandeproduit.promotion.reduction /100)) * 0.1925 }}
+                            {% else %}
+                                {{ commandeproduit.session  * 0.1925 }}
+                            {% endif %}
+                        {% else %}
+                            {{ commandeproduit.session  * 0.1925 }}
+                        {% endif %}
                     {% else %}
                         -
                     {% endif %}

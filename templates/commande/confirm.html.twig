@@ -28,6 +28,7 @@
             {% set reduction=0 %}
             {% set tva=0 %}
             {% for produit in panier %}
+                {% set reductionproduit = 0 %}
                 <tr>
                     <td>{{ produit['produit'].reference }}</td>
                     <td>{{ produit['produit'].desigantion }}</td>

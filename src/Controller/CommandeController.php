@@ -133,21 +133,32 @@ class CommandeController extends AbstractController
                 $commande->setUser($this->getUser());
                 $montant = 0;
                 $reduction = 0;
+                $tva = 0;
                 foreach ($panier as $product) {
+                    $reductionproduit = 0;
                     $produit = $produitRepository->find($product['produit']->getId());
+                    if(!empty($produit->getPromotion())) {//traitement de la promotion avec reduction
+                        if (!empty($produit->getPromotion()->getReduction())) {
+                            $reductionproduit = $product['produit']->getQuantite() * $produit->getPrix() * $produit->getPromotion()->getReduction() / 100;
+
+                            $reduction = $reduction + $reductionproduit;
+                        }
+                    }
+                    if( $produit->getTva() == true){
+                    $tva = $tva + ((($product['produit']->getQuantite() * $produit->getPrix()) - $reductionproduit) * 0.1925);
+                    }
                     $montant = $montant + $product['produit']->getQuantite() * $produit->getPrix();
 
                     $commandeproduit = new CommandeProduit($produit, $commande, $produit->getPrix(), $produit->getPrixpublic(), $product['produit']->getQuantite());
                     if(!empty($produit->getPromotion())){
-                        if(!empty($produit->getPromotion()->getReduction())){
-                            $reduction = $reduction + $product['produit']->getQuantite() * $produit->getPrix() * $produit->getPromotion()->getReduction() / 100;
 
-                        }
                         $commandeproduit->setPromotion($produit->getPromotion());
                     }
                     $em->persist($commandeproduit);
                 }
+                $montant = $montant + $tva - $reduction;
                 $commande->setMontant($montant);
+                $commande->setTva($tva);
                 $commande->setReduction($reduction);
                 $em->persist($commande);
                 $em->flush();
@@ -492,7 +503,7 @@ class CommandeController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
 
                 $entityManager = $this->getDoctrine()->getManager();
-                if ($paiement->getMontant() == $commande->getMontant() - $commande->getReduction()) {
+                if (($paiement->getMontant() == $commande->getMontant()) || $commande->getCredit()) {
                     $paiement->setUser($this->getUser());
                     $paiement->setCommande($commande);
                     $commande->setSuivi(true);

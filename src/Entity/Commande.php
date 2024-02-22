@@ -70,6 +70,16 @@ class Commande
     private $datelivrer;
 
     /**
+     * @ORM\Column(type="float")
+     */
+    private $tva;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $credit;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -79,6 +89,7 @@ class Commande
         $this->suivi = false;
         $this->livraison = false;
         $this->reduction = 0;
+        $this->tva = 0;
     }
 
 
@@ -204,6 +215,30 @@ class Commande
     public function setReduction(?float $reduction): self
     {
         $this->reduction = $reduction;
+
+        return $this;
+    }
+
+    public function getTva(): ?float
+    {
+        return $this->tva;
+    }
+
+    public function setTva(float $tva): self
+    {
+        $this->tva = $tva;
+
+        return $this;
+    }
+
+    public function getCredit(): ?bool
+    {
+        return $this->credit;
+    }
+
+    public function setCredit(bool $credit): self
+    {
+        $this->credit = $credit;
 
         return $this;
     }
