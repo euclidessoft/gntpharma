@@ -1357,7 +1357,7 @@ select#transfert_date_time_minute {
     margin-top: 10px;
     padding-top: 20px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-gap: 15px;
 }
 
@@ -1375,6 +1375,7 @@ select#transfert_date_time_minute {
 }
 
 #visa:checked ~ .category .visaMethod,
+#mobil:checked ~ .category .mobilMoney,
 #mastercard:checked ~ .category .mastercardMethod,
 #paypal:checked ~ .category .paypalMethod,
 #AMEX:checked ~ .category .amexMethod {
@@ -1383,7 +1384,8 @@ select#transfert_date_time_minute {
 #visa:checked ~ .category .visaMethod .check,
 #mastercard:checked ~ .category .mastercardMethod .check,
 #paypal:checked ~ .category .paypalMethod .check,
-#AMEX:checked ~ .category .amexMethod .check {
+#AMEX:checked ~ .category .amexMethod .check,
+#mobil:checked ~ .category .mobilMoney .check {
     display: block;
 }
 

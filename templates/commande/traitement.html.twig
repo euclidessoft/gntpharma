@@ -9,7 +9,8 @@
             {{ "Choisissez un moyen de Paiement"|trans }}
         </h3>
         <form action="#">
-            <input type="radio" name="payment" id="visa" value="visa">
+            <input type="radio" name="payment" id="visa" value="mobilMoney">
+            <input type="radio" name="payment" id="mobil" value="visa">
             <input type="radio" name="payment" id="mastercard" value="mastercard">
             <input type="radio" name="payment" id="paypal" value="paypal">
             <input type="radio" name="payment" id="AMEX" value="AMEX">
@@ -22,6 +23,18 @@
                             <img src="{{ asset('images/carte_bancaire.png') }}" alt="">
                         </div>
                         <span class="name">Carte Bancaire</span>
+                    </div>
+                    <span class="check">
+                    <i class="fa-solid fa-circle-check"></i>
+                </span>
+                </label>
+                <label for="mobil" class="mobilMoney">
+                    <div class="imgName">
+                        <div class="imgContainer mobilmoney">
+{#                            <img src="{{ asset('images/carte_bancaire.png') }}" alt="">#}
+                            <i class="fa-solid fa-sack-dollar fa-4x text-green"></i>
+                        </div>
+                        <span class="name">Crédit</span>
                     </div>
                     <span class="check">
                     <i class="fa-solid fa-circle-check"></i>
@@ -41,9 +54,9 @@
                 <label for="paypal" class="paypalMethod">
                     <div class="imgName">
                         <div class="imgContainer omoney">
-                            <img src="{{ asset('images/om.png') }}" alt="">
+                            <img src="{{ asset('images/mobilMoney.png') }}" alt="">
                         </div>
-                        <span class="name">Orange Money</span>
+                        <span class="name">Mobile Money</span>
                     </div>
                     <span class="check"><i class="fa-solid fa-circle-check"></i></span>
                 </label>
@@ -64,7 +77,6 @@
                 Validez
             </button>
         </form>
-
     </div>
     {% block scripts %}
         <script>
@@ -74,12 +86,12 @@
                     url = url.replace("/Choix_Paiement/0", "/ConfirmationPaiement/");
                     document.location.href = url;
 
-                }else alert('Bientot disponible')
+                } else alert('Bientot disponible')
 
             }
 
 
         </script>
-        {% endblock %}
+    {% endblock %}
 
 {% endblock %}
