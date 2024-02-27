@@ -30,6 +30,8 @@
         <tr>
             <th>Code Produit</th>
             <th>Desigantion</th>
+            <th>N° Lot</th>
+            <th>Peremption</th>
 {#            <th>etat stosk</th>#}
             <th>Quantité approvisionnée</th>
         </tr>
@@ -39,6 +41,8 @@
             <tr>
                 <td> {{ approvisionnement.produit.id }} </td>
                 <td>{{ approvisionnement.produit.desigantion }} </td>
+                <td>{{ approvisionnement.lot }} </td>
+                <td>{{ approvisionnement.peremption|date('d/m/Y') }} </td>
 {#                <td> {{ approvisionnement.produit.stock }} </td>#}
                 <td>{{ approvisionnement.quantite }}</td>
 

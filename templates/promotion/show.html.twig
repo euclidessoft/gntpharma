@@ -82,7 +82,7 @@
                                 {{ tamp }}
                             {% else %}
                                 <input type="number" id="text{{ promotionproduit.produit.id }}" class="form-control"
-                                       onfocus="focu({{ promotionproduit.produit.id }})" onblur="nofocu()" style="padding:0 10px" {% if promotionproduit.produit.stock <= promotionproduit.produit.mincommande %} disabled {%  endif %}>
+                                       onfocus="focu({{ promotionproduit.produit.id }})" onblur="nofocu()" style="padding:0 10px" {% if promotionproduit.produit.stock <= promotionproduit.produit.mincommande or promo == 0 %} disabled {%  endif %}>
                                 <label for="text{{ promotionproduit.produit.id }}"></label>
                             {% endif %}
                         </td>
@@ -92,7 +92,7 @@
                                     <i class="fa fa-cart-shopping"></i>
                                 </button>
                             {% else %}
-                                <button type="button" class="btn btn-success{% if promotionproduit.produit.stock <= promotionproduit.produit.mincommande %} disabled {%  endif %}" id="btn{{ promotionproduit.produit.id }}"
+                                <button type="button" class="btn btn-success{% if promotionproduit.produit.stock <= promotionproduit.produit.mincommande or promo == 0 %} disabled {%  endif %}" id="btn{{ promotionproduit.produit.id }}"
                                         onclick="addprod({{ promotionproduit.produit.id }}, {{ promotionproduit.produit.mincommande }}, {{ promotionproduit.produit.stock }})">
                                     <i class="fa fa-cart-shopping"></i>
                                 </button>

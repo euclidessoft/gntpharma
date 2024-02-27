@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Approvisionnement;
 use App\Entity\Approvisionner;
 use App\Entity\Produit;
+use App\Entity\Stock;
 use App\Repository\ApprovisionnementRepository;
 use App\Repository\ApprovisionnerRepository;
 use App\Repository\ProduitRepository;
@@ -95,13 +96,17 @@ class ApprovisionnementController extends AbstractController
         $approv = $session->get("approv", []);
         if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
             $id = $request->get('prod');// recuperation de id produit
+            $numero = $request->get('lot');// recuperation de id produit
+            $peremption = $request->get('perem');// recuperation de id produit
             $quantite = $request->get('quantite');// recuperation de la quantite commamde
-            if (empty($approv[$id])) {//verification existance produit dans le panier
                 $produit = $produitRepository->find($id); // recuperation de id produit dans la db
+//            if (empty($approv[$id])) {//verification existance produit dans le panier
 
                 $produit->setQuantite($quantite);
+                $produit->setLot($numero);
+                $produit->setPeremption($peremption);
 
-                $approv[$id] = [// placement produit et quantite dans le panier
+                $approv[] = [// placement produit et quantite dans le panier
                     "produit" => $produit,
                 ];
 
@@ -111,12 +116,13 @@ class ApprovisionnementController extends AbstractController
                 $res['id'] = 'ok';
                 $res['ref'] = $produit->getReference();
                 $res['designation'] = $produit->getDesigantion();
-                $res['fabriquant'] = $produit->getFabriquant();
+                $res['lot'] = $numero;
+                $res['peremption'] = $peremption;
                 $res['quantite'] = $produit->getQuantite();
 
-            } else {
-                $res['id'] = 'no';
-            }
+//            } else {
+//                $res['id'] = 'no';
+//            }
 
             $response = new Response();
             $response->headers->set('content-type', 'application/json');
@@ -223,12 +229,18 @@ class ApprovisionnementController extends AbstractController
                 $approvisionner = new  Approvisionner();
                 $approvisionner->setUser($this->getUser());
                 $em->persist($approvisionner);
+                $i = 1;
                 foreach ($approv as $product) {
                     $produit = $produitRepository->find($product['produit']->getId());
                     $approvisionnenment = new Approvisionnement($produit,$approvisionner,$product['produit']->getQuantite());
+                    $approvisionnenment->setLot($product['produit']->getLot());
+                    $approvisionnenment->setPeremption(new \DateTime($product['produit']->getPeremption()));
+                    $$i = new Stock($produit, $product['produit']->getLot(), $product['produit']->getPeremption(), $product['produit']->getQuantite());
+                    $em->persist($$i);
                     $produit->approvisionner($product['produit']->getQuantite());
                     $em->persist($produit);
                     $em->persist($approvisionnenment);
+                    $i++;
                 }
                 $em->flush();
                 $session->remove("approv");

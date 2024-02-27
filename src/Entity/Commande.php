@@ -99,7 +99,7 @@ class Commande
         $this->date = new \Datetime();
         $this->ref = 'hhfhfhf';
         $this->suivi = false;
-//        $this->credit = false;
+        $this->credit = false;
         $this->livraison = false;
         $this->reduction = 0;
         $this->tva = 0;

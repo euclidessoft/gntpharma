@@ -8,6 +8,7 @@ use App\Entity\Produit;
 use App\Form\CandidatureType;
 use App\Repository\ImageRepository;
 use App\Repository\ProduitRepository;
+use App\Repository\StockRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,11 +22,11 @@ class StockController extends AbstractController
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function stock(ProduitRepository $produitRepository): Response
+    public function stock(StockRepository $repository): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
         return $this->render('stock/stock.html.twig', [
-            'produits' => $produitRepository->findAll(),
+            'stock' => $repository->findAll(),
         ]);
         } else {
             $response = $this->redirectToRoute('security_login');

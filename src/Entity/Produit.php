@@ -71,6 +71,8 @@ class Produit
 
 
     private $quantite;
+    private $lot;
+    private $peremption;
 
     /**
      * @ORM\Column(type="integer")
@@ -174,6 +176,28 @@ class Produit
     public function setQuantite(int $quantite): self
     {
         $this->quantite = $quantite;
+
+        return $this;
+    }
+    public function getLot()
+    {
+        return $this->lot;
+    }
+
+    public function setLot($lot)
+    {
+        $this->lot = $lot;
+
+        return $this;
+    }
+    public function getPeremption()
+    {
+        return $this->peremption;
+    }
+
+    public function setPeremption($peremption)
+    {
+        $this->peremption = $peremption;
 
         return $this;
     }

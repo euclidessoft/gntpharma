@@ -12,13 +12,20 @@ class Approvisionnement
 {
     /**
      * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Produit")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $produit;
 
     /**
-     * @ORM\Id
      * @ORM\ManyToOne(targetEntity="App\Entity\Approvisionner")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $approvisionner;
 
@@ -36,6 +43,16 @@ class Approvisionnement
      * @ORM\Column(type="integer")
      */
     private $archive;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $lot;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $peremption;
 
     /**
      * Constructor
@@ -106,6 +123,35 @@ class Approvisionnement
     public function setArchive(int $archive): self
     {
         $this->archive = $archive;
+
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getLot(): ?string
+    {
+        return $this->lot;
+    }
+
+    public function setLot(string $lot): self
+    {
+        $this->lot = $lot;
+
+        return $this;
+    }
+
+    public function getPeremption(): ?\DateTimeInterface
+    {
+        return $this->peremption;
+    }
+
+    public function setPeremption(\DateTimeInterface $peremption): self
+    {
+        $this->peremption = $peremption;
 
         return $this;
     }

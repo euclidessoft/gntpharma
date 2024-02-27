@@ -701,7 +701,7 @@ class CommandeController extends AbstractController
             }
             $panier = $session->get("panier", []);
 
-            $response = $this->render('commande/admin/paiementcredit.html.twig', [
+            $response = $this->render('commande/admin/paiement.html.twig', [
                 'commandeproduits' => $repository->findBy(['commande' => $commande]),
                 'commande' => $commande,
                 'panier' => $panier,
@@ -766,6 +766,13 @@ class CommandeController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 if ($versement->getMontant() <= ($commande->getMontant() - $commande->getVersement())) {
                     $commande->setVersement($commande->getVersement() + $versement->getMontant());
+//                    $totalversement = 0;
+//                    foreach ($commande->getVersements() as $verser) {
+//                        $totalversement = $totalversement + $verser->getMontant();
+//                    }
+//                    if($commande->getMontant() == $totalversement){
+//                        $commande->setRef('ok');
+//                    }
                     $versement->setUser($this->getUser());
                     $versement->setCommande($commande);
 //                    $commande->setSuivi(true);

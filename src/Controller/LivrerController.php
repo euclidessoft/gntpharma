@@ -13,6 +13,7 @@ use App\Repository\LivrerProduitRepository;
 use App\Repository\LivrerRepository;
 use App\Repository\LivrerResteRepository;
 use App\Repository\ProduitRepository;
+use App\Repository\StockRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -122,8 +123,10 @@ class LivrerController extends AbstractController
         $listcommande = [];
         foreach ($commandeproduits as $commandeproduit) {
             $stock = $repository->find($commandeproduit->getProduit()->getId())->getStock();
-            $commandeproduit->setStock($stock);
+            $commandeproduit->setStock($stock);// affectation produit pour verification
             $listcommande[] = $commandeproduit;
+
+            $session->set($commandeproduit->getProduit()->getId(), null);
         }
 
         $response = $this->render('livrer/show.html.twig', [
@@ -231,6 +234,83 @@ class LivrerController extends AbstractController
             } else {
                 $res['id'] = 'no';
             }
+
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+        }
+
+    }
+
+    /**
+     * @Route("/details/", name="details")
+     */
+    public function details(Request $request, StockRepository $repository, SessionInterface $session)
+    {
+        // On récupère le panier actuel
+        if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
+            $id = $request->get('prod');// recuperation de id produit
+            $quantite = $request->get('quantite');// recuperation de la quantite commamde
+                $stock = $repository->findBy(['produit'=> $id]); // recuperation de id produit dans la db
+                foreach ($stock as $stockproduit){
+                    $res[]= [
+                        'lot' => $stockproduit->getLot(),
+                        'peremption' => $stockproduit->getPeremption(),
+                        'quantite' => $stockproduit->getQuantite(),
+                    ];
+                }
+
+
+
+//                $res['id'] = 'ok';
+
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+        }
+
+    }
+    /**
+     * @Route("/valider_produit/", name="valider_produit")
+     */
+    public function validerproduit(Request $request, StockRepository $repository, SessionInterface $session)
+    {
+        // On récupère le panier actuel
+        if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
+
+
+            $id = $request->get('prod');// recuperation de id produit
+            $lot = $request->get('lot');// recuperation de id produit
+//            $peremption = $request->get('prod');// recuperation de id produit
+            $quantite = $request->get('quantite');// recuperation de la quantite commamde
+            $livraison = $session->get($id, []);
+            if($livraison >= 1) {
+                foreach ($livraison as $key => $item) {
+                    if ($item['id'] == $id && $item['lot'] == $lot) {
+                        $livraison[$key] = [// remplacement produit et quantite dans le panier
+                            "id" => $id,
+                            "lot" => $lot,
+                            'quantite' => $quantite,
+                        ];
+                    } else {
+                        $livraison[] = [// placement produit et quantite dans le panier
+                            "id" => $id,
+                            "lot" => $lot,
+                            'quantite' => $quantite,
+                        ];
+
+                    }
+                }
+                $session->set($id, $livraison);
+            }
+
+
+
+               $res['id'] = 'ok';
 
             $response = new Response();
             $response->headers->set('content-type', 'application/json');

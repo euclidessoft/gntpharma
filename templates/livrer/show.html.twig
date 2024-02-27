@@ -3,75 +3,95 @@
 {% block stock %}active{% endblock %}
 
 {% block body %}
-<div class="container mt-4 fond-7">
-    <h3 class="mt-4 mb-5 text-bold">
-        <i class="fa fa-shopping-cart mr-2"></i>
-        {{ "traitement commande pour Livraison"|trans }}
-    </h3>
-    {% for message in app.flashes('echec') %}
-        <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                &times;
-            </button>
-            {{ message|trans }}
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-shopping-cart mr-2"></i>
+            {{ "traitement commande pour Livraison"|trans }}
+        </h3>
+        {% for message in app.flashes('echec') %}
+            <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    &times;
+                </button>
+                {{ message|trans }}
+            </div>
+        {% endfor %}
+        <div class="row justify-content-end">
+            <div class="col-lg-5">
+                <table class="table table-success-light table-bordered table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th>Numero Commande</th>
+                        <th>Date Commande</th>
+                        <th>Date Paiement</th>
+                        <th>Client</th>
+                        {#                    <th>Date prevu pour la livraison Livraison</th>#}
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <td>{{ commandereference.id }}</td>
+                    <td>{{ commandereference.date ? commandereference.date|date('d/m/Y') : '' }}</td>
+                    <td>{{ commandereference.paiement ? commandereference.paiement.date|date('d/m/Y') : '' }}</td>
+                    <td>{{ commandereference.user.nom }}</td>
+                    {#                <td><input type="date" class="form-control" id="datelivraison"/></td>#}
+
+                    </tbody>
+                </table>
+            </div>
         </div>
-    {% endfor %}
-    <div class="row justify-content-end">
-        <div class="col-lg-5">
-            <table class="table table-success-light table-bordered table-hover table-striped">
-                <thead>
-                <tr>
-                    <th>Numero Commande</th>
-                    <th>Date Commande</th>
-                    <th>Date Paiement</th>
-                    <th>Client</th>
-{#                    <th>Date prevu pour la livraison Livraison</th>#}
 
-                </tr>
-                </thead>
-                <tbody>
-                <td>{{ commandereference.id }}</td>
-                <td>{{ commandereference.date ? commandereference.date|date('d/m/Y') : ''}}</td>
-                <td>{{ commandereference.paiement ? commandereference.paiement.date|date('d/m/Y') : '' }}</td>
-                <td>{{ commandereference.user.nom }}</td>
-{#                <td><input type="date" class="form-control" id="datelivraison"/></td>#}
+        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
+            <thead>
+            <tr>
+                <th>reference</th>
+                <th>designation</th>
+                <th>Quantite Commande</th>
+                <th>Quantite à livrée</th>
+                <th>Stock disponible</th>
+                <th>Details</th>
+            </tr>
+            </thead>
+            <tbody>
 
-                </tbody>
-            </table>
-        </div>
-    </div>
+            {% for commande in commandes %}
+            {% set ug = 0 %}
+            <tr>
+                <td>{{ commande.produit.reference }}</td>
+                <td>{{ commande.produit.desigantion }}</td>
+                <td>
+                    {{ commande.quantite }}
+                    {% if commande.promotion is not null %}
+                        {% if commande.promotion.premier is not null %}
+                            {% if commande.quantite / commande.promotion.troisieme >= 1 %}
 
-    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
-        <thead>
-        <tr>
-            <th>reference</th>
-            <th>designation</th>
-            <th>Quantite Commande</th>
-            <th>Quantite à livrée</th>
-            <th>Stock disponible</th>
-        </tr>
-        </thead>
-        <tbody>
+                                {% set unite = (commande.quantite / commande.promotion.troisieme)|round(0, 'floor') %}
+                                {% set ug = ug + unite * commande.promotion.ugtroisieme %}
+                                {% set suite = commande.quantite - unite * commande.promotion.troisieme %}
 
-        {% for commande in commandes %}
-        {% set ug = 0 %}
-        <tr>
-            <td>{{ commande.produit.reference }}</td>
-            <td>{{ commande.produit.desigantion }}</td>
-            <td>
-                {{ commande.quantite }}
-                {% if commande.promotion is not null %}
-                    {% if commande.promotion.premier is not null %}
-                        {% if commande.quantite / commande.promotion.troisieme >= 1 %}
+                                {% if suite / commande.promotion.deuxieme >= 1 %}
+                                    {% set unite = (suite / commande.promotion.deuxieme)|round(0, 'floor') %}
+                                    {% set ug = ug + unite * commande.promotion.ugdeuxieme %}
+                                    {% set suite = suite - unite * commande.promotion.deuxieme %}
 
-                            {% set unite = (commande.quantite / commande.promotion.troisieme)|round(0, 'floor') %}
-                            {% set ug = ug + unite * commande.promotion.ugtroisieme %}
-                            {% set suite = commande.quantite - unite * commande.promotion.troisieme %}
+                                    {% if suite / commande.promotion.premier >= 1 %}
+                                        {% set unite = (suite / commande.promotion.premier)|round(0, 'floor') %}
+                                        {% set ug = ug + unite * commande.promotion.ugpremier %}
 
-                            {% if suite / commande.promotion.deuxieme >= 1 %}
-                                {% set unite = (suite / commande.promotion.deuxieme)|round(0, 'floor') %}
+                                    {% endif %}
+
+                                {% elseif suite / commande.promotion.premier >= 1 %}
+                                    {% set unite = (suite / commande.promotion.premier)|round(0, 'floor') %}
+                                    {% set ug = ug + unite * commande.promotion.ugpremier %}
+
+                                {% endif %}
+
+                            {% elseif commande.quantite / commande.promotion.deuxieme >= 1 %}
+
+
+                                {% set unite = (commande.quantite / commande.promotion.deuxieme)|round(0, 'floor') %}
                                 {% set ug = ug + unite * commande.promotion.ugdeuxieme %}
-                                {% set suite = suite - unite * commande.promotion.deuxieme %}
+                                {% set suite = commande.quantite - unite * commande.promotion.deuxieme %}
 
                                 {% if suite / commande.promotion.premier >= 1 %}
                                     {% set unite = (suite / commande.promotion.premier)|round(0, 'floor') %}
@@ -79,130 +99,225 @@
 
                                 {% endif %}
 
-                            {% elseif suite / commande.promotion.premier >= 1 %}
-                                {% set unite = (suite / commande.promotion.premier)|round(0, 'floor') %}
+                            {% elseif commande.quantite / commande.promotion.premier >= 1 %}
+
+                                {% set unite = (commande.quantite / commande.promotion.premier)|round(0, 'floor') %}
                                 {% set ug = ug + unite * commande.promotion.ugpremier %}
 
                             {% endif %}
-
-                        {% elseif commande.quantite / commande.promotion.deuxieme >= 1 %}
-
-
-                            {% set unite = (commande.quantite / commande.promotion.deuxieme)|round(0, 'floor') %}
-                            {% set ug = ug + unite * commande.promotion.ugdeuxieme %}
-                            {% set suite = commande.quantite - unite * commande.promotion.deuxieme %}
-
-                            {% if suite / commande.promotion.premier >= 1 %}
-                                {% set unite = (suite / commande.promotion.premier)|round(0, 'floor') %}
-                                {% set ug = ug + unite * commande.promotion.ugpremier %}
-
-                            {% endif %}
-
-                        {% elseif commande.quantite / commande.promotion.premier >= 1 %}
-
-                            {% set unite = (commande.quantite / commande.promotion.premier)|round(0, 'floor') %}
-                            {% set ug = ug + unite * commande.promotion.ugpremier %}
-
-                        {% endif %}
-                        <span class="badge badge-danger">
+                            <span class="badge badge-danger">
                                     +{{ ug }} U.G.
                             </span>
+                        {% endif %}
                     {% endif %}
-                {% endif %}
-            </td>
-            <td class="text-center">
+                </td>
+                <td class="text-center">
                 <span id="quantite{{ commande.produit.id }}">
-                {% if commande.stock > commande.quantite + ug %}
-                    {{ commande.quantite +ug }}
-                {% else %}
-                    {{ commande.stock }}
-                {% endif %}
+
                     </span>
-                <button type="button"
-                        class="btn btn-success"
-                        data-toggle="modal" data-target="#modal{{ commande.produit.id }}"
-                        id="btn{{ commande.produit.id }}">
-                    <i class="fa fa-edit"></i>
-                </button>
-                <div class="modal fade" id="modal{{ commande.produit.id }}" tabindex="-1" role="dialog"
-                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog text-center">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                    {{ commande.produit.reference }} {{ commande.produit.desigantion }} {{ commande.produit.fabriquant }}</h1>
-                                <button type="button" class="close" data-dismiss="modal"
-                                        aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body px-5">
-                                Renseignez la quantité: <input type="number" class="form-control"
-                                                               id="text{{ commande.produit.id }}">
-                            </div>
-                            <div class="modal-footer px-5 py-4">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                        id="annuler{{ commande.produit.id }}">Annuler
-                                </button>
-                                <button type="button" class="btn btn-success ms-3"
-                                        id="ajouter{{ commande.produit.id }}"
-                                        onclick="modifquantite({{ commande.produit.id }}, {{ commande.quantite }}, {{ commande.stock }})"><i
-                                            class="fa fa-edit"></i> Modifier
-                                </button>
-                                <div id="modification{{ commande.produit.id }}"></div>
+
+                </td>
+                <td class="text-center">{{ commande.stock }}</td>
+                <td class="text-center">
+                    <button type="button"
+                            class="btn btn-success"
+                            data-toggle="modal" data-target="#modal{{ commande.produit.id }}"
+                            id="btn{{ commande.produit.id }}" onclick="detaillivraison({{ commande.produit.id }})">
+                        <i class="fa fa-edit"></i> Details
+                    </button>
+                    <div class="modal fade" id="modal{{ commande.produit.id }}" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg text-center">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fs-5" id="exampleModalLabel">
+                                        {{ commande.produit.reference }} {{ commande.produit.desigantion }} {{ commande.produit.fabriquant }} | {{ commande.quantite }} commandés
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body px-5">
+                                    <table class="table table-success-light table-bordered table-hover table-striped w-100">
+                                        <thead>
+                                        <tr>
+                                            <th>N° Lot</th>
+                                            <th>Peremption</th>
+                                            <th>Commande en stock</th>
+                                            <th>Quantite à livrée</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="numerolot{{ commande.produit.id }}">
+
+                                        <tr>
+                                            <td colspan="4">
+                                                <i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="modal-footer px-5 py-4">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                            id="annuler{{ commande.produit.id }}">Annuler
+                                    </button>
+                                    <button type="button" class="btn btn-success ms-3"
+                                            id="ajouter{{ commande.produit.id }}"
+                                            onclick="validerProduit({{ commande.produit.id }}, {{ commande.quantite }}, {{ commande.stock }})">
+                                        <i
+                                                class="fa fa-edit"></i> Modifier
+                                    </button>
+                                    <div id="modification{{ commande.produit.id }}">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </td>
-            <td class="text-center">{{ commande.stock }}</td>
-            {% else %}
-            {% endfor %}
-    </table>
-<a class="btn btn-success mb-4" href="{{ path('livraison_valider', {'id': commandereference.id}) }}"><i class="fa fa-check"></i> Valider </a>
+                </td>
+                {% else %}
+                {% endfor %}
+        </table>
+        <a class="btn btn-success mb-4" href="{{ path('livraison_valider', {'id': commandereference.id}) }}"><i
+                    class="fa fa-check"></i> Valider </a>
 
-    <!-- Modal -->
+        <!-- Modal -->
 
 
-</div>
-{% block scripts %}
-    <script>
-        function modifquantite(id, quantite, st) {// fonction pour ajouter un produit dans le panier
-            var reg = new RegExp("^[0-9]+$");
-            if (reg.test($('#text' + id).val()) && quantite > $('#text' + id).val()) {
-                if (st >= $('#text' + id).val()) {
-                    // $('#btn' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
-                    $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ path('livraison_modif') }}",
-                        data: "prod=" + id + "&quantite=" + $('#text' + id).val(),
-                        success: function (data) {
-                            if (data['id'] == 'ok') {
-                                $('#quantite' + id).html($('#text' + id).val());
-                                $('#annuler' + id).trigger('click');
-                                $('#text' + id).val('');
-                                $('#ajouter' + id).html("<i class='fa fa-edit'></i>");
+    </div>
+    {% block scripts %}
+        <script>
+            {#function modifquantite(id, quantite, st) {// fonction pour ajouter un produit dans le panier#}
+            {#    var reg = new RegExp("^[0-9]+$");#}
+            {#    if (reg.test($('#text' + id).val()) && quantite > $('#text' + id).val()) {#}
+            {#        if (st >= $('#text' + id).val()) {#}
+            {#            // $('#btn' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");#}
+            {#            $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");#}
+            {#            $.ajax({#}
+            {#                type: "POST",#}
+            {#                url: "{{ path('livraison_modif') }}",#}
+            {#                data: "prod=" + id + "&quantite=" + $('#text' + id).val(),#}
+            {#                success: function (data) {#}
+            {#                    if (data['id'] == 'ok') {#}
+            {#                        $('#quantite' + id).html($('#text' + id).val());#}
+            {#                        $('#annuler' + id).trigger('click');#}
+            {#                        $('#text' + id).val('');#}
+            {#                        $('#ajouter' + id).html("<i class='fa fa-edit'></i>");#}
 
-                            } else {
-                                alert("{{ 'verifier la quantite saisie'|trans }}")
+            {#                    } else {#}
+            {#                        alert("{{ 'verifier la quantite saisie'|trans }}")#}
+            {#                    }#}
+            {#                },#}
+            {#                error: function () {#}
+            {#                    alert("{{ 'La requête n a pas abouti'|trans }}");#}
+            {#                }#}
+            {#            });#}
+            {#        } else {#}
+            {#            var mess = "Stock indisponible  " + st;#}
+            {#            alert(mess);#}
+            {#        }#}
+            {#    } else {#}
+            {#        var mess = "Quantité supérieure à la commande initiale";#}
+            {#        alert(mess);#}
+            {#    }#}
+
+            {#}#}
+
+            function detaillivraison(id) {// fonction pour ajouter un produit dans le panier
+
+                $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('livraison_details') }}",
+                    data: "prod=" + id,
+                    success: function (data) {
+                        // if (data['id'] == 'ok') {
+
+                            for (var i=0; i < data.length; i++) {
+                                var date = new Date(data[i]['peremption']['date']).toLocaleDateString();
+                                // var dd = date.getDay();
+                                // var mm = date.getMonth();
+                                // var yy = date.getFullYear()
+                                if( i == 0) {
+
+                                    $('#numerolot'+id).html(" <tr>\n" +
+                                        "                                            <td>"+ data[i]['lot']+"</td>\n" +
+                                        "                                            <td>"+ date +"</td>\n" +
+                                        "                                            <td>"+ data[i]['quantite']+"</td>\n" +
+                                        "                                            <td><input type='number' id=text'"+ data[i]['lot']+"' class='form-control' onblur='selectProduit("+id+","+ data[i]['lot']+")'/> </td>\n" +
+                                        "                                        </tr>");
+                                }else{
+                                    $('#numerolot'+id).append(" <tr>\n" +
+                                        "                                            <td>"+ data[i]['lot']+"</td>\n" +
+                                        "                                            <td>"+ date +"</td>\n" +
+                                        "                                            <td>"+ data[i]['quantite']+"</td>\n" +
+                                        "                                            <td><input type='number' id='text"+ data[i]['lot']+"' class='form-control' onblur='selectProduit("+id+","+ data[i]['lot']+")'/> </td>\n" +
+                                        "                                        </tr>");
+                                }
                             }
-                        },
-                        error: function () {
-                            alert("{{ 'La requête n a pas abouti'|trans }}");
-                        }
-                    });
-                } else {
-                    var mess = "Stock indisponible  " + st;
-                    alert(mess);
-                }
-            } else {
-                var mess = "Quantité supérieure à la commande initiale";
-                alert(mess);
+                            // ('#annuler' + id).trigger('click');
+                            // $('#text' + id).val('');
+                            $('#ajouter' + id).html("<i class='fa fa-check'></i> Valider");
+
+                        {#} else {#}
+                        {#    alert("{{ 'verifier la quantite saisie'|trans }}")#}
+                        {#}#}
+                    },
+                    error: function () {
+                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                    }
+                });
+
+
+            }
+            function selectProduit(id, lot) {// fonction pour ajouter un produit dans le panier
+
+                // $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('livraison_valider_produit') }}",
+                    data: "prod=" + id + "&lot=" + lot + "&quantite="+ $('#text' + lot).val(),
+                    success: function (data) {
+                        {#if (data['id'] == 'ok') {#}
+                        {#    $('#ajouter' + id).html("<i class='fa-solid fa-check'></i> Valider");#}
+                        {#} else {#}
+                        {#    alert("{{ 'verifier la quantite saisie'|trans }}")#}
+                        {#}#}
+                    },
+                    error: function () {
+                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                    }
+                });
+
+
             }
 
-        }
-    </script>
+            function validerProduit(id,quantite, stock) {// fonction pour ajouter un produit dans le panier
 
-{% endblock %}
+                $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                let commande = 0;
+
+                $("input[type=number]").each(
+                    function () {
+                        if($(this).val() != '') {
+                            commande = Number(commande) + Number($(this).val());
+                        }
+                    });
+                 alert(commande)
+                if(commande <= quantite && quantite <= stock){
+                    $('#quantite'+id).html(commande);
+                    $('#annuler' + id).trigger('click');
+                    commande = Number(commande) * 0;
+                }else{
+                    alert("veuillez verifier les quantités saisies")
+                }
+
+
+
+            }
+        </script>
+
+    {% endblock %}
 {% endblock %}

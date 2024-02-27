@@ -381,6 +381,11 @@ class PromotionController extends AbstractController
         ]);
         }
         elseif ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+            $date = new \DateTime();
+            $promo = 0;
+            if($promotion->getDebut() <= $date){
+               $promo = 1;
+            }
             $panier = $session->get("panier", []);
             $dataPanier = [];
             $total = 0;
@@ -397,6 +402,7 @@ class PromotionController extends AbstractController
             'promotion' => $promotion,
             'produitspromotion' => $produitrepo->findBy(['promotion' => $promotion]),
             'panier' => $dataPanier,
+            'promo' => $promo,
         ]);
         } else {
             $response = $this->redirectToRoute('security_login');
