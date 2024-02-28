@@ -2,7 +2,8 @@
 {% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
 {% block commande %}active{% endblock %}
 
-{% block body %}<div class="container mt-4 fond-7">
+{% block body %}
+    <div class="container mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fa fa-shopping-cart mr-2"></i>
         {{ "Details commande"|trans }}
@@ -144,9 +145,16 @@
                 <span id="total">{{ (total+ tva -reduction)|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
-        </tbody>
+{#        /***Conversion prix en lettre **/#}
+        <tr class="text-bold">
+            <td colspan="8" class="text-right">
+                <span id="total"></span>
+                <div id="conversion" style="text-transform: capitalize">&nbsp;</div>
+            </td>
+        </tr>
+{#/***** end*****/#}
     </table>
-    </div>
+
     <div class="container mt-4 mb-5 py-3 fond-7">
         <div class="centrer">
             <div class="row">
@@ -157,7 +165,6 @@
                         id="btn">
                     <i class="fa fa-money-bill"></i> Paiement
                 </button>
-
 
 
                 <div class="modal fade" id="modal" tabindex="-1" role="dialog"
@@ -218,17 +225,19 @@
                 </div>
 
 
-
             </div>
         </div>
     </div>
 
+{{ include('javascript.html.twig') }}
+
 {% endblock %}
+
 {% block scripts %}
     <script>
         function number() {
             var reg = new RegExp("^[0-9]{3,9}$");
-            if (reg.test($('#paiement_form_montant').val()) ) {
+            if (reg.test($('#paiement_form_montant').val())) {
                 if ($('#paiement_form_type option:selected').val() == 'Cheque' || $('#paiement_form_type option:selected').val() == 'Virement') {
                     if ($('#paiement_form_montant').val() != '' && $('#paiement_form_type').val() != '') {
                         $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
@@ -243,6 +252,7 @@
             } else alert("{{ 'Nombre compris entre 3 et 9 chiffres'|trans }}");
 
         }
+
         function typeversement() {
             if ($('#paiement_form_type option:selected').val() == 'Cheque' || $('#paiement_form_type option:selected').val() == 'Virement') {
                 $('#versement').show();
@@ -252,5 +262,8 @@
                 $('#paiement_form_numero').val();
             }
         }
+
+
     </script>
+
 {% endblock %}
