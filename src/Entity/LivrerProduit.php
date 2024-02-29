@@ -11,6 +11,13 @@ use Doctrine\ORM\Mapping as ORM;
 class LivrerProduit
 {
     /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Promotion")
      * @ORM\JoinColumn(nullable=true)
      */
@@ -25,16 +32,26 @@ class LivrerProduit
 
 
     /**
-     * @ORM\Id
      * @ORM\ManyToOne(targetEntity="App\Entity\Produit")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $produit;
 
     /**
-     * @ORM\Id
      * @ORM\ManyToOne(targetEntity="App\Entity\Livrer")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $livrer;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $lot;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $peremption;
 
 //    /**
 //     * @ORM\Id
@@ -74,7 +91,7 @@ class LivrerProduit
     /**
      * Constructor
      */
-    public function __construct(Livrer $livrer, Produit $produit, $quantitecommander, $quantitelivrer, $archive, Commande $commande)
+    public function __construct(Livrer $livrer, Produit $produit, $quantitecommander, $quantitelivrer, $archive, Commande $commande, $lot, $peremption)
     {
         $this->date = new \Datetime();
         $this->produit = $produit;
@@ -83,8 +100,10 @@ class LivrerProduit
         $this->archive = $archive;
         $this->quantitelivrer = $quantitelivrer;
         $this->livrer = $livrer;
+        $this->lot = $lot;
+        $this->peremption = $peremption;
         $this->reste = false;
-        $this->restealivrer = $quantitecommander - $quantitelivrer;
+        $this->restealivrer = 0;
     }
 
     public function getDate(): ?\DateTimeInterface
@@ -218,6 +237,35 @@ class LivrerProduit
         $this->promotion = $promotion;
 
         return $this;
+    }
+
+    public function getLot(): ?string
+    {
+        return $this->lot;
+    }
+
+    public function setLot(string $lot): self
+    {
+        $this->lot = $lot;
+
+        return $this;
+    }
+
+    public function getPeremption(): ?\DateTimeInterface
+    {
+        return $this->peremption;
+    }
+
+    public function setPeremption(\DateTimeInterface $peremption): self
+    {
+        $this->peremption = $peremption;
+
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
 }

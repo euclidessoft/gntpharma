@@ -6,6 +6,7 @@ use App\Entity\Commande;
 use App\Entity\Livrer;
 use App\Entity\LivrerProduit;
 use App\Entity\LivrerReste;
+use App\Entity\Stock;
 use App\Form\LivrerType;
 use App\Repository\CommandeProduitRepository;
 use App\Repository\CommandeRepository;
@@ -25,6 +26,71 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class LivrerController extends AbstractController
 {
+
+    /**
+     * @Route("/test/", name="test")
+     */
+    public function test(Request $request, StockRepository $repository, SessionInterface $session)
+    {
+        // On récupère le panier actuel
+//        if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
+
+
+//        $id = $request->get('prod');// recuperation de id produit
+//        $lot = $request->get('lot');// recuperation de id produit
+//            $stock = $request->get('stock');// recuperation de id produit
+//            $peremption = $request->get('peremption');// recuperation de id produit
+//        $quantite = $request->get('quantite');// recuperation de la quantite commamde
+        // $livraison = $session->get("traitement", []);
+        $livraison[1][] = ["id" => 1, "lot" => 5];
+        $livraison[2][] = ["id" => 2, "lot" => 6];
+        $livraison[3][] = ["id" => 3, "lot" => 7];
+        $livraison[4][] = ["id" => 4, "lot" => 8];
+//        if(count($livraison ) > 0) {
+//            foreach ($livraison as $key => $item) {
+//                if ($item['id'] == $id && $item['lot'] == $lot) {
+//                    $livraison[$key] = [// remplacement produit et quantite dans le panier
+//                        "id" => $id,
+//                        "lot" => $lot,
+//                        'quantite' => $quantite,
+//                        'stock' => $stock,
+//                        'peremption' => $peremption,
+//                    ];
+//                } else {
+//                    $livraison[] = [// placement produit et quantite dans le panier
+//                        "id" => $id,
+//                        "lot" => $lot,
+//                        'quantite' => $quantite,
+//                        'stock' => $stock,
+//                        'peremption' => $peremption,
+//                    ];
+//
+//                }
+//            }
+//        }
+//        else{
+//            $livraison[] = [// placement produit et quantite dans le panier
+//                "id" => $id,
+//                "lot" => $lot,
+//                'quantite' => $quantite,
+//                'stock' => $stock,
+//                'peremption' => $peremption,
+//            ];
+//        }
+//        $session->set("traitement", $livraison);
+
+
+        $res['id'] = $livraison;
+
+        $response = new Response();
+        $response->headers->set('content-type', 'application/json');
+        $re = json_encode($res);
+        $response->setContent($re);
+        return $response;
+//        }
+
+    }
+
     /**
      * @Route("/", name="index", methods={"GET"})
      */
@@ -125,9 +191,8 @@ class LivrerController extends AbstractController
             $stock = $repository->find($commandeproduit->getProduit()->getId())->getStock();
             $commandeproduit->setStock($stock);// affectation produit pour verification
             $listcommande[] = $commandeproduit;
-
-            $session->set($commandeproduit->getProduit()->getId(), null);
         }
+        $session->set("traitement", []);
 
         $response = $this->render('livrer/show.html.twig', [
             'commandes' => $listcommande,
@@ -158,7 +223,7 @@ class LivrerController extends AbstractController
             $commandeproduit->setStock($stock);
             $listcommande[] = $commandeproduit;
         }
-
+        $session->set("traitement", []);
         $response = $this->render('livrer/reste_show.html.twig', [
             'commandes' => $listcommande,
             'commandereference' => $commande,
@@ -253,15 +318,15 @@ class LivrerController extends AbstractController
         if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
             $id = $request->get('prod');// recuperation de id produit
             $quantite = $request->get('quantite');// recuperation de la quantite commamde
-                $stock = $repository->findBy(['produit'=> $id]); // recuperation de id produit dans la db
-                foreach ($stock as $stockproduit){
-                    $res[]= [
-                        'lot' => $stockproduit->getLot(),
-                        'peremption' => $stockproduit->getPeremption(),
-                        'quantite' => $stockproduit->getQuantite(),
-                    ];
-                }
-
+            $stock = $repository->findBy(['produit' => $id]); // recuperation de id produit dans la db
+            foreach ($stock as $stockproduit) {
+                $res[] = [
+                    'lot' => $stockproduit->getLot(),
+                    'peremption' => $stockproduit->getPeremption(),
+                    'quantite' => $stockproduit->getQuantite(),
+                    'stock' => $stockproduit->getQuantite(),
+                ];
+            }
 
 
 //                $res['id'] = 'ok';
@@ -274,50 +339,33 @@ class LivrerController extends AbstractController
         }
 
     }
+
     /**
      * @Route("/valider_produit/", name="valider_produit")
      */
     public function validerproduit(Request $request, StockRepository $repository, SessionInterface $session)
     {
         // On récupère le panier actuel
-        if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
+//        if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
 
 
-            $id = $request->get('prod');// recuperation de id produit
-            $lot = $request->get('lot');// recuperation de id produit
-//            $peremption = $request->get('prod');// recuperation de id produit
-            $quantite = $request->get('quantite');// recuperation de la quantite commamde
-            $livraison = $session->get($id, []);
-            if($livraison >= 1) {
-                foreach ($livraison as $key => $item) {
-                    if ($item['id'] == $id && $item['lot'] == $lot) {
-                        $livraison[$key] = [// remplacement produit et quantite dans le panier
-                            "id" => $id,
-                            "lot" => $lot,
-                            'quantite' => $quantite,
-                        ];
-                    } else {
-                        $livraison[] = [// placement produit et quantite dans le panier
-                            "id" => $id,
-                            "lot" => $lot,
-                            'quantite' => $quantite,
-                        ];
-
-                    }
-                }
-                $session->set($id, $livraison);
-            }
+        $id = $request->get('produit');// recuperation de id produit
+        $chaine = $request->get('chaine');// recuperation de id produit
+        $livraison = $session->get("traitement", []);
+        $livraison[$id] = $chaine;
 
 
+        $session->set("traitement", $livraison);
 
-               $res['id'] = 'ok';
 
-            $response = new Response();
-            $response->headers->set('content-type', 'application/json');
-            $re = json_encode($res);
-            $response->setContent($re);
-            return $response;
-        }
+        $res['id'] = 'ok';
+
+        $response = new Response();
+        $response->headers->set('content-type', 'application/json');
+        $re = json_encode($res);
+        $response->setContent($re);
+        return $response;
+//        }
 
     }
 
@@ -328,7 +376,7 @@ class LivrerController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
 
-            $panier = $session->get("livraison", []);
+//            $panier = $session->get("livraison", []);
             $em = $this->getDoctrine()->getManager();
             $commandeproduits = $comprodrepository->findBy(['commande' => $commande]);
 
@@ -364,8 +412,7 @@ class LivrerController extends AbstractController
                                 $ug = $ug + $unite * $commandeproduit->getPromotion()->getUgpremier();
                             }
 
-                        }
-                        elseif ($commandeproduit->getQuantite() / $commandeproduit->getPromotion()->getDeuxieme() >= 1) {
+                        } elseif ($commandeproduit->getQuantite() / $commandeproduit->getPromotion()->getDeuxieme() >= 1) {
 
 
                             $unite = floor($commandeproduit->getQuantite() / $commandeproduit->getPromotion()->getDeuxieme());//round
@@ -376,8 +423,7 @@ class LivrerController extends AbstractController
                                 $unite = floor($suite / $commandeproduit->getPromotion()->getPremier());//round
                                 $ug = $ug + $unite * $commandeproduit->getPromotion()->getUgpremier();
                             }
-                        }
-                        elseif ($commandeproduit->getQuantite() / $commandeproduit->getPromotion()->getPremier() >= 1) {
+                        } elseif ($commandeproduit->getQuantite() / $commandeproduit->getPromotion()->getPremier() >= 1) {
                             $unite = floor($commandeproduit->getQuantite() / $commandeproduit->getPromotion()->getPremier());//round
                             $ug = $ug + $unite * $commandeproduit->getPromotion()->getUgpremier();
 
@@ -386,51 +432,73 @@ class LivrerController extends AbstractController
                 }
                 // fin traitement promotion
 
-                if (empty($panier[$produit->getId()])) {// livraison sans modification du gestionnaire
-                    if ($commandeproduit->getQuantite() > $produit->getStock() && $produit->getStock() > 0) {// livraison quantite superieur au stock
-                        $quantite = $produit->getStock();
-                        if ($produit->livraison($produit->getStock())) {
-                            $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite, $produit->getStock(), $commande);
-                            $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $quantite);
-                            $livrerProduit->setReste(true);
-                            $em->persist($reste);
-                            $em->persist($livrerProduit);
-                            $livrer->setReste(true);
-                        } else {
-                            goto terminer;
-                        }
+                    $livraison = $session->get("traitement", []);
+                    $restetamp = false;
+                    $restealivrer = 0;
+                    $chaine = $livraison[$produit->getId()];
+                    $ligne = explode("#",$chaine);
+                    foreach ($ligne as $key => $item) {
+                        $lot = explode("/", $item);
+                        if ($key != 0) {
+                            $id = $lot[0];
+                            $numerolot = $lot[1];
+                            $quantite = $lot[2];
+                            $stock = $em->getRepository(Stock::class)->findOneBy(['produit' => $id, 'lot' => $numerolot]);
+                            if ($commandeproduit->getQuantite() > $produit->getStock() && $produit->getStock() > 0){// livraison avec reste a livrer
+                                $produit->livraison($quantite);
+                                $stock->setQuantite($stock->getQuantite() - $quantite);
+                                $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite + $ug, $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
+                                $livrerProduit->setReste(true);
+                                if($stock->getQuantite() ==0){//suppression produit dans stock
+                                    $em->remove($stock);
+                                }
+                                else{
+                                    $em->persist($stock);
+                                }
+                                $em->persist($livrerProduit);
+                                $restetamp = true;
+                                $restealivrer = $restealivrer+ $quantite;
 
-                    } else {// livraison normale
+                            }
+                            elseif (($stock->getQuantite() - ($quantite + $ug)) > 0) {// livraison avec un stock suffisant
 
-                        if (($produit->getStock() - ($commandeproduit->getQuantite() + $ug)) > 0) {
-                            $produit->livraison($commandeproduit->getQuantite()+$ug);
-                            $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $commandeproduit->getQuantite()+ $ug, $produit->getStock(), $commande);
-                            if($ug != 0) $livrerProduit->setPromotion($commandeproduit->getPromotion());
-                            $em->persist($livrerProduit);
-                        }
-                        elseif (($produit->getStock() - $commandeproduit->getQuantite()) == 0) {
-                            $produit->livraison($commandeproduit->getQuantite()+$ug);
-                            $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $commandeproduit->getQuantite()+ $ug, $produit->getStock(), $commande);
-                            if($ug != 0) $livrerProduit->setPromotion($commandeproduit->getPromotion());
-                            $em->persist($livrerProduit);
-                        } else {
-                            goto terminer;
+                                $produit->livraison($quantite + $ug);
+                                $stock->setQuantite($stock->getQuantite() - ($quantite + $ug));
+                                $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite + $ug, $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
+                                if ($ug != 0) $livrerProduit->setPromotion($commandeproduit->getPromotion());
+                                if($stock->getQuantite() ==0){//suppression produit dans stock
+                                    $em->remove($stock);
+                                }
+                                else{
+                                    $em->persist($stock);
+                                }
+                                $em->persist($livrerProduit);
+
+
+                            } elseif (($stock->getQuantite() - $quantite) == 0) {// livraison avec
+                                $produit->livraison($quantite + $ug);
+                                $stock->setQuantite($stock->getQuantite() - ($quantite + $ug));
+                                $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite + $ug, $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
+                                if ($ug != 0) $livrerProduit->setPromotion($commandeproduit->getPromotion());
+                                if($stock->getQuantite() ==0){//suppression produit dans stock
+                                    $em->remove($stock);
+                                }
+                                else{
+                                    $em->persist($stock);
+                                }
+                                $em->persist($livrerProduit);
+                            } else {
+                                goto terminer;
+                            }
                         }
                     }
+                    if($restetamp == true){
+                        $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $restealivrer);
 
-                } else {// livraison avce modification du gestionnaire
-                    if (($produit->getStock() - $panier[$produit->getId()]) > 0) {
-                        $produit->livraison($panier[$produit->getId()]);
-                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()], $produit->getStock(), $commande);
-                        $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()]);
-                        $livrerProduit->setReste(true);
                         $em->persist($reste);
-                        $em->persist($livrerProduit);
                         $livrer->setReste(true);
-                    } else {
-                        goto terminer;
                     }
-                }
+
                 $em->persist($produit);
             }
 
@@ -440,7 +508,7 @@ class LivrerController extends AbstractController
             $this->addFlash('notice', 'Livraison enregistrée avec succés');
             $response = $this->redirectToRoute('livraison_index');
 
-            $session->remove('livraison');
+            $session->remove('traitement');
 
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
@@ -486,7 +554,7 @@ class LivrerController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
 
-            $panier = $session->get("livraison", []);
+
             $em = $this->getDoctrine()->getManager();
             $commandeproduits = $livrerResteRepository->findBy(['commande' => $commande]);
             $oldlivrer = $livrerrepository->findOneBy(['commande' => $commande]);
@@ -499,52 +567,62 @@ class LivrerController extends AbstractController
             foreach ($commandeproduits as $commandeproduit) {
                 $produit = $repository->find($commandeproduit->getProduit()->getId());
 
-                if (empty($panier[$produit->getId()])) {// livraison totale
 
-                    if ($produit->livraison($commandeproduit->reste())) {
-                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $commandeproduit->reste(), $produit->getStock(), $commande);
-                        $livrerProduit->setRestealivrer(0);
-                        $em->persist($livrerProduit);
-                        $reussi = true;
+                $livraison = $session->get("traitement", []);
+                $restetamp = false;
+                $restealivrer = 0;
+                $chaine = $livraison[$produit->getId()];
+                $ligne = explode("#",$chaine);
+                foreach ($ligne as $key => $item) {
+                    $lot = explode("/", $item);
+                    if ($key != 0) {
+                        $id = $lot[0];
+                        $numerolot = $lot[1];
+                        $quantite = $lot[2];
+                        $stock = $em->getRepository(Stock::class)->findOneBy(['produit' => $id, 'lot' => $numerolot]);
+                       if (($stock->getQuantite() - $quantite) > 0) {// livraison avec un stock suffisant
+
+                            $produit->livraison($quantite );
+                            $stock->setQuantite($stock->getQuantite() - $quantite);
+                            $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite, $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
+
+                           if($stock->getQuantite() ==0){//suppression produit dans stock
+                               $em->remove($stock);
+                           }
+                           else{
+                               $em->persist($stock);
+                           }
+                            $em->persist($livrerProduit);
+
+
+                        } elseif (($stock->getQuantite() - $quantite) == 0) {// livraison avec
+                            $produit->livraison($quantite);
+                            $stock->setQuantite($stock->getQuantite() - $quantite);
+                            $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite, $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
+                           if($stock->getQuantite() ==0){//suppression produit dans stock
+                               $em->remove($stock);
+                           }
+                           else{
+                               $em->persist($stock);
+                           }
+
+                            $em->persist($livrerProduit);
+                        }
                     }
-
                 }
-//                elseif ($commandeproduit->getQuantite() > $produit->getStock()) {// livraison totale
-//
-//                    if($produit->livraison($produit->getStock())){
-//                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $produit->getStock(), $produit->getStock());
-//                        $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()]);
-//                        $em->persist($reste);
-//                        $em->persist($livrerProduit);
-//                        $livrer->setReste(true);
-//                        $reussi = true;
-//                    }
-//
-//                }
-//                else {// livraison partielle
-//                    if($produit->livraison($panier[$produit->getId()])) {
-//                        $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()], $produit->getStock());
-//                        $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $panier[$produit->getId()]);
-//                        $em->persist($reste);
-//                        $em->persist($livrerProduit);
-//                        $livrer->setReste(true);
-//                        $reussi = true;
-//                    }
-//                }
+
                 $em->persist($produit);
             }
-            if ($reussi) {
+
+
                 $em->persist($livrer);
                 $em->persist($commande);
                 $em->flush();
                 $this->addFlash('notice', 'Livraison enregistrée avec succés');
                 $response = $this->redirectToRoute('livraison_index');
-            } else {
-                $this->addFlash('echec', 'verifier les quantités avant validation');
-                $response = $this->redirectToRoute('livraison_reste_show', ['id' => $commande->getId()]);
-            }
 
-            $session->remove('livraison');
+
+            $session->remove('traitement');
 
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);

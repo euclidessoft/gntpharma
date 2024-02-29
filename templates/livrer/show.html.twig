@@ -166,12 +166,8 @@
                                     <button type="button" class="btn btn-success ms-3"
                                             id="ajouter{{ commande.produit.id }}"
                                             onclick="validerProduit({{ commande.produit.id }}, {{ commande.quantite }}, {{ commande.stock }})">
-                                        <i
-                                                class="fa fa-edit"></i> Modifier
-                                    </button>
-                                    <div id="modification{{ commande.produit.id }}">
 
-                                    </div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -246,14 +242,18 @@
                                         "                                            <td>"+ data[i]['lot']+"</td>\n" +
                                         "                                            <td>"+ date +"</td>\n" +
                                         "                                            <td>"+ data[i]['quantite']+"</td>\n" +
-                                        "                                            <td><input type='number' id=text'"+ data[i]['lot']+"' class='form-control' onblur='selectProduit("+id+","+ data[i]['lot']+")'/> </td>\n" +
+                                        "                                            <td>" +
+                                        "<input type='number' id='"+ Number(data[i]['lot'])+"' class='form-control'/>" +
+                                        "</td>\n" +
                                         "                                        </tr>");
                                 }else{
                                     $('#numerolot'+id).append(" <tr>\n" +
                                         "                                            <td>"+ data[i]['lot']+"</td>\n" +
                                         "                                            <td>"+ date +"</td>\n" +
                                         "                                            <td>"+ data[i]['quantite']+"</td>\n" +
-                                        "                                            <td><input type='number' id='text"+ data[i]['lot']+"' class='form-control' onblur='selectProduit("+id+","+ data[i]['lot']+")'/> </td>\n" +
+                                        "                                            <td>" +
+                                        "<input type='number' id='"+ Number(data[i]['lot'])+"' class='form-control'/>" +
+                                        "</td>\n" +
                                         "                                        </tr>");
                                 }
                             }
@@ -272,46 +272,63 @@
 
 
             }
-            function selectProduit(id, lot) {// fonction pour ajouter un produit dans le panier
-
+            function selectProduit(produit,lot) {// fonction pour ajouter un produit dans le panier
+                alert('ggggg')
+                // $('#hid'+id).val(produit+"/"+lot+"/"+$('#text' + lot).val());
+                // alert($('#hid'+id).val())
                 // $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
-                $.ajax({
-                    type: "POST",
-                    url: "{{ path('livraison_valider_produit') }}",
-                    data: "prod=" + id + "&lot=" + lot + "&quantite="+ $('#text' + lot).val(),
-                    success: function (data) {
-                        {#if (data['id'] == 'ok') {#}
-                        {#    $('#ajouter' + id).html("<i class='fa-solid fa-check'></i> Valider");#}
-                        {#} else {#}
-                        {#    alert("{{ 'verifier la quantite saisie'|trans }}")#}
-                        {#}#}
-                    },
-                    error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
-                    }
-                });
-
+                // if($('#text' + lot).val() != "") {
+                    {#$.ajax({#}
+                    {#    type: "POST",#}
+                    {#    url: "{{ path('livraison_valider_produit') }}",#}
+                    {#    data: "prod=" + id + "&lot=" + lot + "&quantite=" + $('#text' + lot).val() + "&stock=" + stock,#}
+                    {#    success: function (data) {#}
+                            // if (data['id'] == 'ok') {
+                    {#        $('#ajouter' + id).html("<i class='fa-solid fa-check'></i>");#}
+                    {#        alert('fini')#}
+                    {#    },#}
+                    {#    error: function () {#}
+                    {#        alert("{{ 'La requête n a pas abouti'|trans }}");#}
+                    {#    }#}
+                    {#});#}
+                // }
 
             }
 
             function validerProduit(id,quantite, stock) {// fonction pour ajouter un produit dans le panier
 
                 $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
-                let commande = 0;
+                let commande= 0;
+                let chaine = 0;
 
                 $("input[type=number]").each(
                     function () {
                         if($(this).val() != '') {
                             commande = Number(commande) + Number($(this).val());
+                            chaine = chaine + "#" + id + "/" +$(this).attr("id") + "/"+Number($(this).val());
                         }
                     });
-                 alert(commande)
-                if(commande <= quantite && quantite <= stock){
+                if(commande > 0 && commande <= quantite &&  stock > 0){
                     $('#quantite'+id).html(commande);
-                    $('#annuler' + id).trigger('click');
-                    commande = Number(commande) * 0;
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('livraison_valider_produit') }}",
+                        data: "produit=" + id+ "&chaine="+chaine ,
+                        success: function (data) {
+                    if (data['id'] == 'ok') {
+                        $('#annuler' + id).trigger('click');
+                        $('#numerolot'+id).html("");
+                        }
+                    },
+                        error: function () {
+                            alert("{{ 'La requête n a pas abouti'|trans }}");
+                        }
+                    });
+
                 }else{
-                    alert("veuillez verifier les quantités saisies")
+                    alert("veuillez verifier les quantités saisies");
+                    $('#ajouter' + id).html("<i class='fa-solid fa-check'></i> Valider");
                 }
 
 

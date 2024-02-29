@@ -3,152 +3,294 @@
 {% block stock %}active{% endblock %}
 
 {% block body %}
-<div class="container mt-4 fond-7">
-    <h3 class="mt-4 mb-5 text-bold">
-        <i class="fa fa-shopping-cart mr-2"></i>
-        {{ "traitement commande pour Livraison restante"|trans }}
-    </h3>
-    {% for message in app.flashes('echec') %}
-        <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                &times;
-            </button>
-            {{ message|trans }}
-        </div>
-    {% endfor %}
-    <div class="row justify-content-end">
-        <div class="col-lg-4">
-            <table class="table table-success-light table-bordered table-hover table-striped">
-                <thead>
-                <tr>
-                    <th>Numero Commande</th>
-                    <th>Date</th>
-                    <th>Client</th>
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-shopping-cart mr-2"></i>
+            {{ "traitement commande pour Livraison"|trans }}
+        </h3>
+        {% for message in app.flashes('echec') %}
+            <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    &times;
+                </button>
+                {{ message|trans }}
+            </div>
+        {% endfor %}
+        <div class="row justify-content-end">
+            <div class="col-lg-5">
+                <table class="table table-success-light table-bordered table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th>Numero Commande</th>
+                        <th>Date Commande</th>
+                        <th>Date Paiement</th>
+                        <th>Client</th>
+                        {#                    <th>Date prevu pour la livraison Livraison</th>#}
 
-                </tr>
-                </thead>
-                <tbody>
-                <td>{{ commandereference.id }}</td>
-                <td>{{ commandereference.date|date('d/m/Y') }}</td>
-                <td>{{ commandereference.user.nom }}</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <td>{{ commandereference.id }}</td>
+                    <td>{{ commandereference.date ? commandereference.date|date('d/m/Y') : '' }}</td>
+                    <td>{{ commandereference.paiement ? commandereference.paiement.date|date('d/m/Y') : '' }}</td>
+                    <td>{{ commandereference.user.nom }}</td>
+                    {#                <td><input type="date" class="form-control" id="datelivraison"/></td>#}
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
+        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
+            <thead>
+            <tr>
+                <th>reference</th>
+                <th>designation</th>
+                <th>Quantite Commande</th>
+                <th>Quantite déjà livrée</th>
+                <th>Reste à livrée</th>
+                <th>Quantite à livrée</th>
+                <th>Stock disponible</th>
+                <th>Details</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for commande in commandes %}
+            <tr>
+                <td>{{ commande.produit.reference }}</td>
+                <td>{{ commande.produit.desigantion }}</td>
+                <td>
+                    {{ commande.quantite }}
+                </td>
+                <td class="text-center">{{ commande.quantitelivre }}</td>
+
+                <td class="text-center">{{ commande.quantite - commande.quantitelivre }}</td>
+                <td class="text-center">
+                <span id="quantite{{ commande.produit.id }}">
+
+                    </span>
+
+                </td>
+                <td class="text-center">{{ commande.stock }}</td>
+                <td class="text-center">
+                    <button type="button"
+                            class="btn btn-success"
+                            data-toggle="modal" data-target="#modal{{ commande.produit.id }}"
+                            id="btn{{ commande.produit.id }}" onclick="detaillivraison({{ commande.produit.id }})">
+                        <i class="fa fa-edit"></i> Details
+                    </button>
+                    <div class="modal fade" id="modal{{ commande.produit.id }}" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg text-center">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fs-5" id="exampleModalLabel">
+                                        {{ commande.produit.reference }} {{ commande.produit.desigantion }} {{ commande.produit.fabriquant }} |
+                {{ commande.quantite - commande.quantitelivre }} à livrés
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body px-5">
+                                    <table class="table table-success-light table-bordered table-hover table-striped w-100">
+                                        <thead>
+                                        <tr>
+                                            <th>N° Lot</th>
+                                            <th>Peremption</th>
+                                            <th>Commande en stock</th>
+                                            <th>Quantite à livrée</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="numerolot{{ commande.produit.id }}">
+
+                                        <tr>
+                                            <td colspan="4">
+                                                <i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="modal-footer px-5 py-4">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                            id="annuler{{ commande.produit.id }}">Annuler
+                                    </button>
+                                    <button type="button" class="btn btn-success ms-3"
+                                            id="ajouter{{ commande.produit.id }}"
+                                            onclick="validerProduit({{ commande.produit.id }}, {{ commande.quantite }}, {{ commande.stock }})">
+
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                {% else %}
+                {% endfor %}
+        </table>
+        <a class="btn btn-success mb-4" href="{{ path('livraison_reste_valider', {'id': commandereference.id}) }}"><i
+                    class="fa fa-check"></i> Valider </a>
+
+        <!-- Modal -->
+
+
     </div>
+    {% block scripts %}
+        <script>
+            {#function modifquantite(id, quantite, st) {// fonction pour ajouter un produit dans le panier#}
+            {#    var reg = new RegExp("^[0-9]+$");#}
+            {#    if (reg.test($('#text' + id).val()) && quantite > $('#text' + id).val()) {#}
+            {#        if (st >= $('#text' + id).val()) {#}
+            {#            // $('#btn' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");#}
+            {#            $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");#}
+            {#            $.ajax({#}
+            {#                type: "POST",#}
+            {#                url: "{{ path('livraison_modif') }}",#}
+            {#                data: "prod=" + id + "&quantite=" + $('#text' + id).val(),#}
+            {#                success: function (data) {#}
+            {#                    if (data['id'] == 'ok') {#}
+            {#                        $('#quantite' + id).html($('#text' + id).val());#}
+            {#                        $('#annuler' + id).trigger('click');#}
+            {#                        $('#text' + id).val('');#}
+            {#                        $('#ajouter' + id).html("<i class='fa fa-edit'></i>");#}
 
-    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
-        <thead>
-        <tr>
-            <th>reference</th>
-            <th>désignation</th>
-            <th>Quantite Commandée</th>
-            <th>Quantite déjà livrée</th>
-            <th>reste à livrer</th>
-            <th>Stock disponible</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for commande in commandes %}
-        <tr>
-            <td>{{ commande.produit.reference }}</td>
-            <td>{{ commande.produit.desigantion }}</td>
-            <td>{{ commande.quantite }}</td>
-            <td class="text-center">
-                {{ commande.quantitelivre }}
-{#                <span id="quantite{{ commande.produit.id }}">#}
-{#                {% if commande.stock > commande.quantite %}#}
-{#                    {{ commande.quantite }}#}
-{#                {% else %}#}
-{#                    {{ commande.stock }}#}
-{#                {% endif %}#}
-{#                    </span>#}
-{#                <button type="button"#}
-{#                        class="btn btn-success"#}
-{#                        data-toggle="modal" data-target="#modal{{ commande.produit.id }}"#}
-{#                        id="btn{{ commande.produit.id }}">#}
-{#                    <i class="fa fa-edit"></i>#}
-{#                </button>#}
-{#                <div class="modal fade" id="modal{{ commande.produit.id }}" tabindex="-1" role="dialog"#}
-{#                     aria-labelledby="exampleModalLabel" aria-hidden="true">#}
-{#                    <div class="modal-dialog text-center">#}
-{#                        <div class="modal-content">#}
-{#                            <div class="modal-header">#}
-{#                                <h1 class="modal-title fs-5" id="exampleModalLabel">#}
-{#                                    {{ commande.produit.reference }} {{ commande.produit.desigantion }} {{ commande.produit.fabriquant }}</h1>#}
-{#                                <button type="button" class="close" data-dismiss="modal"#}
-{#                                        aria-label="Close">#}
-{#                                    <span aria-hidden="true">&times;</span>#}
-{#                                </button>#}
-{#                            </div>#}
-{#                            <div class="modal-body px-5">#}
-{#                                Renseignez la quantité: <input type="number" class="form-control"#}
-{#                                                               id="text{{ commande.produit.id }}">#}
-{#                            </div>#}
-{#                            <div class="modal-footer px-5 py-4">#}
-{#                                <button type="button" class="btn btn-secondary" data-dismiss="modal"#}
-{#                                        id="annuler{{ commande.produit.id }}">Annuler#}
-{#                                </button>#}
-{#                                <button type="button" class="btn btn-success ms-3"#}
-{#                                        id="ajouter{{ commande.produit.id }}"#}
-{#                                        onclick="modifquantite({{ commande.produit.id }}, {{ commande.quantite }}, {{ commande.stock }})"><i#}
-{#                                            class="fa fa-edit"></i> Modifier#}
-{#                                </button>#}
-{#                                <div id="modification{{ commande.produit.id }}"></div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-            </td>
-            <td class="text-center">{{ commande.quantite - commande.quantitelivre }}</td>
-            <td class="text-center">{{ commande.stock }}</td>
-            {% else %}
-            {% endfor %}
-    </table>
-<a class="btn btn-success mb-4" href="{{ path('livraison_reste_valider', {'id': commandereference.id}) }}"><i class="fa fa-check"></i> Valider </a>
+            {#                    } else {#}
+            {#                        alert("{{ 'verifier la quantite saisie'|trans }}")#}
+            {#                    }#}
+            {#                },#}
+            {#                error: function () {#}
+            {#                    alert("{{ 'La requête n a pas abouti'|trans }}");#}
+            {#                }#}
+            {#            });#}
+            {#        } else {#}
+            {#            var mess = "Stock indisponible  " + st;#}
+            {#            alert(mess);#}
+            {#        }#}
+            {#    } else {#}
+            {#        var mess = "Quantité supérieure à la commande initiale";#}
+            {#        alert(mess);#}
+            {#    }#}
 
-    <!-- Modal -->
+            {#}#}
+
+            function detaillivraison(id) {// fonction pour ajouter un produit dans le panier
+
+                $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('livraison_details') }}",
+                    data: "prod=" + id,
+                    success: function (data) {
+                        // if (data['id'] == 'ok') {
+
+                        for (var i=0; i < data.length; i++) {
+                            var date = new Date(data[i]['peremption']['date']).toLocaleDateString();
+                            // var dd = date.getDay();
+                            // var mm = date.getMonth();
+                            // var yy = date.getFullYear()
+                            if( i == 0) {
+
+                                $('#numerolot'+id).html(" <tr>\n" +
+                                    "                                            <td>"+ data[i]['lot']+"</td>\n" +
+                                    "                                            <td>"+ date +"</td>\n" +
+                                    "                                            <td>"+ data[i]['quantite']+"</td>\n" +
+                                    "                                            <td>" +
+                                    "<input type='number' id='"+ Number(data[i]['lot'])+"' class='form-control'/>" +
+                                    "</td>\n" +
+                                    "                                        </tr>");
+                            }else{
+                                $('#numerolot'+id).append(" <tr>\n" +
+                                    "                                            <td>"+ data[i]['lot']+"</td>\n" +
+                                    "                                            <td>"+ date +"</td>\n" +
+                                    "                                            <td>"+ data[i]['quantite']+"</td>\n" +
+                                    "                                            <td>" +
+                                    "<input type='number' id='"+ Number(data[i]['lot'])+"' class='form-control'/>" +
+                                    "</td>\n" +
+                                    "                                        </tr>");
+                            }
+                        }
+                        // ('#annuler' + id).trigger('click');
+                        // $('#text' + id).val('');
+                        $('#ajouter' + id).html("<i class='fa fa-check'></i> Valider");
+
+                        {#} else {#}
+                        {#    alert("{{ 'verifier la quantite saisie'|trans }}")#}
+                        {#}#}
+                    },
+                    error: function () {
+                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                    }
+                });
 
 
-</div>
-{% block scripts %}
-    <script>
-        function modifquantite(id, quantite, st) {// fonction pour ajouter un produit dans le panier
-            var reg = new RegExp("^[0-9]+$");
-            if (reg.test($('#text' + id).val()) && quantite > $('#text' + id).val()) {
-                if (st >= $('#text' + id).val()) {
-                    // $('#btn' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
-                    $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+            }
+            function selectProduit(produit,lot) {// fonction pour ajouter un produit dans le panier
+                alert('ggggg')
+                // $('#hid'+id).val(produit+"/"+lot+"/"+$('#text' + lot).val());
+                // alert($('#hid'+id).val())
+                // $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                // if($('#text' + lot).val() != "") {
+                {#$.ajax({#}
+                {#    type: "POST",#}
+                {#    url: "{{ path('livraison_valider_produit') }}",#}
+                {#    data: "prod=" + id + "&lot=" + lot + "&quantite=" + $('#text' + lot).val() + "&stock=" + stock,#}
+                {#    success: function (data) {#}
+                // if (data['id'] == 'ok') {
+                {#        $('#ajouter' + id).html("<i class='fa-solid fa-check'></i>");#}
+                {#        alert('fini')#}
+                {#    },#}
+                {#    error: function () {#}
+                {#        alert("{{ 'La requête n a pas abouti'|trans }}");#}
+                {#    }#}
+                {#});#}
+                // }
+
+            }
+
+            function validerProduit(id,quantite, stock) {// fonction pour ajouter un produit dans le panier
+
+                $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                let commande= 0;
+                let chaine = 0;
+
+                $("input[type=number]").each(
+                    function () {
+                        if($(this).val() != '') {
+                            commande = Number(commande) + Number($(this).val());
+                            chaine = chaine + "#" + id + "/" +$(this).attr("id") + "/"+Number($(this).val());
+                        }
+                    });
+                if(commande > 0 && commande <= quantite &&  stock > 0){
+                    $('#quantite'+id).html(commande);
+
                     $.ajax({
                         type: "POST",
-                        url: "{{ path('livraison_modif') }}",
-                        data: "prod=" + id + "&quantite=" + $('#text' + id).val(),
+                        url: "{{ path('livraison_valider_produit') }}",
+                        data: "produit=" + id+ "&chaine="+chaine ,
                         success: function (data) {
                             if (data['id'] == 'ok') {
-                                $('#quantite' + id).html($('#text' + id).val());
                                 $('#annuler' + id).trigger('click');
-                                $('#text' + id).val('');
-                                $('#ajouter' + id).html("<i class='fa fa-edit'></i>");
-
-                            } else {
-                                alert("{{ 'verifier la quantite saisie'|trans }}")
+                                $('#numerolot'+id).html("");
                             }
                         },
                         error: function () {
                             alert("{{ 'La requête n a pas abouti'|trans }}");
                         }
                     });
-                } else {
-                    var mess = "Stock indisponible  " + st;
-                    alert(mess);
+
+                }else{
+                    alert("veuillez verifier les quantités saisies");
+                    $('#ajouter' + id).html("<i class='fa-solid fa-check'></i> Valider");
                 }
-            } else {
-                var mess = "Quantité supérieure à la commande initiale";
-                alert(mess);
+
+
+
             }
+        </script>
 
-        }
-    </script>
-
-{% endblock %}
+    {% endblock %}
 {% endblock %}

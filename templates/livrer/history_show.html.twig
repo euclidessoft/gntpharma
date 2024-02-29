@@ -44,6 +44,8 @@
         <tr>
             <th>reference</th>
             <th>designation</th>
+            <th>N° Lot</th>
+            <th>Peremption</th>
             <th>Quantite Commande</th>
             <th>Quantite livrée</th>
             <th>Quantite restante</th>
@@ -57,6 +59,8 @@
         <tr>
             <td>{{ commande.produit.reference }}</td>
             <td>{{ commande.produit.desigantion }}</td>
+            <td>{{ commande.lot }}</td>
+            <td>{{ commande.peremption|date('d/m/Y') }}</td>
             <td>
                 {{ commande.quantitecommander }}
                 {% if commande.promotion is not null %}
