@@ -447,7 +447,7 @@ class LivrerController extends AbstractController
                             if ($commandeproduit->getQuantite() > $produit->getStock() && $produit->getStock() > 0){// livraison avec reste a livrer
                                 $produit->livraison($quantite);
                                 $stock->setQuantite($stock->getQuantite() - $quantite);
-                                $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite + $ug, $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
+                                $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite, $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
                                 $livrerProduit->setReste(true);
                                 if($stock->getQuantite() ==0){//suppression produit dans stock
                                     $em->remove($stock);
@@ -460,11 +460,11 @@ class LivrerController extends AbstractController
                                 $restealivrer = $restealivrer+ $quantite;
 
                             }
-                            elseif (($stock->getQuantite() - ($quantite + $ug)) > 0) {// livraison avec un stock suffisant
+                            elseif (($stock->getQuantite() - $quantite) > 0) {// livraison avec un stock suffisant
 
-                                $produit->livraison($quantite + $ug);
-                                $stock->setQuantite($stock->getQuantite() - ($quantite + $ug));
-                                $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite + $ug, $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
+                                $produit->livraison($quantite);
+                                $stock->setQuantite($stock->getQuantite() - ($quantite));
+                                $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite, $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
                                 if ($ug != 0) $livrerProduit->setPromotion($commandeproduit->getPromotion());
                                 if($stock->getQuantite() ==0){//suppression produit dans stock
                                     $em->remove($stock);
@@ -476,9 +476,9 @@ class LivrerController extends AbstractController
 
 
                             } elseif (($stock->getQuantite() - $quantite) == 0) {// livraison avec
-                                $produit->livraison($quantite + $ug);
-                                $stock->setQuantite($stock->getQuantite() - ($quantite + $ug));
-                                $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite + $ug, $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
+                                $produit->livraison($quantite );
+                                $stock->setQuantite($stock->getQuantite() - ($quantite));
+                                $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite , $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
                                 if ($ug != 0) $livrerProduit->setPromotion($commandeproduit->getPromotion());
                                 if($stock->getQuantite() ==0){//suppression produit dans stock
                                     $em->remove($stock);
