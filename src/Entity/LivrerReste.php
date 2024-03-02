@@ -61,7 +61,7 @@ class LivrerReste
     /**
      * Constructor
      */
-    public function __construct(Livrer $livrer, Commande $commande, Produit $produit, $quantite, $quantitelivre)
+    public function __construct(Livrer $livrer, Commande $commande, Produit $produit, $quantite, $quantitelivre, User $client)
     {
         $this->date = new \Datetime();
         $this->produit = $produit;
@@ -69,6 +69,7 @@ class LivrerReste
         $this->quantitelivre = $quantitelivre;
         $this->quantite = $quantite;
         $this->livrer = $livrer;
+        $this->client = $client;
     }
 
     public function getDate(): ?\DateTimeInterface

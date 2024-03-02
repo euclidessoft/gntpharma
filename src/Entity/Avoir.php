@@ -35,11 +35,11 @@ class Avoir
      */
     private $reclamation;
 
-//    /**
-//     * @ORM\ManyToOne(targetEntity="App\Entity\LivrerReste")
-//     * @ORM\JoinColumn(nullable=true)
-//     */
-//    private $reste;
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\LivrerReste")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $reste;
 
     /**
      * @ORM\Id

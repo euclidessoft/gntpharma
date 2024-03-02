@@ -32,62 +32,7 @@ class LivrerController extends AbstractController
      */
     public function test(Request $request, StockRepository $repository, SessionInterface $session)
     {
-        // On récupère le panier actuel
-//        if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
-
-
-//        $id = $request->get('prod');// recuperation de id produit
-//        $lot = $request->get('lot');// recuperation de id produit
-//            $stock = $request->get('stock');// recuperation de id produit
-//            $peremption = $request->get('peremption');// recuperation de id produit
-//        $quantite = $request->get('quantite');// recuperation de la quantite commamde
-        // $livraison = $session->get("traitement", []);
-        $livraison[1][] = ["id" => 1, "lot" => 5];
-        $livraison[2][] = ["id" => 2, "lot" => 6];
-        $livraison[3][] = ["id" => 3, "lot" => 7];
-        $livraison[4][] = ["id" => 4, "lot" => 8];
-//        if(count($livraison ) > 0) {
-//            foreach ($livraison as $key => $item) {
-//                if ($item['id'] == $id && $item['lot'] == $lot) {
-//                    $livraison[$key] = [// remplacement produit et quantite dans le panier
-//                        "id" => $id,
-//                        "lot" => $lot,
-//                        'quantite' => $quantite,
-//                        'stock' => $stock,
-//                        'peremption' => $peremption,
-//                    ];
-//                } else {
-//                    $livraison[] = [// placement produit et quantite dans le panier
-//                        "id" => $id,
-//                        "lot" => $lot,
-//                        'quantite' => $quantite,
-//                        'stock' => $stock,
-//                        'peremption' => $peremption,
-//                    ];
-//
-//                }
-//            }
-//        }
-//        else{
-//            $livraison[] = [// placement produit et quantite dans le panier
-//                "id" => $id,
-//                "lot" => $lot,
-//                'quantite' => $quantite,
-//                'stock' => $stock,
-//                'peremption' => $peremption,
-//            ];
-//        }
-//        $session->set("traitement", $livraison);
-
-
-        $res['id'] = $livraison;
-
-        $response = new Response();
-        $response->headers->set('content-type', 'application/json');
-        $re = json_encode($res);
-        $response->setContent($re);
-        return $response;
-//        }
+        return $this->render('avoir/new.html.twig');
 
     }
 
@@ -493,7 +438,7 @@ class LivrerController extends AbstractController
                         }
                     }
                     if($restetamp == true){
-                        $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $restealivrer);
+                        $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $restealivrer, $commande->getUser());
 
                         $em->persist($reste);
                         $livrer->setReste(true);
