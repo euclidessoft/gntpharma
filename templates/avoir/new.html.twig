@@ -1,6 +1,6 @@
-<!DOCTYPE html>
-
-<title>New Avoir</title>
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Créer un avoir"|trans }} - GNT Pharma {% endblock %}
+{% block avoir %}active{% endblock %}
 
 {% block body %}
     <h1>Create new Avoir</h1>
@@ -8,4 +8,5 @@
     {{ include('avoir/_form.html.twig') }}
 
     <a href="{{ path('avoir_index') }}">back to list</a>
+
 {% endblock %}
