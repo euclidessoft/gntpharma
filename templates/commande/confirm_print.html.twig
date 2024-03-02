@@ -1,53 +1,102 @@
-<!DOCTYPE html>
-<html lang="fr">
-
+<!doctype html>
+<html lang="en">
 <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {{ include('head.html.twig') }}
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title> {% block title %} Gntpharma -  {% endblock %} </title>
+    <title>{{ commande.id }}</title>
+    <style>
+        .titre {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 30px;
+            font-weight: bold;
+            color: #039c4f;
+        }
 
-    {% block stylesheets %}
-        <link href="{{ asset('DataTables/datatables.css') }}" rel="stylesheet">
-        <link href="{{ asset('fontawesome/css/all.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/bootstrap-4plus.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/accueil.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/gntpharma.css') }}" rel="stylesheet">
-    {% endblock %}
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-
-    <!--[if lt IE 9]>
-    <script src="{{ asset('js/html5shiv.js') }}"></script>
-    <script src="{{ asset('js/respond.min.js') }}"></script>
-    <![endif]-->
+        .text {
+            font-size: 14px;
+        }
+        .badge{
+            background-color: red !important;
+        }
+        @media print {
+            .table-success-light{
+                color: #000 !important;
+            }
+            .table-bordered{
+                border: 1px solid #000 !important;
+            }
+            thead{
+                background-color: #c5fbae !important;
+                color: #000;
+            }
+            .tt{
+                display: inline-block;
+                border: none;
+                width: 180px !important;
+            }
+        }
+    </style>
 
 </head>
+<body onload="print()">
+<div class="container-fluid">
 
-<body onload="window.print()" onafterprint="">
-<div class="container mt-4 fond-7">
-    <h3 class="mt-4 mb-5 text-bold">
-        <i class="fa fa-shopping-cart mr-2"></i>
-        {{ "Commande  Validée"|trans }}
+
+
+<div class="col-lg-8 offset-lg-2">
+    <div class="row" style="border-bottom: 1px solid #039c4f;padding-bottom: 20px;">
+        <div class="col-2">
+            <img src="{{ asset('images/gntpharma.jpeg') }}" alt="Logo" class="w-100">
+        </div>
+        <div class="col-10 text-center">
+            <div class="row">
+                <div class="col-12 titre text-center">
+                    GNT PHARMA
+                </div>
+                <div class="col-12 text">
+                    BP : 3582 Yaoundé – Cameroun, NGOUSSO
+                    <br>
+                    Montée Éleveur Immeuble Sainte Marie
+                </div>
+                <div class="col-12 text">
+                    +237 69 71 49 4 12 / +237 67 52 47 865
+                </div>
+                <div class="col-12 text">
+                    info@gntpharma-cameroun.com / www.gnt-pharma.com
+                </div>
+                <!-- <div class="col-12 text-bold">
+
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <h3 class="text-center text-bold text-uppercase my-5">
+        Bon de Commande
     </h3>
 
-
     <div class="row justify-content-end">
-        <div class="col-lg-5">
-            <table class="table table-success-light table-bordered table-hover table-striped">
+        <div class="col-6">
+            <table class="table table-success-light text-center table-bordered">
                 <thead>
                 <tr>
-                    <th>Numero Commande</th>
+                    <th>Numero <br>Commande</th>
                     <th>Date</th>
                     <th>Client</th>
 
                 </tr>
                 </thead>
                 <tbody>
-                <td>{{ commande.id }}</td>
-                <td>{{ commande.date|date('d/m/Y') }}</td>
-                <td>{{ commande.user.nom }}</td>
-
+                <tr>
+                    <td>{{ commande.id }}</td>
+                    <td>{{ commande.date|date('d/m/Y') }}</td>
+                    <td>{{ commande.user.nom }}</td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -55,14 +104,14 @@
     {% set total=0 %}
     {% set reduction=0 %}
     {% set tva=0 %}
-    <table class="table table-success-light table-bordered table-hover table-striped w-100">
+    <table class="table table-success-light text-center table-bordered mt-5 w-100">
         <thead>
         <tr>
-            <th>Code Produit</th>
-            <th>Desigantion</th>
-            <th>Quantite Commandee</th>
-            <th>Prix Cession</th>
-            <th>Reduction</th>
+            <th>N° Prod</th>
+            <th class="tt">Desigantion</th>
+            <th>Qté</th>
+            <th>Prix Ces.</th>
+            <th>Reduc.</th>
             <th>TVA</th>
             <th>Prix Public</th>
             <th>Montant</th>
@@ -73,9 +122,9 @@
             {% set reductionproduit = 0 %}
             <tr>
                 <td> {{ commandeproduit.produit.id }} </td>
-                <td>{{ commandeproduit.produit.desigantion }} </td>
+                <td class="tt">{{ commandeproduit.produit.desigantion }} </td>
                 <td> {{ commandeproduit.quantite }} </td>
-                <td>
+                <td class="text-nowrap">
                     {{ commandeproduit.produit.prix|number_format(0, '' , ' ') }}
 
                 </td>
@@ -95,7 +144,7 @@
                         -
                     {% endif %}
                 </td>
-                <td>
+                <td class="text-nowrap">
                     {% if commandeproduit.produit.tva == 1 %}
                         {% set tva = tva + (((commandeproduit.quantite * commandeproduit.session) - reductionproduit) * 0.1925) %}
                         {% if commandeproduit.promotion is not null %}
@@ -112,12 +161,10 @@
                     {% endif %}
                 </td>
                 <td>{{ commandeproduit.produit.prixpublic|number_format(0, '' , ' ') }}</td>
-                <td>
+                <td class="text-nowrap text-end">
                     {{ (commandeproduit.quantite * commandeproduit.produit.prix)|number_format(0, '' , ' ') }}
                     {% set total = total + (commandeproduit.quantite * commandeproduit.produit.prix) %}
                 </td>
-
-
             </tr>
 
         {% else %}
@@ -126,46 +173,48 @@
             </tr>
         {% endfor %}
         <tr>
-            <td colspan="7" class="text-right">
+            <td colspan="7" class="text-end fw-bolder">
                 {{ "Total HT"|trans }}
             </td>
-            <td>
-                <span id="total">{{ total|number_format(0, '' , ' ') }}</span>
+            <td class="text-end text-nowrap">
+                <span id="total" class="fw-bolder">{{ total|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
         {% if reduction != 0 %}
             <tr>
-                <td colspan="7" class="text-right">
+                <td colspan="7" class="text-end fw-bolder">
                     {{ "Total Réduction"|trans }}
                 </td>
                 <td>
-                    <span id="total">{{ reduction|number_format(0, '' , ' ') }}</span>
+                    <span id="total" class="fw-bolder">{{ reduction|number_format(0, '' , ' ') }}</span>
                 </td>
             </tr>
         {% endif %}
         <tr>
-            <td colspan="7" class="text-right">
+            <td colspan="7" class="text-end fw-bolder">
                 {{ "Total TVA"|trans }}
             </td>
-            <td>
+            <td class="text-end">
                 <span id="total">{{ tva|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
 
         <tr>
-            <td colspan="7" class="text-right">
+            <td colspan="7" class="text-end fw-bolder">
                 {{ "Net à payer"|trans }}
             </td>
-            <td>
+            <td class="fw-bolder text-nowrap">
                 <span id="total">{{ (total+ tva -reduction)|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
         </tbody>
     </table>
-</div>
-
-
-{{ include('javascript.html.twig') }}
+    {#Conversion prix en lettre #}
+        <div class="mt-5">
+            Arretée la présente à la somme de : <b id="conversion"></b>
+        </div>
+    {#/***** end*****/#}
+    {{ include('javascript.html.twig') }}
 
 </body>
 
