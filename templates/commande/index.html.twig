@@ -42,7 +42,7 @@
                 <td>{{ produit['produit'].prix }}</td>
                 <td>
                     {% if produit['produit'].promotion is not null %}
-                        {% if produit['promotion'] is not null %}
+                        {% if produit['promotion'] != 0 %}
                             {% set reductionproduit =  produit['produit'].quantite * produit['produit'].prix * produit['promotion'] /100 %}
 
                             {% set reduction =  reduction + reductionproduit %}
