@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit Avoir</title>
+
+{% block body %}
+    <h1>Edit Avoir</h1>
+
+    {{ include('avoir/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('avoir_index') }}">back to list</a>
+
+    {{ include('avoir/_delete_form.html.twig') }}
+{% endblock %}

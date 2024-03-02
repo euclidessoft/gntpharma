@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<title>Avoir</title>
+
+{% block body %}
+    <h1>Avoir</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ avoir.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ avoir.date ? avoir.date|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ avoir.Montant }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('avoir_index') }}">back to list</a>
+
+    <a href="{{ path('avoir_edit', {'id': avoir.id}) }}">edit</a>
+
+    {{ include('avoir/_delete_form.html.twig') }}
+{% endblock %}

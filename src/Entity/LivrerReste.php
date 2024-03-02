@@ -12,19 +12,32 @@ class LivrerReste
 {
     /**
      * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $client;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Produit")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $produit;
 
     /**
-     * @ORM\Id
      * @ORM\ManyToOne(targetEntity="App\Entity\Livrer")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $livrer;
 
     /**
-     * @ORM\Id
      * @ORM\ManyToOne(targetEntity="App\Entity\Commande")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $commande;
 
@@ -147,6 +160,23 @@ class LivrerReste
 
 
         return $this->quantite - $this->quantitelivre;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getClient(): ?User
+    {
+        return $this->client;
+    }
+
+    public function setClient(?User $client): self
+    {
+        $this->client = $client;
+
+        return $this;
     }
 
 }

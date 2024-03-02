@@ -44,6 +44,7 @@ class Reclamation
     private $produits;
 
     const reclamer = [
+        'Produit facturé non Livré' => 'Produit facturé non Livré' ,
         'Produit Livré non facturé' => 'Produit Livré non facturé' ,
         'Produit périmé' => 'Produit périmé' ,
         'Produit cassé' => 'Produit cassé',
