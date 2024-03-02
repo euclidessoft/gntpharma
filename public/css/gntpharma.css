@@ -1446,6 +1446,9 @@ select#transfert_date_time_minute {
     color: var(--vert-hover);
     font-size: 20px;
 }
-
-
+.container_paiement  .avoir:hover{
+    background-color: #c5fbae !important;
+    transition: 0.7s ease-in-out;
+}
 /*************Paiement***********/
+

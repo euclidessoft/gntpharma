@@ -3,10 +3,49 @@
 {% block avoir %}active{% endblock %}
 
 {% block body %}
-    <h1>Create new Avoir</h1>
+    <div class="container_paiement  mt-4 fond-7 text-center">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa-solid fa-money-bill mr-2"></i>
+            {{ "Créer un avoir par : "|trans }}
+        </h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row justify-content-center">
+                    <div class="col-lg-5">
+                        <a href="#">
+                        <div class="p-3 rounded border border-green avoir">
+                            <div class="text-green textavoir text-center py-3 rounded-top">
+                                <i class="fas fa-rotate fa-3x"></i>
+                            </div>
+                            <div class="text-bold text-green textavoir text-center py-3 rounded-bottom">
+                                Réclamation
+                            </div>
+                        </div>
+                        </a>
+                    </div>
 
-    {{ include('avoir/_form.html.twig') }}
 
-    <a href="{{ path('avoir_index') }}">back to list</a>
+                    <div class="col-lg-5">
+                        <a href="#">
+                        <div class="p-3 rounded border border-green avoir">
+                            <div class="text-green textavoir text-center py-3 rounded-top border-green">
+                                <i class="fas fa-truck-fast fa-3x"></i>
+                            </div>
+                            <div class="text-green textavoir text-bold text-center py-3 rounded-bottom">
+                                Reste à livrer
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
 
 {% endblock %}
