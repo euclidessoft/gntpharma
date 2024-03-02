@@ -160,7 +160,7 @@ class LivrerController extends AbstractController
     public function reste(Commande $commande, LivrerResteRepository $livrerResteRepository, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session): Response
     {// traitement livraison
 
-        $session->remove("livraison", []);
+        $session->remove("livraison");
         $commandeproduits = $livrerResteRepository->findBy(['commande' => $commande]);
         $listcommande = [];
         foreach ($commandeproduits as $commandeproduit) {
@@ -380,19 +380,31 @@ class LivrerController extends AbstractController
                     $livraison = $session->get("traitement", []);
                     $restetamp = false;
                     $restealivrer = 0;
+                    $quantitelivrer = 0;
+
                     $chaine = $livraison[$produit->getId()];
                     $ligne = explode("#",$chaine);
+
+
                     foreach ($ligne as $key => $item) {
                         $lot = explode("/", $item);
                         if ($key != 0) {
                             $id = $lot[0];
                             $numerolot = $lot[1];
                             $quantite = $lot[2];
+                            $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), null, null, $commande, null, null);
+
                             $stock = $em->getRepository(Stock::class)->findOneBy(['produit' => $id, 'lot' => $numerolot]);
+
                             if ($commandeproduit->getQuantite() > $produit->getStock() && $produit->getStock() > 0){// livraison avec reste a livrer
                                 $produit->livraison($quantite);
                                 $stock->setQuantite($stock->getQuantite() - $quantite);
-                                $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite, $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
+
+                                $livrerProduit->setQuantitelivrer($quantite);
+                                $livrerProduit->setArchive($stock->getQuantite());
+                                $livrerProduit->setLot($numerolot);
+                                $livrerProduit->setPeremption($stock->getPeremption());
+
                                 $livrerProduit->setReste(true);
                                 if($stock->getQuantite() ==0){//suppression produit dans stock
                                     $em->remove($stock);
@@ -400,7 +412,6 @@ class LivrerController extends AbstractController
                                 else{
                                     $em->persist($stock);
                                 }
-                                $em->persist($livrerProduit);
                                 $restetamp = true;
                                 $restealivrer = $restealivrer+ $quantite;
 
@@ -408,8 +419,14 @@ class LivrerController extends AbstractController
                             elseif (($stock->getQuantite() - $quantite) > 0) {// livraison avec un stock suffisant
 
                                 $produit->livraison($quantite);
-                                $stock->setQuantite($stock->getQuantite() - ($quantite));
-                                $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite, $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
+                                $stock->setQuantite($stock->getQuantite() - $quantite);
+                                $quantitelivrer = $quantitelivrer + $quantite;
+
+                                $livrerProduit->setQuantitelivrer($quantite);
+                                $livrerProduit->setArchive($stock->getQuantite());
+                                $livrerProduit->setLot($numerolot);
+                                $livrerProduit->setPeremption($stock->getPeremption());
+
                                 if ($ug != 0) $livrerProduit->setPromotion($commandeproduit->getPromotion());
                                 if($stock->getQuantite() ==0){//suppression produit dans stock
                                     $em->remove($stock);
@@ -417,13 +434,18 @@ class LivrerController extends AbstractController
                                 else{
                                     $em->persist($stock);
                                 }
-                                $em->persist($livrerProduit);
 
 
                             } elseif (($stock->getQuantite() - $quantite) == 0) {// livraison avec
                                 $produit->livraison($quantite );
-                                $stock->setQuantite($stock->getQuantite() - ($quantite));
-                                $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite , $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
+                                $stock->setQuantite($stock->getQuantite() - $quantite);
+                                $quantitelivrer = $quantitelivrer + $quantite;
+
+                                $livrerProduit->setQuantitelivrer($quantite);
+                                $livrerProduit->setArchive($stock->getQuantite());
+                                $livrerProduit->setLot($numerolot);
+                                $livrerProduit->setPeremption($stock->getPeremption());
+
                                 if ($ug != 0) $livrerProduit->setPromotion($commandeproduit->getPromotion());
                                 if($stock->getQuantite() ==0){//suppression produit dans stock
                                     $em->remove($stock);
@@ -431,14 +453,18 @@ class LivrerController extends AbstractController
                                 else{
                                     $em->persist($stock);
                                 }
-                                $em->persist($livrerProduit);
+
                             } else {
                                 goto terminer;
                             }
+                            $em->persist($livrerProduit);
                         }
+
                     }
-                    if($restetamp == true){
+                    if($restetamp == true || $quantitelivrer < $commandeproduit->getQuantite()){
+                        if($quantitelivrer < $commandeproduit->getQuantite()) $restealivrer = $quantitelivrer;
                         $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $restealivrer, $commande->getUser());
+
 
                         $em->persist($reste);
                         $livrer->setReste(true);
