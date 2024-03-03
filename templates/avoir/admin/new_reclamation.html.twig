@@ -1,0 +1,108 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Ceation Avoir"|trans }} - GNT Pharma {% endblock %}
+{% block officine %} active {% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-money-bill mr-2"></i>
+            {{ "Ceation Avoir"|trans }}
+        </h3>
+        <div class="row">
+        <div class="col-md-6 mt-4 py-4 fond-7">
+            <h3 class="mt-4 mb-5 text-bold">
+                <i class="fa fa-rotate mr-2"></i>
+                {{ 'Réclamations'|trans }}
+            </h3>
+            <table class="table table-success-light table-bordered table-hover table-striped mb-4 w-100">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Client</th>
+                    <th>N° Commande</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ reclamation.creation ? reclamation.creation|date('Y-m-d') : '' }}</td>
+                    <td>{{ reclamation.commande.user.nom }}</td>
+                    <td>
+                        <a type="button"
+                           data-toggle="modal" data-target="#modal">
+                            {{ reclamation.commande.id }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Message</th>
+                    <td colspan="2">{{ reclamation.commentaire }}</td>
+                </tr>
+
+            </table>
+
+        <div class="container py-4">
+            {% for reponse in reclamation.reponses %}
+                <div class="row mt-4">
+                    {% if 'ROLE_CLIENT' in reponse.user.roles %}
+
+                        <div class="col-md-7  py-4 fond-7">
+                            {{ reponse.user.nom  }} | {{ reponse.date|date("d/m/Y") }}
+                            <hr class="text-secondaire">
+                            {{ reponse.message }}
+                        </div>
+                        <div class="col-md-5"> </div>
+
+                    {% else %}
+                        <div class="col-md-5"> </div>
+                        <div class="col-md-7  py-4 fond-7">
+                            {{ reponse.user.nom  }} | {{ reponse.date|date("d/m/Y") }}
+                            <hr class="text-secondaire">
+                            {{ reponse.message }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% else %}
+            {% endfor %}
+        </div>
+    </div>
+        <div class="col-md-6 mt-4 py-4 fond-7"></div>
+        </div>
+        <!-- Modal -->
+
+
+    </div>
+    {% block script %}
+        <script>
+            //embarquement pelerin dans un bus
+            function avoir(commande) {
+                var prod = "0";
+                $("input[type=checkbox]:checked").each(
+                    function() {
+                        if ($(this).attr("id") != 'tous') {
+                            prod = prod + ";" + $(this).attr("id");
+                        }
+                    });
+                if (prod != "0") {
+                    if (confirm("{{'Voulez-vous vraiment creer cet avoir ?'|trans}}")) {
+
+                        $("#valider").html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ path('avoir_valider_reste') }}",
+                            data: "commande=" + commande + "&prod=" + prod,
+                            success: function(data) {
+                                if (data['id'] != '') {
+                                    document.location.href = "{{ path('avoir_index') }}";
+                                }
+                            },
+                            error: function() {
+                                alert("{{'La requête n a pas abouti'|trans}}");
+                            }
+                        });
+                    }
+
+                } else alert("{{'Selectionnez au moins un produit'|trans}}");
+            }
+        </script>
+    {% endblock %}
+{% endblock %}

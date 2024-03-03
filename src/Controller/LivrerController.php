@@ -464,7 +464,7 @@ class LivrerController extends AbstractController
                     if($restetamp == true || $quantitelivrer < $commandeproduit->getQuantite()){
                         if($quantitelivrer < $commandeproduit->getQuantite()) $restealivrer = $quantitelivrer;
                         $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), $restealivrer, $commande->getUser());
-
+                        $reste->setSession($commandeproduit->getSession());
 
                         $em->persist($reste);
                         $livrer->setReste(true);
@@ -528,6 +528,7 @@ class LivrerController extends AbstractController
 
             $em = $this->getDoctrine()->getManager();
             $commandeproduits = $livrerResteRepository->findBy(['commande' => $commande]);
+
             $oldlivrer = $livrerrepository->findOneBy(['commande' => $commande]);
             $oldlivrer->setReste(false);
             $em->persist($oldlivrer);
@@ -564,6 +565,7 @@ class LivrerController extends AbstractController
                                $em->persist($stock);
                            }
                             $em->persist($livrerProduit);
+                            $em->remove($commandeproduit);//suppression reste a livrer
 
 
                         } elseif (($stock->getQuantite() - $quantite) == 0) {// livraison avec
@@ -578,11 +580,13 @@ class LivrerController extends AbstractController
                            }
 
                             $em->persist($livrerProduit);
+                            $em->remove($commandeproduit);//suppression reste a livrer
                         }
                     }
                 }
 
                 $em->persist($produit);
+
             }
 
 

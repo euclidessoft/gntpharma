@@ -19,6 +19,19 @@ class LivrerResteRepository extends ServiceEntityRepository
         parent::__construct($registry, LivrerReste::class);
     }
 
+    public function avoir_reste($commande)
+    {
+        $query = $this->createQueryBuilder('p');
+        $query->where('p.commande = :commande')
+            ->setParameter('commande', $commande)
+//            ->AndWhere('p.produit = :produit')
+//            ->setParameter('produit', $produit)
+//            ->AndWhere($query->expr()->in('p.produit', $produits))
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return LivrerReste[] Returns an array of LivrerReste objects
     //  */

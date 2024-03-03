@@ -25,7 +25,7 @@ class Avoir
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Commande")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $commande;
 
@@ -61,10 +61,13 @@ class Avoir
     /**
      * Constructor
      */
-    public function __construct(User $client)
+    public function __construct(User $client, User $admin, Commande $commande)
     {
         $this->date = new \Datetime();
         $this->client = $client;
+        $this->admin = $admin;
+        $this->commande = $commande;
+        $this->Montant = 0;
     }
 
     public function getId(): ?int

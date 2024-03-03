@@ -1,6 +1,6 @@
 {% extends 'admin.html.twig' %}
 {% block title %} {{ "Créer un avoir"|trans }} - GNT Pharma {% endblock %}
-{% block avoir %}active{% endblock %}
+{% block officine %}active{% endblock %}
 
 {% block body %}
     <div class="container_paiement  mt-4 fond-7 text-center">
@@ -12,7 +12,7 @@
             <div class="col-md-12">
                 <div class="row justify-content-center">
                     <div class="col-lg-5">
-                        <a href="#">
+                        <a href="{{ path('avoir_reclamation') }}">
                             <div class="p-3 rounded border border-green avoir">
                                 <div class="text-green textavoir text-center py-3 rounded-top">
                                     <i class="fas fa-rotate fa-3x"></i>

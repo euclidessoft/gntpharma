@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\LivrerResteRepository;
+use App\Repository\AvoirResteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=LivrerResteRepository::class)
+ * @ORM\Entity(repositoryClass=AvoirResteRepository::class)
  */
-class LivrerReste
+class AvoirReste
 {
     /**
      * @ORM\Id
@@ -18,10 +18,22 @@ class LivrerReste
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Avoir")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $avoir;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $admin;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Produit")
@@ -59,14 +71,9 @@ class LivrerReste
     private $stock;
 
     /**
-     * @ORM\Column(type="float")
-     */
-    private $session;
-
-    /**
      * Constructor
      */
-    public function __construct(Livrer $livrer, Commande $commande, Produit $produit, $quantite, $quantitelivre, User $client)
+    public function __construct(Livrer $livrer, Commande $commande, Produit $produit, $quantite, $quantitelivre, User $client, User $admin, $avoir)
     {
         $this->date = new \Datetime();
         $this->produit = $produit;
@@ -75,6 +82,8 @@ class LivrerReste
         $this->quantite = $quantite;
         $this->livrer = $livrer;
         $this->client = $client;
+        $this->admin = $admin;
+        $this->avoir = $avoir;
     }
 
     public function getDate(): ?\DateTimeInterface
@@ -185,16 +194,27 @@ class LivrerReste
         return $this;
     }
 
-    public function getSession(): ?float
+    public function getAdmin(): ?User
     {
-        return $this->session;
+        return $this->admin;
     }
 
-    public function setSession(float $session): self
+    public function setAdmin(?User $admin): self
     {
-        $this->session = $session;
+        $this->admin = $admin;
 
         return $this;
     }
 
+    public function getAvoir(): ?Avoir
+    {
+        return $this->avoir;
+    }
+
+    public function setAvoir(?Avoir $avoir): self
+    {
+        $this->avoir = $avoir;
+
+        return $this;
+    }
 }
