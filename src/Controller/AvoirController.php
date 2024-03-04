@@ -130,28 +130,28 @@ class AvoirController extends AbstractController
     public function newreste(Commande $commande, LivrerResteRepository $livrerResteRepository, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session): Response
     {// traitement livraison
         if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
-        $session->remove("livraison");
-        $commandeproduits = $livrerResteRepository->findBy(['commande' => $commande]);
-        $listcommande = [];
-        foreach ($commandeproduits as $commandeproduit) {
-            $stock = $repository->find($commandeproduit->getProduit()->getId())->getStock();
-            $commandeproduit->setStock($stock);
-            $listcommande[] = $commandeproduit;
-        }
-        $session->set("traitement", []);
-        $response = $this->render('avoir/admin/new_reste.html.twig', [
-            'commandes' => $listcommande,
-            'commandereference' => $commande,
-        ]);
-        $response->setSharedMaxAge(0);
-        $response->headers->addCacheControlDirective('no-cache', true);
-        $response->headers->addCacheControlDirective('no-store', true);
-        $response->headers->addCacheControlDirective('must-revalidate', true);
-        $response->setCache([
-            'max_age' => 0,
-            'private' => true,
-        ]);
-        return $response;
+            $session->remove("livraison");
+            $commandeproduits = $livrerResteRepository->findBy(['commande' => $commande]);
+            $listcommande = [];
+            foreach ($commandeproduits as $commandeproduit) {
+                $stock = $repository->find($commandeproduit->getProduit()->getId())->getStock();
+                $commandeproduit->setStock($stock);
+                $listcommande[] = $commandeproduit;
+            }
+            $session->set("traitement", []);
+            $response = $this->render('avoir/admin/new_reste.html.twig', [
+                'commandes' => $listcommande,
+                'commandereference' => $commande,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
@@ -167,34 +167,53 @@ class AvoirController extends AbstractController
     }
 
     /**
-     * @Route("/new/reclamation/{id}", name="avoir_new_reclamation", methods={"GET","POST"})
+     * @Route("/new/reclamation/{id}/", name="avoir_new_reclamation", methods={"GET","POST"})
      */
-    public function newreclamation(Commande $commande, LivrerResteRepository $livrerResteRepository,  ProduitRepository $repository, Reclamation $reclamation, LivrerProduitRepository $livrerProduitRepository, SessionInterface $session): Response
+    public function newreclamation(Reclamation $reclamation, Request $request, LivrerResteRepository $livrerResteRepository, ProduitRepository $repository, LivrerProduitRepository $livrerProduitRepository, SessionInterface $session): Response
     {// traitement livraison
         if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
-        $session->remove("livraison");
-        $commandeproduits = $livrerResteRepository->findBy(['commande' => $commande]);
-        $listcommande = [];
-        foreach ($commandeproduits as $commandeproduit) {
-            $stock = $repository->find($commandeproduit->getProduit()->getId())->getStock();
-            $commandeproduit->setStock($stock);
-            $listcommande[] = $commandeproduit;
-        }
-        $session->set("traitement", []);
-        $response = $this->render('avoir/admin/new_reclamation.html.twig', [
-            'commandes' => $listcommande,
-            'commandereference' => $commande,
-            'reclamation' => $reclamation,
-        ]);
-        $response->setSharedMaxAge(0);
-        $response->headers->addCacheControlDirective('no-cache', true);
-        $response->headers->addCacheControlDirective('no-store', true);
-        $response->headers->addCacheControlDirective('must-revalidate', true);
-        $response->setCache([
-            'max_age' => 0,
-            'private' => true,
-        ]);
-        return $response;
+            $commande = $reclamation->getCommande();
+            $em = $this->getDoctrine()->getManager();
+            $avoir = new Avoir($commande->getUser(),$this->getUser(), $commande);
+            $avoir->setReclamation($reclamation);
+            $form = $this->createForm(AvoirType::class, $avoir);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em->persist($avoir);
+                $em->flush();
+
+
+                return $this->redirectToRoute('avoir_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+//            return $this->render('avoir/admin/edit.html.twig', [
+//                'avoir' => $avoir,
+//                'form' => $form->createView(),
+//            ]);
+            $commandeproduits = $livrerResteRepository->findBy(['commande' => $commande]);
+            $listcommande = [];
+            foreach ($commandeproduits as $commandeproduit) {
+                $stock = $repository->find($commandeproduit->getProduit()->getId())->getStock();
+                $commandeproduit->setStock($stock);
+                $listcommande[] = $commandeproduit;
+            }
+            $session->set("traitement", []);
+            $response = $this->render('avoir/admin/new_reclamation.html.twig', [
+                'commandes' => $listcommande,
+                'commandereference' => $commande,
+                'reclamation' => $reclamation,
+                'form' => $form->createView(),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
@@ -223,12 +242,14 @@ class AvoirController extends AbstractController
             $commande = $em->getRepository(Commande::class)->find($com);
             $avoir = $em->getRepository(Avoir::class)->findOneBy(['commande' => $commande]);
 
-          if( $avoir == null){$avoir = new Avoir($commande->getUser(), $this->getUser(), $commande);}
+            if ($avoir == null) {
+                $avoir = new Avoir($commande->getUser(), $this->getUser(), $commande);
+            }
 
             $montantavoir = 0;
             $livraison = 0;
             foreach ($produits as $prod) {
-                if($prod != 0) {
+                if ($prod != 0) {
                     $reste = $livrerResteRepository->findOneBy(['commande' => $com, 'produit' => $prod]);
                     $livraison = $reste->getLivrer()->getId();
                     $avoirresete = new AvoirReste($reste->getLivrer(), $commande, $reste->getProduit(), $reste->getQuantite(), $reste->getQuantitelivre(), $reste->getClient(), $this->getUser(), $avoir);
@@ -242,7 +263,7 @@ class AvoirController extends AbstractController
             $em->flush();
             // verification epuisement reste a livrer
             $livrerreste = $livrerResteRepository->findOneBy(['livrer' => $livraison]);
-            if(empty($livrerreste)){// suppression reste a livrer
+            if (empty($livrerreste)) {// suppression reste a livrer
                 $livrer = $em->getRepository(Livrer::class)->find($livraison);
                 $livrer->setReste(false);
                 $em->persist($livrer);
@@ -303,28 +324,28 @@ class AvoirController extends AbstractController
     public function show(Avoir $avoir, AvoirResteRepository $avoirResteRepository, SessionInterface $session): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
-        return $this->render('avoir/admin/show.html.twig', [
-            'avoir' => $avoir,
-            'details' => $avoirResteRepository->findBy(['avoir' => $avoir])
-        ]);
-    } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
-        return $this->render('avoir/show.html.twig', [
-            'avoir' => $avoir,
-            'details' => $avoirResteRepository->findBy(['avoir' => $avoir]),
-            'panier' => $session->get('panier', []),
-        ]);
-    } else {
-$response = $this->redirectToRoute('security_logout');
-$response->setSharedMaxAge(0);
-$response->headers->addCacheControlDirective('no-cache', true);
-$response->headers->addCacheControlDirective('no-store', true);
-$response->headers->addCacheControlDirective('must-revalidate', true);
-$response->setCache([
-'max_age' => 0,
-'private' => true,
-]);
-return $response;
-}
+            return $this->render('avoir/admin/show.html.twig', [
+                'avoir' => $avoir,
+                'details' => $avoirResteRepository->findBy(['avoir' => $avoir])
+            ]);
+        } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+            return $this->render('avoir/show.html.twig', [
+                'avoir' => $avoir,
+                'details' => $avoirResteRepository->findBy(['avoir' => $avoir]),
+                'panier' => $session->get('panier', []),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**

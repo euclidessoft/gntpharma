@@ -1,4 +1,11 @@
+<div class="row">
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+<div class="col-md-12 mb-4">
+    {{ form_row(form.Montant, {'attr':{'placeholder':'Montant avoir *'}, 'label':false}) }}
+</div>
+
+{{ form_rest(form) }}
+    <button class="btn btn-success"><i class="fa fa-save"></i> Enregistrer </button>
 {{ form_end(form) }}
+</div>

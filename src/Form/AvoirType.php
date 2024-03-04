@@ -12,7 +12,7 @@ class AvoirType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('date')
+            //->add('date')
             ->add('Montant')
 //            ->add('admin')
 //            ->add('client')
