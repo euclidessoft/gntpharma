@@ -561,6 +561,7 @@ class securityController extends AbstractController
                     }
                     case 'Client':{
                         $user->setRoles(['ROLE_CLIENT']);
+                        $user->setClient(true);
                         break;
                     }
                     case 'Financier':{

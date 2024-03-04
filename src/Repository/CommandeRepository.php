@@ -24,7 +24,10 @@ class CommandeRepository extends ServiceEntityRepository
         // On passe par le QueryBuilder vide de l'EntityManager pour l'exemple
         $query = $this ->createQueryBuilder('a')
             ->Where('a.user = :user')
-            ->setParameter('user', $user)					;
+            ->setParameter('user', $user)
+            ->AndWhere('a.suivi = :suivi')
+            ->setParameter('suivi', true)
+        ;
         return $query;
     }
 

@@ -1,0 +1,62 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block officine %}active{% endblock %}
+
+{% block body %}
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-shopping-cart mr-2"></i>
+            {{ "Liste des commandes avec credit"|trans }}
+        </h3>
+{#        <ul class="nav nav-tabs mb-4">#}
+{#            <li class="nav-item">#}
+{#                <a class="nav-link" href="{{ path('commande_panier_suivi') }}">Validation paiement</a>#}
+{#            </li>#}
+{#            <li class="nav-item">#}
+{#                <a class="nav-link active" href="#">Commandes déjà payées</a>#}
+{#            </li>#}
+{#        </ul>#}
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    &times;
+                </button>
+                {{ message|trans }}
+            </div>
+        {% endfor %}
+        <table class="table table-success-light table-bordered table-hover table-striped w-100 mt-4" id="liste">
+            <thead>
+            <tr>
+                <th>Numero Commande</th>
+                <th>Date de commande</th>
+                <th>Date de Livraison</th>
+                <th>Montant</th>
+                <th> </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for commande in commandes %}
+                <tr>
+                    <td>{{ commande.id }}</td>
+                    <td>{{ commande.date|date('d/m/Y') }}</td>
+                    <td>{{ commande.datelivrer ? commande.datelivrer|date('d/m/Y') : '' }}</td>
+                    <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
+                    <td>
+                        <a href="{{ path('finance_dette_show', {'commande' : commande.id}) }}" class="btn btn-success">
+                            <i class="fa fa-list"></i> Details
+                        </a>
+                    </td>
+
+
+                </tr>
+
+            {% else %}
+                <tr>
+                    <td colspan="5">Aucune commande</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

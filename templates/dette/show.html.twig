@@ -1,0 +1,180 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block officine %}active{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-4  mb-5 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-shopping-cart mr-2"></i>
+            {{ "Commande à credit"|trans }}
+        </h3>
+        {% for message in app.flashes('danger') %}
+            <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    &times;
+                </button>
+                {{ message|trans }}
+            </div>
+        {% endfor %}
+
+        <div class="row justify-content-end">
+            <div class="col-lg-5">
+                <table class="table table-success-light table-bordered table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th>Numero Commande</th>
+                        <th>Date</th>
+                        <th>Client</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <td>{{ commande.id }}</td>
+                    <td>{{ commande.date|date('d/m/Y') }}</td>
+                    <td>{{ commande.user.nom }}</td>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% set total=0 %}
+        {% set reduction=0 %}
+        {% set tva=0 %}
+        <table class="table table-success-light table-bordered table-hover table-striped w-100">
+            <thead>
+            <tr>
+                <th>Code Produit</th>
+                <th>Desigantion</th>
+                <th>Quantite Commandee</th>
+                <th>Prix Cession</th>
+                <th>Reduction</th>
+                <th>TVA</th>
+                <th>Prix Public</th>
+                <th>Montant</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for commandeproduit in commandeproduits %}
+                {% set reductionproduit = 0 %}
+                <tr>
+                    <td> {{ commandeproduit.produit.id }} </td>
+                    <td>{{ commandeproduit.produit.desigantion }} </td>
+                    <td> {{ commandeproduit.quantite }} </td>
+                    <td>
+                        {{ commandeproduit.produit.prix|number_format(0, '' , ' ') }}
+
+                    </td>
+                    <td>
+                        {% if commandeproduit.promotion is not null %}
+                            {% if commandeproduit.promotion.reduction is not null %}
+                                {% set reductionproduit =  commandeproduit.quantite * commandeproduit.session * commandeproduit.promotion.reduction /100 %}
+
+                                {% set reduction =  reduction + reductionproduit %}
+                                <span class="badge badge-danger">
+                                    -{{ commandeproduit.session * commandeproduit.promotion.reduction /100 }} F
+                            </span>
+                            {% else %}
+                                -
+                            {% endif %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if commandeproduit.produit.tva == 1 %}
+                            {% set tva = tva + (((commandeproduit.quantite * commandeproduit.session) - reductionproduit) * 0.1925) %}
+                            {% if commandeproduit.promotion is not null %}
+                                {% if commandeproduit.promotion.reduction is not null %}
+                                    {{ (commandeproduit.session - (commandeproduit.session * commandeproduit.promotion.reduction /100)) * 0.1925 }}
+                                {% else %}
+                                    {{ commandeproduit.session  * 0.1925 }}
+                                {% endif %}
+                            {% else %}
+                                {{ commandeproduit.session  * 0.1925 }}
+                            {% endif %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>{{ commandeproduit.produit.prixpublic|number_format(0, '' , ' ') }}</td>
+                    <td>
+                        {{ (commandeproduit.quantite * commandeproduit.produit.prix)|number_format(0, '' , ' ') }}
+                        {% set total = total + (commandeproduit.quantite * commandeproduit.produit.prix) %}
+                    </td>
+
+
+                </tr>
+
+            {% else %}
+                <tr>
+                    <td colspan="10">Aucune commande</td>
+                </tr>
+            {% endfor %}
+            <tr class="text-bold">
+                <td colspan="7" class="text-right">
+                    {{ "Total HT"|trans }}
+                </td>
+                <td>
+                    <span id="total" class="text-nowrap">{{ total|number_format(0, '' , ' ') }}</span>
+                </td>
+            </tr>
+            {% if reduction != 0 %}
+                <tr>
+                    <td colspan="7" class="text-right">
+                        {{ "Total Réduction"|trans }}
+                    </td>
+                    <td>
+                        <span id="total">{{ reduction|number_format(0, '' , ' ') }}</span>
+                    </td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td colspan="7" class="text-right">
+                    {{ "Total TVA"|trans }}
+                </td>
+                <td>
+                    <span id="total">{{ tva|number_format(0, '' , ' ') }}</span>
+                </td>
+            </tr>
+
+            <tr class="text-bold">
+                <td colspan="7" class="text-right">
+                    {{ "Net à payer"|trans }}
+                </td>
+                <td>
+                    <span id="total">{{ (total+ tva -reduction)|number_format(0, '' , ' ') }}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-money-bill mr-2"></i>
+            {{ "Historiques des versements"|trans }}
+        </h3>
+        <table class="table table-success-light table-bordered table-hover table-striped">
+            <thead>
+            <tr>
+                <th>numero versement</th>
+                <th>Date</th>
+                <th>Montant</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for versement in  commande.versements %}
+                <tr>
+                    <td>{{ versement.id }}</td>
+                    <td>{{ versement.date|date('d/m/Y') }}</td>
+                    <td>{{ versement.montant|number_format(0, '' , ' ') }}</td>
+                </tr>
+            {% else %}
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

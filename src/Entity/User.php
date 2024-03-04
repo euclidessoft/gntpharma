@@ -109,10 +109,16 @@ class User implements UserInterface
      */
     private $enabled;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $client;
+
 
     public function __construct()
     {
         $this->enabled = false;
+        $this->client = false;
     }
 
     public function getUsername(): ?string
@@ -263,6 +269,18 @@ class User implements UserInterface
     public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getClient(): ?bool
+    {
+        return $this->client;
+    }
+
+    public function setClient(bool $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }

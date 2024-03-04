@@ -183,17 +183,17 @@
                             </a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ path('finance_dette', {'user': app.user.id}) }}">
                                 <i class="fas fa-users mr-2"></i>
-                                {{ 'Relevés'|trans }}
+                                {{ 'Dettes'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
-                            <a class="nav-link" href="{{ path('security_profile') }}">
-                                <i class="fas fa-user mr-2"></i>
-                                {{ 'Compte Client'|trans }}
-                            </a>
-                        </li>
+{#                        <li class="dropdown-item">#}
+{#                            <a class="nav-link" href="{{ path('security_profile') }}">#}
+{#                                <i class="fas fa-user mr-2"></i>#}
+{#                                {{ 'Compte Client'|trans }}#}
+{#                            </a>#}
+{#                        </li>#}
                     </ul>
                 </li>
 

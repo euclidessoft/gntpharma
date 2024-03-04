@@ -7,6 +7,7 @@ use App\Entity\CommandeProduit;
 use App\Entity\Paiement;
 use App\Entity\User;
 use App\Entity\Versement;
+use App\Form\CommandeType;
 use App\Form\PaiementFormType;
 use App\Form\VersementType;
 use App\Repository\CommandeProduitRepository;
@@ -76,14 +77,13 @@ class CommandeController extends AbstractController
     /**
      * @Route("/Extranet", name="extranet")
      */
-    public function extranet(SessionInterface $session, ProduitRepository $produitRepository)
+    public function extranet(SessionInterface $session, ProduitRepository $produitRepository, Request $request)
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
             $panier = $session->get("panier", []);
             $dataPanier = [];
             $total = 0;
-
             foreach ($panier as $commande) {
 //                $product = $produitRepository->find($id);
                 $dataPanier[] = [
@@ -91,10 +91,22 @@ class CommandeController extends AbstractController
                 ];
 //                $total += $product->getPrix() * $quantite;
             }
+            $commande = new Commande();
+
+            $form = $this->createForm(CommandeType::class, $commande);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($commande);
+                $entityManager->flush();
+            }
+
 
             $response = $this->render('commande/admin/index.html.twig', [
                 'produits' => $produitRepository->findAll(),
                 'panier' => $dataPanier,
+                'form' => $form->createView(),
             ]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
@@ -201,7 +213,7 @@ class CommandeController extends AbstractController
 
 
     /**
-     * @Route("/VosCommande/", name="suivi")
+     * @Route("/VosCommandes/", name="suivi")
      */
     public function voscommande(SessionInterface $session, CommandeRepository $repository)
     {
