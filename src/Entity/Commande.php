@@ -27,6 +27,12 @@ class Commande
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=true)
      */
+    private $admin;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=true)
+     */
     private $livreur;
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Paiement")
@@ -92,6 +98,11 @@ class Commande
     private $credit;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $payer;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -105,6 +116,7 @@ class Commande
         $this->tva = 0;
         $this->versements = new ArrayCollection();
         $this->versement = 0;
+        $this->payer = false;
     }
 
 
@@ -296,6 +308,30 @@ class Commande
     public function setVersement(float $versement): self
     {
         $this->versement = $versement;
+
+        return $this;
+    }
+
+    public function getAdmin(): ?User
+    {
+        return $this->admin;
+    }
+
+    public function setAdmin(?User $admin): self
+    {
+        $this->admin = $admin;
+
+        return $this;
+    }
+
+    public function getPayer(): ?bool
+    {
+        return $this->payer;
+    }
+
+    public function setPayer(bool $payer): self
+    {
+        $this->payer = $payer;
 
         return $this;
     }

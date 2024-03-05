@@ -27,10 +27,13 @@ class CommandeType extends AbstractType
 //            ->add('credit')
             ->add('user', EntityType::class,
                 array( 'class' => User::class,
-                    'choice_label' => 'id',
+                    'choice_label' => function($user){
+                    return $user->getNom(). ' ' .$user->getPrenom();
+                    },
                     'multiple' => false,
                     'query_builder' => function(UserRepository $repository) { return $repository->client(); },
-                    'placeholder' => 'Selectionnez commande *'))
+                    'placeholder' => 'Selectionnez Client *',
+                    'label' => false))
 //            ->add('livreur')
 //            ->add('paiement')
         ;

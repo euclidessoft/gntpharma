@@ -31,7 +31,7 @@ class DetteController extends AbstractController
 
 
             return $this->render('dette/index.html.twig', [
-                'commandes' => $repository->findBy(['paiement' => null, 'credit' => true, 'user' => $user]),
+                'commandes' => $repository->findBy(['payer' => false, 'user' => $user]),
                 'panier' => $session->get('panier', []),
             ]);
 

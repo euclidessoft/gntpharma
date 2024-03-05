@@ -8,10 +8,7 @@
             <i class="fa fa-shopping-cart mr-2"></i>
             {{ "Commande Extranet"|trans }}
         </h3>
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="btn">{{ button_label|default('Save') }}</button>
-        {{ form_end(form) }}
+
 
         <div class="row">
             <div class="col-lg-6 fond-7">
@@ -67,8 +64,8 @@
                                     <div class="modal-dialog text-center">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                    {{ produit.reference }} {{ produit.desigantion }} {{ produit.fabriquant }}</h1>
+                                                <h5 class="modal-title fs-5" id="exampleModalLabel">
+                                                    {{ produit.reference }} {{ produit.desigantion }} {{ produit.fabriquant }}</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -103,14 +100,11 @@
                 </table>
             </div>
             <div class="col-lg-6 mt-5">
-                <button onclick="validerappro()"
-                        class="btn btn-success float-right mb-3 {% if inlist|length == 0 %} disabled {% endif %}"
-                        id="valider1"
-                        title="Valider">
-                    <i class="fa fa-check"></i> Valider
-                </button>
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
 
-                <table class="table table-success-light table-bordered table-hover table-striped w-100" id="aprovision">
+                <table class="table table-success-light table-bordered table-hover table-striped mt-5 w-100" id="aprovision">
                     <thead>
                     <tr>
                         <th>Reference</th>
@@ -181,7 +175,7 @@
                 $("#ajouter" + produit).html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
                 $.ajax({
                     type: "POST",
-                    url: "{{ path('stock_appro_add') }}",
+                    url: "{{ path('commande_add_extranet') }}",
                     data: "prod=" + produit + "&quantite=" + quant.val(),
                     success: function (data) {
                         if (data['id'] == 'ok') {
@@ -191,7 +185,7 @@
                                 "                        <td>" + data['fabriquant'] + "</td>\n" +
                                 "                        <td class='text-center'><span id='changequantite" + produit + "'>" + data['quantite'] + "</span></td>\n" +
                                 "                        <td><span id='btnmodf" + produit + "'><button class='btn btn-success'\n" +
-                                "                                   title='Supprimer cet article' onclick='modif(" + produit + "," + quant.val() + ")'>\n" +
+                                "                                   title='Modifier cet article' onclick='modif(" + produit + "," + quant.val() + ")'>\n" +
                                 "                                    <i class='fa fa-edit'></i>\n" +
                                 "                                </button></span>\n" +
                                 "                                <button class='btn btn-danger'\n" +
@@ -224,7 +218,7 @@
             if (confirm("Etes-vous sur de vouloir supprimer?")) {
                 $.ajax({
                     type: "POST",
-                    url: "{{ path('stock_delete') }}",
+                    url: "{{ path('commande_delete_extranet') }}",
                     data: "prod=" + produit,
                     success: function (data) {
                         if (data['id'] == 'ok') {
@@ -262,7 +256,7 @@
                 $("#modifier" + produit).html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
                 $.ajax({
                     type: "POST",
-                    url: "{{ path('stock_edit') }}",
+                    url: "{{ path('commande_edit_extranet') }}",
                     data: "prod=" + produit + "&quantite=" + quant.val(),
                     success: function (data) {
                         if (data['id'] == 'ok') {
@@ -286,9 +280,13 @@
         }
 
         function validerappro() {
+            if($('#commande_user option:selected').val()!= '') {
             if (confirm("Confirmation validation?")) {
-                document.location.href = "{{ path('stock_valider') }}";
+
+                    document.location.href = "{{ path("commande_panier_choix_paiement_extranet", {'commande': 0}) }}";
+
             }
+            }else alert('Veuillez selectionner un client')
         }
 
     </script>

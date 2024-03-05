@@ -1,0 +1,102 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block commande %}active{% endblock %}
+
+{% block body %}
+    <div class="container_paiement  mt-4 fond-7 text-center">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa-solid fa-list-check mr-2"></i>
+            {{ "Choisissez un moyen de Paiement"|trans }}
+        </h3>
+        <form action="#">
+            <input type="radio" name="payment" id="credit" value="Credit">
+            <input type="radio" name="payment" id="carte" value="cartebancaire">
+            <input type="radio" name="payment" id="virement" value="virementMethod">
+            <input type="radio" name="payment" id="mobil" value="mobileMoney">
+            <input type="radio" name="payment" id="AMEX" value="AMEX">
+
+
+            <div class="category">
+                <label for="carte" class="cartebancaire">
+                    <div class="imgName">
+                        <div class="imgContainer carte_bancaire">
+                            <img src="{{ asset('images/carte_bancaire.png') }}" alt="">
+                        </div>
+                        <span class="name">Carte Bancaire</span>
+                    </div>
+                    <span class="check">
+                    <i class="fa-solid fa-circle-check"></i>
+                </span>
+                </label>
+                <label for="credit" class="creditMoney">
+                    <div class="imgName">
+                        <div class="imgContainer credit">
+{#                            <img src="{{ asset('images/carte_bancaire.png') }}" alt="">#}
+                            <i class="fa-solid fa-sack-dollar fa-4x text-green"></i>
+                        </div>
+                        <span class="name">Crédit</span>
+                    </div>
+                    <span class="check">
+                    <i class="fa-solid fa-circle-check"></i>
+                </span>
+                </label>
+
+                <label for="virement" class="virementMethod">
+                    <div class="imgName">
+                        <div class="imgContainer virement">
+                            <img src="{{ asset('images/virement.png') }}" alt="">
+                        </div>
+                        <span class="name">Virement</span>
+                    </div>
+                    <span class="check"><i class="fa-solid fa-circle-check"></i></span>
+                </label>
+
+                <label for="mobil" class="mobilMoney">
+                    <div class="imgName">
+                        <div class="imgContainer mobil">
+                            <img src="{{ asset('images/mobilMoney.png') }}" alt="">
+                        </div>
+                        <span class="name">Mobile Money</span>
+                    </div>
+                    <span class="check"><i class="fa-solid fa-circle-check"></i></span>
+                </label>
+
+                <label for="AMEX" class="amexMethod">
+                    <div class="imgName">
+                        <div class="imgContainer espece">
+                            <img src="{{ asset('images/cash.png') }}" alt="">
+                        </div>
+                        <span class="name">ESPECE</span>
+                    </div>
+                    <span class="check"><i class="fa-solid fa-circle-check"></i></span>
+                </label>
+            </div>
+
+            <button type="button" class="btn btn-success mt-3" onclick="choix()">
+                <i class="fa fa-money-bill"></i>
+                Validez
+            </button>
+        </form>
+    </div>
+    {% block scripts %}
+        <script>
+            function choix() {
+                if ($('input[type=radio][name=payment]:checked').val() == 'AMEX') {
+                    var url = $(location).attr("href");
+                    url = url.replace("/Choix_Paiement_extranet/0", "/ConfirmationPaiement_extranet/");
+                    document.location.href = url;
+
+                } else if ($('input[type=radio][name=payment]:checked').val() == 'Credit') {
+                    var url = $(location).attr("href");
+                    url = url.replace("/Choix_Paiement_extranet/0", "/ConfirmationCredit_extranet/");
+                    document.location.href = url;
+
+                } else alert('Bientot disponible')
+
+            }
+
+
+        </script>
+    {% endblock %}
+
+{% endblock %}
