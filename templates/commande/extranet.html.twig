@@ -1,0 +1,56 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block commande %}active{% endblock %}
+
+{% block body %}
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-shopping-cart mr-2"></i>
+            {{ "Commandes extranet"|trans }}
+        </h3>
+{#        <ul class="nav nav-tabs mb-4">#}
+{#            <li class="nav-item">#}
+{#                <a class="nav-link active" href="#">En attente de validation</a>#}
+{#            </li>#}
+{#            <li class="nav-item">#}
+{#                <a class="nav-link" href="{{ path('commande_panier_history') }}">Commandes déjà payées</a>#}
+{#            </li>#}
+{#        </ul>#}
+
+        <table class="table table-success-light table-bordered table-hover table-striped w-100 mt-4">
+            <thead>
+            <tr>
+                <th>Numero Commande</th>
+                <th>Date</th>
+                <th>Client </th>
+                <th>Montant</th>
+                <th> </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for commande in commandes %}
+                <tr>
+                    <td>{{ commande.id }}</td>
+                    <td>{{ commande.date|date('d/m/Y') }}</td>
+                    <td> {{ commande.user.nom }}</td>
+                    <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
+                    <td>
+                        {#                        <a href="{{ path('commande_panier_paiement_client', {'commande' : commande.id}) }}" class="btn btn-success">#}
+                        <a href="{{ path('commande_panier_Detail', {'commande' : commande.id}) }}" class="btn btn-success">
+                            <i class="fa fa-list"></i> Details
+                        </a>
+                    </td>
+
+
+                </tr>
+
+            {% else %}
+                <tr>
+                    <td colspan="5">Aucune commande</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

@@ -31,6 +31,22 @@ class CommandeRepository extends ServiceEntityRepository
         return $query;
     }
 
+    public function extranet($user)
+    {
+        // On passe par le QueryBuilder vide de l'EntityManager pour l'exemple
+        $query = $this ->createQueryBuilder('a')
+            ->Where('a.user = :user')
+            ->setParameter('user', $user)
+            ->AndWhere('a.suivi = :suivi')
+            ->setParameter('suivi', 0)
+            ->AndWhere('a.admin != :admin')
+            ->setParameter('admin', "")
+        ;
+        return $query->getQuery()
+            ->getResult();
+    }
+
+
     // /**
     //  * @return Commande[] Returns an array of Commande objects
     //  */

@@ -1,0 +1,147 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block stock %}active{% endblock %}
+
+{% block body %}
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-shopping-cart mr-2"></i>
+            {{ "Validation de la commande"|trans }}
+        </h3>
+
+
+        <table class="table table-success-light table-bordered table-hover table-striped w-100">
+            <thead>
+            <tr>
+                <th>Reference</th>
+                <th>Designation</th>
+                <th>Prix Cession</th>
+                <th>Reduction</th>
+                <th>TVA</th>
+                <th>Prix Public</th>
+                <th>Quantite</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set total = 0 %}
+            {% set reduction=0 %}
+            {% set tva=0 %}
+            {% for produit in panier %}
+                {% set reductionproduit = 0 %}
+                <tr>
+                    <td>{{ produit['produit'].reference }}</td>
+                    <td>{{ produit['produit'].desigantion }}</td>
+                    <td>{{ produit['produit'].prix }}</td>
+                    <td>
+                        {% if produit['produit'].promotion is not null %}
+                            {% if produit['promotion'] != 0 %}
+                                {% set reductionproduit =  produit['produit'].quantite * produit['produit'].prix * produit['promotion'] /100 %}
+
+                                {% set reduction =  reduction + reductionproduit %}
+                                <span class="badge badge-danger">
+                                    -{{ produit['produit'].prix * produit['promotion'] /100 }} F
+                            </span>
+                            {% else %}
+                                -
+                            {% endif %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if produit['produit'].tva == 1 %}
+                            {% set tva = tva + (((produit['produit'].quantite * produit['produit'].prix) - reductionproduit) * 0.1925) %}
+                            {{ (produit['produit'].prix - (produit['produit'].prix * produit['promotion'] /100)) * 0.1925 }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>{{ produit.produit.prixpublic }}</td>
+
+                    <td class="text-center" id="tdprod{{ produit.produit.id }}">
+
+
+                        {{ produit['produit'].quantite }}
+
+
+                    </td>
+                    <td class="text-center" id="soustotal{{ produit.produit.id }}">
+                        {{ (produit['produit'].prix * produit['produit'].quantite)|number_format(0, '' , ' ') }}
+                        {% set total = total + (produit.produit.prix * produit['produit'].quantite) %}
+                        {#<div class="input-group align-center" style="width:100px">
+                            <input type="number" id="text{{ produit.produit.id }}" class="form-control"
+                                   style="padding:0 10px">
+                            <div class="input-group-append">
+                                            <span class="input-group-text bg-primaire text-light"
+                                                  onclick="numerochambre({{ produit.produit.id }})"
+                                                  id="bt{{ produit.produit.id }}">
+                                                <i class="fa fa-save"></i>
+                                            </span>
+                            </div>
+                        </div>#}
+
+                    </td>
+                </tr>
+
+            {% else %}
+                <tr>
+                    <td colspan="8">Aucun produit dans le panier</td>
+                </tr>
+            {% endfor %}
+            <tr class="text-bold">
+                <td colspan="7" class="text-right">
+                    {{ "Total"|trans }}
+                </td>
+                <td class="text-center">
+                    <span id="total">{{ total|number_format(0, '' , ' ') }}</span>
+                    <input type="hidden" value="{{ total }}" id="totaltamp"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7" class="text-right">
+                    {{ "Total Reduction"|trans }}
+                </td>
+                <td class="text-center">
+                    <span id="total">{{ reduction|number_format(0, '' , ' ') }}</span>
+                    <input type="hidden" value="{{ reduction }}" id="totaltamp"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7" class="text-right">
+                    {{ "Total TVA"|trans }}
+                </td>
+                <td class="text-center">
+                    <span id="total">{{ tva|number_format(0, '' , ' ') }}</span>
+                    <input type="hidden" value="{{ tva }}" id="totaltamp"/>
+                </td>
+            </tr>
+            <tr class="text-bold">
+                <td colspan="7" class="text-right">
+                    {{ "Net à payer"|trans }}
+                </td>
+                <td class="text-center">
+                    <span id="total">{{ (total +tva-reduction)|number_format(0, '' , ' ') }}</span>
+                    <input type="hidden" value="{{ total }}" id="totaltamp"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+    <div class="container mt-4 mb-5 pt-3 pb-3 fond-7">
+        <div class="centrer">
+            <div class="row">
+
+                <a href="{{ path('commande_panier_valider_extranet') }}"
+                   class="ml-3 btn btn-success float-end">
+                    <i class="fa fa-money-bill"></i> {{ "Valider"|trans }}
+                </a>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

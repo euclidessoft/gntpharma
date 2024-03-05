@@ -494,8 +494,8 @@ class UserRepository extends ServiceEntityRepository
     public function client()
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.roles = :val')
-            ->setParameter('val', ['ROLE_CLIENT'])
+            ->andWhere('p.client = :val')
+            ->setParameter('val', true)
         ;
     }
 //
