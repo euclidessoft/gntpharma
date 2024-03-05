@@ -42,7 +42,7 @@ class PanierController extends AbstractController
             $nouveaute = $produitRepository->nouveaute();
             $avoir = $avoirRepository->findby(['client' => $this->getUser()]);
             $dette = $repository->findBy(['payer' => false, 'user' => $this->getUser()]);
-            $reclamation = $reclamationRepository->findBy(['user' => $user, 'cloture' => null]),
+            $reclamation = $reclamationRepository->findBy(['user' => $this->getUser(), 'cloture' => null]);
 
             $approvisionnements=[];
             $approvisionner = $approvisionnerRepository->arrivage();//recuperation des approvisioonement de moins de 7 jours
