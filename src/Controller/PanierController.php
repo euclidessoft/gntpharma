@@ -7,6 +7,7 @@ use App\Repository\ApprovisionnementRepository;
 use App\Repository\ApprovisionnerRepository;
 use App\Repository\AvoirRepository;
 use App\Repository\CommandeProduitRepository;
+use App\Repository\CommandeRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\PromotionRepository;
 use App\Repository\ReclamationRepository;
@@ -24,7 +25,7 @@ class PanierController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index(ReclamationRepository $reclamationRepository,SessionInterface $session, ProduitRepository $produitRepository, CommandeProduitRepository $repository,ApprovisionnerRepository $approvisionnerRepository, ApprovisionnementRepository $approvisionnementRepository, PromotionRepository $promotionRepository, AvoirRepository $avoirRepository)
+    public function index(ReclamationRepository $reclamationRepository,SessionInterface $session, ProduitRepository $produitRepository, CommandeProduitRepository $repository,ApprovisionnerRepository $approvisionnerRepository, ApprovisionnementRepository $approvisionnementRepository, PromotionRepository $promotionRepository, AvoirRepository $avoirRepository, CommandeRepository $commandeRepository)
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 
@@ -41,7 +42,7 @@ class PanierController extends AbstractController
             $promotion = $promotionRepository->Courante();
             $nouveaute = $produitRepository->nouveaute();
             $avoir = $avoirRepository->findby(['client' => $this->getUser()]);
-            $dette = $repository->findBy(['payer' => false, 'user' => $this->getUser()]);
+            $dette = $commandeRepository->findBy(['payer' => false, 'user' => $this->getUser()]);
             $reclamation = $reclamationRepository->findBy(['user' => $this->getUser(), 'cloture' => null]);
 
             $approvisionnements=[];
