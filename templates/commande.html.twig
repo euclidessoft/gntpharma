@@ -261,23 +261,24 @@
             </div>
             <div class="topbar-item">
                 <div class="row">
-                    <div class="col-lg-4 col-md-2 col-6 text-nowrap">
+                    <div class="col-lg-5 col-md-2 col-6 text-nowrap">
                         <span class="history-box">
-                            <i class="fa fa-arrow-circle-left history-btn" title="Page précédente" onclick="window.history.back()"></i>
-                            <i class="fa fa-arrow-circle-right history-btn ml-3" title="Page suivante" onclick="window.history.forward()"></i>
-                            <i class="fa fa-redo-alt fa-rotate-270 history-btn ml-3" title="Actualiser la page" onclick="window.location.reload()"></i>
+                            <i class="fa fa-arrow-circle-left history-btn" title="Page précédente"
+                               onclick="window.history.back()"></i>
+                            <i class="fa fa-arrow-circle-right history-btn ml-3" title="Page suivante"
+                               onclick="window.history.forward()"></i>
+                            <i class="fa fa-redo-alt fa-rotate-270 history-btn ml-3" title="Actualiser la page"
+                               onclick="window.location.reload()"></i>
                         </span>
-                        {{ 'Bienvenue'|trans }}
-                        <strong> {{ app.user.username }} </strong>
+
                         <button type="button" id="install_button" onclick="installApp()" hidden></button>
                     </div>
                     <div class="col-lg-2 col-md-1 col-6 text-nowrap">
-                        <a class="panier" href="{{ path('commande_panier_panier') }}">
-                    <span id="gest_panier" class="badge badge-danger">
+                            <a class="panier" href="{{ path('commande_panier_panier') }}">
+                    <span id="gest_panier" class="badge badge-danger panierNombre">
                             {{ panier|length }}
-                    </span>
-                            <i class="fa fa-cart-shopping"></i>
-                        </a>
+                    </span><i class="fa fa-cart-shopping fa-2x"></i>
+                            </a>
                     </div>
                     <div class="col-lg-2 col-md-3 col-6 text-nowrap">
                         <div class="float-right">
@@ -289,15 +290,37 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-3 col-6 text-nowrap">
+                    <div class="col-lg-3 col-md-3 col-6 text-nowrap">
+                        <div class="text-right">
+                            <div class="dropdown">
+                                <a href="#" class="" data-toggle="dropdown">
+                                    {{ app.user.username }}
+                                    <img src="{{ asset('images/team_1.avif') }}" class="user-image"
+                                         alt="User Image">
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <img src="{{ asset('images/team_1.avif') }}" alt="" class="w-100 mx-2">
+                                        </div>
+                                        <div class="col-7">
+                                            <div class="mt-3">
+                                                <a href="{{ path('security_profile') }}">
+                                                    <i class="fa fa-user"></i>
+                                                    Profile
+                                                </a>
+                                            </div>
+                                            <div class="mt-3">
+                                                <a href="{{ path('security_logout') }}">
+                                                    <i class="fa fa-power-off"></i>
+                                                    Deconnexion
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-6 text-nowrap">
-                        <div class="float-right">
-                            <a href="{{ path('security_logout') }}">
-                                <i class="fas fa-sign-out-alt"></i>
-                                {{ 'Déconnexion'|trans }}
-                            </a>
                         </div>
                     </div>
                 </div>
