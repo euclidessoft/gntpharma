@@ -1,54 +1,52 @@
 {% extends 'admin.html.twig' %}
 {% block title %} {{ 'Mon profile'|trans }} {% endblock %}
 {% block body %}
-<div class="container mt-4 py-4 fond-7">
-    <h3 class="mt-4 mb-5 text-bold">
-        <i class="fa fa-user mr-2"></i>
-        {{ 'Profil Utilisateur'|trans }}
-    </h3>
-<div class="row">
-  
-    <div class="col-12">
+    <div class="col-lg-6 mt-4 py-4 fond-7">
+        <h3 class="mt-4 mb-3 text-bold p-3">
+            <i class="fa fa-user mr-2"></i>
+            {{ 'Profil Utilisateur'|trans }}
+        </h3>
+        <div class="row">
 
-        {{ include('security/security/boutons.html.twig') }}
-        
-        {% for message in app.flashes('notice')%}
-        <div class="col-lg-12 mt-4 alert alert-success alert-dismissible fade show radius-10 shadow-black" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {{ message|trans }}
-        </div>
-        {% endfor%}
-        <div class="col-lg-12">
-            <div class="col-lg-6  col-md-12 offset-lg-3 mt-5 mb-5 pb-2 fond-inner">
-                <div class="col-12 profile-header">
+            <div class="col-12">
 
-                </div>
-                <div class="row">
-                <div class="col-4 mt-5 text-center">
-{#                    {% if user.sexe == "Monsieur" %}#}
-{#                     <img src="{{asset('images/avatar.jpg') }}" width="100" alt="Photo" class="rounded-circle" />#}
-{#                     {% else %}#}
-{#                     <img src="{{asset('images/avatar-femme.jpg') }}" width="100" alt="Photo" class="rounded-circle" />#}
-{#                     {% endif %}#}
-{#                     <h6 class="mt-3">{{ user.bloodgroup }}</h6>#}
-                </div>
-                <div class="col-8 mt-3 mb-4">
-                    <h6>Prenom :<b>   {{ user.prenom }}</b></h6>
-                    <h6>Nom :<b>   {{ user.nom }}</b></h6>
-                    <h6>Telephone :<b>   {{ user.phone }}</b></h6>
+                {{ include('security/security/boutons.html.twig') }}
 
-                    <h6> Email: <b>{{user.email}}</b></h6>
-
-                    <h6>Adresse :<b>   {{ user.adresse }}</b></h6>
-                     
+                {% for message in app.flashes('notice') %}
+                    <div class="col-lg-12 mt-4 alert alert-success alert-dismissible fade show radius-10 shadow-black"
+                         role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{ message|trans }}
+                    </div>
+                {% endfor %}
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-lg-4 p-0 text-center">
+                            <img src="{{ asset('images/team_1.avif') }}" alt="" class="w-100 img-fluid rounded">
+                            {#                                                    {% if user.sexe == "Monsieur" %}#}
+                            {#                                                     <img src="{{asset('images/avatar.jpg') }}" width="100" alt="Photo" class="rounded-circle" />#}
+                            {#                                                     {% else %}#}
+                            {#                                                     <img src="{{asset('images/avatar-femme.jpg') }}" width="100" alt="Photo" class="rounded-circle" />#}
+                            {#                                                     {% endif %}#}
+                            {#                                                     <h6 class="mt-3">{{ user.bloodgroup }}</h6>#}
+                        </div>
+                        <div class="col-lg-4 col-5 mt-3 mb-4 text-right">
+                            <div>Prenom :</div>
+                            <div>Nom :</div>
+                            <div>Telephone :</div>
+                            <div> Email:</div>
+                            <div>Adresse :</div>
+                        </div>
+                        <div class="col-lg-4 col-4 mt-3 mb-4 ml-n3 text-bold">
+                            <div>  {{ user.prenom }}</div>
+                            <div>  {{ user.nom }}</div>
+                            <div>   {{ user.phone }}</div>
+                            <div> {{ user.email }}</div>
+                            <div>  {{ user.adresse }}</div>
+                        </div>
+                    </div>
                 </div>
-                </div>
-                
-                  
             </div>
         </div>
-        
     </div>
-</div>
-</div>
 {% endblock %}

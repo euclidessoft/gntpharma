@@ -99,18 +99,21 @@ footer{
 
 @media (max-width: 768px) {
     .security-page {
-        aspect-ratio: 1 / 1.5
+        aspect-ratio: 1 / 1.5;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../images/pharmacy.avif");
     }
 }
 
 @media (min-width: 769px) and (max-width: 992px) {
     .security-page {
-        aspect-ratio: 1 / 1
+        aspect-ratio: 1 / 1;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../images/pharmacy.avif");
     }
 }
 
 @media (max-width: 991.98px) {
     .security-page {
         margin-top: 0;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../images/pharmacy.avif");
     }
 }
