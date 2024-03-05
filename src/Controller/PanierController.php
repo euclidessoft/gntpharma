@@ -76,7 +76,8 @@ class PanierController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
+        }
+        else if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             $panier = $session->get("panier", []);
             $dataPanier = [];
 
@@ -100,7 +101,58 @@ class PanierController extends AbstractController
             ]);
             return $response;
 
-        } else {
+        }
+        else if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $panier = $session->get("panier", []);
+            $dataPanier = [];
+
+            foreach($panier as $commande){
+                $dataPanier[] = [
+                    "produit" => $commande['produit'],
+                ];
+            }
+
+            $response = $this->render('commande/admin/dashbord_finance.html.twig', [
+                'produits' => $produitRepository->findAll(),
+                'panier' => $dataPanier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+
+        }
+        else if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
+            $panier = $session->get("panier", []);
+            $dataPanier = [];
+
+            foreach($panier as $commande){
+                $dataPanier[] = [
+                    "produit" => $commande['produit'],
+                ];
+            }
+
+            $response = $this->render('commande/admin/dashbord.html.twig', [
+                'produits' => $produitRepository->findAll(),
+                'panier' => $dataPanier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+
+        }
+        else {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
