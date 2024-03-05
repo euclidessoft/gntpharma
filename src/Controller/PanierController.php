@@ -27,6 +27,15 @@ class PanierController extends AbstractController
      */
     public function index(ReclamationRepository $reclamationRepository,SessionInterface $session, ProduitRepository $produitRepository, CommandeProduitRepository $repository,ApprovisionnerRepository $approvisionnerRepository, ApprovisionnementRepository $approvisionnementRepository, PromotionRepository $promotionRepository, AvoirRepository $avoirRepository, CommandeRepository $commandeRepository)
     {
+        $approvisionnements=[];
+        $approvisionner = $approvisionnerRepository->arrivage();//recuperation des approvisioonement de moins de 7 jours
+        if(count($approvisionner) > 1){ // si plus d' un appron
+            $appro = [];
+            foreach ($approvisionner as $item){// mettre les id approvisionner dans un tableau
+                $appro[] = $item->getId();
+            }
+            $approvisionnements = $approvisionnementRepository->arrivage($appro);// recuperation des approvisionnement des id dans le tableau
+        }
         if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 
             $panier = $session->get("panier", []);
@@ -45,15 +54,7 @@ class PanierController extends AbstractController
             $dette = $commandeRepository->findBy(['payer' => false, 'user' => $this->getUser()]);
             $reclamation = $reclamationRepository->findBy(['user' => $this->getUser(), 'cloture' => null]);
 
-            $approvisionnements=[];
-            $approvisionner = $approvisionnerRepository->arrivage();//recuperation des approvisioonement de moins de 7 jours
-            if(count($approvisionner) > 1){ // si plus d' un appron
-                $appro = [];
-                foreach ($approvisionner as $item){// mettre les id approvisionner dans un tableau
-                    $appro[] = $item->getId();
-                }
-                $approvisionnements = $approvisionnementRepository->arrivage($appro);// recuperation des approvisionnement des id dans le tableau
-            }
+
 
 
             $response = $this->render('commande/dashbord.html.twig', [
@@ -78,18 +79,16 @@ class PanierController extends AbstractController
             return $response;
         }
         else if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            $panier = $session->get("panier", []);
-            $dataPanier = [];
-
-            foreach($panier as $commande){
-                $dataPanier[] = [
-                    "produit" => $commande['produit'],
-                ];
-            }
 
             $response = $this->render('commande/admin/dashbord.html.twig', [
-                'produits' => $produitRepository->findAll(),
-                'panier' => $dataPanier,
+                'commande' => $commandeRepository->findBy(['suivi' => false]),
+                'livraison' => $commandeRepository->findBy(['payer' => false, 'suivi' => true]),
+                'vente' => $repository->ventemensuel(),
+                'promotion' => $promotionRepository->Courante(),
+                'produit' => $produitRepository->findBY(['stock' => 0]),
+                'stock' => $produitRepository->surveil(),
+                'reclamation' => $reclamationRepository->findBy(['cloture' => null]),
+                'arrivage'=> $approvisionnements,
             ]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
