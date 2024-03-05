@@ -8,9 +8,11 @@ use App\Repository\ApprovisionnerRepository;
 use App\Repository\AvoirRepository;
 use App\Repository\CommandeProduitRepository;
 use App\Repository\CommandeRepository;
+use App\Repository\LivrerRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\PromotionRepository;
 use App\Repository\ReclamationRepository;
+use App\Repository\StockRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +27,7 @@ class PanierController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index(ReclamationRepository $reclamationRepository,SessionInterface $session, ProduitRepository $produitRepository, CommandeProduitRepository $repository,ApprovisionnerRepository $approvisionnerRepository, ApprovisionnementRepository $approvisionnementRepository, PromotionRepository $promotionRepository, AvoirRepository $avoirRepository, CommandeRepository $commandeRepository)
+    public function index(StockRepository $stockRepository, LivrerRepository $livrerRepository, ReclamationRepository $reclamationRepository,SessionInterface $session, ProduitRepository $produitRepository, CommandeProduitRepository $repository,ApprovisionnerRepository $approvisionnerRepository, ApprovisionnementRepository $approvisionnementRepository, PromotionRepository $promotionRepository, AvoirRepository $avoirRepository, CommandeRepository $commandeRepository)
     {
         $approvisionnements=[];
         $approvisionner = $approvisionnerRepository->arrivage();//recuperation des approvisioonement de moins de 7 jours
@@ -102,18 +104,16 @@ class PanierController extends AbstractController
 
         }
         else if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
-            $panier = $session->get("panier", []);
-            $dataPanier = [];
-
-            foreach($panier as $commande){
-                $dataPanier[] = [
-                    "produit" => $commande['produit'],
-                ];
-            }
 
             $response = $this->render('commande/admin/dashbord_finance.html.twig', [
-                'produits' => $produitRepository->findAll(),
-                'panier' => $dataPanier,
+                'vente' => $repository->ventemensuel(),
+                'promotion' => $promotionRepository->Courante(),
+                'commande' => $commandeRepository->findBy(['credit' => false, 'suivi' => false]),
+                'avoir' => $avoirRepository->findAll(),
+                'reclamation' => $reclamationRepository->findBy(['cloture' => null]),
+                'credit' => $commandeRepository->findBy(['credit' => true, 'suivi' => false]),
+                'commande_credit' => $commandeRepository->findBy(['credit' => true, 'suivi' => true]),
+                'produit' => $produitRepository->findBY(['stock' => 0]),
             ]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
@@ -127,18 +127,16 @@ class PanierController extends AbstractController
 
         }
         else if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
-            $panier = $session->get("panier", []);
-            $dataPanier = [];
-
-            foreach($panier as $commande){
-                $dataPanier[] = [
-                    "produit" => $commande['produit'],
-                ];
-            }
 
             $response = $this->render('commande/admin/dashbord.html.twig', [
-                'produits' => $produitRepository->findAll(),
-                'panier' => $dataPanier,
+                'produit' => $produitRepository->findBY(['stock' => 0]),
+                'stock' => $produitRepository->surveil(),
+                'livraison' => $commandeRepository->findBy(['suivi' => false]),
+                'vente' => $repository->ventemensuel(),
+                'promotion' => $promotionRepository->Courante(),
+                'reclamation' => $reclamationRepository->findBy(['cloture' => null]),
+                'reste' => $livrerRepository->findBy(['reste' => true]),
+                'produit_stock' => $stockRepository->stock(),
             ]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
