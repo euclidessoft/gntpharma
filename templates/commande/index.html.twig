@@ -8,12 +8,12 @@
         <i class="fa fa-shopping-cart mr-2"></i>
         {{ "Votre Panier"|trans }}
     </h3>
-
+    {% if panier|length > 0 %}
     <a href="{{ path("commande_panier_choix_paiement", {'commande': 0}) }}" class="btn btn-success float-right mb-3"
        title="Valider la commande">
         <i class="fa fa-check"></i> Valider la commande
     </a>
-
+{% endif %}
     <table class="table table-success-light table-bordered table-hover table-striped w-100">
         <thead>
         <tr>
@@ -113,6 +113,7 @@
                 <td colspan="10">Aucun produit dans le panier</td>
             </tr>
         {% endfor %}
+        {% if panier|length > 0 %}
         <tr class="text-bold">
             <td colspan="8" class="text-right">
                 {{ "Total"|trans }}
@@ -122,11 +123,11 @@
                 <input type="hidden" value="{{ total }}" id="totaltamp"/>
             </td>
             <td rowspan="4">
-                {% if panier|length > 0 %}
+
                     <a href="{{ path('commande_delete_all') }}" class="btn btn-danger" title="vider le panier">
                         Vider le panier <i class="fa fa-trash-alt"></i>
                     </a>
-                {% endif %}
+
             </td>
         </tr>
         <tr>
@@ -156,14 +157,15 @@
                 <input type="hidden" value="{{ total }}" id="totaltamp"/>
             </td>
         </tr>
+        {% endif %}
         </tbody>
     </table>
-
+    {% if panier|length > 0 %}
     <a href="{{ path("commande_panier_choix_paiement", {'commande': 0}) }}" class="btn btn-success mb-5"
        title="Valider la commande">
         <i class="fa fa-check"></i> Valider la commande
     </a>
-
+    {% endif %}
 
     <input type="hidden" value="ok" id="tampon"/>
     {% if is_granted('ROLE_ADMIN') %}

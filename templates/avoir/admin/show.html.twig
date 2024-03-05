@@ -14,8 +14,9 @@
 
                     <tr>
                         <th>Creer par</th>
-                        <th>Date</th>
+                        <th>Date Creation</th>
                         <th>Client</th>
+                        <th>N° Commande</th>
                         <th>Montant</th>
                     </tr>
                     <tr>
@@ -23,6 +24,7 @@
                         <td>{{ avoir.admin.nom }}</td>
                         <td>{{ avoir.date ? avoir.date|date('d/m/Y') : '' }}</td>
                         <td>{{ avoir.client.nom }}</td>
+                        <td>{{ avoir.commande.id }}</td>
                         <td>{{ avoir.Montant|number_format(0, '' , ' ') }}</td>
                     </tr>
                     </tbody>

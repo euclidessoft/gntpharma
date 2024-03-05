@@ -253,7 +253,14 @@
                 </tr>
             {% else %}
             {% endfor %}
-
+<tr>
+    <td colspan="2" class="text-right text-nowrap">Total versement</td>
+    <td>{{ commande.versement|number_format(0, '' , ' ') }}</td>
+</tr>
+            <tr>
+    <td colspan="2" class="text-right">Montant Restant</td>
+    <td>{{ (commande.montant - commande.versement)|number_format(0, '' , ' ') }}</td>
+</tr>
             </tbody>
         </table>
     </div>

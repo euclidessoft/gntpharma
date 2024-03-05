@@ -3,8 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Produit;
+use App\Repository\ApprovisionnementRepository;
+use App\Repository\ApprovisionnerRepository;
+use App\Repository\AvoirRepository;
+use App\Repository\CommandeProduitRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\PromotionRepository;
+use App\Repository\ReclamationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +24,7 @@ class PanierController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index(SessionInterface $session, ProduitRepository $produitRepository)
+    public function index(ReclamationRepository $reclamationRepository,SessionInterface $session, ProduitRepository $produitRepository, CommandeProduitRepository $repository,ApprovisionnerRepository $approvisionnerRepository, ApprovisionnementRepository $approvisionnementRepository, PromotionRepository $promotionRepository, AvoirRepository $avoirRepository)
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 
@@ -31,9 +36,34 @@ class PanierController extends AbstractController
                     "produit" => $commande['produit'],
                 ];
             }
+            $top = $repository->topmensuel($this->getUser());//recperation mon top
+            $vente = $repository->ventemensuel();
+            $promotion = $promotionRepository->Courante();
+            $nouveaute = $produitRepository->nouveaute();
+            $avoir = $avoirRepository->findby(['client' => $this->getUser()]);
+            $dette = $repository->findBy(['payer' => false, 'user' => $this->getUser()]);
+            $reclamation = $reclamationRepository->findBy(['user' => $user, 'cloture' => null]),
+
+            $approvisionnements=[];
+            $approvisionner = $approvisionnerRepository->arrivage();//recuperation des approvisioonement de moins de 7 jours
+            if(count($approvisionner) > 1){ // si plus d' un appron
+                $appro = [];
+                foreach ($approvisionner as $item){// mettre les id approvisionner dans un tableau
+                    $appro[] = $item->getId();
+                }
+                $approvisionnements = $approvisionnementRepository->arrivage($appro);// recuperation des approvisionnement des id dans le tableau
+            }
+
 
             $response = $this->render('commande/dashbord.html.twig', [
-                'produits' => $produitRepository->findAll(),
+                'top' => $top,
+                'arrivage'=> $approvisionnements,
+                'vente' => $vente,
+                'promotione' => $promotion,
+                'nouveaut' => $nouveaute,
+                'avoir' => $avoir,
+                'dette' => $dette,
+                'reclamation' => $reclamation,
                 'panier' => $dataPanier,
             ]);
             $response->setSharedMaxAge(0);
