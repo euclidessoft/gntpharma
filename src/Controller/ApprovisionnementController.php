@@ -231,7 +231,7 @@ class ApprovisionnementController extends AbstractController
                 $em->persist($approvisionner);
                 $i = 1;
                 foreach ($approv as $product) {
-                    $produit = $produitRepository->find($product['produit']->getId());
+                    $produit = $em->getRepository(Produit::class)->find($product['produit']->getId());
                     $approvisionnenment = new Approvisionnement($produit,$approvisionner,$product['produit']->getQuantite());
                     $approvisionnenment->setLot($product['produit']->getLot());
                     $approvisionnenment->setPeremption(new \DateTime($product['produit']->getPeremption()));
