@@ -131,7 +131,7 @@ class PanierController extends AbstractController
             $response = $this->render('commande/admin/dashbord_stock.html.twig', [
                 'produit' => $produitRepository->findBY(['stock' => 0]),
                 'stock' => $produitRepository->surveil(),
-                'livraison' => $commandeRepository->findBy(['suivi' => false]),
+                'livraison' => $commandeRepository->findBy(['suivi' => false, 'livraison' => false]),
                 'vente' => $repository->ventemensuel(),
                 'promotion' => $promotionRepository->Courante(),
                 'reclamation' => $reclamationRepository->findBy(['cloture' => null]),
