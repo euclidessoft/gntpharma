@@ -237,7 +237,8 @@ class ApprovisionnementController extends AbstractController
                     $approvisionnenment->setPeremption(new \DateTime($product['produit']->getPeremption()));
                     $$i = new Stock($produit, $product['produit']->getLot(), $product['produit']->getPeremption(), $product['produit']->getQuantite());
                     $em->persist($$i);
-                    $produit->approvisionner($product['produit']->getQuantite());
+                    $archive = $produit->getStock();
+                    $produit->setStock($archive + $product['produit']->getQuantite());
                     $em->persist($produit);
                     $em->persist($approvisionnenment);
                     $i++;
