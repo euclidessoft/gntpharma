@@ -128,7 +128,7 @@ class PanierController extends AbstractController
         }
         else if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
 
-            $response = $this->render('commande/admin/dashbord.html.twig', [
+            $response = $this->render('commande/admin/dashbord_stock.html.twig', [
                 'produit' => $produitRepository->findBY(['stock' => 0]),
                 'stock' => $produitRepository->surveil(),
                 'livraison' => $commandeRepository->findBy(['suivi' => false]),
