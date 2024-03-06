@@ -242,6 +242,7 @@ class ApprovisionnementController extends AbstractController
                     $em->persist($produit);
                     $em->persist($approvisionnenment);
                     $i++;
+                    $em->flush();
                 }
                 $em->flush();
                 $session->remove("approv");
