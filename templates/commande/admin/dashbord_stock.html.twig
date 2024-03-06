@@ -12,7 +12,39 @@
     {% endfor %}
     <div class="col-md-8 offset-md-2 my-5">
         <div class="row">
-           <div class="col-lg-3 h-100 col-md-4 col-sm-6 my-3">
+            <div class="col-lg-3 h-100 col-md-4 col-sm-6 mt-3 mb-3">
+                <div class="card border-green">
+                    <div class="card-header bg-success-light text-green">
+                        <div class="row">
+                            <div class="col-12">
+                                <i class="fa-solid fa-cubes fa-5x"></i>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-right">
+                                <div class="text-bold">{{ produit |length }}</div>
+                                <div>
+                                    Produit en stock
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light bt-green">
+                    <span class="float-left">
+                        <a href="{{ path('stock_index') }}" class="text-green">{{ 'Voir les détails'|trans }}
+                        </a>
+                    </span>
+                        <span class="float-right">
+                        <a href="{{ path('stock_index') }}" class="text-green">
+                            <i class="fa fa-arrow-circle-right fa-lg"></i>
+                        </a>
+                    </span>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 h-100 col-md-4 col-sm-6 my-3">
                 <div class="card border-green">
                     <div class="card-header bg-green text-white">
                         <div class="row">
@@ -47,7 +79,7 @@
             </div>
             <div class="col-lg-3 h-100 col-md-4 col-sm-6 my-3">
                 <div class="card border-green">
-                    <div class="card-header bg-green text-white">
+                    <div class="card-header bg-success-light text-white">
                         <div class="row">
                             <div class="col-12">
                                 <i class="fa-solid fa-triangle-exclamation fa-5x"></i>
@@ -122,7 +154,7 @@
                             <div class="col-12 text-right">
                                 <div class="text-bold">{{ vente |length }}</div>
                                 <div>
-                                    Meilleur vente
+                                    Péremption imminente
                                 </div>
                                 <br>
                             </div>
@@ -142,7 +174,7 @@
                     </div>
                 </div>
             </div>
-           <div class="col-lg-3 h-100 col-md-4 col-sm-6 my-3">
+            <div class="col-lg-3 h-100 col-md-4 col-sm-6 my-3">
                 <div class="card border-green">
                     <div class="card-header bg-green text-white">
                         <div class="row">
@@ -177,7 +209,7 @@
             </div>
             <div class="col-lg-3 h-100 col-md-4 col-sm-6 my-3">
                 <div class="card border-green">
-                    <div class="card-header bg-green text-white">
+                    <div class="card-header bg-success-light text-white">
                         <div class="row">
                             <div class="col-12">
                                 <i class="fa-solid fa-rotate fa-5x"></i>
@@ -234,38 +266,6 @@
                     </span>
                         <span class="float-right">
                         <a href="{{ path('livraison_index') }}" class="text-green">
-                            <i class="fa fa-arrow-circle-right fa-lg"></i>
-                        </a>
-                    </span>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 h-100 col-md-4 col-sm-6 mt-3 mb-3">
-                <div class="card border-green">
-                    <div class="card-header bg-success-light text-green">
-                        <div class="row">
-                            <div class="col-12">
-                                <i class="fa-solid fa-cubes fa-5x"></i>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-right">
-                                <div class="text-bold">{{ produit |length }}</div>
-                                <div>
-                                    Produit en stock
-                                </div>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-light bt-green">
-                    <span class="float-left">
-                        <a href="{{ path('stock_index') }}" class="text-green">{{ 'Voir les détails'|trans }}
-                        </a>
-                    </span>
-                        <span class="float-right">
-                        <a href="{{ path('stock_index') }}" class="text-green">
                             <i class="fa fa-arrow-circle-right fa-lg"></i>
                         </a>
                     </span>
