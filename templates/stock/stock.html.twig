@@ -33,7 +33,7 @@
                 <td>{{ produit.peremption|date('d/m/Y') }}</td>
                 <td>{{ produit.quantite|number_format(0, '' , ' ') }}</td>
                 <td>
-                    <a class="btn btn-success" href="{{ path('stock_produit_show', {'id': produit.id}) }}"><i class="fa fa-list"></i> Détails</a>
+                    <a class="btn btn-success" href="{{ path('stock_produit_show', {'id': produit.produit.id}) }}"><i class="fa fa-list"></i> Détails</a>
                 </td>
 
             </tr>
