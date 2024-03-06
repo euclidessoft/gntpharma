@@ -142,11 +142,11 @@
 
 
 <span id='btnmodf{{ produit.produit.id }}'>
-                                <button class="btn btn-success"
-                                        title="Supprimer cet article"
-                                        onclick="modif({{ produit.produit.id }},{{ produit['produit'].quantite }})">
-                                    <i class="fa fa-edit"></i>
-                                </button>
+{#                                <button class="btn btn-success"#}
+{#                                        title="Supprimer cet article"#}
+{#                                        onclick="modif({{ produit.produit.id }},{{ produit['produit'].quantite }})">#}
+{#                                    <i class="fa fa-edit"></i>#}
+{#                                </button>#}
 </span>
                                 <button class="btn btn-danger"
                                         title="Supprimer cet article" onclick="supprim({{ produit.produit.id }})">
@@ -203,10 +203,11 @@
                                 "                        <td>" + data['lot'] + "</td>\n" +
                                 "                        <td>" + data['peremption'] + "</td>\n" +
                                 "                        <td class='text-center'><span id='changequantite" + produit + "'>" + data['quantite'] + "</span></td>\n" +
-                                "                        <td><span id='btnmodf" + produit + "'><button class='btn btn-success'\n" +
-                                "                                   title='Supprimer cet article' onclick='modif(" + produit + "," + quant.val() + ")'>\n" +
-                                "                                    <i class='fa fa-edit'></i>\n" +
-                                "                                </button></span>\n" +
+                                "                        <td><span id='btnmodf" + produit + "'>" +
+                                // "<button class='btn btn-success'\n" +
+                                // "                                   title='Supprimer cet article' onclick='modif(" + produit + "," + quant.val() + ")'>\n" +
+                                // "                                    <i class='fa fa-edit'></i>\n" +
+                                // "                                </button></span>\n" +
                                 "                                <button class='btn btn-danger'\n" +
                                 "                                   title='Supprimer cet article' onclick='supprim(" + produit + ")'>\n" +
                                 "                                    <i class='fa fa-trash'></i>\n" +
@@ -279,10 +280,10 @@
                     success: function (data) {
                         if (data['id'] == 'ok') {
                             $('#changequantite' + produit).html($("#quant" + produit).val());
-                            $('#btnmodf' + produit).html("<button class='btn btn-success'\n" +
-                                "                                   title='Modifier cet article' onclick='modif(" + produit + "," + quant.val() + ")'>\n" +
-                                "                                    <i class='fa fa-edit'></i>\n" +
-                                "                                </button>");
+                            // $('#btnmodf' + produit).html("<button class='btn btn-success'\n" +
+                            //     "                                   title='Modifier cet article' onclick='modif(" + produit + "," + quant.val() + ")'>\n" +
+                            //     "                                    <i class='fa fa-edit'></i>\n" +
+                            //     "                                </button>");
                             $("#annuler" + produit).trigger('click');
                             prdt.val("");
                         }

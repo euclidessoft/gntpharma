@@ -322,6 +322,11 @@ class LivrerController extends AbstractController
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
 
 //            $panier = $session->get("livraison", []);
+            $livraison = $session->get("traitement", []);
+            if(count($livraison) ==0 ){
+                $this->addFlash('notice', 'Donner les details des produits avant validation');
+                return $this->redirectToRoute('livraison_show', ['id'=> $commande->getid()]);
+            }
             $em = $this->getDoctrine()->getManager();
             $commandeproduits = $comprodrepository->findBy(['commande' => $commande]);
 
@@ -377,7 +382,7 @@ class LivrerController extends AbstractController
                 }
                 // fin traitement promotion
 
-                    $livraison = $session->get("traitement", []);
+
                     $restetamp = false;
                     $restealivrer = 0;
                     $quantitelivrer = 0;

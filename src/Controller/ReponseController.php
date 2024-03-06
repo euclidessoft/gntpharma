@@ -32,7 +32,7 @@ class ReponseController extends AbstractController
      */
     public function new(Reclamation $reclamation, Request $request, SessionInterface $session): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
             $reponse = new Reponse($this->getUser(), $reclamation);
             $form = $this->createForm(ReponseType::class, $reponse);
