@@ -12,36 +12,38 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100">
         <tbody>
 
-            <tr>
-                <th>Reference</th>
-                <td>{{ produit.reference }}</td>
-            </tr>
-            <tr>
-                <th>Desigantion</th>
-                <td>{{ produit.desigantion }}</td>
-            </tr>
-            <tr>
-                <th>Prix Session</th>
-                <td>{{ produit.prix }}</td>
-            </tr>
-            <tr>
-                <th>Prix Public</th>
-                <td>{{ produit.prixpublic }}</td>
-            </tr>
-            <tr>
-                <th>Mincommande</th>
-                <td>{{ produit.mincommande }}</td>
-            </tr>
-            <tr>
-                <th>Fabriquant</th>
-                <td>{{ produit.fabriquant }}</td>
-            </tr>
+        <tr>
+            <th>Reference</th>
+            <td>{{ produit.reference }}</td>
+        </tr>
+        <tr>
+            <th>Desigantion</th>
+            <td>{{ produit.desigantion }}</td>
+        </tr>
+        <tr>
+            <th>Prix Session</th>
+            <td>{{ produit.prix }}</td>
+        </tr>
+        <tr>
+            <th>Prix Public</th>
+            <td>{{ produit.prixpublic }}</td>
+        </tr>
+        <tr>
+            <th>Mincommande</th>
+            <td>{{ produit.mincommande }}</td>
+        </tr>
+        <tr>
+            <th>Fabriquant</th>
+            <td>{{ produit.fabriquant }}</td>
+        </tr>
         </tbody>
     </table>
 
+
     <div class="col-md-6 offset-md-3 mt-4 py-3 fond-7">
         <div class="centrer">
-            <a class="btn btn-success mr-3" href="{{ path('produit_edit', {'id': produit.id}) }}"><i class="fa fa-edit"></i> Modifier</a>
+            <a class="btn btn-success mr-3" href="{{ path('produit_edit', {'id': produit.id}) }}"><i
+                        class="fa fa-edit"></i> Modifier</a>
 
             {{ include('produit/admin/_delete_form.html.twig') }}
 
