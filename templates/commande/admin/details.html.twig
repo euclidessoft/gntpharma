@@ -29,9 +29,9 @@
                     <td>{{ commande.date|date('d/m/Y') }}</td>
                     <td>{{ commande.user.nom }}</td>
                     <td>{{ commande.paiement ? paiement.date|date('d/m/Y') : '' }}</td>
-                    <td>{{ commande.paiement.type }}</td>
-                    <td>{{ commande.paiement.banque }}</td>
-                    <td>{{ commande.paiement.numero }}</td>
+                    <td>{{ commande.paiement ? commande.paiement.type : '' }}</td>
+                    <td>{{ commande.paiement ? commande.paiement.banque : '' }}</td>
+                    <td>{{ commande.paiement ? commande.paiement.numero : '' }}</td>
 
                     </tbody>
                 </table>
