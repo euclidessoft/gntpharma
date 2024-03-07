@@ -44,7 +44,7 @@
     </style>
 
 </head>
-<body onload="print()">
+<body onload="print()" onafterprint="history.back()">
 <div class="container-fluid">
 
 
@@ -177,7 +177,7 @@
                 {{ "Total HT"|trans }}
             </td>
             <td class="text-end text-nowrap">
-                <span id="total" class="fw-bolder">{{ total|number_format(0, '' , ' ') }}</span>
+                <span id="" class="fw-bolder">{{ total|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
         {% if reduction != 0 %}
@@ -186,7 +186,7 @@
                     {{ "Total Réduction"|trans }}
                 </td>
                 <td>
-                    <span id="total" class="fw-bolder">{{ reduction|number_format(0, '' , ' ') }}</span>
+                    <span id="" class="fw-bolder">{{ reduction|number_format(0, '' , ' ') }}</span>
                 </td>
             </tr>
         {% endif %}
@@ -195,7 +195,7 @@
                 {{ "Total TVA"|trans }}
             </td>
             <td class="text-end">
-                <span id="total">{{ tva|number_format(0, '' , ' ') }}</span>
+                <span id="">{{ tva|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
 
