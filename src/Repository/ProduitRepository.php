@@ -33,15 +33,15 @@ class ProduitRepository extends ServiceEntityRepository
             ->getQuery();
         return $query->getResult();
     }
+
+
     public function surveil()
     {
-
-
-
-
         $query = $this->createQueryBuilder('a')
-            ->Where('a.stock < :stock')
-            ->setParameter('stock', 100)
+            ->Where('a.stock < :seuil')
+            ->setParameter('seuil', 100)
+            ->AndWhere('a.stock > :stock')
+            ->setParameter('stock', 0)
             ->getQuery();
         return $query->getResult();
     }

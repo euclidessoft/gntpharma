@@ -1,0 +1,54 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block order %}active{% endblock %}
+
+{% block body %}
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-shopping-cart mr-2"></i>
+            {{ "Etat stock Produits"|trans }}
+        </h3>
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('stock_index') }}">Disponible</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">à surveiller</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('stock_rupture') }}">En rupture</a>
+            </li>
+        </ul>
+
+        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+            <thead>
+            <tr>
+                <th>Reference</th>
+                <th>Designation</th>
+                <th>Fabriquant</th>
+                <th>Quantite</th>
+
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for produit in produits %}
+                <tr>
+                    <td>{{ produit.reference }}</td>
+                    <td>{{ produit.desigantion }}</td>
+                    <td>{{ produit.fabriquant }}</td>
+                    <td>{{ produit.stock|number_format(0, '' , ' ') }}</td>
+                    <td>
+                        <a class="btn btn-success" href="{{ path('stock_produit_show', {'id': produit.id}) }}"><i class="fa fa-list"></i> Détails</a>
+                    </td>
+
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
