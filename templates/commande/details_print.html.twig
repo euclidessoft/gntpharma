@@ -44,7 +44,7 @@
     </style>
 
 </head>
-<body onload="print()" onafterprint="document.location.href='{{ path('commande_panier_suivi') }}'">
+<body onload="print()" onafterprint="history.back()">
 <div class="container-fluid">
 
 
@@ -77,28 +77,25 @@
         </div>
     </div>
     <h3 class="text-center text-bold text-uppercase my-5">
-        Bon de Commande
+        Facture
     </h3>
 
     <div class="row justify-content-end">
-        <div class="col-6">
-            <table class="table table-success-light text-center table-bordered">
-                <thead>
-                <tr>
-                    <th>Numero <br>Commande</th>
-                    <th>Date</th>
-                    <th>Client</th>
-
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>{{ commande.id }}</td>
-                    <td>{{ commande.date|date('d/m/Y') }}</td>
-                    <td>{{ commande.user.nom }}</td>
-                </tr>
-                </tbody>
-            </table>
+    <div class="col-6">
+    <table class="table table-success-light text-center table-bordered">
+        <thead>
+        <tr>
+            <th>Numero Commande</th>
+            <th>Date Commande</th>
+            <th>Date de Livraison</th>
+        </tr>
+        </thead>
+        <tbody>
+        <td>{{ commande.date|date('d/m/Y') }}</td>
+        <td>{{ commande.id }}</td>
+        <td> </td>
+        </tbody>
+    </table>
         </div>
     </div>
     {% set total=0 %}
@@ -107,10 +104,12 @@
     <table class="table table-success-light text-center table-bordered mt-5 w-100">
         <thead>
         <tr>
-            <th>N° Prod</th>
+            <th>Code Produit</th>
             <th class="tt">Desigantion</th>
-            <th>Qté</th>
-            <th>Prix Ces.</th>
+            <th>Qté Commandee</th>
+            <th>Qté Livree</th>
+            <th>Qté Restante</th>
+            <th class="text-nowrap">Prix Ces.</th>
             <th>Reduc.</th>
             <th>TVA</th>
             <th>Prix Public</th>
@@ -119,12 +118,68 @@
         </thead>
         <tbody>
         {% for commandeproduit in commandeproduits %}
+            {% set ug = 0 %}
             {% set reductionproduit = 0 %}
             <tr>
                 <td> {{ commandeproduit.produit.id }} </td>
-                <td class="tt">{{ commandeproduit.produit.desigantion }} </td>
-                <td> {{ commandeproduit.quantite }} </td>
-                <td class="text-nowrap">
+                <td>{{ commandeproduit.produit.desigantion }} </td>
+                <td>
+                    {{ commandeproduit.quantite }}
+                    {% if commandeproduit.promotion is not null %}
+                        {% if commandeproduit.promotion.premier is not null %}
+                            {% if commandeproduit.quantite / commandeproduit.promotion.troisieme >= 1 %}
+
+                                {% set unite = (commandeproduit.quantite / commandeproduit.promotion.troisieme)|round(0, 'floor') %}
+                                {% set ug = ug + unite * commandeproduit.promotion.ugtroisieme %}
+                                {% set suite = commandeproduit.quantite - unite * commandeproduit.promotion.troisieme %}
+
+                                {% if suite / commandeproduit.promotion.deuxieme >= 1 %}
+                                    {% set unite = (suite / commandeproduit.promotion.deuxieme)|round(0, 'floor') %}
+                                    {% set ug = ug + unite * commandeproduit.promotion.ugdeuxieme %}
+                                    {% set suite = suite - unite * commandeproduit.promotion.deuxieme %}
+
+                                    {% if suite / commandeproduit.promotion.premier >= 1 %}
+                                        {% set unite = (suite / commandeproduit.promotion.premier)|round(0, 'floor') %}
+                                        {% set ug = ug + unite * commandeproduit.promotion.ugpremier %}
+
+                                    {% endif %}
+
+                                {% elseif suite / commandeproduit.promotion.premier >= 1 %}
+                                    {% set unite = (suite / commandeproduit.promotion.premier)|round(0, 'floor') %}
+                                    {% set ug = ug + unite * commandeproduit.promotion.ugpremier %}
+
+                                {% endif %}
+
+                            {% elseif commandeproduit.quantite / commandeproduit.promotion.deuxieme >= 1 %}
+
+
+                                {% set unite = (commandeproduit.quantite / commandeproduit.promotion.deuxieme)|round(0, 'floor') %}
+                                {% set ug = ug + unite * commandeproduit.promotion.ugdeuxieme %}
+                                {% set suite = commandeproduit.quantite - unite * commandeproduit.promotion.deuxieme %}
+
+                                {% if suite / commandeproduit.promotion.premier >= 1 %}
+                                    {% set unite = (suite / commandeproduit.promotion.premier)|round(0, 'floor') %}
+                                    {% set ug = ug + unite * commandeproduit.promotion.ugpremier %}
+
+                                {% endif %}
+
+                            {% elseif commandeproduit.quantite / commandeproduit.promotion.premier >= 1 %}
+
+                                {% set unite = (commandeproduit.quantite / commandeproduit.promotion.premier)|round(0, 'floor') %}
+                                {% set ug = ug + unite * commandeproduit.promotion.ugpremier %}
+
+                            {% endif %}
+                            <span class="badge badge-danger">
+                                    +{{ ug }} U.G.
+                            </span>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+{#                {{ commande.livraison ? commance.quantitelivrer : '' }}#}
+                </td>
+                <td> </td>
+                <td>
                     {{ commandeproduit.produit.prix|number_format(0, '' , ' ') }}
 
                 </td>
@@ -144,7 +199,7 @@
                         -
                     {% endif %}
                 </td>
-                <td class="text-nowrap">
+                <td>
                     {% if commandeproduit.produit.tva == 1 %}
                         {% set tva = tva + (((commandeproduit.quantite * commandeproduit.session) - reductionproduit) * 0.1925) %}
                         {% if commandeproduit.promotion is not null %}
@@ -161,10 +216,13 @@
                     {% endif %}
                 </td>
                 <td>{{ commandeproduit.produit.prixpublic|number_format(0, '' , ' ') }}</td>
-                <td class="text-nowrap text-end">
+                <td>
                     {{ (commandeproduit.quantite * commandeproduit.produit.prix)|number_format(0, '' , ' ') }}
                     {% set total = total + (commandeproduit.quantite * commandeproduit.produit.prix) %}
                 </td>
+
+
+
             </tr>
 
         {% else %}
@@ -173,16 +231,16 @@
             </tr>
         {% endfor %}
         <tr>
-            <td colspan="7" class="text-end fw-bolder">
+            <td colspan="9" class="text-end fw-bolder">
                 {{ "Total HT"|trans }}
             </td>
-            <td class="text-end text-nowrap">
+            <td>
                 <span id="total" class="fw-bolder">{{ total|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
         {% if reduction != 0 %}
             <tr>
-                <td colspan="7" class="text-end fw-bolder">
+                <td colspan="9" class="text-end fw-bolder">
                     {{ "Total Réduction"|trans }}
                 </td>
                 <td>
@@ -191,20 +249,20 @@
             </tr>
         {% endif %}
         <tr>
-            <td colspan="7" class="text-end fw-bolder">
+            <td colspan="9" class="text-end">
                 {{ "Total TVA"|trans }}
             </td>
-            <td class="text-end">
+            <td>
                 <span id="total">{{ tva|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
 
         <tr>
-            <td colspan="7" class="text-end fw-bolder">
+            <td colspan="9" class="text-end fw-bolder">
                 {{ "Net à payer"|trans }}
             </td>
-            <td class="fw-bolder text-nowrap">
-                <span id="total">{{ (total+ tva -reduction)|number_format(0, '' , ' ') }}</span>
+            <td>
+                <span id="total" class="fw-bolder">{{ (total+ tva -reduction)|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
         </tbody>
