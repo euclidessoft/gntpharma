@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\LivrerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Livrer
 {
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\LivrerProduit", mappedBy="livrer")
+     */
+    private $livraison;
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
@@ -48,6 +56,7 @@ class Livrer
         $this->commande = $commande;
         $this->user = $user;
         $this->reste = false;
+        $this->livraison = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,6 +108,36 @@ class Livrer
     public function setReste(bool $reste): self
     {
         $this->reste = $reste;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LivrerProduit[]
+     */
+    public function getLivraison(): Collection
+    {
+        return $this->livraison;
+    }
+
+    public function addLivraison(LivrerProduit $livraison): self
+    {
+        if (!$this->livraison->contains($livraison)) {
+            $this->livraison[] = $livraison;
+            $livraison->setLivrer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLivraison(LivrerProduit $livraison): self
+    {
+        if ($this->livraison->removeElement($livraison)) {
+            // set the owning side to null (unless already changed)
+            if ($livraison->getLivrer() === $this) {
+                $livraison->setLivrer(null);
+            }
+        }
 
         return $this;
     }

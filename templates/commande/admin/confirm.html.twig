@@ -117,14 +117,22 @@
                 </td>
             </tr>
             <tr class="text-bold">
-                <td colspan="7" class="text-right">
+                <td colspan="7" class="text-right text-bold">
                     {{ "Net à payer"|trans }}
                 </td>
                 <td class="text-center">
-                    <span id="total">{{ (total +tva-reduction)|number_format(0, '' , ' ') }}</span>
+                    <span id="total" class="text-bold">{{ (total +tva-reduction)|number_format(0, '' , ' ') }}</span>
                     <input type="hidden" value="{{ total }}" id="totaltamp"/>
                 </td>
+            </tr>       
+                 {#        /***Conversion prix en lettre **/#}
+            <tr>
+                <td colspan="8" class="text-right">
+                    <span id="total" class="text-bold"></span>
+                      Arretée la présente à la somme de : <b id="conversion"></b> <b>francs CFA TTC</b>
+                </td>
             </tr>
+            {#/***** end*****/#}
             </tbody>
         </table>
 

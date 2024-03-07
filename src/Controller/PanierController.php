@@ -111,8 +111,8 @@ class PanierController extends AbstractController
                 'commande' => $commandeRepository->findBy(['credit' => false, 'suivi' => false]),
                 'avoir' => $avoirRepository->findAll(),
                 'reclamation' => $reclamationRepository->findBy(['cloture' => null]),
-                'credit' => $commandeRepository->findBy(['credit' => true, 'suivi' => false]),
-                'commande_credit' => $commandeRepository->findBy(['credit' => true, 'suivi' => true]),
+                'credit' => $commandeRepository->findBy(['credit' => true, 'suivi' => false,]),
+                'commande_credit' => $commandeRepository->findBy(['credit' => true, 'suivi' => true, 'payer' => false]),
                 'produit' => $produitRepository->findBY(['stock' => 0]),
             ]);
             $response->setSharedMaxAge(0);

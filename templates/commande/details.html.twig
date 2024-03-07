@@ -195,18 +195,23 @@
                 <span id="total">{{ (total+ tva -reduction)|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
+        {# /***Conversion prix en lettre **/#}
+            <tr>
+                <td colspan="10" class="text-right">
+                    <span id="total" class="text-bold"></span>
+                      Arretée la présente à la somme de : <b id="conversion"></b> <b>francs CFA TTC</b>
+                </td>
+            </tr>
+            {#/***** end*****/#}
         </tbody>
     </table>
     </div>
     <div class="container mt-4 mb-5 pt-3 pb-3 fond-7">
         <div class="centrer">
             <div class="row">
-
                     <a href="{{ path('commande_panier_print_Detail',{'commande': commande.id }) }}" class="btn btn-success float-end">
                         <i class="fa fa-print"></i> {{ "Imprimer"|trans }}
                     </a>
-
-
             </div>
         </div>
     </div>
