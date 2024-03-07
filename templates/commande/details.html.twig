@@ -195,6 +195,14 @@
                 <span id="total">{{ (total+ tva -reduction)|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
+        {# /***Conversion prix en lettre **/#}
+            <tr>
+                <td colspan="10" class="text-right">
+                    <span id="total" class="text-bold"></span>
+                      Arretée la présente à la somme de : <b id="conversion"></b> <b>francs CFA TTC</b>
+                </td>
+            </tr>
+            {#/***** end*****/#}
         </tbody>
     </table>
     </div>
