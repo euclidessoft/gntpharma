@@ -409,6 +409,7 @@ class LivrerController extends AbstractController
                                 $livrerProduit->setArchive($stock->getQuantite());
                                 $livrerProduit->setLot($numerolot);
                                 $livrerProduit->setPeremption($stock->getPeremption());
+                                $livrerProduit->setRestealivrer($restealivrer);
 
                                 $livrerProduit->setReste(true);
                                 if($stock->getQuantite() ==0){//suppression produit dans stock
@@ -431,6 +432,7 @@ class LivrerController extends AbstractController
                                 $livrerProduit->setArchive($stock->getQuantite());
                                 $livrerProduit->setLot($numerolot);
                                 $livrerProduit->setPeremption($stock->getPeremption());
+                                $livrerProduit->setRestealivrer($restealivrer);
 
                                 if ($ug != 0) $livrerProduit->setPromotion($commandeproduit->getPromotion());
                                 if($stock->getQuantite() ==0){//suppression produit dans stock
@@ -450,6 +452,7 @@ class LivrerController extends AbstractController
                                 $livrerProduit->setArchive($stock->getQuantite());
                                 $livrerProduit->setLot($numerolot);
                                 $livrerProduit->setPeremption($stock->getPeremption());
+                                $livrerProduit->setRestealivrer($restealivrer);
 
                                 if ($ug != 0) $livrerProduit->setPromotion($commandeproduit->getPromotion());
                                 if($stock->getQuantite() ==0){//suppression produit dans stock

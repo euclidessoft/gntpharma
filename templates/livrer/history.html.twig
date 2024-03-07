@@ -21,15 +21,17 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
             <thead>
             <tr>
-                <th>no commande </th>
+                <th>N° commande </th>
+                <th>Client</th>
                 <th>Date</th>
-                <th>actions</th>
+                <th>Detqils</th>
             </tr>
             </thead>
             <tbody>
             {% for livrer in livrers %}
                 <tr>
                     <td>{{ livrer.commande.id }}</td>
+                    <td>{{ livrer.commande.user.nom }}</td>
                     <td>{{ livrer.commande.date|date('d/m/Y') }}</td>
                     <td>
                         <a class="btn btn-success" href="{{ path('livraison_historique_show', {'id': livrer.commande.id}) }}"><i class="fa fa-list"></i> Afficher</a>
