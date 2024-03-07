@@ -1244,7 +1244,7 @@ class CommandeController extends AbstractController
         if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT') && $commande->getUser() == $this->getUser()) {
             $panier = $session->get("panier", []);
 
-            $response = $this->render('commande/details.html.twig', [
+            $response = $this->render('commande/details_print.html.twig', [
                 'commandeproduits' => $repository->findBy(['commande' => $commande]),
                 'commande' => $commande,
                 'panier' => $panier,
@@ -1261,7 +1261,7 @@ class CommandeController extends AbstractController
         } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
 
-            $response = $this->render('commande/admin/details.html.twig', [
+            $response = $this->render('commande/admin/details_print.html.twig', [
                 'commandeproduits' => $repository->findBy(['commande' => $commande]),
                 'commande' => $commande,
                 'paiement' => $paiementRepository->findOneBy(['commande' => $commande]),

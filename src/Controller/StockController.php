@@ -26,7 +26,7 @@ class StockController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
         return $this->render('stock/stock.html.twig', [
-            'stock' => $repository->findAll(),
+            'stock' => $repository->stock(),
         ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -92,11 +92,12 @@ class StockController extends AbstractController
     /**
      * @Route("/{id}", name="produit_show", methods={"GET"})
      */
-    public function produit(Produit $produit): Response
+    public function produit(Produit $produit, StockRepository $repository): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
 
             $response = $this->render('stock/produit_show.html.twig', [
+                'stock' => $repository->findBy(['produit' => $produit]),
                 'produit' => $produit,
             ]);
             $response->setSharedMaxAge(0);

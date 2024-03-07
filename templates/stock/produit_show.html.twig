@@ -3,7 +3,7 @@
 {% block stock %}active{% endblock %}
 
 {% block body %}
-<div class="container mt-4 pb-4 fond-7">
+<div class="col-lg-8 mt-4 pb-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fa-brands fa-product-hunt mr-2"></i>
         {{ "Détails Produit"|trans }}
@@ -13,13 +13,13 @@
         <tbody>
 
             <tr>
-                <th>Code Produit</th>
+                <th class="w-25">Code Produit</th>
                 <td>{{ produit.reference }}</td><th class="text-center">Quantite en stock</th>
             </tr>
 
             <tr><th>Desigantion</th>
                 <td>{{ produit.desigantion }}</td>
-                <td rowspan="5" class="text-center text-bold"><h5>{{ produit.stock }}</h5></td></tr>
+                <td rowspan="5" class="text-center text-bolder w-25">{{ produit.stock|number_format(0, '' , ' ') }}</td></tr>
             <tr> <th>Prix Session</th>
                 <td>{{ produit.prix }}</td></tr>
             <tr><th>Prix Public</th>
@@ -36,6 +36,29 @@
 
         </tbody>
     </table>
+
+    <table class="table table-success-light table-bordered table-hover table-striped text-center w-100">
+        <thead>
+        <tr>
+            <th class="w-25">N° Lot</th>
+            <th>Date peremption</th>
+            <th class="w-25">Quantité</th>
+        </tr>
+        </tr>
+        </thead>
+        <tbody>
+        {% for produit in stock %}
+
+        <tr>
+            <td>{{ produit.lot }}</td>
+            <td>{{ produit.peremption|date('d/m/Y') }}</td>
+            <td>{{ produit.quantite|number_format(0, '' , ' ') }}</td>
+        </tr>
+        {% else %}
+        {% endfor %}
+        </tbody>
+    </table>
+
 
     <div class="col-md-6 offset-md-3 mt-4 py-3 fond-7">
         <div class="centrer">

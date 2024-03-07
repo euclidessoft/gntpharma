@@ -349,6 +349,36 @@ class AvoirController extends AbstractController
     }
 
     /**
+     * @Route("/Print/{id}", name="avoir_show_print", methods={"GET"})
+     */
+    public function showprint(Avoir $avoir, AvoirResteRepository $avoirResteRepository, SessionInterface $session): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            return $this->render('avoir/admin/show_print.html.twig', [
+                'avoir' => $avoir,
+                'details' => $avoirResteRepository->findBy(['avoir' => $avoir])
+            ]);
+        } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+            return $this->render('avoir/show_print.html.twig', [
+                'avoir' => $avoir,
+                'details' => $avoirResteRepository->findBy(['avoir' => $avoir]),
+                'panier' => $session->get('panier', []),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
      * @Route("/{id}/edit", name="avoir_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Avoir $avoir): Response
