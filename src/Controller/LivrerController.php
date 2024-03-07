@@ -191,18 +191,18 @@ class LivrerController extends AbstractController
     {// traitement livraison
         if ($commande->getLivraison()) {
             $livrer = $livrerRepository->findBy(['commande' => $commande]);
-            $histo = [];
-            foreach ($livrer as $item) {
-                $histo[] = $item->getId();
-            }
-
-            $commandeproduits = $livrerProduitRepository->historique($histo);
+//            $histo = [];
+//            foreach ($livrer as $item) {
+//                $histo[] = $item->getId();
+//            }
+//
+//            $commandeproduits = $livrerProduitRepository->historique($histo);
 
 
             $response = $this->render('livrer/history_show.html.twig', [
-                'commandes' => $commandeproduits,
+//                'commandes' => $commandeproduits,
                 'commandereference' => $commande,
-//                'livrer' => $livrer,
+                'livrer' => $livrer,
             ]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
