@@ -275,11 +275,10 @@ tr {
 !important;
 }
 
-.nav-item.active .nav-link {
+/*.nav-item.active .nav-link {
     background: var(--vert-clair);
-    color: var(--vert);
-!important;
-}
+    color: var(--vert) !important;
+}*/
 
 .dropdown-item > .nav-link {
     color: var(--blanc);
@@ -301,10 +300,11 @@ tr {
 .navbar-nav .dropdown-menu {
     background: var(--vert);
     border: 1px solid rgba(255, 255, 255, 0.5);
-    margin-left: 1px;
+    margin-left: 0;
     margin-top: auto;
     padding-bottom: 0;
     padding-top: 0;
+    min-width: 18rem !important;
 }
 
 .navbar-nav .dropdown-menu a {
@@ -1402,7 +1402,7 @@ select#transfert_date_time_minute {
 #credit:checked ~ .category .creditMoney .check,
 #virement:checked ~ .category .virementMethod .check,
 #AMEX:checked ~ .category .amexMethod .check
- {
+{
     display: block;
 }
 
