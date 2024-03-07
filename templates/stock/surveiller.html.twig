@@ -9,9 +9,11 @@
             {{ "Etat stock Produits"|trans }}
         </h3>
         <ul class="nav nav-tabs mb-4">
+            {% if is_granted('ROLE_STOCK') %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('stock_index') }}">Disponible</a>
             </li>
+            {% endif %}
             <li class="nav-item">
                 <a class="nav-link active" href="#">à surveiller</a>
             </li>

@@ -29,7 +29,7 @@ class StockController extends AbstractController
             'stock' => $repository->findAll(),
         ]);
         } else {
-            $response = $this->redirectToRoute('security_login');
+            $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);
@@ -52,7 +52,7 @@ class StockController extends AbstractController
             'produits' => $repository->surveil(),
         ]);
         } else {
-            $response = $this->redirectToRoute('security_login');
+            $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);
@@ -75,7 +75,7 @@ class StockController extends AbstractController
             'produits' => $repository->findBy(['stock' => 0]),
         ]);
         } else {
-            $response = $this->redirectToRoute('security_login');
+            $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);
@@ -125,7 +125,7 @@ class StockController extends AbstractController
 //            return $response;
   //    }
       else {
-            $response = $this->redirectToRoute('security_login');
+            $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);
