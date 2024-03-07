@@ -13,13 +13,13 @@
         <tbody>
 
             <tr>
-                <th>Code Produit</th>
+                <th class="w-25">Code Produit</th>
                 <td>{{ produit.reference }}</td><th class="text-center">Quantite en stock</th>
             </tr>
 
             <tr><th>Desigantion</th>
                 <td>{{ produit.desigantion }}</td>
-                <td rowspan="5" class="text-center text-bolder">{{ produit.stock|number_format(0, '' , ' ') }}</td></tr>
+                <td rowspan="5" class="text-center text-bolder w-25">{{ produit.stock|number_format(0, '' , ' ') }}</td></tr>
             <tr> <th>Prix Session</th>
                 <td>{{ produit.prix }}</td></tr>
             <tr><th>Prix Public</th>
@@ -40,9 +40,9 @@
     <table class="table table-success-light table-bordered table-hover table-striped text-center w-100">
         <thead>
         <tr>
-            <th>N° Lot</th>
+            <th class="w-25">N° Lot</th>
             <th>Date peremption</th>
-            <th>Quantité</th>
+            <th class="w-25">Quantité</th>
         </tr>
         </tr>
         </thead>
