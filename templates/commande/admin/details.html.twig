@@ -111,10 +111,10 @@
                 </tr>
             {% endfor %}
             <tr>
-                <td colspan="7" class="text-right">
+                <td colspan="7" class="text-right text-bold">
                     {{ "Total HT"|trans }}
                 </td>
-                <td>
+                <td class=" text-bold">
                     <span id="total">{{ total|number_format(0, '' , ' ') }}</span>
                 </td>
             </tr>
@@ -138,10 +138,10 @@
             </tr>
 
             <tr>
-                <td colspan="7" class="text-right">
+                <td colspan="7" class="text-right text-bold">
                     {{ "Net à payer"|trans }}
                 </td>
-                <td>
+                <td class="text-bold">
                     <span id="total">{{ (total+ tva -reduction)|number_format(0, '' , ' ') }}</span>
                 </td>
             </tr>
