@@ -75,7 +75,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-3 col-md-4 col-sm-6 my-3">
                 <div class="card border-green">
                     <div class="card-header bg-green text-white">
@@ -113,7 +112,37 @@
                     <div class="card-header bg-success-light text-green">
                         <div class="row">
                             <div class="col-12">
-{#                                <i class="fa-solid fa-arrow-trend-down fa-5x"></i>#}
+                                <i class="fa-solid fa-plane-arrival fa-5x"></i>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-right">
+                                <div class="text-bold">{{ arrivage|length }}</div>
+                                <div>
+                                    Arrivage
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light bt-green">
+                    <span class="float-left">
+                        <a href="{{ path('produit_arrivage_admin') }}" class="text-green">{{ 'Voir les détails'|trans }}
+                        </a>
+                    </span>
+                        <span class="float-right">
+                        <a href="{{ path('produit_arrivage_admin') }}" class="text-green">
+                            <i class="fa fa-arrow-circle-right fa-lg"></i>
+                        </a>
+                    </span>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mt-3 mb-3">
+                <div class="card border-green">
+                    <div class="card-header bg-success-light text-green">
+                        <div class="row">
+                            <div class="col-12">
                                 <i class="fa-brands fa-product-hunt fa-5x"></i>
                                 <i class="fa-solid fa-circle-xmark fa-3x ml-n4 text-danger"></i>
                             </div>
@@ -122,7 +151,7 @@
                             <div class="col-12 text-right">
                                 <div class="text-bold">{{ produit|length }}</div>
                                 <div>
-                                   Produit en rupture
+                                    Produit en rupture
                                 </div>
                             </div>
                         </div>
@@ -141,20 +170,20 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-3 col-md-4 col-sm-6 mt-3 mb-3">
                 <div class="card border-green">
-                    <div class="card-header bg-success-light text-green">
+                    <div class="card-header bg-green text-white">
                         <div class="row">
                             <div class="col-12">
-                                <i class="fa-solid fa-triangle-exclamation fa-5x"></i>
+                                <i class="fa-solid fa-warehouse fa-5x" style="vertical-align: baseline;"></i>
+                                <i class="fa-solid fa-triangle-exclamation fa-4x ml-n5 text-danger" style="vertical-align: bottom;"></i>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 text-right">
                                 <div class="text-bold">{{ stock|length }}</div>
                                 <div>
-                                    Stock  a surveille
+                                    Stock à surveiller
                                 </div>
                             </div>
                         </div>
@@ -166,6 +195,38 @@
                     </span>
                         <span class="float-right">
                         <a href="{{ path('stock_surveiller') }}" class="text-green">
+                            <i class="fa fa-arrow-circle-right fa-lg"></i>
+                        </a>
+                    </span>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 my-3">
+                <div class="card border-green">
+                    <div class="card-header bg-success-light text-green">
+                        <div class="row">
+                            <div class="col-12">
+                                <i class="fa-solid fa-truck-fast fa-5x"></i>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-right">
+                                <div class="text-bold">{{ livraison|length }}</div>
+                                <div>
+                                    Attente de livraison
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light bt-green">
+                    <span class="float-left">
+                        <a href="{{ path('livraison_index') }}" class="text-green">
+                            {{ 'Voir les détails'|trans }}
+                        </a>
+                    </span>
+                        <span class="float-right">
+                        <a href="{{ path('livraison_index') }}" class="text-green">
                             <i class="fa fa-arrow-circle-right fa-lg"></i>
                         </a>
                     </span>
@@ -198,70 +259,6 @@
                     </span>
                         <span class="float-right">
                         <a href="{{ path('reclamation_index', { 'user' : app.user.id}) }}" class="text-green">
-                            <i class="fa fa-arrow-circle-right fa-lg"></i>
-                        </a>
-                    </span>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 mt-3 mb-3">
-                <div class="card border-green">
-                    <div class="card-header bg-success-light text-green">
-                        <div class="row">
-                            <div class="col-12">
-                                <i class="fa-solid fa-plane-arrival fa-5x"></i>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-right">
-                                <div class="text-bold">{{ arrivage|length }}</div>
-                                <div>
-                                    Arrivage
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-light bt-green">
-                    <span class="float-left">
-                        <a href="{{ path('produit_arrivage_admin') }}" class="text-green">{{ 'Voir les détails'|trans }}
-                        </a>
-                    </span>
-                        <span class="float-right">
-                        <a href="{{ path('produit_arrivage_admin') }}" class="text-green">
-                            <i class="fa fa-arrow-circle-right fa-lg"></i>
-                        </a>
-                    </span>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 my-3">
-                <div class="card border-green">
-                    <div class="card-header bg-green text-white">
-                        <div class="row">
-                            <div class="col-12">
-                                <i class="fa-solid fa-truck-fast fa-5x"></i>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-right">
-                                <div class="text-bold">{{ livraison|length }}</div>
-                                <div>
-                                    Attente de livraison
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-light bt-green">
-                    <span class="float-left">
-                        <a href="{{ path('livraison_index') }}" class="text-green">
-                            {{ 'Voir les détails'|trans }}
-                        </a>
-                    </span>
-                        <span class="float-right">
-                        <a href="{{ path('livraison_index') }}" class="text-green">
                             <i class="fa fa-arrow-circle-right fa-lg"></i>
                         </a>
                     </span>
