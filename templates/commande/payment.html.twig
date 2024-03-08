@@ -57,7 +57,7 @@
                     {% endif %}
                 </td>
                 <td>{{ commandeproduit.produit.prixpublic|number_format(0, '' , ' ') }}</td>
-                <td>
+                <td class="text-nowrap">
                     {{ (commandeproduit.quantite * commandeproduit.produit.prix)|number_format(0, '' , ' ') }}
                     {% set total = total + (commandeproduit.quantite * commandeproduit.produit.prix) %}
                 </td>
@@ -76,7 +76,7 @@
                 {{ "Total"|trans }}
             </td>
             <td>
-                <span id="total">{{ total|number_format(0, '' , ' ') }}</span>
+                <span id="" class="text-nowrap">{{ total|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
         {% if reduction != 0 %}
@@ -85,7 +85,7 @@
                     {{ "Réduction"|trans }}
                 </td>
                 <td>
-                    <span id="total">{{ reduction|number_format(0, '' , ' ') }}</span>
+                    <span id="" class="text-nowrap">{{ reduction|number_format(0, '' , ' ') }}</span>
                 </td>
             </tr>
         {% endif %}
