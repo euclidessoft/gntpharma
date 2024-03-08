@@ -528,13 +528,21 @@ class ProduitController extends AbstractController
      */
     public function delete(Request $request, Produit $produit): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $produit->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($produit);
-            $entityManager->flush();
+        try {
+            if ($this->isCsrfTokenValid('delete' . $produit->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($produit);
+                $entityManager->flush();
+            }
+            return $this->redirectToRoute('produit_index', [], Response::HTTP_SEE_OTHER);
+        }
+        catch (\Exception $exception){
+            $this->addFlash('notice', 'Ce produit ne peut être supprimer pour des raisons de traçabilité');
+            return $this->redirectToRoute('produit_index', [], Response::HTTP_SEE_OTHER);
+
         }
 
-        return $this->redirectToRoute('produit_index', [], Response::HTTP_SEE_OTHER);
+
     }
 
 

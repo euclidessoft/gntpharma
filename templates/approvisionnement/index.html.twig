@@ -19,13 +19,13 @@
                     </div>
                 {% endfor %}
 
-                {% set inlist = [] %}
-                {% for produit in panier %}
+{#                {% set inlist = [] %}#}
+{#                {% for produit in panier %}#}
 
-                    {% set inlist = inlist|merge([produit['produit'].id]) %}
-                {% else %}
+{#                    {% set inlist = inlist|merge([produit['id']]) %}#}
+{#                {% else %}#}
 
-                {% endfor %}
+{#                {% endfor %}#}
 
                 <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
                     <thead>
@@ -44,7 +44,7 @@
 
                                 <!-- Button trigger modal -->
                                 <button type="button"
-                                        class="btn btn-success {% if produit.id in inlist %} disabled {% endif %}"
+                                        class="btn btn-success" {# {% if produit.id in inlist %} disabled {% endif %}" #}
                                         data-toggle="modal" data-target="#modal{{ produit.id }}"
                                         id="btn{{ produit.id }}">
                                     <i class="fa fa-plus"></i> Ajouter
@@ -110,7 +110,7 @@
             </div>
             <div class="col-lg-7 mt-5">
                 <button onclick="validerappro()"
-                        class="btn btn-success float-right mb-3 {% if inlist|length == 0 %} disabled {% endif %}"
+                        class="btn btn-success float-right mb-3 {% if panier|length == 0 %} disabled {% endif %}"
                         id="valider1"
                         title="Valider">
                     <i class="fa fa-check"></i> Valider
@@ -129,15 +129,15 @@
                     </thead>
                     <tbody id="selectprod" class="text-center">
                     {% for produit in panier %}
-                        <tr id="tr{{ produit['produit'].id }}">
-                            <td>{{ produit['produit'].reference }}</td>
-                            <td class="text-left">{{ produit['produit'].desigantion }}</td>
-                            <td>{{ produit['produit'].lot }} </td>
-                            <td> {{ produit['produit'].peremption|date('d/m/Y') }}</td>
+                        <tr id="tr{{ produit['id']}}{{ produit['lot'] }}">
+                            <td>{{ produit['reference'] }}</td>
+                            <td class="text-left">{{ produit['designation'] }}</td>
+                            <td>{{ produit['lot'] }} </td>
+                            <td> {{ produit['peremption'] }}</td>
 
                             <td>
-                                <span id="changequantite{{ produit.produit.id }}">
-                                {{ produit['produit'].quantite }}
+                                <span id="changequantite{{ produit['idtab'] }}">
+                                {{ produit['quantite'] }}
                                 </span>
 
                             </td>
@@ -145,7 +145,7 @@
 
 
 
-<span id='btnmodf{{ produit.produit.id }}'>
+<span id='btnmodf{{ produit['idtab'] }}'>
 {#                                <button class="btn btn-success"#}
     {#                                        title="Supprimer cet article"#}
     {#                                        onclick="modif({{ produit.produit.id }},{{ produit['produit'].quantite }})">#}
@@ -153,15 +153,15 @@
     {#                                </button>#}
 </span>
                                 <button class="btn btn-danger mr-2 mb-2"
-                                        title="Supprimer cet article" onclick="supprim({{ produit.produit.id }})">
+                                        title="Supprimer cet article" onclick="supprim({{ produit['id'] }}, {{ produit['lot'] }})">
                                     <i class="fa fa-trash"></i>
                                 </button>
 
-                                <button type="button" class="btn btn-success mb-2"
-                                        data-toggle="modal" data-target="#modal{{ produit.produit.id }}"
-                                        id="btn{{ produit.produit.id }}">
-                                    <i class="fa fa-plus"></i> Lot
-                                </button>
+{#                                <button type="button" class="btn btn-success mb-2"#}
+{#                                        data-toggle="modal" data-target="#modal{{ produit['id'] }}"#}
+{#                                        id="btn{{ produit['id'] }}">#}
+{#                                    <i class="fa fa-plus"></i> Lot#}
+{#                                </button>#}
 
                             </td>
                         </tr>
@@ -174,7 +174,7 @@
                 </table>
 
                 <button onclick="validerappro()"
-                        class="btn btn-success float-right  {% if inlist|length == 0 %} disabled {% endif %}"
+                        class="btn btn-success float-right  {% if panier|length == 0 %} disabled {% endif %}"
                         id="valider2"
                         title="Valider">
                     <i class="fa fa-check"></i> Valider
@@ -192,6 +192,7 @@
             var numero = $("#numero" + produit);
             var peremp = $("#peremp" + produit);
             // var peremp = new Date($("#peremp" + produit).val());
+            if(quant.val() != "" && numero.val() !="" && peremp.val() != "" && new Date($("#peremp" + produit).val()) > new Date()){
             if (quant.val() > 0) {
                 $("#ajouter" + produit).html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
                 $.ajax({
@@ -200,7 +201,7 @@
                     data: "prod=" + produit + "&quantite=" + quant.val() + "&lot=" + numero.val() + "&perem=" + peremp.val(),
                     success: function (data) {
                         if (data['id'] == 'ok') {
-                            $('#selectprod').append(" <tr id='tr" + produit + "'>\n" +
+                            $('#selectprod').append(" <tr id='tr" + produit + numero.val() + "'>\n" +
                                 "                        <td>" + data['ref'] + "</td>\n" +
                                 "                        <td>" + data['designation'] + "</td>\n" +
                                 "                        <td>" + data['lot'] + "</td>\n" +
@@ -212,18 +213,22 @@
                                 // "                                    <i class='fa fa-edit'></i>\n" +
                                 // "                                </button></span>\n" +
                                 "                                <button class='btn btn-danger mr-2 mb-2'\n" +
-                                "                                   title='Supprimer cet article' onclick='supprim(" + produit + ")'>\n" +
+                                "                                   title='Supprimer cet article' onclick='supprim(" + produit + ","+ numero.val() +")'>\n" +
                                 "                                    <i class='fa fa-trash'></i>\n" +
-                                "                                </button>\n" +
-                                "<button type='button' class='btn btn-success mb-2' data-toggle='modal' data-target='#modal" + produit + "'  id='btn" + produit + "'> <i class='fa fa-plus'></i> Lot </button></td></tr>");
-                            $('#btn' + produit).addClass('disabled');
+                                "                                </button>\n");
+                               // "<button type='button' class='btn btn-success mb-2' data-toggle='modal' data-target='#modal" + produit + "'  id='btn" + produit + "'> <i class='fa fa-plus'></i> Lot </button></td></tr>"
+
+                            //$('#btn' + produit).addClass('disabled');
                             $('#valider1').removeClass('disabled');
                             $('#valider2').removeClass('disabled');
                             $("#annuler" + produit).trigger('click');
-                            prdt.val("");
-                            $("#ajouter" + produit).html("<i class='fa fa-plus'></i> Ajouter");
+                            quant.val("");
+                            numero.val("");
+                            peremp.val("");
+                           $("#ajouter" + produit).html("<i class='fa fa-plus'></i> Ajouter");
                         } else {
-                            alert("{{ 'Verifier la quantite saisie'|trans }}")
+                            alert(data['id']);
+                            $("#ajouter" + produit).html("<i class='fa fa-plus'></i> Ajouter");
                         }
                     },
                     error: function () {
@@ -233,18 +238,22 @@
             } else {
                 alert("veuillez bien renseigner la quantité");
             }
+                }
+            else{
+                alert("veuillez bien renseigner tous les champs");
+            }
         }
 
-        function supprim(produit) {
+        function supprim(produit,numero) {
 
             if (confirm("Etes-vous sur de vouloir supprimer?")) {
                 $.ajax({
                     type: "POST",
                     url: "{{ path('stock_delete') }}",
-                    data: "prod=" + produit,
+                    data: "prod=" + produit + "&lot=" + numero,
                     success: function (data) {
                         if (data['id'] == 'ok') {
-                            $("#tr" + produit).remove();
+                            $("#tr" + produit + numero).remove();
                             $('#btn' + produit).removeClass('disabled');
                             $("#quant" + produit).val('');// vider le champ quantite dans modal ajouter
                             $("#ajouter" + produit).show();// afficher le bouton ajouter

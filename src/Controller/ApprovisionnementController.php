@@ -27,25 +27,39 @@ class ApprovisionnementController extends AbstractController
     public function index(SessionInterface $session, ApprovisionnementRepository $approvisionnementRepository, ProduitRepository $produitRepository): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
-        $produits = $produitRepository->findAll();
+            $produits = $produitRepository->findAll();
 
-        $approv = $session->get("approv", []);
-        $dataPanier = [];
-        $total = 0;
+            $approv = $session->get("approv", []);
+            $dataPanier = [];
+            $total = 0;
 
-        foreach ($approv as $commande) {
-            $dataPanier[] = [
-                "produit" => $commande['produit'],
-            ];
-        }
+//            foreach ($approv as $commande) {
+//                $dataPanier[] = [
+//                    "produit" => $commande['produit'],
+//                ];
+//            }
+
+            foreach ($approv as $key => $item) {// ffabrication des donnees dans la session pour affichage
+                $ligne = explode("/",$item);
+                $produit = $produitRepository->find($ligne[0]);
+                $dataPanier[]= [
+                 'idtab' => $key,
+                'id' => $ligne[0],
+                'designation' => $produit->getDesigantion(),
+                'reference' => $produit->getReference(),
+                'quantite' => $ligne[1],
+                'lot' => $ligne[2],
+                'peremption' => $ligne[3],
+                    ];
+            }
 
 
-        return $this->render('approvisionnement/index.html.twig', [
-            'approvisionnements' => $approvisionnementRepository->findAll(),
-            'produits' => $produits,
-            'panier' => $dataPanier,
-        ]);
-         } else {
+            return $this->render('approvisionnement/index.html.twig', [
+                'approvisionnements' => $approvisionnementRepository->findAll(),
+                'produits' => $produits,
+                'panier' => $dataPanier,
+            ]);
+        } else {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
@@ -65,10 +79,10 @@ class ApprovisionnementController extends AbstractController
     public function historique(ApprovisionnerRepository $repository): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
-        return $this->render('approvisionnement/historique.html.twig', [
-            'approvisionnements' => $repository->findAll(),
-        ]);
-         } else {
+            return $this->render('approvisionnement/historique.html.twig', [
+                'approvisionnements' => $repository->findAll(),
+            ]);
+        } else {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
@@ -83,10 +97,6 @@ class ApprovisionnementController extends AbstractController
     }
 
 
-
-
-
-
     /**
      * @Route("/add/", name="appro_add")
      */
@@ -99,30 +109,39 @@ class ApprovisionnementController extends AbstractController
             $numero = $request->get('lot');// recuperation de id produit
             $peremption = $request->get('perem');// recuperation de id produit
             $quantite = $request->get('quantite');// recuperation de la quantite commamde
-                $produit = $produitRepository->find($id); // recuperation de id produit dans la db
+            foreach ($approv as $key => $item) {
+                $ligne = explode("/",$item);
+                if ($ligne[0] == $id && $ligne[2] == $numero) {
+                    $res['id'] = 'Un produit avec les même reference a été ajouté';
+                    goto suite;
+                }
+            }
+            $produit = $produitRepository->find($id); // recuperation de id produit dans la db
 //            if (empty($approv[$id])) {//verification existance produit dans le panier
 
-                $produit->setQuantite($quantite);
-                $produit->setLot($numero);
-                $produit->setPeremption($peremption);
+            $chaine = $id."/".$quantite."/".$numero."/".$peremption;
 
-                $approv[] = [// placement produit et quantite dans le panier
-                    "produit" => $produit,
-                ];
+//            $produit->setQuantite($quantite);
+//            $produit->setLot($numero);
+//            $produit->setPeremption($peremption);
+//
+//            $approv[count($approv)] = [// placement produit et quantite dans le panier
+//                "produit" => $produit,
+            $approv[] = $chaine;
 
-                // On sauvegarde dans la session
-                $session->set("approv", $approv);
-                $res['id'] = 'ok';
-                $res['ref'] = $produit->getReference();
-                $res['designation'] = $produit->getDesigantion();
-                $res['lot'] = $numero;
-                $res['peremption'] = $peremption;
-                $res['quantite'] = $produit->getQuantite();
+            // On sauvegarde dans la session
+            $session->set("approv", $approv);
+            $res['id'] = 'ok';
+            $res['ref'] = $produit->getReference();
+            $res['designation'] = $produit->getDesigantion();
+            $res['lot'] = $numero;
+            $res['peremption'] = $peremption;
+            $res['quantite'] = $quantite;//$produit->getQuantite();
 
 //            } else {
 //                $res['id'] = 'no';
 //            }
-
+                suite:
             $response = new Response();
             $response->headers->set('content-type', 'application/json');
             $re = json_encode($res);
@@ -176,12 +195,20 @@ class ApprovisionnementController extends AbstractController
     {
         // On récupère le panier actuel
         $approv = $session->get("approv", []);
-        $id = $repository->find($request->get('prod'))->getId();
-
-        if (!empty($approv[$id])) {
-            unset($approv[$id]);
+        $id = $request->get('prod');
+        $numero = $request->get('lot');
+        foreach ($approv as $key => $item) {
+            $ligne = explode("/",$item);
+            if ($ligne[0] == $id && $ligne[2] == $numero) {
+                unset($approv[$key]);
+            }
         }
-
+//        $id = $repository->find($request->get('prod'))->getId();
+//        foreach ($approv as $key => $item) {
+//            if ($item['produit']->getId() == $id) {
+//                unset($approv[$id]);
+//            }
+//        }
         // On sauvegarde dans la session
         $session->set("approv", $approv);
         $res['id'] = 'ok';
@@ -213,9 +240,9 @@ class ApprovisionnementController extends AbstractController
 
     }
 
-   /**
- * @Route("/valider/", name="valider")
- */
+    /**
+     * @Route("/valider/", name="valider")
+     */
     public function valider(SessionInterface $session, ProduitRepository $produitRepository)
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
@@ -229,15 +256,20 @@ class ApprovisionnementController extends AbstractController
                 $approvisionner->setUser($this->getUser());
                 $em->persist($approvisionner);
                 $i = 1;
-                foreach ($approv as $product) {
-                    $produit = $em->getRepository(Produit::class)->find($product['produit']->getId());
-                    $approvisionnenment = new Approvisionnement($produit,$approvisionner,$product['produit']->getQuantite());
-                    $approvisionnenment->setLot($product['produit']->getLot());
-                    $approvisionnenment->setPeremption(new \DateTime($product['produit']->getPeremption()));
-                    $$i = new Stock($produit, $product['produit']->getLot(), $product['produit']->getPeremption(), $product['produit']->getQuantite());
+                foreach ($approv as $ligne) {
+                    $product = explode("/",$ligne);
+                    $id = $product[0];
+                    $quantite= $product[1];
+                    $lot= $product[2];
+                    $peremption= $product[3];
+                    $produit = $em->getRepository(Produit::class)->find($id);
+                    $approvisionnenment = new Approvisionnement($produit, $approvisionner, $quantite);
+                    $approvisionnenment->setLot($lot);
+                    $approvisionnenment->setPeremption(new \DateTime($peremption));
+                    $$i = new Stock($produit, $lot, $peremption, $quantite);
                     $em->persist($$i);
                     $archive = $produit->getStock();
-                    $produit->setStock($archive + $product['produit']->getQuantite());
+                    $produit->setStock($archive + $quantite);
                     $em->persist($produit);
                     $em->persist($approvisionnenment);
                     $i++;
