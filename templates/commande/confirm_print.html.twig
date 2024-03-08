@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>{{ commande.id }}</title>
+    <title></title>
     <style>
         .titre {
             font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -173,38 +173,38 @@
             </tr>
         {% endfor %}
         <tr>
-            <td colspan="7" class="text-end fw-bolder">
+            <td colspan="7" class="text-end fw-bolder text-nowrap">
                 {{ "Total HT"|trans }}
             </td>
-            <td class="text-end text-nowrap">
-                <span id="total" class="fw-bolder">{{ total|number_format(0, '' , ' ') }}</span>
+            <td class="text-end">
+                <span id="" class="fw-bolder text-nowrap">{{ total|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
         {% if reduction != 0 %}
             <tr>
-                <td colspan="7" class="text-end fw-bolder">
+                <td colspan="7" class="text-end fw-bolder text-nowrap">
                     {{ "Total Réduction"|trans }}
                 </td>
                 <td>
-                    <span id="total" class="fw-bolder">{{ reduction|number_format(0, '' , ' ') }}</span>
+                    <span id="" class="fw-bolder">{{ reduction|number_format(0, '' , ' ') }}</span>
                 </td>
             </tr>
         {% endif %}
         <tr>
-            <td colspan="7" class="text-end fw-bolder">
+            <td colspan="7" class="text-end fw-bolder text-nowrap">
                 {{ "Total TVA"|trans }}
             </td>
-            <td class="text-end">
-                <span id="total">{{ tva|number_format(0, '' , ' ') }}</span>
+            <td class="text-end text-nowrap">
+                <span id="">{{ tva|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
 
         <tr>
-            <td colspan="7" class="text-end fw-bolder">
+            <td colspan="7" class="text-end fw-bolder text-nowrap">
                 {{ "Net à payer"|trans }}
             </td>
             <td class="fw-bolder text-nowrap">
-                <span id="total">{{ (total+ tva -reduction)|number_format(0, '' , ' ') }}</span>
+                <span id="total" class="text-nowrap">{{ (total+ tva -reduction)|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
         </tbody>

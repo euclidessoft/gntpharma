@@ -112,7 +112,6 @@ class ApprovisionnementController extends AbstractController
 
                 // On sauvegarde dans la session
                 $session->set("approv", $approv);
-
                 $res['id'] = 'ok';
                 $res['ref'] = $produit->getReference();
                 $res['designation'] = $produit->getDesigantion();

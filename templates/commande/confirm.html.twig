@@ -93,8 +93,8 @@
                 <td colspan="7" class="text-right">
                     {{ "Total"|trans }}
                 </td>
-                <td class="text-center">
-                    <span id="total">{{ total|number_format(0, '' , ' ') }}</span>
+                <td class="text-center text-nowrap">
+                    <span id="">{{ total|number_format(0, '' , ' ') }}</span>
                     <input type="hidden" value="{{ total }}" id="totaltamp"/>
                 </td>
             </tr>
@@ -103,7 +103,7 @@
                     {{ "Total Reduction"|trans }}
                 </td>
                 <td class="text-center">
-                    <span id="total">{{ reduction|number_format(0, '' , ' ') }}</span>
+                    <span id="">{{ reduction|number_format(0, '' , ' ') }}</span>
                     <input type="hidden" value="{{ reduction }}" id="totaltamp"/>
                 </td>
             </tr>
@@ -112,7 +112,7 @@
                     {{ "Total TVA"|trans }}
                 </td>
                 <td class="text-center">
-                    <span id="total">{{ tva|number_format(0, '' , ' ') }}</span>
+                    <span id="">{{ tva|number_format(0, '' , ' ') }}</span>
                     <input type="hidden" value="{{ tva }}" id="totaltamp"/>
                 </td>
             </tr>

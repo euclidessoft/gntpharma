@@ -1,74 +1,78 @@
 {% extends 'admin.html.twig' %}
-{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block title %} {{ "Approvisionnement"|trans }} No {{ approvisionner.id }} - GNT Pharma {% endblock %}
 {% block stock %}active{% endblock %}
 
-{% block body %}<div class="container mt-4 fond-7">
-    <h3 class="mt-4 mb-5 text-bold">
-        <i class="fa fa-shop mr-2"></i>
-        {{ "Details Approvisionnement"|trans }}
-    </h3>
+{% block body %}
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-shop mr-2"></i>
+            {{ "Details Approvisionnement"|trans }}
+        </h3>
 
-    <div class="row justify-content-end">
-        <div class="col-lg-4">
-            <table class="table table-success-light table-bordered table-hover table-striped">
-                <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Numero</th>
-                </tr>
-                </thead>
-                <tbody>
-                <td>{{ approvisionner.date|date('d/m/Y') }}</td>
-                <td>{{ approvisionner.id }}</td>
-                </tbody>
-            </table>
+        <div class="row justify-content-end">
+            <div class="col-lg-5">
+                <table class="table table-success-light table-bordered table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th>Numero</th>
+                        <th>Date</th>
+                        <th>Utilisateur</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ approvisionner.id }}</td>
+                        <td>{{ approvisionner.date|date('d/m/Y') }}</td>
+                        <td>{{ approvisionner.user.prenom }} {{ approvisionner.user.nom }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-    {% set total=0 %}
-    <table class="table table-success-light table-bordered table-hover table-striped w-100">
-        <thead>
-        <tr>
-            <th>Code Produit</th>
-            <th>Desigantion</th>
-            <th>N° Lot</th>
-            <th>Peremption</th>
-{#            <th>etat stosk</th>#}
-            <th>Quantité approvisionnée</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for approvisionnement in approvisionnements %}
+        {% set total=0 %}
+        <table class="table table-success-light table-bordered table-hover table-striped w-100 text-center mt-5">
+            <thead>
             <tr>
-                <td> {{ approvisionnement.produit.id }} </td>
-                <td>{{ approvisionnement.produit.desigantion }} </td>
-                <td>{{ approvisionnement.lot }} </td>
-                <td>{{ approvisionnement.peremption|date('d/m/Y') }} </td>
-{#                <td> {{ approvisionnement.produit.stock }} </td>#}
-                <td>{{ approvisionnement.quantite }}</td>
-
-
-
+                <th>Code Produit</th>
+                <th class="text-left">Designation</th>
+                <th>N° Lot</th>
+                <th>Peremption</th>
+                {#            <th>etat stosk</th>#}
+                <th>Quantité</th>
             </tr>
-
-        {% else %}
-            <tr>
-                <td colspan="8">Aucune commande</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <div class="col-md-4 offset-md-4 mt-5 mb-5 pt-2 pb-2 fond-7">
-        <div class="centrer">
-            <div class="row">
-
-                <a href="#" class="btn btn-success float-end">
-                    <i class="fa fa-print"></i> {{ "Imprimer"|trans }}
-                </a>
+            </thead>
+            <tbody>
+            {% for approvisionnement in approvisionnements %}
+                <tr>
+                    <td> {{ approvisionnement.produit.id }} </td>
+                    <td class="text-left">{{ approvisionnement.produit.desigantion }} </td>
+                    <td>{{ approvisionnement.lot }} </td>
+                    <td>{{ approvisionnement.peremption|date('d/m/Y') }} </td>
+                    {#                <td> {{ approvisionnement.produit.stock }} </td>#}
+                    <td>{{ approvisionnement.quantite }}</td>
 
 
+                </tr>
+
+            {% else %}
+                <tr>
+                    <td colspan="8">Aucune commande</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="col-md-4 offset-md-4 mt-5 mb-5 pt-2 pb-2 fond-7">
+            <div class="centrer">
+                <div class="row">
+
+                    <a href="#" class="btn btn-success float-end">
+                        <i class="fa fa-print"></i> {{ "Imprimer"|trans }}
+                    </a>
+
+
+                </div>
             </div>
         </div>
     </div>
-
 {% endblock %}
