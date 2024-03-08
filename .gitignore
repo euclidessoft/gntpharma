@@ -1,5 +1,6 @@
 
 ###> symfony/framework-bundle ###
+.gitignore
 .htaccess
 .env
 .env3
