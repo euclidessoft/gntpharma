@@ -9,7 +9,7 @@
             {{ "Approvisionnement"|trans }}
         </h3>
         <div class="row">
-            <div class="col-lg-5">
+            <div class="col-lg-5 mt-5">
                 {% for message in app.flashes('notice') %}
                     <div class="alert alert-primaire alert-dismissible fade show radius-10 shadow-black">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
@@ -65,16 +65,22 @@
                                             </div>
                                             <div class="modal-body px-5">
                                                 <div class="mt-4">
-                                                Renseignez la quantité: <input type="number" class="form-control"
-                                                                               id="quant{{ produit.id }}">
+                                                    Renseignez la quantité:
+                                                    <label for="quant{{ produit.id }}"></label>
+                                                    <input type="number" class="form-control"
+                                                           id="quant{{ produit.id }}">
                                                 </div>
                                                 <div class="mt-4">
-                                                Numero de lot: <input type="number" class="form-control"
-                                                                               id="numero{{ produit.id }}">
+                                                    Numero de lot:
+                                                    <label for="numero{{ produit.id }}"></label>
+                                                    <input type="number" class="form-control"
+                                                           id="numero{{ produit.id }}">
                                                 </div>
                                                 <div class="mt-4">
-                                                Date de péremption: <input type="date" class="form-control"
-                                                                               id="peremp{{ produit.id }}">
+                                                    Date de péremption:
+                                                    <label for="peremp{{ produit.id }}"></label>
+                                                    <input type="date" class="form-control"
+                                                           id="peremp{{ produit.id }}">
                                                 </div>
 
                                             </div>
@@ -111,53 +117,50 @@
                 </button>
 
                 <table class="table table-success-light table-bordered table-hover table-striped w-100" id="aprovision">
-                    <thead>
+                    <thead class="text-center">
                     <tr>
-                        <th>Reference</th>
-                        <th>Designation</th>
-                        <th>N° Lot</th>
+                        <th>Ref</th>
+                        <th class="text-left">Designation</th>
+                        <th class="text-nowrap">N° Lot</th>
                         <th>Peremption</th>
                         <th>Quantite</th>
-
-                        <th>actions</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
-                    <tbody id="selectprod">
+                    <tbody id="selectprod" class="text-center">
                     {% for produit in panier %}
                         <tr id="tr{{ produit['produit'].id }}">
                             <td>{{ produit['produit'].reference }}</td>
-                            <td>{{ produit['produit'].desigantion }}</td>
+                            <td class="text-left">{{ produit['produit'].desigantion }}</td>
                             <td>{{ produit['produit'].lot }} </td>
-                            <td> {{ produit['produit'].peremption }}</td>
+                            <td> {{ produit['produit'].peremption|date('d/m/Y') }}</td>
 
-                            <td class="text-center">
-<span id="changequantite{{ produit.produit.id }}">
-
+                            <td>
+                                <span id="changequantite{{ produit.produit.id }}">
                                 {{ produit['produit'].quantite }}
-</span>
+                                </span>
 
                             </td>
-                            <td>
+                            <td class="w-25">
 
 
 
 <span id='btnmodf{{ produit.produit.id }}'>
 {#                                <button class="btn btn-success"#}
-{#                                        title="Supprimer cet article"#}
-{#                                        onclick="modif({{ produit.produit.id }},{{ produit['produit'].quantite }})">#}
-{#                                    <i class="fa fa-edit"></i>#}
-{#                                </button>#}
+    {#                                        title="Supprimer cet article"#}
+    {#                                        onclick="modif({{ produit.produit.id }},{{ produit['produit'].quantite }})">#}
+    {#                                    <i class="fa fa-edit"></i>#}
+    {#                                </button>#}
 </span>
-                                <button class="btn btn-danger"
+                                <button class="btn btn-danger mr-2 mb-2"
                                         title="Supprimer cet article" onclick="supprim({{ produit.produit.id }})">
                                     <i class="fa fa-trash"></i>
                                 </button>
 
-                                <button type="button"
-                                        class="btn btn-success mt-3"
+                                <button type="button" class="btn btn-success mb-2"
                                         data-toggle="modal" data-target="#modal{{ produit.produit.id }}"
                                         id="btn{{ produit.produit.id }}">
-                                    <i class="fa fa-plus"></i> Ajouter Lot
+                                    <i class="fa fa-plus"></i> Lot
                                 </button>
 
                             </td>
@@ -194,7 +197,7 @@
                 $.ajax({
                     type: "POST",
                     url: "{{ path('stock_appro_add') }}",
-                    data: "prod=" + produit + "&quantite=" + quant.val()+ "&lot=" + numero.val()+ "&perem=" + peremp.val(),
+                    data: "prod=" + produit + "&quantite=" + quant.val() + "&lot=" + numero.val() + "&perem=" + peremp.val(),
                     success: function (data) {
                         if (data['id'] == 'ok') {
                             $('#selectprod').append(" <tr id='tr" + produit + "'>\n" +
@@ -208,11 +211,11 @@
                                 // "                                   title='Supprimer cet article' onclick='modif(" + produit + "," + quant.val() + ")'>\n" +
                                 // "                                    <i class='fa fa-edit'></i>\n" +
                                 // "                                </button></span>\n" +
-                                "                                <button class='btn btn-danger'\n" +
+                                "                                <button class='btn btn-danger mr-2 mb-2'\n" +
                                 "                                   title='Supprimer cet article' onclick='supprim(" + produit + ")'>\n" +
                                 "                                    <i class='fa fa-trash'></i>\n" +
                                 "                                </button>\n" +
-                                "<button type='button' class='btn btn-success' data-toggle='modal' data-target='#modal"+produit+"'  id='btn"+produit+"'> <i class='fa fa-plus'></i> Ajouter Lot </button></td></tr>");
+                                "<button type='button' class='btn btn-success mb-2' data-toggle='modal' data-target='#modal" + produit + "'  id='btn" + produit + "'> <i class='fa fa-plus'></i> Lot </button></td></tr>");
                             $('#btn' + produit).addClass('disabled');
                             $('#valider1').removeClass('disabled');
                             $('#valider2').removeClass('disabled');
@@ -220,7 +223,7 @@
                             prdt.val("");
                             $("#ajouter" + produit).html("<i class='fa fa-plus'></i> Ajouter");
                         } else {
-                            alert("{{ 'verifier la quantite saisie'|trans }}")
+                            alert("{{ 'Verifier la quantite saisie'|trans }}")
                         }
                     },
                     error: function () {
