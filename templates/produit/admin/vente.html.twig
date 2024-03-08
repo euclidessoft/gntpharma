@@ -5,7 +5,7 @@
 {% block body %}
     <div class="container-fluid mt-4 fond-7">
         <h3 class="mt-4 mb-5 text-bold">
-            <i class="fa-brands fa-product-hunt mr-2"></i>
+            <i class="fa-solid fa-money-bill-trend-up mr-2"></i>
             {{ "Les meilleures Ventes"|trans }}
         </h3>
         {% for message in app.flashes('notice') %}
@@ -17,26 +17,26 @@
             </div>
         {% endfor %}
 
-        <table class="table table-success-light table-bordered table-hover table-striped w-100">
+        <table class="table table-success-light table-bordered text-center table-hover table-striped w-100">
             <thead>
             <tr>
                 <th>Reference</th>
-                <th>Designation</th>
+                <th class="text-left">Designation</th>
                 <th>Session</th>
                 <th>Publique</th>
-                <th>Commande<br> Minimum</th>
-                <th>Fabriquant</th>
+                <th>Commande minimum</th>
+                <th class="text-left">Fabriquant</th>
             </tr>
             </thead>
             <tbody>
             {% for approvisionnement in ventemensuel %}
                 <tr>
                     <td>{{ approvisionnement.produit.reference }}</td>
-                    <td>{{ approvisionnement.produit.desigantion }}</td>
+                    <td class="text-left">{{ approvisionnement.produit.desigantion }}</td>
                     <td>{{ approvisionnement.produit.prix }}</td>
                     <td>{{ approvisionnement.produit.prixpublic }}</td>
                     <td>{{ approvisionnement.produit.mincommande }}</td>
-                    <td>{{ approvisionnement.produit.fabriquant }}</td>
+                    <td class="text-left">{{ approvisionnement.produit.fabriquant }}</td>
                 </tr>
             {% else %}
                 <tr>

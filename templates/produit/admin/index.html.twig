@@ -17,30 +17,34 @@
         </div>
     {% endfor %}
 
-    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+    <table class="table table-success-light table-bordered table-hover table-striped w-100 text-center" id="liste">
         <thead>
         <tr>
             <th>Code</th>
-            <th>Designation</th>
+            <th class="text-left">Designation</th>
             <th>Prix Cession</th>
             <th>Prix Public</th>
             <th>Commande<br> Minimum</th>
-            <th>Fabriquant</th>
-            <th>actions</th>
+            <th class="text-left">Fabriquant</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         {% for produit in produits %}
             <tr>
                 <td>{{ produit.reference }}</td>
-                <td>{{ produit.desigantion }}</td>
+                <td class="text-left">{{ produit.desigantion }}</td>
                 <td>{{ produit.prix }}</td>
                 <td>{{ produit.prixpublic }}</td>
                 <td>{{ produit.mincommande }}</td>
-                <td>{{ produit.fabriquant }}</td>
-                <td>
-                    <a class="btn btn-success" href="{{ path('produit_show', {'id': produit.id}) }}"><i class="fa fa-list-check"></i> Afficher</a>
-                    <a class="btn btn-success" href="{{ path('produit_edit', {'id': produit.id}) }}"><i class="fa fa-edit"></i> Modifier</a>
+                <td class="text-left">{{ produit.fabriquant }}</td>
+                <td class="text-nowrap">
+                    <a class="btn btn-success" title="Voir" href="{{ path('produit_show', {'id': produit.id}) }}">
+                        <i class="fa fa-eye"></i>
+                    </a>
+                    <a class="btn btn-success-light" title="Modifier" href="{{ path('produit_edit', {'id': produit.id}) }}">
+                        <i class="fa fa-edit"></i>
+                    </a>
                     {{ include('produit/admin/_delete_form.html.twig') }}
                 </td>
             </tr>

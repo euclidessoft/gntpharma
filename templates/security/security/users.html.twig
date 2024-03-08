@@ -3,97 +3,100 @@
 {% block ag %} class="btn btn-primary mt-3" {% endblock %}
 
 {% block body %}
-<div class="container-fluid mt-4 py-4 fond-7">
-    <h3 class="mt-4 mb-5 text-bold">
-        <i class="fa fa-user mr-2"></i>
-        {{ 'Profil Utilisateur'|trans }}
-    </h3>
-    {{ include('security/security/boutons.html.twig') }}
-    <h3 class="text-bold">
-        <i class="fa fa-users"></i>
-        {{ 'les utilisateurs'|trans }}
-    </h3>
+    <div class="container-fluid mt-4 mb-4 p-4 fond-7">
+        <h3 class="text-bold">
+            <i class="fa fa-user mr-2"></i>
+            {{ 'Administration'|trans }}
+        </h3>
+        <div class="row">
 
-    {% if is_granted("ROLE_ADMIN") %}
-        <a href="{{ path('security_admin_register') }}" class="btn btn-outline-success mb-2 mr-2">
-            <i class="fa fa-user-plus"></i>
-            cr&eacute;er nouvel utilisateur
-        </a>
-
-    {% endif %}
-    {% for message in app.flashes('notice') %}
-        <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {{ message|trans }}
-        </div>
-    {% endfor %}
-    <table class="table table-success-light table-bordered table-hover table-striped" id="liste">
-        <thead>
-        <tr>
-            <th>
-                {{ 'Nom et Prénom'|trans }}
-            </th>
-            <th class="text-center">
-                {{ 'Téléphone'|trans }}
-            </th>
-            <th class="text-center">
-                {{ 'Email'|trans }}
-            </th>
-            {% if is_granted("ROLE_ADMIN") %}
-                <th>
-                    {{ 'Actions'|trans }}
-                </th>
-            {% endif %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-        {% if user != app.user %}
-        <tr>
-            <td data-label="{{ 'Prénom'|trans }}">
-                <b> <a href="{{ path('security_user', { user : user.id }) }}">
-                        {{ user.nom|upper }} {{ user.prenom }}
-                    </a></b>
-            </td>
-            <td data-label="{{ 'Téléphone'|trans }}" class="phone">
-                <b> <a href="{{ path('security_user', { user : user.id }) }}">
-                        {{ user.phone }}
-                    </a></b>
-            </td>
-            <td data-label="{{ 'email'|trans }}" class="phone">
-                <b> <a href="{{ path('security_user', { user : user.id }) }}">
-                        {{ user.email }}
-                    </a></b>
-            </td>
-            {% if is_granted("ROLE_ADMIN") %}
-                <td>
-                    <button class="btn btn-normal btn-danger mb-2 mr-2 l-5" onclick="del({{ user.id }})" id="btn">
-                        <i class="fa fa-trash"></i>
-                        {{ 'Supprimer'|trans }}
-                    </button>
-
-                    {% if user.enabled == 1 %}
-                        <button class="btn btn-shadow btn-normal mb-2 btn-warning" id="btn{{ user.id }}"
-                                onclick="userdisable({{ user.id }})">
-                            <i class="fa fa-user-lock"></i>
-                            {{ 'Désactiver'|trans }}
-                        </button>
-                    {% else %}
-                        <button class="btn btn-shadow btn-normal mb-2 btn-success" id="btn{{ user.id }}"
-                                onclick="userenable({{ user.id }})">
-                            <i class="fa fa-lock-open"></i>
-                            {{ 'Activer'|trans }}
-                        </button>
-                    {% endif %}
-
-                </td>
-            {% endif %}
-            {% endif %}
-
+            {% for message in app.flashes('notice') %}
+                <div class="col-lg-12 mt-5">
+                    <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{ message|trans }}
+                    </div>
+                </div>
             {% endfor %}
-        </tbody>
-    </table>
-</div>
+            <div class="col-lg-12 mt-5">
+                {% if is_granted("ROLE_ADMIN") %}
+                    <a href="{{ path('security_admin_register') }}" class="btn btn-green mb-2">
+                        <i class="fa fa-user-plus"></i>
+                        Créer nouvel utilisateur
+                    </a>
+                {% endif %}
+            </div>
+            <div class="col-lg-12 mt-5">
+                <table class="table table-success-light table-bordered table-hover table-striped" id="liste">
+                    <thead>
+                    <tr>
+                        <th>
+                            {{ 'Nom et Prénom'|trans }}
+                        </th>
+                        <th class="text-center">
+                            {{ 'Téléphone'|trans }}
+                        </th>
+                        <th class="text-center">
+                            {{ 'Email'|trans }}
+                        </th>
+                        {% if is_granted("ROLE_ADMIN") %}
+                            <th>
+                                {{ 'Actions'|trans }}
+                            </th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                    {% if user != app.user %}
+                    <tr>
+                        <td data-label="{{ 'Prénom'|trans }}">
+                            <b> <a href="{{ path('security_user', { user : user.id }) }}">
+                                    {{ user.nom|upper }} {{ user.prenom }}
+                                </a></b>
+                        </td>
+                        <td data-label="{{ 'Téléphone'|trans }}" class="phone">
+                            <b> <a href="{{ path('security_user', { user : user.id }) }}">
+                                    {{ user.phone }}
+                                </a></b>
+                        </td>
+                        <td data-label="{{ 'email'|trans }}" class="phone">
+                            <b> <a href="{{ path('security_user', { user : user.id }) }}">
+                                    {{ user.email }}
+                                </a></b>
+                        </td>
+                        {% if is_granted("ROLE_ADMIN") %}
+                            <td>
+                                <button class="btn btn-normal btn-danger mb-2 mr-2 l-5" onclick="del({{ user.id }})"
+                                        id="btn">
+                                    <i class="fa fa-trash"></i>
+                                    {{ 'Supprimer'|trans }}
+                                </button>
+
+                                {% if user.enabled == 1 %}
+                                    <button class="btn btn-shadow btn-normal mb-2 btn-warning" id="btn{{ user.id }}"
+                                            onclick="userdisable({{ user.id }})">
+                                        <i class="fa fa-user-lock"></i>
+                                        {{ 'Désactiver'|trans }}
+                                    </button>
+                                {% else %}
+                                    <button class="btn btn-shadow btn-normal mb-2 btn-success" id="btn{{ user.id }}"
+                                            onclick="userenable({{ user.id }})">
+                                        <i class="fa fa-lock-open"></i>
+                                        {{ 'Activer'|trans }}
+                                    </button>
+                                {% endif %}
+
+                            </td>
+                        {% endif %}
+                        {% endif %}
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     {% block scripts %}
         <script>
             function userdisable(id) {
@@ -149,7 +152,7 @@
                         data: "usr=" + id,
                         success: function (data) {
                             if (data['ok'] != '') {
-                               document.location.href= data['ok'];
+                                document.location.href = data['ok'];
                             }
                         },
                         error: function () {
