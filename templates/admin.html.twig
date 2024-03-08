@@ -45,7 +45,7 @@
                             <i class="fas fa-dashboard fa-lg"></i>
                         </div>
                         <div class="title">
-                            {{ 'tableau de bord'|trans }}
+                            {{ 'Tableau de bord'|trans }}
                         </div>
                     </a>
                 </li>
@@ -54,7 +54,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="stock" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
                             <div class="icone">
-                                <i class="fas fa-shop fa-lg"></i>
+                                <i class="fas fa-warehouse fa-lg"></i>
                             </div>
                             <div class="title">
                                 {{ 'Stock'|trans }}
@@ -63,27 +63,30 @@
                         <ul class=" dropdown-menu" aria-labelledby="pelerin">
                             <li class="dropdown-item">
                                 <a class="nav-link" href="{{ path('stock_index') }}">
-                                    <i class="fas fa-shop mr-2"></i>
-                                    {{ 'Etat Stock Produits'|trans }}
+                                    <i class="fas fa-warehouse mr-2"></i>
+                                    {{ 'Etat du Stock'|trans }}
                                 </a>
                             </li>
                             <li class="dropdown-item submenu">
                                 <a class="nav-link dropdown-toggle" href="#" id="reapprovisionnement"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-shop mr-2"></i>
+                                    <i class="fas fa-warehouse"></i>
+                                    <i class="fas fa-warehouse fa-arrow-left mr-2"></i>
                                     {{ 'Réapprovisionnement'|trans }}
                                 </a>
                                 <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
                                     <li class="dropdown-item">
                                         <a class="nav-link" href="{{ path('stock_appro_index') }}">
-                                            <i class="fas fa-shop mr-2"></i>
-                                            {{ 'Nouveau Approvisionnement'|trans }}
+                                            <i class="fas fa-warehouse"></i>
+                                            <i class="fas fa-plus mr-2"></i>
+                                            {{ 'Nouvelle'|trans }}
                                         </a>
                                     </li>
                                     <li class="dropdown-item">
                                         <a class="nav-link" href="{{ path('stock_historique') }}">
-                                            <i class="fas fa-shop mr-2"></i>
-                                            {{ 'Historique des approvisionnements'|trans }}
+                                            <i class="fas fa-warehouse"></i>
+                                            <i class="fas fa-warehouse fa-list mr-2"></i>
+                                            {{ 'Historique'|trans }}
                                         </a>
                                     </li>
                                 </ul>
@@ -91,20 +94,20 @@
                             <li class="dropdown-item submenu">
                                 <a class="nav-link dropdown-toggle" href="#" id="livraison" data-toggle="dropdown"
                                    aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-shop mr-2"></i>
+                                    <i class="fas fa-truck-fast mr-2"></i>
                                     {{ 'Livraison'|trans }}
                                 </a>
                                 <ul class="dropdown-submenu" aria-labelledby="livraison">
                                     <li class="dropdown-item">
                                         <a class="nav-link" href="{{ path('livraison_index') }}">
-                                            <i class="fas fa-shop mr-2"></i>
-                                            {{ 'Nouvelle Livraison'|trans }}
+                                            <i class="fas fa-truck-fast mr-2"></i>
+                                            {{ 'Nouvelle'|trans }}
                                         </a>
                                     </li>
                                     <li class="dropdown-item">
                                         <a class="nav-link" href="{{ path('livraison_historique') }}">
-                                            <i class="fas fa-shop mr-2"></i>
-                                            {{ 'Historique des Livraisons'|trans }}
+                                            <i class="fas fa-truck-fast mr-2"></i>
+                                            {{ 'Historique'|trans }}
                                         </a>
                                     </li>
                                 </ul>
@@ -133,26 +136,26 @@
                         {% endif %}
                         <li class="dropdown-item">
                             <a class="nav-link" href="{{ path('produit_index') }}">
-                                <i class="fas fa-user-plus mr-2"></i>
+                                <i class="fas fa-list mr-2"></i>
                                 {{ 'Tous les produits'|trans }}
                             </a>
                         </li>
 
                         <li class="dropdown-item">
                             <a class="nav-link" href="{{ path('produit_arrivage_admin') }}">
-                                <i class="fas fa-list mr-2"></i>
+                                <i class="fas fa-plane-arrival mr-2"></i>
                                 {{ 'Arrivage'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-user-clock mr-1"></i>
-                                {{ 'Pré-arrivages'|trans }}
-                            </a>
-                        </li>
+                        {# <li class="dropdown-item">
+                             <a class="nav-link" href="#">
+                                 <i class="fas fa-user-clock mr-1"></i>
+                                 {{ 'Pré-arrivages'|trans }}
+                             </a>
+                         </li>#}
                         <li class="dropdown-item">
                             <a class="nav-link" href="{{ path('produit_vente_admin') }}">
-                                <i class="fas fa-user-clock mr-1"></i>
+                                <i class="fas fa-money-bill-trend-up mr-1"></i>
                                 {{ 'Meilleures Ventes'|trans }}
                             </a>
                         </li>
@@ -172,20 +175,20 @@
                         {% if is_granted('ROLE_ADMIN') %}
                             <li class="dropdown-item">
                                 <a class="nav-link" href="{{ path('promotion_new') }}">
-                                    <i class="fas fa-user-plus mr-2"></i>
-                                    {{ 'Creer une promotion'|trans }}
+                                    <i class="fa fa-plus mr-2"></i>
+                                    {{ 'Créer une promotion'|trans }}
                                 </a>
                             </li>
                         {% endif %}
                         <li class="dropdown-item">
                             <a class="nav-link" href="{{ path('promotion_courante') }}">
-                                <i class="fas fa-user-plus mr-2"></i>
+                                <i class="fas fa-tag mr-2"></i>
                                 {{ 'Promotions en cours'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link" href="{{ path('promotion_index') }}">
-                                <i class="fas fa-user-plus mr-2"></i>
+                                <i class="fas fa-tags mr-2"></i>
                                 {{ 'Toutes les promotions'|trans }}
                             </a>
                         </li>
@@ -205,13 +208,13 @@
                         <ul class=" dropdown-menu" aria-labelledby="pelerin">
                             <li class="dropdown-item">
                                 <a class="nav-link" href="{{ path('commande_panier_suivi') }}">
-                                    <i class="fas fa-user-plus mr-2"></i>
+                                    <i class="fas fa-shopping-cart mr-2"></i>
                                     {{ 'Suivi Commande'|trans }}
                                 </a>
                             </li>
                             <li class="dropdown-item">
                                 <a class="nav-link" href="{{ path('commande_panier_extranet') }}">
-                                    <i class="fas fa-users mr-2"></i>
+                                    <i class="fas fa-cart-arrow-down mr-2"></i>
                                     {{ 'Commandes Extranet'|trans }}
                                 </a>
                             </li>
@@ -241,7 +244,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="Produits" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
                             <div class="icone">
-                                <i class="fas fa-staff-snake fa-lg"></i>
+                                <i class="fas fa-user fa-lg"></i>
                             </div>
                             <div class="title">
                                 {{ 'Officine'|trans }}
@@ -250,20 +253,20 @@
                         <ul class=" dropdown-menu" aria-labelledby="pelerin">
                             <li class="dropdown-item">
                                 <a class="nav-link" href="{{ path('avoir_choix') }}">
-                                    <i class="fas fa-money-bill mr-2"></i>
+                                    <i class="fa fa-plus mr-2"></i>
                                     {{ 'Créer avoir'|trans }}
                                 </a>
                             </li>
                             <li class="dropdown-item">
                                 <a class="nav-link" href="{{ path('avoir_index') }}">
-                                    <i class="fas fa-users mr-2"></i>
+                                    <i class="fas fa-money-bill mr-2"></i>
                                     {{ 'Tous les avoirs'|trans }}
                                 </a>
                             </li>
                             <li class="dropdown-item">
                                 <a class="nav-link" href="{{ path('security_profile') }}">
-                                    <i class="fas fa-list mr-2"></i>
-                                    {{ 'Compte Client'|trans }}
+                                    <i class="fas fa-users mr-2"></i>
+                                    {{ 'Clients'|trans }}
                                 </a>
                             </li>
                         </ul>
