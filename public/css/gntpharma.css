@@ -1,5 +1,6 @@
 :root {
     --vert: #039c4f;
+    --vert-light: #cefde5;
     --vert-clair: #c5fbae;
     --gris-hover: #444;
     --vert-hover: #036f38;
@@ -266,32 +267,34 @@ tr {
     white-space: nowrap;
     font-weight: bold;
 }
-
-.nav-item > .nav-link:active,
+/*
 .nav-item > .nav-link:focus,
-.nav-item > .nav-link:hover {
-    background: var(--vert-clair);
-    color: var(--vert);
-!important;
-}
-
-/*.nav-item.active .nav-link {
+.nav-item > .nav-link:active {
     background: var(--vert-clair);
     color: var(--vert) !important;
 }*/
+
+/*.nav-item > */.nav-link:hover {
+    background: var(--blanc) !important;
+    color: var(--vert) !important;
+}
+
+.nav-link.active {
+    background: var(--vert-clair);
+    color: var(--vert) !important;
+}
 
 .dropdown-item > .nav-link {
     color: var(--blanc);
     padding: 8px 25px;
 }
-
+/*
 .dropdown-item > .nav-link:active,
 .dropdown-item > .nav-link:focus,
 .dropdown-item > .nav-link:hover {
     background: var(--vert-clair);
     color: var(--vert);
-!important;
-}
+}*/
 
 .dropdown-item {
     padding: 0;
@@ -447,12 +450,12 @@ td[data-label="colspan"] {
     border: 1px solid var(--vert);
     border-radius: 10px;
 }
-
+/*
 .dropright.active > a,
 .active a:active {
     background: var(--vert-clair);
     color: var(--vert);
-}
+}*/
 
 
 .pagination > .active > a,
