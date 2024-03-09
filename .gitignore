@@ -1,6 +1,5 @@
 
 ###> symfony/framework-bundle ###
-.gitignore
 .htaccess
 /public/bundles/
 /var/
