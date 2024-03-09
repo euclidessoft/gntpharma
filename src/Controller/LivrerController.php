@@ -185,6 +185,36 @@ class LivrerController extends AbstractController
     }
 
     /**
+     * @Route("/Reste_print/{id}", name="reste_show_print", methods={"GET"})
+     */
+    public function resteprint(Commande $commande, LivrerResteRepository $livrerResteRepository, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session): Response
+    {// traitement livraison
+
+        $session->remove("livraison");
+        $commandeproduits = $livrerResteRepository->findBy(['commande' => $commande]);
+        $listcommande = [];
+        foreach ($commandeproduits as $commandeproduit) {
+            $stock = $repository->find($commandeproduit->getProduit()->getId())->getStock();
+            $commandeproduit->setStock($stock);
+            $listcommande[] = $commandeproduit;
+        }
+        $session->set("traitement", []);
+        $response = $this->render('livrer/reste_show_print.html.twig', [
+            'commandes' => $listcommande,
+            'commandereference' => $commande,
+        ]);
+        $response->setSharedMaxAge(0);
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('no-store', true);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->setCache([
+            'max_age' => 0,
+            'private' => true,
+        ]);
+        return $response;
+    }
+
+    /**
      * @Route("/Historique/{id}", name="historique_show", methods={"GET"})
      */
     public function history_show(Commande $commande, LivrerRepository $livrerRepository, LivrerProduitRepository $livrerProduitRepository, ProduitRepository $repository, SessionInterface $session): Response
@@ -200,6 +230,40 @@ class LivrerController extends AbstractController
 
 
             $response = $this->render('livrer/history_show.html.twig', [
+//                'commandes' => $commandeproduits,
+                'commandereference' => $commande,
+                'livrer' => $livrer,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+
+        }
+
+    }
+
+    /**
+     * @Route("/Historique_print/{id}", name="historique_show_print", methods={"GET"})
+     */
+    public function history_show_print(Commande $commande, LivrerRepository $livrerRepository, LivrerProduitRepository $livrerProduitRepository, ProduitRepository $repository, SessionInterface $session): Response
+    {// traitement livraison
+        if ($commande->getLivraison()) {
+            $livrer = $livrerRepository->findBy(['commande' => $commande]);
+//            $histo = [];
+//            foreach ($livrer as $item) {
+//                $histo[] = $item->getId();
+//            }
+//
+//            $commandeproduits = $livrerProduitRepository->historique($histo);
+
+
+            $response = $this->render('livrer/history_show_print.html.twig', [
 //                'commandes' => $commandeproduits,
                 'commandereference' => $commande,
                 'livrer' => $livrer,
@@ -495,7 +559,7 @@ class LivrerController extends AbstractController
             $em->persist($commande);
             $em->flush();
             $this->addFlash('notice', 'Livraison enregistrée avec succés');
-            $response = $this->redirectToRoute('livraison_index');
+            $response = $this->redirectToRoute('historique_show_print', ['id' => $commande->getId()]);
 
             $session->remove('traitement');
 
@@ -612,7 +676,7 @@ class LivrerController extends AbstractController
                 $em->persist($commande);
                 $em->flush();
                 $this->addFlash('notice', 'Livraison enregistrée avec succés');
-                $response = $this->redirectToRoute('livraison_index');
+                $response = $this->redirectToRoute('reste_show_print', ['id' => $commande->getId()]);
 
 
             $session->remove('traitement');

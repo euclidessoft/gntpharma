@@ -279,7 +279,7 @@ class ApprovisionnementController extends AbstractController
                 $session->remove("approv");
             }
             $this->addFlash('notice', 'Approvisionnement réussie');
-            $response = $this->redirectToRoute('stock_historique');
+            $response = $this->redirectToRoute('Details_print', ['id' => $approvisionner->getId()]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);
@@ -307,11 +307,45 @@ class ApprovisionnementController extends AbstractController
     /**
      * @Route("/Details/{id}", name="show", methods={"GET"})
      */
-    public function show(Approvisionner $approvisionner, ApprovisionnementRepository $repository): Response
+    public function details(Approvisionner $approvisionner, ApprovisionnementRepository $repository): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
 
             $response = $this->render('approvisionnement/show.html.twig', [
+                'approvisionner' => $approvisionner,
+                'approvisionnements' => $repository->findBy(['approvisionner' => $approvisionner]),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/Details_print/{id}", name="show_print", methods={"GET"})
+     */
+    public function detailsprint(Approvisionner $approvisionner, ApprovisionnementRepository $repository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
+
+            $response = $this->render('approvisionnement/show_print.html.twig', [
                 'approvisionner' => $approvisionner,
                 'approvisionnements' => $repository->findBy(['approvisionner' => $approvisionner]),
             ]);

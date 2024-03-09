@@ -110,21 +110,41 @@ class StockController extends AbstractController
             ]);
             return $response;
        }
-// else if ($this->get('security.authorization_checker')->isGranted('ROLE_ROLE')) {
-//
-//            $response = $this->render('produit/show.html.twig', [
-//                'produit' => $produit,
-//            ]);
-//            $response->setSharedMaxAge(0);
-//            $response->headers->addCacheControlDirective('no-cache', true);
-//            $response->headers->addCacheControlDirective('no-store', true);
-//            $response->headers->addCacheControlDirective('must-revalidate', true);
-//            $response->setCache([
-//                'max_age' => 0,
-//                'private' => true,
-//            ]);
-//            return $response;
-  //    }
+      else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/print/{id}", name="produit_show_print", methods={"GET"})
+     */
+    public function produitprint(Produit $produit, StockRepository $repository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
+
+            $response = $this->render('stock/produit_show_print.html.twig', [
+                'stock' => $repository->findBy(['produit' => $produit]),
+                'produit' => $produit,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+       }
       else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
