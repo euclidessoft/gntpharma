@@ -238,7 +238,7 @@
                     url: "{{ path('livraison_details') }}",
                     data: "prod=" + id,
                     success: function (data) {
-                        // if (data['id'] == 'ok') {
+                         if (data['id'] == 'ok') {
 
                             for (var i=0; i < data.length; i++) {
                                 var date = new Date(data[i]['peremption']['date']).toLocaleDateString();
@@ -270,9 +270,9 @@
                             // $('#text' + id).val('');
                             $('#ajouter' + id).html("<i class='fa fa-check'></i> Valider");
 
-                        {#} else {#}
-                        {#    alert("{{ 'verifier la quantite saisie'|trans }}")#}
-                        {#}#}
+                        } else {
+                             $('#numerolot'+id).html(" <tr><td colspan='4'>Produit en rupture</td></tr>");
+                        }
                     },
                     error: function () {
                         alert("{{ 'La requête n a pas abouti'|trans }}");
