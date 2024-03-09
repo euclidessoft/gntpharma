@@ -1,0 +1,48 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ "Livraison"|trans }} - GNT Pharma {% endblock %}
+{% block Stock %}active{% endblock %}
+
+{% block body %}
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-shopping-cart mr-2"></i>
+            {{ "historique des livraisons"|trans }}
+        </h3>
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    &times;
+                </button>
+                {{ message|trans }}
+            </div>
+        {% endfor %}
+
+
+        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
+            <thead>
+            <tr>
+                <th>N° commande </th>
+                <th>Client</th>
+                <th>Date</th>
+                <th>Detqils</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for livrer in livrers %}
+                <tr>
+                    <td>{{ livrer.commande.id }}</td>
+                    <td>{{ livrer.commande.user.nom }}</td>
+                    <td>{{ livrer.commande.date|date('d/m/Y') }}</td>
+                    <td>
+                        <a class="btn btn-success" href="{{ path('livraison_historique_show', {'id': livrer.commande.id}) }}"><i class="fa fa-list"></i> Afficher</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">Aucune commande</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
