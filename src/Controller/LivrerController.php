@@ -264,17 +264,25 @@ class LivrerController extends AbstractController
             $id = $request->get('prod');// recuperation de id produit
             $quantite = $request->get('quantite');// recuperation de la quantite commamde
             $stock = $repository->findBy(['produit' => $id]); // recuperation de id produit dans la db
-            foreach ($stock as $stockproduit) {
+            if(!empty($stock)) {
+                foreach ($stock as $stockproduit) {
+                    $res[] = [
+                        'lot' => $stockproduit->getLot(),
+                        'peremption' => $stockproduit->getPeremption(),
+                        'quantite' => $stockproduit->getQuantite(),
+                        'stock' => $stockproduit->getQuantite(),
+                    ];
+                }
+            }
+            else{
                 $res[] = [
-                    'lot' => $stockproduit->getLot(),
-                    'peremption' => $stockproduit->getPeremption(),
-                    'quantite' => $stockproduit->getQuantite(),
-                    'stock' => $stockproduit->getQuantite(),
+                    'lot' => 'indisponible',
+                    'peremption' => 'indisponible',
+                    'quantite' => 'indisponible',
+                    'stock' => 'indisponible',
                 ];
             }
 
-
-//                $res['id'] = 'ok';
 
             $response = new Response();
             $response->headers->set('content-type', 'application/json');
