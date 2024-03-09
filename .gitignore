@@ -2,7 +2,6 @@
 ###> symfony/framework-bundle ###
 .gitignore
 .htaccess
-.env
 /public/bundles/
 /var/
 /vendor/
