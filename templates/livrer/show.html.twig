@@ -238,7 +238,7 @@
                     url: "{{ path('livraison_details') }}",
                     data: "prod=" + id,
                     success: function (data) {
-                         if (data['id'] == 'ok') {
+                         if (data[0]['id'] == 'ok') {
 
                             for (var i=0; i < data.length; i++) {
                                 var date = new Date(data[i]['peremption']['date']).toLocaleDateString();

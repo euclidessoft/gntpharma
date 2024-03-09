@@ -264,9 +264,10 @@ class LivrerController extends AbstractController
             $id = $request->get('prod');// recuperation de id produit
             $quantite = $request->get('quantite');// recuperation de la quantite commamde
             $stock = $repository->findBy(['produit' => $id]); // recuperation de id produit dans la db
-            if(!empty($stock)) {
+            if(count($stock) > 0) {
                 foreach ($stock as $stockproduit) {
                     $res[] = [
+                        'id' => 'ok',
                         'lot' => $stockproduit->getLot(),
                         'peremption' => $stockproduit->getPeremption(),
                         'quantite' => $stockproduit->getQuantite(),
@@ -276,6 +277,7 @@ class LivrerController extends AbstractController
             }
             else{
                 $res[] = [
+                    'id' => 'no',
                     'lot' => 'indisponible',
                     'peremption' => 'indisponible',
                     'quantite' => 'indisponible',
