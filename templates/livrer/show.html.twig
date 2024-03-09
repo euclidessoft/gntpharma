@@ -271,8 +271,9 @@
                             $('#ajouter' + id).html("<i class='fa fa-check'></i> Valider");
 
                         } else {
-                             $('#numerolot'+id).html(" <tr><td colspan='4'>Produit en rupture</td></tr>");
+                             $('#numerolot'+id).html(" <tr><td colspan='4'>{{ 'Produit en rupture'|trans }}</td></tr>");
                              $('#ajouter' + id).html("<i class='fa fa-check'></i> Valider");
+                             $('#ajouter' + id).addClass('disabled');
                         }
                     },
                     error: function () {
