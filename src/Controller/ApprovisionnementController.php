@@ -248,11 +248,11 @@ class ApprovisionnementController extends AbstractController
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
             $produits = $produitRepository->findAll();
             $approv = $session->get("approv", []);
-
+            $em = $this->getDoctrine()->getManager();
+            $approvisionner = new  Approvisionner();
 
             if (count($approv) >= 1) {
-                $em = $this->getDoctrine()->getManager();
-                $approvisionner = new  Approvisionner();
+
                 $approvisionner->setUser($this->getUser());
                 $em->persist($approvisionner);
                 $i = 1;
@@ -279,7 +279,7 @@ class ApprovisionnementController extends AbstractController
                 $session->remove("approv");
             }
             $this->addFlash('notice', 'Approvisionnement réussie');
-            $response = $this->redirectToRoute('Details_print', ['id' => $approvisionner->getId()]);
+            $response = $this->redirectToRoute('stock_show_print', ['id' => $approvisionner->getId()]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);
