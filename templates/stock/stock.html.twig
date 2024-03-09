@@ -1,12 +1,13 @@
 {% extends 'admin.html.twig' %}
 {% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
-{% block order %}active{% endblock %}
+{% block stock %}active{% endblock %}
+{% block etat_stock %}active{% endblock %}
 
 {% block body %}
 <div class="container mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fa fa-shopping-cart mr-2"></i>
-        {{ "Etat stock Produits"|trans }}
+        {{ "Etat stock produits"|trans }}
     </h3>
     <ul class="nav nav-tabs mb-4">
         {% if is_granted('ROLE_STOCK') %}
