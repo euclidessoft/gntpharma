@@ -51,7 +51,8 @@
                 </li>
                 {% if is_granted('ROLE_STOCK') %}
                     <li class="nav-item dropright" title="{{ 'Stock'|trans }}">
-                        <a class="nav-link dropdown-toggle {% block stock %}{% endblock %}" href="#" id="stock" data-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle {% block stock %}{% endblock %}" href="#" id="stock"
+                           data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
                             <div class="icone">
                                 <i class="fas fa-warehouse fa-lg"></i>
@@ -62,13 +63,15 @@
                         </a>
                         <ul class=" dropdown-menu" aria-labelledby="stock">
                             <li class="dropdown-item">
-                                <a class="nav-link {% block etat_stock %}{% endblock %}" href="{{ path('stock_index') }}">
+                                <a class="nav-link {% block etat_stock %}{% endblock %}"
+                                   href="{{ path('stock_index') }}">
                                     <i class="fas fa-warehouse mr-2"></i>
                                     {{ 'Etat du Stock'|trans }}
                                 </a>
                             </li>
                             <li class="dropdown-item submenu">
-                                <a class="nav-link dropdown-toggle {% block appro %}{% endblock %}" href="#" id="reapprovisionnement"
+                                <a class="nav-link dropdown-toggle {% block appro %}{% endblock %}" href="#"
+                                   id="reapprovisionnement"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-warehouse"></i>
                                     <i class="fas fa-warehouse fa-arrow-left mr-2"></i>
@@ -76,14 +79,16 @@
                                 </a>
                                 <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
                                     <li class="dropdown-item">
-                                        <a class="nav-link  {% block new_appro %}{% endblock %}" href="{{ path('stock_appro_index') }}">
+                                        <a class="nav-link  {% block new_appro %}{% endblock %}"
+                                           href="{{ path('stock_appro_index') }}">
                                             <i class="fas fa-warehouse"></i>
                                             <i class="fas fa-plus mr-2"></i>
                                             {{ 'Nouvelle'|trans }}
                                         </a>
                                     </li>
                                     <li class="dropdown-item">
-                                        <a class="nav-link {% block all_appro %}{% endblock %}" href="{{ path('stock_historique') }}">
+                                        <a class="nav-link {% block all_appro %}{% endblock %}"
+                                           href="{{ path('stock_historique') }}">
                                             <i class="fas fa-warehouse"></i>
                                             <i class="fas fa-warehouse fa-list mr-2"></i>
                                             {{ 'Historique'|trans }}
@@ -92,20 +97,23 @@
                                 </ul>
                             </li>
                             <li class="dropdown-item submenu">
-                                <a class="nav-link dropdown-toggle {% block livraison %}{% endblock %}" href="#" id="livraison" data-toggle="dropdown"
+                                <a class="nav-link dropdown-toggle {% block livraison %}{% endblock %}" href="#"
+                                   id="livraison" data-toggle="dropdown"
                                    aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-truck-fast mr-2"></i>
                                     {{ 'Livraison'|trans }}
                                 </a>
                                 <ul class="dropdown-submenu" aria-labelledby="livraison">
                                     <li class="dropdown-item">
-                                        <a class="nav-link {% block new_livraison %}{% endblock %}" href="{{ path('livraison_index') }}">
+                                        <a class="nav-link {% block new_livraison %}{% endblock %}"
+                                           href="{{ path('livraison_index') }}">
                                             <i class="fas fa-truck-fast mr-2"></i>
                                             {{ 'Nouvelle'|trans }}
                                         </a>
                                     </li>
                                     <li class="dropdown-item">
-                                        <a class="nav-link  {% block all_livraison %}{% endblock %}" href="{{ path('livraison_historique') }}">
+                                        <a class="nav-link  {% block all_livraison %}{% endblock %}"
+                                           href="{{ path('livraison_historique') }}">
                                             <i class="fas fa-truck-fast mr-2"></i>
                                             {{ 'Historique'|trans }}
                                         </a>
@@ -116,7 +124,8 @@
                     </li>
                 {% endif %}
                 <li class="nav-item dropright" title="{{ 'Produits'|trans }}">
-                    <a class="nav-link dropdown-toggle {% block produit %} {% endblock %}" href="#" id="produits" data-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle {% block produit %} {% endblock %}" href="#" id="produits"
+                       data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
                             <i class="fa-brands fa-product-hunt fa-lg"></i>
@@ -128,21 +137,24 @@
                     <ul class=" dropdown-menu" aria-labelledby="produits">
                         {% if is_granted('ROLE_STOCK') %}
                             <li class="dropdown-item">
-                                <a class="nav-link {% block new_produit %}{% endblock %}" href="{{ path('produit_new') }}">
+                                <a class="nav-link {% block new_produit %}{% endblock %}"
+                                   href="{{ path('produit_new') }}">
                                     <i class="fa fa-plus mr-2"></i>
                                     {{ 'Nouveau produit'|trans }}
                                 </a>
                             </li>
                         {% endif %}
                         <li class="dropdown-item">
-                            <a class="nav-link {% block all_produits %}{% endblock %}" href="{{ path('produit_index') }}">
+                            <a class="nav-link {% block all_produits %}{% endblock %}"
+                               href="{{ path('produit_index') }}">
                                 <i class="fas fa-list mr-2"></i>
                                 {{ 'Tous les produits'|trans }}
                             </a>
                         </li>
 
                         <li class="dropdown-item">
-                            <a class="nav-link {% block arrivage %}{% endblock %}" href="{{ path('produit_arrivage_admin') }}">
+                            <a class="nav-link {% block arrivage %}{% endblock %}"
+                               href="{{ path('produit_arrivage_admin') }}">
                                 <i class="fas fa-plane-arrival mr-2"></i>
                                 {{ 'Arrivage'|trans }}
                             </a>
@@ -154,7 +166,8 @@
                              </a>
                          </li>#}
                         <li class="dropdown-item">
-                            <a class="nav-link {% block ventes %}{% endblock %}" href="{{ path('produit_vente_admin') }}">
+                            <a class="nav-link {% block ventes %}{% endblock %}"
+                               href="{{ path('produit_vente_admin') }}">
                                 <i class="fas fa-money-bill-trend-up mr-1"></i>
                                 {{ 'Meilleures ventes'|trans }}
                             </a>
@@ -162,7 +175,8 @@
                     </ul>
                 </li>
                 <li class="nav-item dropright" title="{{ 'Promotion'|trans }}">
-                    <a class="nav-link dropdown-toggle {% block promotion %}{% endblock %}" href="#" id="promotion" data-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle {% block promotion %}{% endblock %}" href="#" id="promotion"
+                       data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
                             <i class="fas fa-tags fa-lg"></i>
@@ -174,20 +188,23 @@
                     <ul class=" dropdown-menu" aria-labelledby="promotion">
                         {% if is_granted('ROLE_ADMIN') %}
                             <li class="dropdown-item">
-                                <a class="nav-link {% block new_promotion %}{% endblock %}" href="{{ path('promotion_new') }}">
+                                <a class="nav-link {% block new_promotion %}{% endblock %}"
+                                   href="{{ path('promotion_new') }}">
                                     <i class="fa fa-plus mr-2"></i>
                                     {{ 'Créer une promotion'|trans }}
                                 </a>
                             </li>
                         {% endif %}
                         <li class="dropdown-item">
-                            <a class="nav-link {% block current_promotion %}{% endblock %}" href="{{ path('promotion_courante') }}">
+                            <a class="nav-link {% block current_promotion %}{% endblock %}"
+                               href="{{ path('promotion_courante') }}">
                                 <i class="fas fa-tag mr-2"></i>
                                 {{ 'Promotions en cours'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link {% block all_promotion %}{% endblock %}" href="{{ path('promotion_index') }}">
+                            <a class="nav-link {% block all_promotion %}{% endblock %}"
+                               href="{{ path('promotion_index') }}">
                                 <i class="fas fa-tags mr-2"></i>
                                 {{ 'Toutes les promotions'|trans }}
                             </a>
@@ -196,7 +213,8 @@
                 </li>
                 {% if is_granted('ROLE_FINANCE') %}
                     <li class="nav-item dropright" title="{{ 'Commande'|trans }}">
-                        <a class="nav-link dropdown-toggle {% block commande %}{% endblock %}" href="#" id="commande" data-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle {% block commande %}{% endblock %}" href="#" id="commande"
+                           data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
                             <div class="icone">
                                 <i class="fa fa-shopping-cart fa-lg"></i>
@@ -207,13 +225,15 @@
                         </a>
                         <ul class=" dropdown-menu" aria-labelledby="commande">
                             <li class="dropdown-item">
-                                <a class="nav-link {% block suivi %}{% endblock %}" href="{{ path('commande_panier_suivi') }}">
+                                <a class="nav-link {% block suivi %}{% endblock %}"
+                                   href="{{ path('commande_panier_suivi') }}">
                                     <i class="fas fa-shopping-cart mr-2"></i>
                                     {{ 'Suivi Commande'|trans }}
                                 </a>
                             </li>
                             <li class="dropdown-item">
-                                <a class="nav-link {% block extranet %}{% endblock %}" href="{{ path('commande_panier_extranet') }}">
+                                <a class="nav-link {% block extranet %}{% endblock %}"
+                                   href="{{ path('commande_panier_extranet') }}">
                                     <i class="fas fa-cart-arrow-down mr-2"></i>
                                     {{ 'Commandes Extranet'|trans }}
                                 </a>
@@ -229,7 +249,8 @@
 
                 {% endif %}
                 <li class="nav-item" title="{{ 'Réclamation'|trans }}">
-                    <a class="nav-link {% block reclamation %} {% endblock %}" href="{{ path('reclamation_index',{'user':app.user.id}) }}">
+                    <a class="nav-link {% block reclamation %} {% endblock %}"
+                       href="{{ path('reclamation_index',{'user':app.user.id}) }}">
                         <div class="icone">
                             <i class="fas fa-rotate fa-lg"></i>
                         </div>
@@ -241,7 +262,8 @@
 
                 {% if is_granted('ROLE_FINANCE') %}
                     <li class="nav-item dropright" title="{{ 'Officine'|trans }}">
-                        <a class="nav-link dropdown-toggle {% block officine %} {% endblock %}" href="#" id="officine" data-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle {% block officine %} {% endblock %}" href="#" id="officine"
+                           data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
                             <div class="icone">
                                 <i class="fas fa-user fa-lg"></i>
@@ -252,19 +274,22 @@
                         </a>
                         <ul class=" dropdown-menu" aria-labelledby="officine">
                             <li class="dropdown-item">
-                                <a class="nav-link {% block new_avoir %}{% endblock %}" href="{{ path('avoir_choix') }}">
+                                <a class="nav-link {% block new_avoir %}{% endblock %}"
+                                   href="{{ path('avoir_choix') }}">
                                     <i class="fa fa-plus mr-2"></i>
                                     {{ 'Créer avoir'|trans }}
                                 </a>
                             </li>
                             <li class="dropdown-item">
-                                <a class="nav-link {% block all_avoir %}{% endblock %}" href="{{ path('avoir_index') }}">
+                                <a class="nav-link {% block all_avoir %}{% endblock %}"
+                                   href="{{ path('avoir_index') }}">
                                     <i class="fas fa-money-bill mr-2"></i>
                                     {{ 'Tous les avoirs'|trans }}
                                 </a>
                             </li>
                             <li class="dropdown-item">
-                                <a class="nav-link {% block clients %}{% endblock %}" href="{{ path('security_profile') }}">
+                                <a class="nav-link {% block clients %}{% endblock %}"
+                                   href="{{ path('security_profile') }}">
                                     <i class="fas fa-users mr-2"></i>
                                     {{ 'Clients'|trans }}
                                 </a>
@@ -275,7 +300,8 @@
 
 
                 <li class="nav-item dropright" title="{{ 'Aide'|trans }}">
-                    <a class="nav-link dropdown-toggle {% block aide %}{% endblock %}" href="#" id="Aide" data-toggle="dropdown" aria-haspopup="true"
+                    <a class="nav-link dropdown-toggle {% block aide %}{% endblock %}" href="#" id="Aide"
+                       data-toggle="dropdown" aria-haspopup="true"
                        aria-expanded="false">
                         <div class="icone">
                             <i class="fas fa-question-circle fa-lg"></i>
@@ -318,6 +344,7 @@
             <span>
                 <a href="#" class="text-green" data-toggle="modal" data-target="#about">
                 <img class="mr-1" src="{{ asset('images/gnt.png') }}" alt="by Euclides" width="45">
+                <span class="version text-green">GNT PHARMA v{{ include('version.html.twig') }} <br> &copy; {{ 'now'|date('Y') }}</span>
                 </a>
             </span>
         </div>
