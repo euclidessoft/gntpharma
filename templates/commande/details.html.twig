@@ -17,13 +17,13 @@
         <tr>
             <th>Date</th>
             <th>Numero Commande</th>
-            <th>Date de Livraison</th>
+{#            <th>Date de Livraison</th>#}
         </tr>
         </thead>
         <tbody>
         <td>{{ commande.date|date('d/m/Y') }}</td>
         <td>{{ commande.id }}</td>
-        <td> </td>
+{#        <td> </td>#}
         </tbody>
     </table>
         </div>
@@ -37,8 +37,8 @@
             <th>Code Produit</th>
             <th>Desigantion</th>
             <th>Quantite Commandee</th>
-            <th>Quantite Livree</th>
-            <th>Quantite Restante</th>
+{#            <th>Quantite Livree</th>#}
+{#            <th>Quantite Restante</th>#}
             <th>Prix Cession</th>
             <th>Reduction</th>
             <th>TVA</th>
@@ -105,10 +105,10 @@
                         {% endif %}
                     {% endif %}
                 </td>
-                <td>
+{#                <td>#}
 {#                {{ commande.livraison ? commande.livrer.quantitelivrer : '' }}#}
-                </td>
-                <td> </td>
+{#                </td>#}
+{#                <td> </td>#}
                 <td>
                     {{ commandeproduit.produit.prix|number_format(0, '' , ' ') }}
 
@@ -161,7 +161,7 @@
             </tr>
         {% endfor %}
         <tr>
-            <td colspan="9" class="text-right">
+            <td colspan="7" class="text-right">
                 {{ "Total HT"|trans }}
             </td>
             <td>
@@ -170,7 +170,7 @@
         </tr>
         {% if reduction != 0 %}
             <tr>
-                <td colspan="9" class="text-right">
+                <td colspan="7" class="text-right">
                     {{ "Total Réduction"|trans }}
                 </td>
                 <td>
@@ -179,7 +179,7 @@
             </tr>
         {% endif %}
         <tr>
-            <td colspan="9" class="text-right">
+            <td colspan="7" class="text-right">
                 {{ "Total TVA"|trans }}
             </td>
             <td>
@@ -188,20 +188,21 @@
         </tr>
 
         <tr>
-            <td colspan="9" class="text-right">
+            <td colspan="7" class="text-right">
                 {{ "Net à payer"|trans }}
             </td>
             <td>
                 <span id="total" class="text-nowrap">{{ (total+ tva -reduction)|number_format(0, '' , ' ') }}</span>
             </td>
         </tr>
-        {#Conversion prix en lettre #}
-        <div class="mt-5">
-            Arretée la présente à la somme de : <b id="conversion"></b> <b>franc CFA TTC</b>
-        </div>
-        {#/***** end*****/#}
         </tbody>
     </table>
+
+    {#Conversion prix en lettre #}
+    <div class="mt-5 mb-5">
+        Arretée la présente à la somme de : <b id="conversion"></b> <b>franc CFA TTC</b>
+    </div>
+    {#/***** end*****/#}
     </div>
     <div class="container mt-4 mb-5 pt-3 pb-3 fond-7">
         <div class="centrer">

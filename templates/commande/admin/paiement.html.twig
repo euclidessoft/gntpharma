@@ -101,8 +101,6 @@
                     {{ (commandeproduit.quantite * commandeproduit.produit.prix)|number_format(0, '' , ' ') }}
                     {% set total = total + (commandeproduit.quantite * commandeproduit.produit.prix) %}
                 </td>
-
-
             </tr>
 
         {% else %}
