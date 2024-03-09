@@ -41,35 +41,54 @@ class LivrerController extends AbstractController
      */
     public function index(LivrerRepository $livrerRepository, CommandeRepository $repository): Response
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
 
         return $this->render('livrer/index.html.twig', [
             'livrers' => $livrerRepository->findBy(['reste' => true]),
             'commandes' => $repository->findBy(['suivi' => true, 'livraison' => false]),
         ]);
-    }
+        } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 
-    /**
-     * @Route("/new", name="new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $livrer = new Livrer();
-        $form = $this->createForm(LivrerType::class, $livrer);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($livrer);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('livrer_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('livrer/new.html.twig', [
-            'livrer' => $livrer,
-            'form' => $form->createView(),
+        return $this->render('livrer/index_client.html.twig', [
+            'livrers' => $livrerRepository->findBy(['reste' => true, 'client' => $this->getUser()->getId() ]),
+            'commandes' => $repository->findBy(['suivi' => true, 'livraison' => false, 'client' => $this->getUser()->getId()]),
         ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
+//
+//    /**
+//     * @Route("/new", name="new", methods={"GET","POST"})
+//     */
+//    public function new(Request $request): Response
+//    {
+//        $livrer = new Livrer();
+//        $form = $this->createForm(LivrerType::class, $livrer);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $entityManager = $this->getDoctrine()->getManager();
+//            $entityManager->persist($livrer);
+//            $entityManager->flush();
+//
+//            return $this->redirectToRoute('livrer_index', [], Response::HTTP_SEE_OTHER);
+//        }
+//
+//        return $this->render('livrer/new.html.twig', [
+//            'livrer' => $livrer,
+//            'form' => $form->createView(),
+//        ]);
+//    }
 
     /**
      * @Route("/Historique/", name="historique")
@@ -278,7 +297,7 @@ class LivrerController extends AbstractController
 //            $commandeproduits = $livrerProduitRepository->historique($histo);
 
 
-                $response = $this->render('livrer/history_show_index.html.twig', [
+                $response = $this->render('livrer/history_show_client.html.twig', [
 //                'commandes' => $commandeproduits,
                     'commandereference' => $commande,
                     'livrer' => $livrer,
