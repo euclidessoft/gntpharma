@@ -272,6 +272,7 @@
 
                         } else {
                              $('#numerolot'+id).html(" <tr><td colspan='4'>Produit en rupture</td></tr>");
+                             $('#ajouter' + id).html("<i class='fa fa-check'></i> Valider");
                         }
                     },
                     error: function () {
@@ -338,6 +339,7 @@
                 }else{
                     alert("veuillez verifier les quantités saisies");
                     $('#ajouter' + id).html("<i class='fa-solid fa-check'></i> Valider");
+                    $('#ajouter' + id).addClass('disabled');
                 }
 
 
