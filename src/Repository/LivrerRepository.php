@@ -30,6 +30,18 @@ class LivrerRepository extends ServiceEntityRepository
         ;
     }
 
+    public function historique_client($client)
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.id = :id')
+            ->setParameter('id', $client)
+            ->groupBy('l.commande')
+            ->orderBy('l.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Livrer
