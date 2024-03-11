@@ -22,7 +22,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12 text-right">
-                                <div class="text-bold">{{ produit |length }}</div>
+                                <div class="text-bold"></div>
                                 <div>
                                     Produit en stock
                                 </div>
@@ -54,7 +54,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12 text-right">
-                                <div class="text-bold">{{ produit|length }}</div>
+                                <div class="text-bold"></div>
                                 <div>
                                     Produit en rupture
                                 </div>
@@ -70,201 +70,6 @@
                     </span>
                         <span class="float-right">
                         <a href="{{ path('stock_rupture') }}" class="text-green">
-                            <i class="fa fa-arrow-circle-right fa-lg"></i>
-                        </a>
-                    </span>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 h-100 col-md-4 col-sm-6 my-3">
-                <div class="card border-green">
-                    <div class="card-header bg-success-light text-green">
-                        <div class="row">
-                            <div class="col-12">
-                                <i class="fa-solid fa-triangle-exclamation fa-5x"></i>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-right">
-                                <div class="text-bold">{{ stock|length }}</div>
-                                <div>
-                                    stock a surveille
-                                </div>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-light bt-green">
-                    <span class="float-left">
-                        <a href="{{ path('stock_surveiller') }}" class="text-green">
-                            {{ 'Voir les détails'|trans }}
-                        </a>
-                    </span>
-                        <span class="float-right">
-                        <a href="{{ path('stock_surveiller') }}" class="text-green">
-                            <i class="fa fa-arrow-circle-right fa-lg"></i>
-                        </a>
-                    </span>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 h-100 col-md-4 col-sm-6 my-3">
-                <div class="card border-green">
-                    <div class="card-header bg-green text-white">
-                        <div class="row">
-                            <div class="col-12">
-                                <i class="fa-solid fa-truck-fast fa-5x"></i>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-right">
-                                <div class="text-bold">{{ livraison|length }}</div>
-                                <div>
-                                    Attente de livraison
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-light bt-green">
-                    <span class="float-left">
-                        <a href="{{ path('livraison_index') }}" class="text-green">
-                            {{ 'Voir les détails'|trans }}
-                        </a>
-                    </span>
-                        <span class="float-right">
-                        <a href="{{ path('livraison_index') }}" class="text-green">
-                            <i class="fa fa-arrow-circle-right fa-lg"></i>
-                        </a>
-                    </span>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 h-100 col-md-4 col-sm-6 mt-3 mb-3">
-                <div class="card border-green">
-                    <div class="card-header bg-green text-white">
-                        <div class="row">
-                            <div class="col-12">
-                                <i class="fa-solid fa-shop-slash fa-5x"></i>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-right">
-                                <div class="text-bold">{{ vente |length }}</div>
-                                <div>
-                                    Péremption imminente
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-light bt-green">
-                    <span class="float-left">
-                        <a href="{{ path('produit_vente_admin') }}" class="text-green">{{ 'Voir les détails'|trans }}
-                        </a>
-                    </span>
-                        <span class="float-right">
-                        <a href="{{ path('produit_vente_admin') }}" class="text-green">
-                            <i class="fa fa-arrow-circle-right fa-lg"></i>
-                        </a>
-                    </span>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 h-100 col-md-4 col-sm-6 my-3">
-                <div class="card border-green">
-                    <div class="card-header bg-success-light text-green">
-                        <div class="row">
-                            <div class="col-12">
-                                <i class="fa-solid fa-tags fa-5x"></i>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-right">
-                                <div class="text-bold">{{ promotion|length }}</div>
-                                <div>
-                                    Promotion en cour
-                                </div>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-light bt-green">
-                    <span class="float-left">
-                        <a href="{{ path('promotion_courante') }}" class="text-green">
-                            {{ 'Voir les détails'|trans }}
-                        </a>
-                    </span>
-                        <span class="float-right">
-                        <a href="{{ path('promotion_courante') }}" class="text-green">
-                            <i class="fa fa-arrow-circle-right fa-lg"></i>
-                        </a>
-                    </span>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 h-100 col-md-4 col-sm-6 my-3">
-                <div class="card border-green">
-                    <div class="card-header bg-green text-white">
-                        <div class="row">
-                            <div class="col-12">
-                                <i class="fa-solid fa-rotate fa-5x"></i>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-right">
-                                <div class="text-bold">{{ reclamation|length }}</div>
-                                <div>
-                                    Reclamation
-                                </div>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-light bt-green">
-                    <span class="float-left">
-                        <a href="{{ path('reclamation_index', { 'user' : app.user.id}) }}" class="text-green">
-                            {{ 'Voir les détails'|trans }}
-                        </a>
-                    </span>
-                        <span class="float-right">
-                        <a href="{{ path('reclamation_index', { 'user' : app.user.id}) }}" class="text-green">
-                            <i class="fa fa-arrow-circle-right fa-lg"></i>
-                        </a>
-                    </span>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 h-100 col-md-4 col-sm-6 my-3">
-                <div class="card border-green">
-                    <div class="card-header bg-success-light text-green">
-                        <div class="row">
-                            <div class="col-12">
-                                <i class="fa-solid fa-truck-moving fa-5x"></i>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-right">
-                                <div class="text-bold">{{ reste|length }}</div>
-                                <div>
-                                    Reste a livrer
-                                </div>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-light bt-green">
-                    <span class="float-left">
-                        <a href="{{ path('livraison_index') }}" class="text-green">
-                            {{ 'Voir les détails'|trans }}
-                        </a>
-                    </span>
-                        <span class="float-right">
-                        <a href="{{ path('livraison_index') }}" class="text-green">
                             <i class="fa fa-arrow-circle-right fa-lg"></i>
                         </a>
                     </span>
