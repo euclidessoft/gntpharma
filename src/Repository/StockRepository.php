@@ -29,6 +29,21 @@ class StockRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
+    public function peremption()
+    {
+        $date = new \Datetime();
+        date_sub($date,date_interval_create_from_date_string("30 days"));
+        $creation = date_format($date,"Y-m-d");
+
+
+
+        $query = $this->createQueryBuilder('a')
+            ->Where('a.peremption <= :date')
+            ->setParameter('date', $creation)
+            ->getQuery();
+        return $query->getResult();
+    }
     // /**
     //  * @return Stock[] Returns an array of Stock objects
     //  */

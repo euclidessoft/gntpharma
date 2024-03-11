@@ -187,8 +187,13 @@
                 {% else %}
                 {% endfor %}
         </table>
-        <a class="btn btn-success mb-4" href="{{ path('livraison_valider', {'id': commandereference.id}) }}" data-toggle="modal" data-target="#livreur">
-            <i class="fa fa-check"></i> Valider </a>
+{#        <a class="btn btn-success mb-4" href="{{ path('livraison_valider', {'id': commandereference.id}) }}" data-toggle="modal" data-target="#livreur">#}
+{#            <i class="fa fa-check"></i> Valider </a>#}
+
+
+
+        <button type="button" class="btn btn-success mb-4" data-toggle="modal" data-target="#livreur">
+            <i class="fa fa-check"></i> Valider </button>
 
 
         <!-- Modal -->
@@ -208,13 +213,17 @@
                     </div>
                     <div class="modal-body px-5 pb-5">
                         <p class="">
-                            <b>Assigner un livreur</b>
+                            <b>Assigner à un livreur</b>
                         </p>
-
-                        <input type="text" class="form-control mb-3">
-                        <button type="button" class="btn btn-success m-2">
+                        {{ form_start(form,{'attr': {'id': 'form'}}) }}
+                        {{ form_row(form.livreur,{'label': false}) }}
+                        {{ form_rest(form) }}
+                        <button type="button" class="btn btn-success m-2" onclick="valider()" id="validation">
                             <i class="fa fa-check"></i> Valider
                         </button>
+                        {{ form_end(form) }}
+
+
                     </div>
 
                 </div>
@@ -313,26 +322,15 @@
 
 
             }
-            function selectProduit(produit,lot) {// fonction pour ajouter un produit dans le panier
-                alert('ggggg')
-                // $('#hid'+id).val(produit+"/"+lot+"/"+$('#text' + lot).val());
-                // alert($('#hid'+id).val())
-                // $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
-                // if($('#text' + lot).val() != "") {
-                    {#$.ajax({#}
-                    {#    type: "POST",#}
-                    {#    url: "{{ path('livraison_valider_produit') }}",#}
-                    {#    data: "prod=" + id + "&lot=" + lot + "&quantite=" + $('#text' + lot).val() + "&stock=" + stock,#}
-                    {#    success: function (data) {#}
-                            // if (data['id'] == 'ok') {
-                    {#        $('#ajouter' + id).html("<i class='fa-solid fa-check'></i>");#}
-                    {#        alert('fini')#}
-                    {#    },#}
-                    {#    error: function () {#}
-                    {#        alert("{{ 'La requête n a pas abouti'|trans }}");#}
-                    {#    }#}
-                    {#});#}
-                // }
+            function valider() {// validation livraison
+                var livreur = $('#livrer_livreur');
+                if(livreur.val() != "") {
+                    $('#validation').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                    $('#form').submit();
+                }else{
+                    alert('selectionner un livreur')
+                }
+
 
             }
 

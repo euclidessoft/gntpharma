@@ -132,11 +132,12 @@ class PanierController extends AbstractController
                 'produit' => $produitRepository->findBY(['stock' => 0]),
                 'stock' => $produitRepository->surveil(),
                 'livraison' => $commandeRepository->findBy(['suivi' => false, 'livraison' => false]),
-                'vente' => $repository->ventemensuel(),
+//                'vente' => $repository->ventemensuel(),
                 'promotion' => $promotionRepository->Courante(),
                 'reclamation' => $reclamationRepository->findBy(['cloture' => null]),
                 'reste' => $livrerRepository->findBy(['reste' => true]),
                 'produit_stock' => $stockRepository->stock(),
+                'peremption' => $stockRepository->peremption(),
             ]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);

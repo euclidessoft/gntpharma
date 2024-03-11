@@ -497,6 +497,12 @@ class UserRepository extends ServiceEntityRepository
             ->andWhere('p.client = :val')
             ->setParameter('val', true)
         ;
+    } public function livreur()
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.livreur = :val')
+            ->setParameter('val', true)
+        ;
     }
 //
 //    public function poste()

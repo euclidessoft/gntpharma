@@ -7,6 +7,7 @@ use App\Entity\Livrer;
 use App\Entity\LivrerProduit;
 use App\Entity\LivrerReste;
 use App\Entity\Stock;
+use App\Entity\User;
 use App\Form\LivrerType;
 use App\Repository\CommandeProduitRepository;
 use App\Repository\CommandeRepository;
@@ -43,17 +44,17 @@ class LivrerController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
 
-        return $this->render('livrer/index.html.twig', [
-            'livrers' => $livrerRepository->findBy(['reste' => true]),
-            'commandes' => $repository->findBy(['suivi' => true, 'livraison' => false]),
-        ]);
+            return $this->render('livrer/index.html.twig', [
+                'livrers' => $livrerRepository->findBy(['reste' => true]),
+                'commandes' => $repository->findBy(['suivi' => true, 'livraison' => false]),
+            ]);
         } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 
-        return $this->render('livrer/index_client.html.twig', [
-            'livrers' => $livrerRepository->findBy(['reste' => true, 'user' => $this->getUser()->getId() ]),
-            'commandes' => $repository->findBy(['suivi' => true, 'livraison' => false, 'user' => $this->getUser()->getId()]),
-            'panier' => $session->get("panier", []),
-        ]);
+            return $this->render('livrer/index_client.html.twig', [
+                'livrers' => $livrerRepository->findBy(['reste' => true, 'user' => $this->getUser()->getId()]),
+                'commandes' => $repository->findBy(['suivi' => true, 'livraison' => false, 'user' => $this->getUser()->getId()]),
+                'panier' => $session->get("panier", []),
+            ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
@@ -116,7 +117,7 @@ class LivrerController extends AbstractController
             //$panier = $session->get("panier", []);
 
             $response = $this->render('livrer/history.html.twig', [
-                'livrers' => $repository->historique_livreur(),
+                'livrers' => $repository->historique_livreur($this->getUser()->getId()),
                 //'panier' => $panier,
             ]);
             $response->setSharedMaxAge(0);
@@ -161,14 +162,49 @@ class LivrerController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET","POST"})
      */
-    public function show(Commande $commande, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session): Response
+    public function show(Request $request, Commande $commande, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session): Response
     {// traitement livraison
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
-        if ($commande->getLivraison()) {
-            $this->addFlash('notice', 'Livraison deja traite');
-            $response = $this->redirectToRoute('livraison_index');
+            if ($commande->getLivraison()) {
+                $this->addFlash('notice', 'Livraison deja traite');
+                $response = $this->redirectToRoute('livraison_index');
+                $response->setSharedMaxAge(0);
+                $response->headers->addCacheControlDirective('no-cache', true);
+                $response->headers->addCacheControlDirective('no-store', true);
+                $response->headers->addCacheControlDirective('must-revalidate', true);
+                $response->setCache([
+                    'max_age' => 0,
+                    'private' => true,
+                ]);
+                return $response;
+            }
+            $livrer = new Livrer($commande, $this->getUser());
+            $form = $this->createForm(LivrerType::class, $livrer);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $session->set('livreur', $livrer->getLivreur()->getId());
+                return $this->redirectToRoute('livraison_valider', ['id' => $commande->getId()]);
+
+            }
+
+            $session->remove("livraison", []);
+            $commandeproduits = $comprodrepository->findBy(['commande' => $commande]);
+            $listcommande = [];
+            foreach ($commandeproduits as $commandeproduit) {
+                $stock = $repository->find($commandeproduit->getProduit()->getId())->getStock();
+                $commandeproduit->setStock($stock);// affectation produit pour verification
+                $listcommande[] = $commandeproduit;
+            }
+            $session->set("traitement", []);
+
+            $response = $this->render('livrer/show.html.twig', [
+                'commandes' => $listcommande,
+                'commandereference' => $commande,
+                'form' => $form->createView(),
+            ]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
             $response->headers->addCacheControlDirective('no-store', true);
@@ -178,30 +214,6 @@ class LivrerController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        }
-        $session->remove("livraison", []);
-        $commandeproduits = $comprodrepository->findBy(['commande' => $commande]);
-        $listcommande = [];
-        foreach ($commandeproduits as $commandeproduit) {
-            $stock = $repository->find($commandeproduit->getProduit()->getId())->getStock();
-            $commandeproduit->setStock($stock);// affectation produit pour verification
-            $listcommande[] = $commandeproduit;
-        }
-        $session->set("traitement", []);
-
-        $response = $this->render('livrer/show.html.twig', [
-            'commandes' => $listcommande,
-            'commandereference' => $commande,
-        ]);
-        $response->setSharedMaxAge(0);
-        $response->headers->addCacheControlDirective('no-cache', true);
-        $response->headers->addCacheControlDirective('no-store', true);
-        $response->headers->addCacheControlDirective('must-revalidate', true);
-        $response->setCache([
-            'max_age' => 0,
-            'private' => true,
-        ]);
-        return $response;
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
@@ -361,7 +373,7 @@ class LivrerController extends AbstractController
      */
     public function history_show_print(Commande $commande, LivrerRepository $livrerRepository, LivrerProduitRepository $livrerProduitRepository, ProduitRepository $repository, SessionInterface $session): Response
     {// traitement livraison
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_USER') || $this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
 //            $panier = $session->get("livraison", []);
             if ($commande->getLivraison()) {
@@ -513,22 +525,25 @@ class LivrerController extends AbstractController
     /**
      * @Route("/valider/{id}", name="valider")
      */
-    public function valider(Commande $commande, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session)
+    public function valider(Request $request,Commande $commande, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session)
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
 
 //            $panier = $session->get("livraison", []);
             $livraison = $session->get("traitement", []);
             if (count($livraison) == 0) {
-                $this->addFlash('notice', 'Donner les details des produits avant validation');
+                $this->addFlash('notice', 'Donner les details des produits avant validation ');
                 return $this->redirectToRoute('livraison_show', ['id' => $commande->getid()]);
             }
             $em = $this->getDoctrine()->getManager();
             $commandeproduits = $comprodrepository->findBy(['commande' => $commande]);
+            $livreur = $em->getRepository(User::class)->find($session->get('livreur'));
 
             $livrer = new Livrer($commande, $this->getUser());
+            $livrer->setLivreur($livreur);
             $commande->setLivraison(true);
             $commande->setDatelivrer(new \DateTime());
+            $commande->setLivreur($livreur);
 
             foreach ($commandeproduits as $commandeproduit) {
                 $produit = $repository->find($commandeproduit->getProduit()->getId());
@@ -680,6 +695,7 @@ class LivrerController extends AbstractController
             $response = $this->redirectToRoute('livraison_historique_show_print', ['id' => $commande->getId()]);
 
             $session->remove('traitement');
+            $session->remove('livreur');
 
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
