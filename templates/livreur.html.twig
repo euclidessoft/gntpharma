@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    {{ include('head.html.twig') }}
+
+    <title> {% block title %} GNT Pharma  {% endblock %} </title>
+
+    {% block stylesheets %}
+        <link href="{{ asset('DataTables/datatables.css') }}" rel="stylesheet">
+        <link href="{{ asset('fontawesome/css/all.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap-4plus.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/accueil.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/gntpharma.css') }}" rel="stylesheet">
+
+    {% endblock %}
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+
+    <!--[if lt IE 9]>
+    <script src="{{ asset('js/html5shiv.js') }}"></script>
+    <script src="{{ asset('js/respond.min.js') }}"></script>
+    <![endif]-->
+
+</head>
+
+<body {% block facture %} {% endblock %}>
+
+{% block nav %}
+    <nav id="navmenu" class="navmenu">
+        <div class="session">
+            <a id="session" class="navbar-brand text-white m-2" href="{{ path('Accueil') }}">
+                Gnt Pharma
+            </a>
+        </div>
+        <div class="closebtn" id="closebtn" onclick="closeNav()">
+        </div>
+
+        <div id="sidenav" class="sidenav" onclick="openNav()">
+            <ul class="navbar-nav">
+                <li class="nav-item" title="{{ 'Accueil'|trans }}">
+                    <a class="nav-link {% block home %} {% endblock %}" href="{{ path('commande_index') }}">
+                        <div class="icone">
+                            <i class="fas fa-dashboard fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Tableau de bord'|trans }}
+                        </div>
+                    </a>
+                </li>
+
+
+                <li class="nav-item dropright" title="{{ 'Livraison'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block livraison %}{% endblock %}" href="#"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fa fas fa-truck-fast fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Livraison'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="pelerin">
+                        <li class="dropdown-item">
+                            <a class="nav-link  {% block all_livraison %}{% endblock %}" href="{{ path('livraison_historique') }}">
+                                <i class="fas fa-truck-fast mr-2"></i>
+                                {{ 'Deja livrée'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link  {% block new_livraison %}{% endblock %}" href="{{ path('livraison_index') }}">
+                                <i class="fas fa-truck-fast mr-2"></i>
+                                {{ 'En attente de livraison'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropright" title="{{ 'Aide'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block aide %}{% endblock %}" href="#" id="Aide"
+                       data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false">
+                        <div class="icone">
+                            <i class="fas fa-question-circle fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Aide'|trans }}
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="Aide">
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block manuel %}{% endblock %}" href="#">
+                                <i class="fas fa-book mr-2"></i>
+                                {{ 'Manuel'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block suggestion %}{% endblock %}" href="#">
+                                <i class="fas fa-comments mr-2"></i>
+                                {{ 'Suggestions'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block bug %}{% endblock %}" href="#">
+                                <i class="fas fa-bug mr-2"></i>
+                                {{ 'Signaler un bug'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#about">
+                                <i class="fas fa-check-circle mr-2"></i>
+                                {{ 'A propos de'|trans }} GNT Pharma
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="copyright">
+            <span>
+                <a href="#" class="text-green" data-toggle="modal" data-target="#about">
+                <img class="mr-1" src="{{ asset('images/gnt.png') }}" alt="by Euclides" width="45">
+                <span class="version text-green">GNT PHARMA v{{ include('version.html.twig') }} <br> &copy; {{ 'now'|date('Y') }}</span>
+                </a>
+            </span>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block topbar %}
+    <div class="container-fluid topbar">
+        <div class="row">
+            <div class="topbar-menu">
+                <div id="navbtn" class="navbtn" onclick="openNav()">
+                    <i class="fas fa-align-justify fa-2x"></i>
+                </div>
+            </div>
+            <div class="topbar-item">
+                <div class="row">
+                    <div class="col-lg-5 col-md-2 col-6 text-nowrap">
+                        <span class="history-box">
+                            <i class="fa fa-arrow-circle-left history-btn" title="Page précédente"
+                               onclick="window.history.back()"></i>
+                            <i class="fa fa-arrow-circle-right history-btn ml-3" title="Page suivante"
+                               onclick="window.history.forward()"></i>
+                            <i class="fa fa-redo-alt fa-rotate-270 history-btn ml-3" title="Actualiser la page"
+                               onclick="window.location.reload()"></i>
+                        </span>
+
+                        <button type="button" id="install_button" onclick="installApp()" hidden></button>
+                    </div>
+                    <div class="col-lg-2 col-md-1 col-6 text-nowrap">
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-6 text-nowrap">
+                        <div class="float-right">
+                            <label for="langue">
+                                <i class="fa fa-globe"></i>
+                            </label>
+                            <select name="langue" id="langue" onchange="choixlangue()">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-6 text-nowrap">
+                        <div class="text-right">
+                            <div class="dropdown">
+                                <a href="#" class="" data-toggle="dropdown">
+                                    {{ app.user.username }}
+                                    <img src="{{ asset('images/team_1.avif') }}" class="user-image"
+                                         alt="User Image">
+                                </a>
+                                <div class="dropdown-menu">
+                                    {{ include('security/security/deconnexion-menu.html.twig') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include('security/security/deconnexion-promt.html.twig') }}
+{% endblock %}
+{#{{ include('Default/about.html.twig') }}#}
+
+
+<div id="main" class="container-fluid main pt-5">
+    {% block body %}
+
+    {% endblock %}
+</div>
+
+{{ include('javascript.html.twig') }}
+{% block scripts %}
+
+{% endblock %}
+</body>
+
+</html>
