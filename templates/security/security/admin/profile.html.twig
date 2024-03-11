@@ -1,5 +1,7 @@
 {% extends 'admin.html.twig' %}
 {% block title %} {{ 'Mon profile'|trans }} {% endblock %}
+{% block officine %}active{% endblock %}
+{% block clients %}active{% endblock %}
 {% block body %}
     {{ include('security/security/profile-info.html.twig') }}
 {% endblock %}
