@@ -187,11 +187,39 @@
                 {% else %}
                 {% endfor %}
         </table>
-        <a class="btn btn-success mb-4" href="{{ path('livraison_valider', {'id': commandereference.id}) }}"><i
-                    class="fa fa-check"></i> Valider </a>
+        <a class="btn btn-success mb-4" href="{{ path('livraison_valider', {'id': commandereference.id}) }}" data-toggle="modal" data-target="#livreur">
+            <i class="fa fa-check"></i> Valider </a>
+
 
         <!-- Modal -->
-
+        <div class="modal fade" id="livreur" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog text-center">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <h4 class="modal-title fs-5" id="exampleModalLabel">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            Déconnexion
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body px-5 pb-5">
+                        <p class="">
+                            <b>Voulez-vous vraiment vous déconnecter ?</b>
+                        </p>
+                        <a href="" class="btn btn-danger mr-2">
+                            Oui
+                        </a>
+                        <button type="button" class="btn btn-success-light" data-dismiss="modal" aria-label="Close">
+                            Non
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
     {% block scripts %}
