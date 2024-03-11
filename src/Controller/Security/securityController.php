@@ -214,9 +214,17 @@ class securityController extends AbstractController
             return $this->redirectToRoute('security_profile', ['id' => $user->getId()]);
 
         }
-        $response = $this->render('security/security/admin/edit.html.twig', [
-            'form' => $form->createView(),
-        ]);
+            if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+                $response = $this->render('security/security/edit.html.twig', [
+                    'form' => $form->createView(),
+                ]);
+            }else{
+                    $response = $this->render('security/security/admin/edit.html.twig', [
+                        'form' => $form->createView(),
+                    ]);
+
+             }
+
         $response->setSharedMaxAge(0);
         $response->headers->addCacheControlDirective('no-cache', true);
         $response->headers->addCacheControlDirective('no-store', true);
@@ -230,7 +238,7 @@ class securityController extends AbstractController
 
         else {
             $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
-            return $this->redirectToRoute('security_login');
+            return $this->redirectToRoute('security_logout');
         }
     }
 

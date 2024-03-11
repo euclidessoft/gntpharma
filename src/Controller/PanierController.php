@@ -151,7 +151,7 @@ class PanierController extends AbstractController
         }
         elseif ($this->get('security.authorization_checker')->isGranted('ROLE_LIVREUR')) {
 
-            $response = $this->render('commande/admin/dashbord_stock.html.twig', [
+            $response = $this->render('commande/admin/dashbord_livreur.html.twig', [
                 'livraison' => $commandeRepository->findBy(['suivi' => false, 'livraison' => true, 'livreur' => $this->getUser()->getId()]),
                 'livraison' => $commandeRepository->findBy(['suivi' => false, 'livraison' => false]),
             ]);
