@@ -41,6 +41,16 @@ class LivrerRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function historique_livreur($livreur)
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.livreur = :id')
+            ->setParameter('id', $livreur)
+            ->orderBy('l.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 
     /*

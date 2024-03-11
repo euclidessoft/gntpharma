@@ -39,7 +39,7 @@
                 <td>{{ commande.date|date('d/m/Y') }}</td>
                 <td>{{ commande.user.nom }}</td>
                 <td>
-                    <a class="btn btn-success" href="{{ path('livraison_show', {'id': commande.id}) }}"><i class="fa fa-gears"></i> Traitement</a>
+                    <a class="btn btn-success" href="{{ path('commande_panier_Detail', {'commande': commande.id}) }}"><i class="fa fa-list"></i> Afficher</a>
                 </td>
             </tr>
         {% else %}

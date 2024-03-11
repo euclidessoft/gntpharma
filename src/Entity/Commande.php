@@ -34,6 +34,7 @@ class Commande
      * @ORM\JoinColumn(nullable=true)
      */
     private $livreur;
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Paiement")
      * @ORM\JoinColumn(nullable=true)
@@ -46,11 +47,6 @@ class Commande
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $ref;
 
     /**
      * @ORM\Column(type="date")
@@ -101,6 +97,10 @@ class Commande
      * @ORM\Column(type="boolean")
      */
     private $payer;
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $livrer;
 
     /**
      * Constructor
@@ -108,7 +108,6 @@ class Commande
     public function __construct()
     {
         $this->date = new \Datetime();
-        $this->ref = 'hhfhfhf';
         $this->suivi = false;
         $this->credit = false;
         $this->livraison = false;
@@ -117,6 +116,7 @@ class Commande
         $this->versements = new ArrayCollection();
         $this->versement = 0;
         $this->payer = false;
+        $this->livrer = false;
     }
 
 
@@ -332,6 +332,18 @@ class Commande
     public function setPayer(bool $payer): self
     {
         $this->payer = $payer;
+
+        return $this;
+    }
+
+    public function getLivrer(): ?bool
+    {
+        return $this->livrer;
+    }
+
+    public function setLivrer(bool $livrer): self
+    {
+        $this->livrer = $livrer;
 
         return $this;
     }

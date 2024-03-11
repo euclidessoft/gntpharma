@@ -149,6 +149,23 @@ class PanierController extends AbstractController
             return $response;
 
         }
+        elseif ($this->get('security.authorization_checker')->isGranted('ROLE_LIVREUR')) {
+
+            $response = $this->render('commande/admin/dashbord_stock.html.twig', [
+                'livraison' => $commandeRepository->findBy(['suivi' => false, 'livraison' => true, 'livreur' => $this->getUser()->getId()]),
+                'livraison' => $commandeRepository->findBy(['suivi' => false, 'livraison' => false]),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+
+        }
         else {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
