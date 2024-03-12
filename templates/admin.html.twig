@@ -49,6 +49,80 @@
                         </div>
                     </a>
                 </li>
+                {% if is_granted('ROLE_STOCK') %}
+                    <li class="nav-item dropright" title="{{ 'Stock'|trans }}">
+                        <a class="nav-link dropdown-toggle {% block stock %}{% endblock %}" href="#" id="stock"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <div class="icone">
+                                <i class="fas fa-warehouse fa-lg"></i>
+                            </div>
+                            <div class="title">
+                                {{ 'Stock'|trans }}
+                            </div>
+                        </a>
+                        <ul class=" dropdown-menu" aria-labelledby="stock">
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block etat_stock %}{% endblock %}"
+                                   href="{{ path('stock_index') }}">
+                                    <i class="fas fa-warehouse mr-2"></i>
+                                    {{ 'Etat du Stock'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item submenu">
+                                <a class="nav-link dropdown-toggle {% block appro %}{% endblock %}" href="#"
+                                   id="reapprovisionnement"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-warehouse"></i>
+                                    <i class="fas fa-warehouse fa-arrow-left mr-2"></i>
+                                    {{ 'Réapprovisionnement'|trans }}
+                                </a>
+                                <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+                                    <li class="dropdown-item">
+                                        <a class="nav-link  {% block new_appro %}{% endblock %}"
+                                           href="{{ path('stock_appro_index') }}">
+                                            <i class="fas fa-warehouse"></i>
+                                            <i class="fas fa-plus mr-2"></i>
+                                            {{ 'Nouvelle'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block all_appro %}{% endblock %}"
+                                           href="{{ path('stock_historique') }}">
+                                            <i class="fas fa-warehouse"></i>
+                                            <i class="fas fa-warehouse fa-list mr-2"></i>
+                                            {{ 'Historique'|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-item submenu">
+                                <a class="nav-link dropdown-toggle {% block livraison %}{% endblock %}" href="#"
+                                   id="livraison" data-toggle="dropdown"
+                                   aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-truck-fast mr-2"></i>
+                                    {{ 'Livraison'|trans }}
+                                </a>
+                                <ul class="dropdown-submenu" aria-labelledby="livraison">
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block new_livraison %}{% endblock %}"
+                                           href="{{ path('livraison_index') }}">
+                                            <i class="fas fa-truck-fast mr-2"></i>
+                                            {{ 'Nouvelle'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link  {% block all_livraison %}{% endblock %}"
+                                           href="{{ path('livraison_historique') }}">
+                                            <i class="fas fa-truck-fast mr-2"></i>
+                                            {{ 'Historique'|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
                 <li class="nav-item dropright" title="{{ 'Produits'|trans }}">
                     <a class="nav-link dropdown-toggle {% block produit %} {% endblock %}" href="#" id="produits"
                        data-toggle="dropdown"
@@ -100,84 +174,6 @@
                         </li>
                     </ul>
                 </li>
-                {% if is_granted('ROLE_STOCK') %}
-                    <li class="nav-item dropright" title="{{ 'stock'|trans }}">
-                        <a class="nav-link dropdown-toggle {% block stock %}{% endblock %}" href="#" id="stock"
-                           data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <div class="icone">
-                                <i class="fas fa-warehouse fa-lg"></i>
-                            </div>
-                            <div class="title">
-                                {{ 'Stock'|trans }}
-                            </div>
-                        </a>
-                        <ul class=" dropdown-menu" aria-labelledby="stock">
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block etat_stock %}{% endblock %}"
-                                   href="{{ path('stock_index') }}">
-                                    <i class="fas fa-warehouse mr-2"></i>
-                                    {{ 'Etat du Stock'|trans }}
-                                </a>
-                            </li>
-                            <li class="dropdown-item submenu">
-                                <a class="nav-link dropdown-toggle {% block appro %}{% endblock %}" href="#"
-                                   id="reapprovisionnement"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-warehouse"></i>
-                                    <i class="fas fa-warehouse fa-arrow-left mr-2"></i>
-                                    {{ 'Réapprovisionnement'|trans }}
-                                </a>
-                                <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
-                                    <li class="dropdown-item">
-                                        <a class="nav-link  {% block new_appro %}{% endblock %}"
-                                           href="{{ path('stock_appro_index') }}">
-                                            <i class="fas fa-warehouse"></i>
-                                            <i class="fas fa-plus mr-2"></i>
-                                            {{ 'Nouvelle'|trans }}
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item">
-                                        <a class="nav-link {% block all_appro %}{% endblock %}"
-                                           href="{{ path('stock_historique') }}">
-                                            <i class="fas fa-warehouse"></i>
-                                            <i class="fas fa-warehouse fa-list mr-2"></i>
-                                            {{ 'Historique'|trans }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropright" title="{{ 'Livraison'|trans }}">
-                        <a class="nav-link dropdown-toggle {% block livraison %}{% endblock %}" href="#" id="stock"
-                           data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <div class="icone">
-                                <i class="fas fa-truck-fast fa-lg"></i>
-                            </div>
-                            <div class="title">
-                                {{ 'Livraison'|trans }}
-                            </div>
-                        </a>
-                        <ul class=" dropdown-menu" aria-labelledby="stock">
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block new_livraison %}{% endblock %}"
-                                   href="{{ path('livraison_index') }}">
-                                    <i class="fas fa-truck-fast mr-2"></i>
-                                    {{ 'Nouvelle'|trans }}
-                                </a>
-                            </li>
-                            <li class="dropdown-item">
-                                <a class="nav-link  {% block all_livraison %}{% endblock %}"
-                                   href="{{ path('livraison_historique') }}">
-                                    <i class="fas fa-truck-fast mr-2"></i>
-                                    {{ 'Historique'|trans }}
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                {% endif %}
                 <li class="nav-item dropright" title="{{ 'Promotion'|trans }}">
                     <a class="nav-link dropdown-toggle {% block promotion %}{% endblock %}" href="#" id="promotion"
                        data-toggle="dropdown"
@@ -250,6 +246,7 @@
                             </li>#}
                         </ul>
                     </li>
+
                 {% endif %}
                 <li class="nav-item" title="{{ 'Réclamation'|trans }}">
                     <a class="nav-link {% block reclamation %} {% endblock %}"

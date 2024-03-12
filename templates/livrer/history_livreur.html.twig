@@ -23,20 +23,22 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
             <thead>
             <tr>
-                <th>N° commande </th>
+                <th>N° bordereau </th>
                 <th>Client</th>
-                <th>Date</th>
+                <th>Date d'emission</th>
+                <th>Date de livraison</th>
                 <th>Details</th>
             </tr>
             </thead>
             <tbody>
-            {% for commande in commandes %}
+            {% for commande in livrers %}
                 <tr>
                     <td>{{ commande.id }}</td>
-                    <td>{{ commande.user.nom }}</td>
+                    <td>{{ commande.commande.user.nom }}</td>
                     <td>{{ commande.date|date('d/m/Y') }}</td>
+                    <td>{{ commande.dateefectlivraison|date('d/m/Y') }}</td>
                     <td>
-                        <a class="btn btn-success" href="{{ path('livraison_historique_show', {'id': commande.id}) }}"><i class="fa fa-list"></i> Afficher</a>
+                        <a class="btn btn-success" href="{{ path('livraison_livreur_historique_show', {'id': commande.id}) }}"><i class="fa fa-list"></i> Afficher</a>
                     </td>
                 </tr>
             {% else %}

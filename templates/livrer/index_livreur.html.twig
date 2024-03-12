@@ -29,7 +29,7 @@
         <thead>
             <tr>
                 <th>no commande </th>
-                <th>Date</th>
+                <th>Date d'emission</th>
                 <th>Client</th>
                 <th>actions</th>
             </tr>
@@ -37,8 +37,8 @@
         <tbody>
         {% for commande in commandes %}{# commandes represente livers #}
             <tr>
-                <td>{{ commande.commande.id }}</td>
-                <td>{{ commande.commande.date|date('d/m/Y') }}</td>
+                <td>{{ commande.id }}</td>
+                <td>{{ commande.date|date('d/m/Y') }}</td>
                 <td>{{ commande.commande.user.nom }}</td>
                 <td>
                     <a class="btn btn-success" href="{{ path('livraison_livreur_show', {'id': commande.id}) }}"><i class="fas fa-truck-fast"></i> Livraison</a>

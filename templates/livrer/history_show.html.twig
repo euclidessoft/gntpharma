@@ -42,6 +42,7 @@
         </div>
         {% for liv in livrer %}
             {% set entete = 0 %}
+            {% set produit = 0 %}
         {% for  commande in liv.livraison %}
         {% set ug = 0 %}
 
@@ -54,6 +55,7 @@
         <thead>
         <tr>
             <th>N° Bordereau</th>
+            <th>Date d'emission</th>
             <th>Date de livraison</th>
 
         </tr>
@@ -61,44 +63,54 @@
         <tbody>
         <td>{{ commande.livrer.id }}</td>
         <td>{{ commande.date|date('d/m/Y') }}</td>
+        <td>{{ commande.livrer.dateefectlivraison|date('d/m/Y') }}</td>
 
         </tbody>
     </table>
     </div>
     </div>
         <table class="table table-success-light table-bordered table-hover table-striped w-100 text-center">
-            <thead>
-            <tr>
-                <th>reference</th>
-                <th>designation</th>
-                <th>N° Lot</th>
-                <th>Peremption</th>
-                <th>Quantite Commande</th>
-                <th>Quantite livrée</th>
-                <th>Quantite restante</th>
-            </tr>
-            </thead>
-            <tbody>
+
 {% endif %}
-            <tr>
-                <td>{{ commande.produit.reference }}</td>
-                <td>{{ commande.produit.desigantion }}</td>
-                <td>{{ commande.lot }}</td>
-                <td>{{ commande.peremption|date('d/m/Y') }}</td>
-                <td>
-                    {{ commande.quantitecommander }}
-                    {% if commande.promotion is not null %}
-                        {% if commande.promotion.premier is not null %}
-                            {% if commande.quantitecommander / commande.promotion.troisieme >= 1 %}
+            {% if commande.produit.id != produit %}
+                <thead>
+                <tr>
+                <tr>
+                    <th colspan="3">{{ commande.produit.reference }} : {{ commande.produit.desigantion }}</th>
+                </tr>
+                    <th>Quantite Commande:
+                        {{ commande.quantitecommander }}
+                        {% if commande.promotion is not null %}
+                            {% if commande.promotion.premier is not null %}
+                                {% if commande.quantitecommander / commande.promotion.troisieme >= 1 %}
 
-                                {% set unite = (commande.quantitecommander / commande.promotion.troisieme)|round(0, 'floor') %}
-                                {% set ug = ug + unite * commande.promotion.ugtroisieme %}
-                                {% set suite = commande.quantitecommander - unite * commande.promotion.troisieme %}
+                                    {% set unite = (commande.quantitecommander / commande.promotion.troisieme)|round(0, 'floor') %}
+                                    {% set ug = ug + unite * commande.promotion.ugtroisieme %}
+                                    {% set suite = commande.quantitecommander - unite * commande.promotion.troisieme %}
 
-                                {% if suite / commande.promotion.deuxieme >= 1 %}
-                                    {% set unite = (suite / commande.promotion.deuxieme)|round(0, 'floor') %}
+                                    {% if suite / commande.promotion.deuxieme >= 1 %}
+                                        {% set unite = (suite / commande.promotion.deuxieme)|round(0, 'floor') %}
+                                        {% set ug = ug + unite * commande.promotion.ugdeuxieme %}
+                                        {% set suite = suite - unite * commande.promotion.deuxieme %}
+
+                                        {% if suite / commande.promotion.premier >= 1 %}
+                                            {% set unite = (suite / commande.promotion.premier)|round(0, 'floor') %}
+                                            {% set ug = ug + unite * commande.promotion.ugpremier %}
+
+                                        {% endif %}
+
+                                    {% elseif suite / commande.promotion.premier >= 1 %}
+                                        {% set unite = (suite / commande.promotion.premier)|round(0, 'floor') %}
+                                        {% set ug = ug + unite * commande.promotion.ugpremier %}
+
+                                    {% endif %}
+
+                                {% elseif commande.quantitecommander / commande.promotion.deuxieme >= 1 %}
+
+
+                                    {% set unite = (commande.quantitecommander / commande.promotion.deuxieme)|round(0, 'floor') %}
                                     {% set ug = ug + unite * commande.promotion.ugdeuxieme %}
-                                    {% set suite = suite - unite * commande.promotion.deuxieme %}
+                                    {% set suite = commande.quantitecommander - unite * commande.promotion.deuxieme %}
 
                                     {% if suite / commande.promotion.premier >= 1 %}
                                         {% set unite = (suite / commande.promotion.premier)|round(0, 'floor') %}
@@ -106,57 +118,55 @@
 
                                     {% endif %}
 
-                                {% elseif suite / commande.promotion.premier >= 1 %}
-                                    {% set unite = (suite / commande.promotion.premier)|round(0, 'floor') %}
+                                {% elseif commande.quantitecommander / commande.promotion.premier >= 1 %}
+
+                                    {% set unite = (commande.quantitecommander / commande.promotion.premier)|round(0, 'floor') %}
                                     {% set ug = ug + unite * commande.promotion.ugpremier %}
 
                                 {% endif %}
-
-                            {% elseif commande.quantitecommander / commande.promotion.deuxieme >= 1 %}
-
-
-                                {% set unite = (commande.quantitecommander / commande.promotion.deuxieme)|round(0, 'floor') %}
-                                {% set ug = ug + unite * commande.promotion.ugdeuxieme %}
-                                {% set suite = commande.quantitecommander - unite * commande.promotion.deuxieme %}
-
-                                {% if suite / commande.promotion.premier >= 1 %}
-                                    {% set unite = (suite / commande.promotion.premier)|round(0, 'floor') %}
-                                    {% set ug = ug + unite * commande.promotion.ugpremier %}
-
-                                {% endif %}
-
-                            {% elseif commande.quantitecommander / commande.promotion.premier >= 1 %}
-
-                                {% set unite = (commande.quantitecommander / commande.promotion.premier)|round(0, 'floor') %}
-                                {% set ug = ug + unite * commande.promotion.ugpremier %}
-
-                            {% endif %}
-                            <span class="badge badge-danger">
+                                <span class="badge badge-danger">
                                     +{{ ug }} U.G.
                             </span>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                </td>
+                    </th>
+                    <th>Quantite Livrés: {{ commande.quantitecommander - commande.restealivrer }}</th>
+                    <th>Quantite Restante: {{ commande.restealivrer }}</th>
+                </tr>
+                <tr>
+
+                    <th>N° Lot</th>
+                    <th>Peremption</th>
+                    <th>Quantite livrée</th>
+                </tr>
+                </thead>
+            {% endif %}
+
+
+            <tbody>
+            <tr>
+
+                <td>{{ commande.lot }}</td>
+                <td>{{ commande.peremption|date('d/m/Y') }}</td>
+
                 <td class="text-center">
                     {{ commande.quantitelivrer }}
                 </td>
-                <td class="text-center">
-                    {{ commande.restealivrer }}
-                </td>
             </tr>
             {% set entete = commande.livrer.id %}
+            {% set produit = commande.produit.id %}
                 {% endfor %}
             </tbody>
             </table>
                 {% else %}
                 {% endfor %}
-        <div class="col-md-2 offset-md-4 mt-5 mb-5 pt-2 pb-2 fond-7">
-            <div class="centrer">
-                <a href="{{ path('livraison_historique_show_print',{'id': commandereference.id }) }}" class="btn btn-success float-end">
-                    <i class="fa fa-print"></i> {{ "Imprimer"|trans }}
-                </a>
-            </div>
-        </div>
+{#        <div class="col-md-2 offset-md-4 mt-5 mb-5 pt-2 pb-2 fond-7">#}
+{#            <div class="centrer">#}
+{#                <a href="{{ path('livraison_historique_show_print',{'id': commandereference.id }) }}" class="btn btn-success float-end">#}
+{#                    <i class="fa fa-print"></i> {{ "Imprimer"|trans }}#}
+{#                </a>#}
+{#            </div>#}
+{#        </div>#}
 
     </div>
 {% endblock %}

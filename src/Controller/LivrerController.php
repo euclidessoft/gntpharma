@@ -122,7 +122,7 @@ class LivrerController extends AbstractController
             //$panier = $session->get("panier", []);
 
             $response = $this->render('livrer/history_livreur.html.twig', [
-                'commandes' => $commandeRepository->historique_livreur($this->getUser()->getId()),
+                'livrers' => $repository->findBy(['livreur' => $this->getUser()->getId(), 'livrer' => true]),
                 //'panier' => $panier,
             ]);
             $response->setSharedMaxAge(0);
@@ -387,16 +387,9 @@ class LivrerController extends AbstractController
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
 
-//            $panier = $session->get("livraison", []);
             if ($commande->getLivraison()) {
-                $livrer = $livrerRepository->findBy(['commande' => $commande]);
-//            $histo = [];
-//            foreach ($livrer as $item) {
-//                $histo[] = $item->getId();
-//            }
-//
-//            $commandeproduits = $livrerProduitRepository->historique($histo);
 
+                $livrer = $livrerRepository->findBy(['commande' => $commande]);
 
                 $response = $this->render('livrer/history_show.html.twig', [
 //                'commandes' => $commandeproduits,
@@ -445,6 +438,45 @@ class LivrerController extends AbstractController
 
             }
         } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+
+    }
+
+    /**
+     * @Route("/Livreur_Historique/{id}", name="livreur_historique_show", methods={"GET"})
+     */
+    public function livreurhistoriqueshow(Livrer $livrer): Response
+    {// traitement livraison
+
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_LIVREUR') && $livrer->getLivreur() == $this->getUser()) {
+
+            $response = $this->render('livrer/history_show_livreur.html.twig', [
+//                'commandes' => $commandeproduits,
+                'commandereference' => $livrer->getCommande(),
+                'livrer' => $livrer,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+
+
+        }else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);

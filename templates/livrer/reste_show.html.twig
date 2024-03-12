@@ -88,8 +88,8 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title fs-5" id="exampleModalLabel">
-                                        {{ commande.produit.reference }} {{ commande.produit.desigantion }} {{ commande.produit.fabriquant }} |
-                {{ commande.quantite - commande.quantitelivre }} à livrés
+                                        {{ commande.produit.reference }} {{ commande.produit.desigantion }} {{ commande.produit.fabriquant }}
+
                                     </h5>
                                     <button type="button" class="close" data-dismiss="modal"
                                             aria-label="Close">
@@ -118,12 +118,13 @@
 
                                 </div>
                                 <div class="modal-footer px-5 py-4">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    {{ commande.quantite - commande.quantitelivre }} à livrer
+                                    <button type="button" class="btn btn-secondary ml-5" data-dismiss="modal"
                                             id="annuler{{ commande.produit.id }}">Annuler
                                     </button>
                                     <button type="button" class="btn btn-success ms-3"
                                             id="ajouter{{ commande.produit.id }}"
-                                            onclick="validerProduit({{ commande.produit.id }}, {{ commande.quantite }}, {{ commande.stock }})">
+                                            onclick="validerProduit({{ commande.produit.id }}, {{ commande.quantite - commande.quantitelivre }}, {{ commande.stock }})">
 
                                     </button>
                                 </div>

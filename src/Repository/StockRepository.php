@@ -33,7 +33,7 @@ class StockRepository extends ServiceEntityRepository
     public function peremption()
     {
         $date = new \Datetime();
-        date_sub($date,date_interval_create_from_date_string("30 days"));
+        date_add($date,date_interval_create_from_date_string("30 days"));
         $creation = date_format($date,"Y-m-d");
 
 

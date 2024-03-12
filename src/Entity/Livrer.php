@@ -64,6 +64,11 @@ class Livrer
     private $dateefectlivraison;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $signature;
+
+    /**
      * Constructor
      */
     public function __construct(Commande $commande, User $user)
@@ -191,6 +196,18 @@ class Livrer
     public function setDateefectlivraison(?\DateTimeInterface $dateefectlivraison): self
     {
         $this->dateefectlivraison = $dateefectlivraison;
+
+        return $this;
+    }
+
+    public function getSignature(): ?string
+    {
+        return $this->signature;
+    }
+
+    public function setSignature(?string $signature): self
+    {
+        $this->signature = $signature;
 
         return $this;
     }

@@ -131,7 +131,7 @@ class PanierController extends AbstractController
             $response = $this->render('commande/admin/dashbord_stock.html.twig', [
                 'produit' => $produitRepository->findBY(['stock' => 0]),
                 'stock' => $produitRepository->surveil(),
-                'livraison' => $commandeRepository->findBy(['suivi' => false, 'livraison' => false]),
+                'livraison' => $commandeRepository->findBy(['suivi' => true, 'livraison' => false]),
 //                'vente' => $repository->ventemensuel(),
                 'promotion' => $promotionRepository->Courante(),
                 'reclamation' => $reclamationRepository->findBy(['cloture' => null]),
@@ -153,8 +153,8 @@ class PanierController extends AbstractController
         elseif ($this->get('security.authorization_checker')->isGranted('ROLE_LIVREUR')) {
 
             $response = $this->render('commande/admin/dashbord_livreur.html.twig', [
-                'livraison' => $commandeRepository->findBy(['suivi' => false, 'livraison' => true, 'livreur' => $this->getUser()->getId()]),
-                'livraison' => $commandeRepository->findBy(['suivi' => false, 'livraison' => false]),
+                'deja' => $livrerRepository->findBy(['livreur' => $this->getUser()->getId(), 'livrer' => true]),
+                'attente' => $livrerRepository->findBy(['livreur' => $this->getUser()->getId(), 'livrer' => false]),
             ]);
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);

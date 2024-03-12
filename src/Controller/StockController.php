@@ -88,6 +88,29 @@ class StockController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/Peremption", name="peremption", methods={"GET"})
+     */
+    public function peremption(StockRepository $repository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
+        return $this->render('stock/peremption.html.twig', [
+            'stocks' => $repository->peremption(),
+        ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
 
     /**
      * @Route("/{id}", name="produit_show", methods={"GET"})
