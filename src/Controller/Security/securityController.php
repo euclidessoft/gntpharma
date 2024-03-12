@@ -582,6 +582,7 @@ class securityController extends AbstractController
                     }
                     case 'Livreur':{
                         $user->setRoles(['ROLE_LIVREUR']);
+                        $user->setLivreur(true);
                         break;
                     }
                 }

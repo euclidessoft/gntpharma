@@ -46,6 +46,18 @@ class CommandeRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function historique_livreur($livreur)
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.livreur = :id')
+            ->setParameter('id', $livreur)
+            ->andWhere('l.livrer = :livrer')
+            ->setParameter('livrer', true)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     // /**
     //  * @return Commande[] Returns an array of Commande objects

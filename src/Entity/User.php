@@ -114,6 +114,11 @@ class User implements UserInterface
      */
     private $client;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $livreur;
+
 
     public function __construct()
     {
@@ -281,6 +286,18 @@ class User implements UserInterface
     public function setClient(bool $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getLivreur(): ?bool
+    {
+        return $this->livreur;
+    }
+
+    public function setLivreur(bool $livreur): self
+    {
+        $this->livreur = $livreur;
 
         return $this;
     }

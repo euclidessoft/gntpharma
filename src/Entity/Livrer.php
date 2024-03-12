@@ -25,6 +25,12 @@ class Livrer
     private $user;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $livreur;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Commande")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -46,6 +52,11 @@ class Livrer
      * @ORM\Column(type="boolean")
      */
     private $reste;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $livrer;
 
     /**
      * Constructor
@@ -138,6 +149,30 @@ class Livrer
                 $livraison->setLivrer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLivreur(): ?User
+    {
+        return $this->livreur;
+    }
+
+    public function setLivreur(?User $livreur): self
+    {
+        $this->livreur = $livreur;
+
+        return $this;
+    }
+
+    public function getLivrer(): ?bool
+    {
+        return $this->livrer;
+    }
+
+    public function setLivrer(bool $livrer): self
+    {
+        $this->livrer = $livrer;
 
         return $this;
     }
