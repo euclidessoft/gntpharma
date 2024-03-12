@@ -60,12 +60,12 @@
                     <td>
                         {% if tamp != 'no' %}
                             <button type="button" class="btn btn-success disabled" id="btn{{ produit.id }}">
-                                <i class="fa fa-cart-shopping"></i>
+                                <i class="fa fa-cart-arrow-down"></i>
                             </button>
                         {% else %}
                             <button type="button" class="btn btn-success{% if produit.stock <= produit.mincommande %} disabled {%  endif %}" id="btn{{ produit.id }}"
                                     onclick="addprod({{ produit.id }}, {{ produit.mincommande }}, {{ produit.stock }})">
-                                <i class="fa fa-cart-shopping"></i>
+                                <i class="fa fa-cart-arrow-down"></i>
                             </button>
                         {% endif %}
                     </td>
