@@ -54,6 +54,11 @@ class Livrer
     private $reste;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $livrer;
+
+    /**
      * Constructor
      */
     public function __construct(Commande $commande, User $user)
@@ -156,6 +161,18 @@ class Livrer
     public function setLivreur(?User $livreur): self
     {
         $this->livreur = $livreur;
+
+        return $this;
+    }
+
+    public function getLivrer(): ?bool
+    {
+        return $this->livrer;
+    }
+
+    public function setLivrer(bool $livrer): self
+    {
+        $this->livrer = $livrer;
 
         return $this;
     }

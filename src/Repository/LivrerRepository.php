@@ -46,7 +46,8 @@ class LivrerRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('l')
             ->andWhere('l.livreur = :id')
             ->setParameter('id', $livreur)
-            ->orderBy('l.id', 'DESC')
+            ->andWhere('l.livrer = :livrer')
+            ->setParameter('livrer', true)
             ->getQuery()
             ->getResult()
         ;
