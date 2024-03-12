@@ -231,7 +231,7 @@
                 <i class="fa fa-shopping-cart mr-2"></i>
                 {{ "Historiques des versements"|trans }}
             </h3>
-            <table class="table table-success-light table-bordered table-hover table-striped w-100">
+            <table class="table table-success-light table-bordered w-100">
                 <thead>
                 <tr>
                     <th>numero versement</th>
@@ -250,11 +250,11 @@
                 {% else %}
                 {% endfor %}
                 <tr>
-                    <td colspan="2" class="text-right text-nowrap">Total versement</td>
+                    <td colspan="2" class="text-end fw-bold text-nowrap">Total versement</td>
                     <td>{{ commande.versement|number_format(0, '' , ' ') }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="text-right">Montant Restant</td>
+                    <td colspan="2" class="text-end fw-bold">Montant Restant</td>
                     <td>{{ (commande.montant - commande.versement)|number_format(0, '' , ' ') }}</td>
                 </tr>
                 </tbody>
