@@ -236,7 +236,7 @@ class LivrerController extends AbstractController
     /**
      * @Route("Livraison_show/{id}", name="livreur_show", methods={"GET","POST"})
      */
-    public function livreurshow(Livrer $livrer, LivrerProduitRepository $livrerProduitRepository, ProduitRepository $repository, SessionInterface $session): Response
+    public function livreurshow(Livrer $livrer): Response
     {// traitement livraison
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_LIVREUR') && $livrer->getLivreur() == $this->getUser()) {
@@ -246,6 +246,53 @@ class LivrerController extends AbstractController
                     'commandereference' => $livrer->getCommande(),
                     'livrer' => $livrer,
                 ]);
+                $response->setSharedMaxAge(0);
+                $response->headers->addCacheControlDirective('no-cache', true);
+                $response->headers->addCacheControlDirective('no-store', true);
+                $response->headers->addCacheControlDirective('must-revalidate', true);
+                $response->setCache([
+                    'max_age' => 0,
+                    'private' => true,
+                ]);
+                return $response;
+
+
+        }else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+
+    }
+
+
+    /**
+     * @Route("Valider_Livraison_show/{id}", name="valider_livreur_show", methods={"GET","POST"})
+     */
+    public function validerlivreur(Livrer $livrer): Response
+    {// traitement livraison
+
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_LIVREUR') && $livrer->getLivreur() == $this->getUser()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $livrer->setDateefectlivraison(new \DateTime());
+            $livrer->setLivrer(true);
+            $livrer->getCommande()->setLivrer(true);
+            $livrer->getCommande()->setDateefectlivraison(new \DateTime());
+            $em->persist($livrer);
+            $em->persist($livrer->getCommande());
+            $em->flush();
+            $this->addFlash('notice', 'livraison effectue avec succes');
+
+
+                $response = $this->redirectToRoute('livraison_index');
                 $response->setSharedMaxAge(0);
                 $response->headers->addCacheControlDirective('no-cache', true);
                 $response->headers->addCacheControlDirective('no-store', true);

@@ -103,6 +103,11 @@ class Commande
     private $livrer;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateefectlivraison;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -344,6 +349,18 @@ class Commande
     public function setLivrer(bool $livrer): self
     {
         $this->livrer = $livrer;
+
+        return $this;
+    }
+
+    public function getDateefectlivraison(): ?\DateTimeInterface
+    {
+        return $this->dateefectlivraison;
+    }
+
+    public function setDateefectlivraison(?\DateTimeInterface $dateefectlivraison): self
+    {
+        $this->dateefectlivraison = $dateefectlivraison;
 
         return $this;
     }
