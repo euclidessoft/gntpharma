@@ -989,8 +989,8 @@ class LivrerController extends AbstractController
         $liver = $request->request->get('livrer');
 
 
-//        $folderPath = __DIR__."../../public/Documents/";
-        $folderPath = "C:/wamp/www/gntpharm/public/Documents/";
+        $folderPath = __DIR__."/../../public/Documents/";
+//        $folderPath = "C:/wamp/www/gntpharm/public/Documents/";
         $image_parts = explode(";base64,", $chaine);
         $image_type_aux = explode("image/", $image_parts[0]);
         $image_type = $image_type_aux[1];
@@ -1008,7 +1008,6 @@ class LivrerController extends AbstractController
         $this->addFlash('notice', 'livraison reussie avec succès');
 
         $res['id'] = 'ok';
-        $res['ok'] = $chaine;
 
         $response = new Response();
         $response->headers->set('content-type', 'application/json');
