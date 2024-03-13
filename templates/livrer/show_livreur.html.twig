@@ -181,3 +181,17 @@
         </div>
     </div>
 {% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="{{ asset('signature/js/jquery.ui.touch-punch.js') }}"></script>
+    <script src="{{ asset('signature/js/jquery.signature.js') }}"></script>
+    <script>
+        $(function() {
+            var sig = $('#signature').signature();
+            $('#clear').click(function() {
+                sig.signature('clear');
+            });
+        });
+    </script>
+{% endblock %}
