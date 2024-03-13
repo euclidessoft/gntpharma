@@ -53,7 +53,8 @@
 
 
                 <li class="nav-item dropright" title="{{ 'Livraison'|trans }}">
-                    <a class="nav-link dropdown-toggle {% block livraison %}{% endblock %}" href="#"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle {% block livraison %}{% endblock %}" href="#"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
                             <i class="fa fas fa-truck-fast fa-lg"></i>
                         </div>
@@ -63,13 +64,15 @@
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="pelerin">
                         <li class="dropdown-item">
-                            <a class="nav-link  {% block all_livraison %}{% endblock %}" href="{{ path('livraison_historique') }}">
+                            <a class="nav-link  {% block all_livraison %}{% endblock %}"
+                               href="{{ path('livraison_historique') }}">
                                 <i class="fas fa-truck-fast mr-2"></i>
                                 {{ 'Deja livrée'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link  {% block new_livraison %}{% endblock %}" href="{{ path('livraison_index') }}">
+                            <a class="nav-link  {% block new_livraison %}{% endblock %}"
+                               href="{{ path('livraison_index') }}">
                                 <i class="fas fa-truck-fast mr-2"></i>
                                 {{ 'En attente de livraison'|trans }}
                             </a>
@@ -197,13 +200,39 @@
     <script type="text/javascript" src="{{ asset('signature/js/jquery.ui.touch-punch.js') }}"></script>
     <script src="{{ asset('signature/js/jquery.signature.js') }}"></script>
     <script>
-        $(function() {
-            var sig = $('#signature').signature();
-            $('#clear').click(function() {
+        $(function () {
+            var sig = $('#signature').signature({syncField: '#signature64', syncFormat: 'PNG'});
+            $('#clear').click(function () {
                 sig.signature('clear');
             });
         });
+        function image(commande) {
+            var image = $('#signature64').val();
+            if($('#signature64').val() != "") {
+                $("#valider").html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                image = image.replace(/\n/g, "");
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('livraison_creation_image') }}",
+                    data: {image: image, livrer: commande},
+                    success: function (data) {
+                        if (data['id'] == 'ok') {
+                            document.location.href= "{{ path('livraison_historique') }}";
+
+                        } else {
+                            alert("{{ 'verifier la quantite saisie 1'|trans }}")
+                        }
+                    },
+                    error: function () {
+                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                    }
+                });
+            }else{
+                alert("{{ 'Inserer une signature'|trans }}");
+            }
+        }
     </script>
+
 {% endblock %}
 </body>
 

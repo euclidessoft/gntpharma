@@ -241,6 +241,7 @@ class LivrerController extends AbstractController
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_LIVREUR') && $livrer->getLivreur() == $this->getUser()) {
 
+
                 $response = $this->render('livrer/show_livreur.html.twig', [
 //                'commandes' => $commandeproduits,
                     'commandereference' => $livrer->getCommande(),
@@ -271,7 +272,6 @@ class LivrerController extends AbstractController
         }
 
     }
-
 
     /**
      * @Route("Valider_Livraison_show/{id}", name="valider_livreur_show", methods={"GET","POST"})
@@ -978,6 +978,47 @@ class LivrerController extends AbstractController
             return $response;
         }
     }
+
+    /**
+     * @Route("/Creation_image/", name="creation_image")
+     */
+    public function creation_image(Request $request)
+    {
+
+        $chaine = $request->request->get('image');
+        $liver = $request->request->get('livrer');
+
+
+//        $folderPath = __DIR__."../../public/Documents/";
+        $folderPath = "C:/wamp/www/gntpharm/public/Documents/";
+        $image_parts = explode(";base64,", $chaine);
+        $image_type_aux = explode("image/", $image_parts[0]);
+        $image_type = $image_type_aux[1];
+        $image_base64 = base64_decode($image_parts[1]);
+        $file = $folderPath . uniqid() .".PNG";
+        file_put_contents($file, $image_base64);
+
+        $em = $this->getDoctrine()->getManager();
+        $livraison = $em->getRepository(Livrer::class)->find($liver);
+        $livraison->setLivrer(true);
+        $livraison->setSignature("/Documents/". uniqid() .".PNG");
+        $livraison->setDateefectlivraison(new \DateTime());
+        $em->persist($livraison);
+        $em->flush();
+        $this->addFlash('notice', 'livraison reussie avec succès');
+
+        $res['id'] = 'ok';
+        $res['ok'] = $chaine;
+
+        $response = new Response();
+        $response->headers->set('content-type', 'application/json');
+        $re = json_encode($res);
+        $response->setContent($re);
+        return $response;
+//        }
+
+    }
+
 
 
     /**`
