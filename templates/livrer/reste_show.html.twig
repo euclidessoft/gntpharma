@@ -135,50 +135,60 @@
                 {% else %}
                 {% endfor %}
         </table>
-        <a class="btn btn-success mb-4" href="{{ path('livraison_reste_valider', {'id': commandereference.id}) }}"><i
-                    class="fa fa-check"></i> Valider </a>
+
+        <button type="button" class="btn btn-success mb-4" data-toggle="modal" data-target="#livreur">
+            <i class="fa fa-check"></i> Valider </button>
+
 
         <!-- Modal -->
+        <div class="modal fade" id="livreur" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog text-center">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <h4 class="modal-title fs-5" id="exampleModalLabel">
+                            <i class="fa-solid fa-truck-fast"></i>
+                            Livraison
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body px-5 pb-5">
+                        <p class="">
+                            <b>Assigner à un livreur</b>
+                        </p>
+                        {{ form_start(form,{'attr': {'id': 'form'}}) }}
+                        {{ form_row(form.livreur,{'label': false}) }}
+                        {{ form_rest(form) }}
+                        <button type="button" class="btn btn-success m-2" onclick="valider()" id="validation">
+                            <i class="fa fa-check"></i> Valider
+                        </button>
+                        {{ form_end(form) }}
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
 
     </div>
     {% block scripts %}
         <script>
-            {#function modifquantite(id, quantite, st) {// fonction pour ajouter un produit dans le panier#}
-            {#    var reg = new RegExp("^[0-9]+$");#}
-            {#    if (reg.test($('#text' + id).val()) && quantite > $('#text' + id).val()) {#}
-            {#        if (st >= $('#text' + id).val()) {#}
-            {#            // $('#btn' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");#}
-            {#            $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");#}
-            {#            $.ajax({#}
-            {#                type: "POST",#}
-            {#                url: "{{ path('livraison_modif') }}",#}
-            {#                data: "prod=" + id + "&quantite=" + $('#text' + id).val(),#}
-            {#                success: function (data) {#}
-            {#                    if (data['id'] == 'ok') {#}
-            {#                        $('#quantite' + id).html($('#text' + id).val());#}
-            {#                        $('#annuler' + id).trigger('click');#}
-            {#                        $('#text' + id).val('');#}
-            {#                        $('#ajouter' + id).html("<i class='fa fa-edit'></i>");#}
+            function valider() {// validation livraison
+                var livreur = $('#livrer_livreur');
+                if(livreur.val() != "") {
+                    $('#validation').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                    $('#form').submit();
+                }else{
+                    alert('selectionner un livreur')
+                }
 
-            {#                    } else {#}
-            {#                        alert("{{ 'verifier la quantite saisie'|trans }}")#}
-            {#                    }#}
-            {#                },#}
-            {#                error: function () {#}
-            {#                    alert("{{ 'La requête n a pas abouti'|trans }}");#}
-            {#                }#}
-            {#            });#}
-            {#        } else {#}
-            {#            var mess = "Stock indisponible  " + st;#}
-            {#            alert(mess);#}
-            {#        }#}
-            {#    } else {#}
-            {#        var mess = "Quantité supérieure à la commande initiale";#}
-            {#        alert(mess);#}
-            {#    }#}
 
-            {#}#}
+            }
 
             function detaillivraison(id) {// fonction pour ajouter un produit dans le panier
 

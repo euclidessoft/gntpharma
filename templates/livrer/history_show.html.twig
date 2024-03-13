@@ -43,6 +43,7 @@
         {% for liv in livrer %}
             {% set entete = 0 %}
             {% set produit = 0 %}
+            {% set quantite = 0 %}
         {% for  commande in liv.livraison %}
         {% set ug = 0 %}
 
@@ -72,12 +73,24 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100 text-center">
 
 {% endif %}
+
             {% if commande.produit.id != produit %}
+                {% if not loop.first %}
+
+
+
+                    <tr>
+                        <th colspan="2"> {{ "Quantite Totale Livree"|trans }}</th>
+                        <th> {{ quantite }}</th>
+                    </tr>
+                    <tr>
+                        <td colspan="3"></td>
+                    </tr>
+                    {% set quantite = 0 %}
+                {% endif %}
                 <thead>
                 <tr>
-                <tr>
-                    <th colspan="3">{{ commande.produit.reference }} : {{ commande.produit.desigantion }}</th>
-                </tr>
+                    <th colspan="2">{{ commande.produit.reference }} : {{ commande.produit.desigantion }}</th>
                     <th>Quantite Commande:
                         {{ commande.quantitecommander }}
                         {% if commande.promotion is not null %}
@@ -130,9 +143,8 @@
                             {% endif %}
                         {% endif %}
                     </th>
-                    <th>Quantite Livrés: {{ commande.quantitecommander - commande.restealivrer }}</th>
-                    <th>Quantite Restante: {{ commande.restealivrer }}</th>
                 </tr>
+
                 <tr>
 
                     <th>N° Lot</th>
@@ -151,8 +163,17 @@
 
                 <td class="text-center">
                     {{ commande.quantitelivrer }}
+                    {% set quantite = quantite + commande.quantitelivrer %}
                 </td>
+
             </tr>
+            {% if loop.last %}
+
+                <tr>
+                    <th colspan="2"> {{ "Quantite Totale Livree"|trans }}</th>
+                    <th> {{ quantite }}</th>
+                </tr>
+            {% endif %}
             {% set entete = commande.livrer.id %}
             {% set produit = commande.produit.id %}
                 {% endfor %}
