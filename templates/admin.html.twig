@@ -120,6 +120,13 @@
                                     {{ 'Etat du Stock'|trans }}
                                 </a>
                             </li>
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block retour_stock %}{% endblock %}"
+                                   href="{{ path('stock_index') }}">
+                                    <i class="fas fa-warehouse mr-2"></i>
+                                    {{ 'Retour Stock'|trans }}
+                                </a>
+                            </li>
                             <li class="dropdown-item submenu">
                                 <a class="nav-link dropdown-toggle {% block appro %}{% endblock %}" href="#"
                                    id="reapprovisionnement"

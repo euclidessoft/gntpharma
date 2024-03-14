@@ -6,6 +6,7 @@ use App\Entity\Album;
 use App\Entity\Candidature;
 use App\Entity\Produit;
 use App\Form\CandidatureType;
+use App\Repository\CommandeRepository;
 use App\Repository\ImageRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\StockRepository;
@@ -169,6 +170,29 @@ class StockController extends AbstractController
             return $response;
        }
       else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/Retour", name="surveiller", methods={"GET"})
+     */
+    public function retour(CommandeRepository $repository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
+            return $this->render('stock/retout.html.twig', [
+                'commandes' => $repository->findBy(['livrer' => true]),
+            ]);
+        } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);

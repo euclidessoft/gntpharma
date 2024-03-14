@@ -1,0 +1,58 @@
+{% extends 'commande.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block commande %}active{% endblock %}
+{% block my_commande %}active{% endblock %}
+
+{% block body %}
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-shopping-cart mr-2"></i>
+            {{ "Retour de produit"|trans }}
+        </h3>
+
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    &times;
+                </button>
+                {{ message|trans }}
+            </div>
+        {% endfor %}
+        <table class="table table-success-light table-bordered table-hover table-striped w-100 mt-4" id="liste">
+            <thead>
+            <tr>
+                <th>Numero Commande</th>
+                <th>Date de commande</th>
+                <th>Date de Livraison</th>
+                <th>Client </th>
+                <th>Montant</th>
+                <th> </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for commande in commandes %}
+                <tr>
+                    <td>{{ commande.id }}</td>
+                    <td>{{ commande.date|date('d/m/Y') }}</td>
+                    <td>{{ commande.datelivrer ? commande.datelivrer|date('d/m/Y') : '' }}</td>
+                    <td> {{ commande.user.nom }}</td>
+                    <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
+                    <td>
+                        <a href="{{ path('commande_panier_Detail', {'commande' : commande.id}) }}" class="btn btn-success">
+                            <i class="fa fa-list"></i> Details
+                        </a>
+                    </td>
+
+
+                </tr>
+
+            {% else %}
+                <tr>
+                    <td colspan="5">Aucune commande</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
