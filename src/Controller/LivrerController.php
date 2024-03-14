@@ -1001,9 +1001,11 @@ class LivrerController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $livraison = $em->getRepository(Livrer::class)->find($liver);
         $livraison->setLivrer(true);
+        $livraison->getCommande()->setLivrer(true);
         $livraison->setSignature("/Documents/". uniqid() .".PNG");
         $livraison->setDateefectlivraison(new \DateTime());
         $em->persist($livraison);
+        $em->persist($livraison->getCommande());
         $em->flush();
         $this->addFlash('notice', 'livraison reussie avec succès');
 

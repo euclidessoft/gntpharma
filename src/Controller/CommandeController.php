@@ -96,10 +96,9 @@ class CommandeController extends AbstractController
             $form = $this->createForm(CommandeType::class, $commande);
             $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($commande);
-                $entityManager->flush();
+            if ($form->isSubmitted()) {
+                $session->set('extranet', $commande->getUser()->getId());
+                $this->redirectToRoute('commande_panier_choix_paiement_extranet', ['commande' => 0]);
             }
 
 
@@ -131,6 +130,28 @@ class CommandeController extends AbstractController
         }
     }
 
+
+    /**
+     * @Route("/client_extranet/", name="client_extranet")
+     */
+    public function add(Request $request, SessionInterface $session)
+    {
+        if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
+            $session->set('client', $request->get('client'));// recuperation de id produit
+
+
+            $res['id'] = 'ok';
+
+
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+        }
+
+    }
+
     /**
      * @Route("/valider", name="valider")
      */
@@ -146,7 +167,7 @@ class CommandeController extends AbstractController
             if (count($panier) >= 1) {
 
                 $commande->setUser($this->getUser());
-                if($session->get("credit")){
+                if ($session->get("credit")) {
                     $commande->setCredit(true);
                     $session->remove('credit');
                 }
@@ -211,7 +232,7 @@ class CommandeController extends AbstractController
         }
     }
 
- /**
+    /**
      * @Route("/valider_extranet", name="valider_extranet")
      */
     public function validerextranet(SessionInterface $session, ProduitRepository $produitRepository, CommandeProduitRepository $repository)
@@ -225,9 +246,10 @@ class CommandeController extends AbstractController
             $commande->setAdmin($this->getUser());
 
             if (count($panier) >= 1) {
-
-                $commande->setUser($this->getUser());
-                if($session->get("credit")){
+                $client = $em->getRepository(User::class)->find($session->get('client'));
+                $session->remove('client');
+                $commande->setUser($client);
+                if ($session->get("credit")) {
                     $commande->setCredit(true);
                     $session->remove('credit');
                 }
@@ -348,7 +370,8 @@ class CommandeController extends AbstractController
 
          return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
     }
-/**
+
+    /**
      * @Route("/VosCommandes_extranet/", name="suivi_extranet")
      */
     public function voscommandeextranet(SessionInterface $session, CommandeRepository $repository)
@@ -511,6 +534,7 @@ class CommandeController extends AbstractController
         }
 
     }
+
     /**
      * @Route("/ValidationCredit/", name="validation_credit")
      */
@@ -876,7 +900,8 @@ class CommandeController extends AbstractController
 
          return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
     }
-/**
+
+    /**
      * @Route("/Choix_Paiement_extranet/{commande}", name="choix_paiement_extranet")
      */
     public function paiementChoixextranet(SessionInterface $session, CommandeProduitRepository $repository, $commande, PaiementRepository $paiementRepository)
@@ -1052,7 +1077,7 @@ class CommandeController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 if ($versement->getMontant() <= ($commande->getMontant() - $commande->getVersement())) {
                     $commande->setVersement($commande->getVersement() + $versement->getMontant());
-                    if($commande->getVersement() == $commande->getMontant()) $commande->setPayer(true);
+                    if ($commande->getVersement() == $commande->getMontant()) $commande->setPayer(true);
                     $versement->setUser($this->getUser());
                     $versement->setCommande($commande);
 //                    $commande->setSuivi(true);
@@ -1378,7 +1403,7 @@ class CommandeController extends AbstractController
          return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
     }
 
- /**
+    /**
      * @Route("/Imprimer_extranet/{commande}", name="imprimer_extranet")
      */
     public function imprimerextranet(Request $request, SessionInterface $session, CommandeProduitRepository $repository, Commande $commande)
