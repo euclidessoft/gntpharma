@@ -81,7 +81,7 @@
             </div>
         </div>
         <h3 class="text-center text-bold text-uppercase my-5">
-            Bon de livraison
+            {{ ' Bon de livraison '| trans }}
         </h3>
 
 
@@ -90,10 +90,10 @@
                 <table class="table table-success-light table-bordered">
                     <thead>
                     <tr>
-                        <th>Numero Commande</th>
-                        <th>Client</th>
-                        <th>Date de commande</th>
-                        <th>Date de Paiement</th>
+                        <th>{{ 'Numero Commande'|trans }}</th>
+                        <th>{{ 'Client'|trans }}</th>
+                        <th>{{ 'Date de commande'|trans }}</th>
+                        <th>{{ 'Date de Paiement'|trans }}</th>
 
                     </tr>
                     </thead>
@@ -122,9 +122,9 @@
                             <table class="table table-success-light table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>N° Bordereau</th>
-                                    <th>Date d'emission</th>
-                                    <th>Date de livraison</th>
+                                    <th>{{'N° Bordereau'|trans}}</th>
+                                    <th>{{'Date d\{{ ' }|trans}'emission'|trans}}</th>
+                                    <th>{{'Date de livraison'|trans}}</th>
 
                                 </tr>
                                 </thead>
@@ -214,9 +214,9 @@
 
                     <tr>
 
-                        <th>N° Lot</th>
-                        <th>Peremption</th>
-                        <th>Quantite livrée</th>
+                        <th>{{'N° Lot'|trans}}</th>
+                        <th>{{'Peremption'|trans}}</th>
+                        <th>{{'Quantite livrée'|trans}}</th>
                     </tr>
                     </thead>
                 {% endif %}

@@ -19,9 +19,9 @@
                     <table class="table table-success-light table-bordered table-hover table-striped mb-4 w-100">
                         <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Client</th>
-                            <th>N° Commande</th>
+                            <th>{{ 'Date'|trans }}</th>
+                            <th>{{ 'Client'|trans }}</th>
+                            <th>{{'N° Commande'|trans}}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -45,7 +45,8 @@
                             class="btn btn-success"
                             data-toggle="modal" data-target="#modal"
                             id="btn">
-                        <i class="fa fa-list"></i> Details
+                        <i class="fa fa-list"></i>
+                        {{ 'Details'|trans }}
                     </button>
 
 

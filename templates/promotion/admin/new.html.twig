@@ -25,9 +25,9 @@
                     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
                         <thead>
                         <tr>
-                            <th>Reference</th>
-                            <th>Designation</th>
-                            <th>Fabriquant</th>
+                            <th>{{ 'Reference'|trans }}</th>
+                            <th>{{ 'Designation'|trans }}</th>
+                            <th>{{ 'Fabriquant'|trans }}</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -43,7 +43,8 @@
                                     <button type="button"
                                             class="btn btn-success {% if produit.id in inlist %} disabled {% endif %}"
                                             id="ajouter{{ produit.id }}" onclick="ajouter_promotion({{ produit.id }})">
-                                        <i class="fa fa-plus"></i> Ajouter
+                                        <i class="fa fa-plus"></i>
+                                        {{ 'Ajouter'|trans }}
                                     </button>
                                 </td>
                             </tr>
@@ -61,11 +62,11 @@
                            id="aprovision">
                         <thead>
                         <tr>
-                            <th>Reference</th>
-                            <th>Designation</th>
-                            <th>Fabriquant</th>
+                            <th>{{ 'Reference'|trans }}</th>
+                            <th>{{ 'Designation'|trans }}</th>
+                            <th>{{ 'Fabriquant'|trans }}</th>
 
-                            <th>actions</th>
+                            <th>{{ 'actions'|trans }}</th>
                         </tr>
                         </thead>
                         <tbody id="selectprod">

@@ -13,10 +13,10 @@
 
         <div class="row">
             <div class="col-lg-6 fond-7">
-        <h3 class="mt-4 mb-5 text-bold">
-            <i class="fa fa-product-hunt mr-2"></i>
-            {{ "List de produits"|trans }}
-        </h3>
+                <h3 class="mt-4 mb-5 text-bold">
+                    <i class="fa fa-product-hunt mr-2"></i>
+                    {{ "List de produits"|trans }}
+                </h3>
                 {% for message in app.flashes('notice') %}
                     <div class="alert alert-primaire alert-dismissible fade show radius-10 shadow-black">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
@@ -37,8 +37,8 @@
                 <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
                     <thead>
                     <tr>
-                        <th>Reference</th>
-                        <th>Designation</th>
+                        <th>{{ 'Reference'|trans }}</th>
+                        <th>{{ 'Designation'|trans }}</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -54,7 +54,8 @@
                                         class="btn btn-success {% if produit.id in inlist %} disabled {% endif %}"
                                         data-toggle="modal" data-target="#modal{{ produit.id }}"
                                         id="btn{{ produit.id }}">
-                                    <i class="fa fa-plus"></i> Ajouter
+                                    <i class="fa fa-plus"></i>
+                                    {{ 'Ajouter'|trans }}
                                 </button>
 
                                 <!-- Modal -->
@@ -71,17 +72,20 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body px-5">
-                                                Renseignez la quantité: <input type="number" class="form-control"
-                                                                               id="quant{{ produit.id }}">
+                                                {{ 'Renseignez la quantité: '|trans }}<input type="number"
+                                                                                             class="form-control"
+                                                                                             id="quant{{ produit.id }}">
                                             </div>
                                             <div class="modal-footer px-5 py-4">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                                        id="annuler{{ produit.id }}">Annuler
+                                                        id="annuler{{ produit.id }}">
+                                                    {{ 'Annuler'|trans }}
                                                 </button>
                                                 <button type="button" class="btn btn-success ms-3"
                                                         id="ajouter{{ produit.id }}"
                                                         onclick="ajouter({{ produit.id }})"><i
-                                                            class="fa fa-plus"></i> Ajouter
+                                                            class="fa fa-plus"></i>
+                                                    {{ 'Ajouter'|trans }}
                                                 </button>
                                                 <div id="modification{{ produit.id }}"></div>
                                             </div>
@@ -103,13 +107,14 @@
                 {{ form_widget(form) }}
                 {{ form_end(form) }}
 
-                <table class="table table-success-light table-bordered table-hover table-striped mt-5 w-100" id="aprovision">
+                <table class="table table-success-light table-bordered table-hover table-striped mt-5 w-100"
+                       id="aprovision">
                     <thead>
                     <tr>
-                        <th>Reference</th>
-                        <th>Designation</th>
-                        <th>Fabriquant</th>
-                        <th>Quantite</th>
+                        <th>{{ 'Reference'|trans }}</th>
+                        <th>{{ 'Designation'|trans }}</th>
+                        <th>{{ 'Fabriquant'|trans }}</th>
+                        <th>{{ 'Quantite'|trans }}</th>
 
                         <th>actions</th>
                     </tr>
@@ -158,7 +163,7 @@
                         class="btn btn-success float-right  {% if inlist|length == 0 %} disabled {% endif %}"
                         id="valider2"
                         title="Valider">
-                    <i class="fa fa-check"></i> Valider
+                    <i class="fa fa-check"></i> {{ 'Valider'|trans }}
                 </button>
 
             </div>
@@ -279,13 +284,13 @@
         }
 
         function validerappro() {
-            if($('#commande_user option:selected').val()!= '') {
-            if (confirm("Confirmation validation?")) {
+            if ($('#commande_user option:selected').val() != '') {
+                if (confirm("Confirmation validation?")) {
 
                     document.location.href = "{{ path("commande_panier_choix_paiement_extranet", {'commande': 0}) }}";
 
-            }
-            }else alert('Veuillez selectionner un client')
+                }
+            } else alert('Veuillez selectionner un client')
         }
 
     </script>

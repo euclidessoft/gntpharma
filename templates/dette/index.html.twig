@@ -28,10 +28,10 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100 mt-4" id="liste">
             <thead>
             <tr>
-                <th>Numero Commande</th>
-                <th>Date de commande</th>
-                <th>Date de Livraison</th>
-                <th>Montant</th>
+                <th>{{ 'Numero Commande'|trans }}</th>
+                <th>{{ 'Date de commande'|trans }}</th>
+                <th>{{ 'Date de Livraison'|trans }}</th>
+                <th>{{ 'Montant'|trans }}</th>
                 <th> </th>
             </tr>
             </thead>
@@ -44,7 +44,8 @@
                     <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
                     <td>
                         <a href="{{ path('finance_dette_show', {'commande' : commande.id}) }}" class="btn btn-success">
-                            <i class="fa fa-list"></i> Details
+                            <i class="fa fa-list"></i>
+                            {{ 'Details'|trans }}
                         </a>
                     </td>
 
@@ -53,7 +54,7 @@
 
             {% else %}
                 <tr>
-                    <td colspan="5">Aucune commande</td>
+                    <td colspan="5">{{ 'Aucune commande'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

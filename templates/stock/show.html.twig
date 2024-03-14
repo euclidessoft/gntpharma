@@ -14,27 +14,27 @@
         <tbody>
 
         <tr>
-            <th>Reference</th>
+            <th>{{'Réference'|trans}}</th>
             <td>{{ produit.reference }}</td>
         </tr>
         <tr>
-            <th>Desigantion</th>
+            <th>{{'Désignation'|trans}}</th>
             <td>{{ produit.desigantion }}</td>
         </tr>
         <tr>
-            <th>Prix Session</th>
+            <th>{{ 'Prix Cession'|trans }}</th>
             <td>{{ produit.prix }}</td>
         </tr>
         <tr>
-            <th>Prix Public</th>
+            <th>{{ 'Prix Public'|trans }}</th>
             <td>{{ produit.prixpublic }}</td>
         </tr>
         <tr>
-            <th>Mincommande</th>
+            <th>{{ 'Commande minumum'|trans }}</th>
             <td>{{ produit.mincommande }}</td>
         </tr>
         <tr>
-            <th>Fabriquant</th>
+            <th>{{ 'Fabricant'|trans }}</th>
             <td>{{ produit.fabriquant }}</td>
         </tr>
         </tbody>
@@ -44,11 +44,15 @@
     <div class="col-md-6 offset-md-3 mt-4 py-3 fond-7">
         <div class="centrer">
             <a class="btn btn-success mr-3" href="{{ path('produit_edit', {'id': produit.id}) }}"><i
-                        class="fa fa-edit"></i> Modifier</a>
+                        class="fa fa-edit"></i>
+                {{ 'Modifier'|trans }}
+            </a>
 
             {{ include('produit/admin/_delete_form.html.twig') }}
 
-            <a class="btn btn-success ml-3" href="{{ path('produit_index') }}"><i class="fa fa-undo"></i> Retour</a>
+            <a class="btn btn-success ml-3" href="{{ path('produit_index') }}"><i class="fa fa-undo"></i>
+                {{ 'Retour'|trans }}
+            </a>
 
         </div>
     </div>

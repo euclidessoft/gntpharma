@@ -14,11 +14,11 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>Client</th>
-                <th>Date</th>
-                <th>Creer par</th>
-                <th>Montant</th>
-                <th>actions</th>
+                <th>{{ 'Client'|trans }}</th>
+                <th>{{ 'Date'|trans }}</th>
+                <th>{{ 'Creer par'|trans }}</th>
+                <th>{{ 'Montant'|trans }}</th>
+                <th>{{ 'actions'|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -29,7 +29,9 @@
                 <td>{{ avoir.admin.nom }}</td>
                 <td>{{ avoir.Montant|number_format(0, '' , ' ') }}</td>
                 <td>
-                    <a class="btn btn-success" href="{{ path('avoir_show', {'id': avoir.id}) }}"><i class="fa fa-list"></i> Afficher</a>
+                    <a class="btn btn-success" href="{{ path('avoir_show', {'id': avoir.id}) }}"><i class="fa fa-list"></i>
+                        {{ 'Afficher'|trans }}
+                    </a>
                 </td>
             </tr>
         {% else %}

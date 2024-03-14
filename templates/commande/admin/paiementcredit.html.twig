@@ -24,9 +24,9 @@
             <table class="table table-success-light table-bordered table-hover table-striped">
                 <thead>
                 <tr>
-                    <th>Numero Commande</th>
-                    <th>Date</th>
-                    <th>Client</th>
+                    <th>{{ 'Numero Commande'|trans }}</th>
+                    <th>{{ 'Date'|trans }}</th>
+                    <th>{{ 'Client'|trans }}</th>
 
                 </tr>
                 </thead>
@@ -45,14 +45,14 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100">
         <thead>
         <tr>
-            <th>Code Produit</th>
-            <th>Desigantion</th>
-            <th>Quantite Commandee</th>
-            <th>Prix Cession</th>
-            <th>Reduction</th>
-            <th>TVA</th>
-            <th>Prix Public</th>
-            <th>Montant</th>
+            <th>{{ 'Code Produit'|trans }}</th>
+            <th>{{ 'Designation'|trans }}</th>
+            <th>{{ 'Quantite Commandee'|trans }}</th>
+            <th>{{ 'Prix Cession'|trans }}</th>
+            <th>{{ 'Reduction'|trans }}</th>
+            <th>{{ 'TVA'|trans }}</th>
+            <th>{{ 'Prix Public'|trans }}</th>
+            <th>{{ 'Montant'|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -109,7 +109,7 @@
 
         {% else %}
             <tr>
-                <td colspan="10">Aucune commande</td>
+                <td colspan="10">{{ 'Aucune commande'|trans }}</td>
             </tr>
         {% endfor %}
         <tr class="text-bold">
@@ -158,12 +158,14 @@
                 <button type="button" class="btn btn-success"
                         data-toggle="modal" data-target="#modal"
                         id="btn">
-                    <i class="fa fa-money-bill"></i> Règlement
+                    <i class="fa fa-money-bill"></i>
+                    {{' Règlement'|trans}}
                 </button>
                 {% else %}
                     <a href="{{ path('commande_panier_valider_credit', {'commande': commande.id}) }}" type="button"
                        class="btn btn-success">
-                        <i class="fa-solid fa-sack-dollar"></i> Valider Credit
+                        <i class="fa-solid fa-sack-dollar"></i>
+                        {{' Valider Credit'|trans }}
                     </a>
                 {% endif %}
 
@@ -174,7 +176,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                    Règlement</h1>
+                                    {{'Règlement'|trans}}
+                                </h1>
                                 <button type="button" class="close" data-dismiss="modal"
                                         aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -212,12 +215,14 @@
                             </div>
                             <div class="modal-footer px-5 py-4">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                        id="annuler"><i class="fa fa-undo"></i> Annuler
+                                        id="annuler"><i class="fa fa-undo"></i>
+                                    {{ 'Annuler'|trans }}
                                 </button>
                                 <button type="button" class="btn btn-success ms-3"
                                         id="ajouter"
                                         onclick="number()"><i
-                                            class="fa fa-money-bill"></i> Payer
+                                            class="fa fa-money-bill"></i>
+                                    {{ 'Payer'|trans }}
                                 </button>
                             </div>
                             {{ form_end(form) }}

@@ -22,7 +22,7 @@
                 {% if is_granted("ROLE_ADMIN") %}
                     <a href="{{ path('security_admin_register') }}" class="btn btn-green mb-2">
                         <i class="fa fa-user-plus"></i>
-                        Créer nouvel utilisateur
+                        {{'Créer nouvel utilisateur'|trans}}
                     </a>
                 {% endif %}
             </div>

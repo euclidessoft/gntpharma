@@ -22,11 +22,11 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>Designation</th>
-                <th>Date Debut</th>
-                <th>Date Fin</th>
-                <th>Type</th>
-                <th>actions</th>
+                <th>{{ 'Designation'|trans }}</th>
+                <th>{{ 'Date Debut'|trans }}</th>
+                <th>{{ 'Date Fin'|trans }}</th>
+                <th>{{ 'Type'|trans }}</th>
+                <th>{{ 'actions'|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -37,16 +37,24 @@
                 <td>{{ promotion.fin ? promotion.fin|date('d/m/Y') : '' }}</td>
                 <td>{{ promotion.type }}</td>
                 <td>
-                    <a class="btn btn-success" href="{{ path('promotion_show', {'id': promotion.id}) }}"><i class="fa fa-list"></i> Afficher </a>
+                    <a class="btn btn-success" href="{{ path('promotion_show', {'id': promotion.id}) }}">
+                        <i class="fa fa-list"></i>
+                        {{ 'Afficher'|trans }}
+                    </a>
                     {% if is_granted('ROLE_ADMIN') %}
-                    <button type="button" class="btn btn-success" id="btn{{ promotion.id }}"  onclick="arreter({{ promotion.id }})"><i class="fa fa-stop-circle"></i> Arrêter </button>
+                    <button type="button" class="btn btn-success" id="btn{{ promotion.id }}"  onclick="arreter({{ promotion.id }})">
+                        <i class="fa fa-stop-circle"></i>
+                        {{'Arrêter'|trans}}
+                    </button>
                 {{ include('promotion/admin/_delete_form.html.twig') }}
                     {% endif %}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">Aucune promotion</td>
+                <td colspan="6">
+                    {{ 'Aucune promotion'|trans }}
+                </td>
             </tr>
         {% endfor %}
         </tbody>

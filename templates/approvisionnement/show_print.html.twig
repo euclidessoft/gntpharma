@@ -81,7 +81,7 @@
             </div>
         </div>
         <h3 class="text-center text-bold text-uppercase my-5">
-            Details Approvisionnement
+            {{ 'Details Approvisionnement'|trans}}
         </h3>
 
         <div class="row justify-content-end">
@@ -89,9 +89,9 @@
                 <table class="table table-success-light table-bordered">
                     <thead>
                     <tr>
-                        <th>Numero</th>
-                        <th>Date</th>
-                        <th>Utilisateur</th>
+                        <th>{{ 'Numero'|trans }}</th>
+                        <th>{{ 'Date'|trans }}</th>
+                        <th>{{ 'Utilisateur'|trans }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -108,12 +108,12 @@
         <table class="table table-bordered w-100 text-center mt-5">
             <thead>
             <tr>
-                <th>Code Produit</th>
-                <th class="text-left">Designation</th>
-                <th>N° Lot</th>
-                <th>Peremption</th>
+                <th>{{ 'Code Produit'|trans }}</th>
+                <th class="text-left">{{ 'Designation'|trans }}</th>
+                <th>{{'N° Lot'|trans}}</th>
+                <th>{{'Peremption'|trans}}</th>
                 {#            <th>etat stosk</th>#}
-                <th>Quantité</th>
+                <th>{{'Quantité'|trans}}</th>
             </tr>
             </thead>
             <tbody>
@@ -131,7 +131,7 @@
 
             {% else %}
                 <tr>
-                    <td colspan="8">Aucune commande</td>
+                    <td colspan="8">{{ 'Aucune commande'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -22,10 +22,10 @@
                 <table class="table table-success-light table-bordered table-hover table-striped">
                     <thead>
                     <tr>
-                        <th>Numero Commande</th>
-                        <th>Date Commande</th>
-                        <th>Date Paiement</th>
-                        <th>Client</th>
+                        <th>{{ 'Numero Commande'|trans }}</th>
+                        <th>{{ 'Date Commande'|trans }}</th>
+                        <th>{{ 'Date Paiement'|trans }}</th>
+                        <th>{{ 'Client'|trans }}</th>
                         {#                    <th>Date prevu pour la livraison Livraison</th>#}
 
                     </tr>
@@ -45,14 +45,14 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
             <thead>
             <tr>
-                <th>reference</th>
-                <th>designation</th>
-                <th>Quantite Commande</th>
-                <th>Quantite déjà livrée</th>
-                <th>Reste à livrée</th>
-                <th>Quantite à livrée</th>
-                <th>Stock disponible</th>
-                <th>Details</th>
+                <th>{{ 'reference'|trans }}</th>
+                <th>{{ 'designation'|trans }}</th>
+                <th>{{ 'Quantite Commande'|trans }}</th>
+                <th>{{'Quantite déjà livrée'|trans}}</th>
+                <th>{{'Reste à livrée'|trans}}</th>
+                <th>{{'Quantite à livrée'|trans}}</th>
+                <th>{{'Stock disponible'|trans}}</th>
+                <th>{{ 'Details'|trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -79,7 +79,8 @@
                             class="btn btn-success"
                             data-toggle="modal" data-target="#modal{{ commande.produit.id }}"
                             id="btn{{ commande.produit.id }}" onclick="detaillivraison({{ commande.produit.id }})">
-                        <i class="fa fa-edit"></i> Details
+                        <i class="fa fa-edit"></i>
+                        {{ 'Details'|trans }}
                     </button>
                     <div class="modal fade" id="modal{{ commande.produit.id }}" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -99,10 +100,10 @@
                                     <table class="table table-success-light table-bordered table-hover table-striped w-100">
                                         <thead>
                                         <tr>
-                                            <th>N° Lot</th>
-                                            <th>Peremption</th>
-                                            <th>Commande en stock</th>
-                                            <th>Quantite à livrée</th>
+                                            <th>{{'N° Lot'|trans}}</th>
+                                            <th>{{'Peremption'|trans}}</th>
+                                            <th>{{ 'Commande en stock'|trans }}</th>
+                                            <th>{{'Quantite à livrée'|trans}}</th>
                                         </tr>
                                         </thead>
                                         <tbody id="numerolot{{ commande.produit.id }}">
@@ -119,7 +120,8 @@
                                 <div class="modal-footer px-5 py-4">
                                     {{ commande.quantite - commande.quantitelivre }} à livrer
                                     <button type="button" class="btn btn-secondary ml-5" data-dismiss="modal"
-                                            id="annuler{{ commande.produit.id }}">Annuler
+                                            id="annuler{{ commande.produit.id }}">
+                                        {{ 'Annuler'|trans }}
                                     </button>
                                     <button type="button" class="btn btn-success ms-3"
                                             id="ajouter{{ commande.produit.id }}"
@@ -136,7 +138,9 @@
         </table>
 
         <button type="button" class="btn btn-success mb-4" data-toggle="modal" data-target="#livreur">
-            <i class="fa fa-check"></i> Valider </button>
+            <i class="fa fa-check"></i>
+            {{ 'Valider'|trans }}
+        </button>
 
 
         <!-- Modal -->
@@ -147,7 +151,7 @@
                     <div class="modal-header">
                         <h4 class="modal-title fs-5" id="exampleModalLabel">
                             <i class="fa-solid fa-truck-fast"></i>
-                            Livraison
+                            {{ 'Livraison'|trans }}
                         </h4>
                         <button type="button" class="close" data-dismiss="modal"
                                 aria-label="Close">
@@ -156,13 +160,14 @@
                     </div>
                     <div class="modal-body px-5 pb-5">
                         <p class="">
-                            <b>Assigner à un livreur</b>
+                            <b>{{'Assigner à un livreur'|trans}}</b>
                         </p>
                         {{ form_start(form,{'attr': {'id': 'form'}}) }}
                         {{ form_row(form.livreur,{'label': false}) }}
                         {{ form_rest(form) }}
                         <button type="button" class="btn btn-success m-2" onclick="valider()" id="validation">
-                            <i class="fa fa-check"></i> Valider
+                            <i class="fa fa-check"></i>
+                            {{ 'Valider'|trans }}
                         </button>
                         {{ form_end(form) }}
 

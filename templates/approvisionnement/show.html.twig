@@ -16,9 +16,9 @@
                 <table class="table table-success-light table-bordered table-hover table-striped">
                     <thead>
                     <tr>
-                        <th>Numero</th>
-                        <th>Date</th>
-                        <th>Utilisateur</th>
+                        <th>{{ 'Numero'|trans }}</th>
+                        <th>{{ 'Date'|trans }}</th>
+                        <th>{{ 'Utilisateur'|trans }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -35,12 +35,12 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100 text-center mt-5">
             <thead>
             <tr>
-                <th>Code Produit</th>
-                <th class="text-left">Designation</th>
-                <th>N° Lot</th>
-                <th>Peremption</th>
+                <th>{{ 'Code Produit'|trans }}</th>
+                <th class="text-left">{{ 'Designation'|trans }}</th>
+                <th>{{'N° Lot'|trans}}</th>
+                <th>{{'Peremption'|trans}}</th>
                 {#            <th>etat stosk</th>#}
-                <th>Quantité</th>
+                <th>{{'Quantité'|trans}}</th>
             </tr>
             </thead>
             <tbody>
@@ -58,7 +58,7 @@
 
             {% else %}
                 <tr>
-                    <td colspan="8">Aucune commande</td>
+                    <td colspan="8">{{ 'Aucune commande'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -67,7 +67,8 @@
         <div class="col-md-2 offset-md-4 mt-5 mb-5 pt-2 pb-2 fond-7">
             <div class="centrer">
                 <a href="{{ path('stock_show_print',{ 'id': approvisionner.id}) }}" class="btn btn-success float-end">
-                    <i class="fa fa-print"></i> {{ "Imprimer"|trans }}
+                    <i class="fa fa-print"></i>
+                    {{ "Imprimer"|trans }}
                 </a>
             </div>
         </div>

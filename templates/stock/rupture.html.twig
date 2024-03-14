@@ -13,18 +13,26 @@
         <ul class="nav nav-tabs mb-4">
 {% if is_granted('ROLE_STOCK') %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('stock_index') }}">Disponible</a>
+                <a class="nav-link" href="{{ path('stock_index') }}">
+                    {{ 'Disponible'|trans }}
+                </a>
             </li>
             {% endif %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('stock_surveiller') }}">à surveiller</a>
+                <a class="nav-link" href="{{ path('stock_surveiller') }}">
+                    {{'à surveiller'|trans}}
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="#">En rupture</a>
+                <a class="nav-link active" href="#">
+                    {{'En rupture'|trans}}
+                </a>
             </li>
             {% if is_granted('ROLE_STOCK') %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('stock_peremption') }}">Peremption Imminante</a>
+                    <a class="nav-link" href="{{ path('stock_peremption') }}">
+                        {{' Peremption Imminante'|trans }}
+                    </a>
                 </li>
             {% endif %}
         </ul>
@@ -32,9 +40,9 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
             <thead>
             <tr>
-                <th>Reference</th>
-                <th>Designation</th>
-                <th>Fabriquant</th>
+                <th>{{ 'Reference'|trans }}</th>
+                <th>{{ 'Designation'|trans }}</th>
+                <th>{{ 'Fabriquant'|trans }}</th>
             </tr>
             </thead>
             <tbody>

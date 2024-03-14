@@ -14,31 +14,31 @@
         <tbody>
 
             <tr>
-                <th>Code Produit</th>
+                <th>{{ 'Code Produit'|trans }}</th>
                 <td>{{ produit.reference }}</td>
             </tr>
             <tr>
-                <th>Desigantion</th>
+                <th>{{ 'Desigantion'|trans }}</th>
                 <td>{{ produit.desigantion }}</td>
             </tr>
             <tr>
-                <th>Prix Cession</th>
+                <th>{{ 'Prix Cession'|trans }}</th>
                 <td>{{ produit.prix }}</td>
             </tr>
             <tr>
-                <th>Prix Public</th>
+                <th>{{ 'Prix Public'|trans }}</th>
                 <td>{{ produit.prixpublic }}</td>
             </tr>
             <tr>
-                <th>Commande minimum</th>
+                <th>{{ 'Commande minimum'|trans }}</th>
                 <td>{{ produit.mincommande }}</td>
             </tr>
             <tr>
-                <th>Fabriquant</th>
+                <th>{{ 'Fabricant'|trans }}</th>
                 <td>{{ produit.fabriquant }}</td>
             </tr>
             <tr>
-                <th>TVA</th>
+                <th>{{ 'TVA'|trans }}</th>
                 <td>{{ produit.tva ? 'OUI' : 'NON' }}</td>
             </tr>
         </tbody>
@@ -49,7 +49,9 @@
 {#            <a class="btn btn-success mr-3" href="{{ path('produit_edit', {'id': produit.id}) }}">#}
 {#                <i class="fa fa-edit"></i> Modifier</a>#}
             <a class="btn btn-success-light text-green" href="{{ path('produit_index') }}">
-                <i class="fa fa-undo"></i> Retour</a>
+                <i class="fa fa-undo"></i>
+                {{ 'Retour'|trans }}
+            </a>
         </div>
     </div>
 

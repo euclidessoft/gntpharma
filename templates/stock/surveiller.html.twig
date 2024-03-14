@@ -11,19 +11,23 @@
         </h3>
         <ul class="nav nav-tabs mb-4">
             {% if is_granted('ROLE_STOCK') %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('stock_index') }}">Disponible</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('stock_index') }}">
+                        {{ 'Disponible'|trans }}</a>
+                </li>
             {% endif %}
             <li class="nav-item">
-                <a class="nav-link active" href="#">à surveiller</a>
+                <a class="nav-link active" href="#">
+                    {{ 'à surveiller'|trans }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('stock_rupture') }}">En rupture</a>
+                <a class="nav-link" href="{{ path('stock_rupture') }}">
+                    {{ 'En rupture'|trans }}</a>
             </li>
             {% if is_granted('ROLE_STOCK') %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('stock_peremption') }}">Peremption Imminante</a>
+                    <a class="nav-link" href="{{ path('stock_peremption') }}">
+                        {{ 'Peremption Imminante'|trans }}</a>
                 </li>
             {% endif %}
         </ul>
@@ -31,12 +35,12 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
             <thead>
             <tr>
-                <th>Reference</th>
-                <th>Designation</th>
-                <th>Fabriquant</th>
-                <th>Quantite</th>
+                <th>{{ 'Reference'|trans }}</th>
+                <th>{{ 'Designation'|trans }}</th>
+                <th>{{ 'Fabriquant'|trans }}</th>
+                <th>{{ 'Quantite'|trans }}</th>
 
-                <th>actions</th>
+                <th>{{ 'actions'|trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -47,7 +51,9 @@
                     <td>{{ produit.fabriquant }}</td>
                     <td>{{ produit.stock|number_format(0, '' , ' ') }}</td>
                     <td>
-                        <a class="btn btn-success" href="{{ path('stock_produit_show', {'id': produit.id}) }}"><i class="fa fa-list"></i> Détails</a>
+                        <a class="btn btn-success" href="{{ path('stock_produit_show', {'id': produit.id}) }}"><i class="fa fa-list"></i>
+                            {{'Détails'|trans}}
+                        </a>
                     </td>
 
                 </tr>
