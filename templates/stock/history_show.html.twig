@@ -3,7 +3,7 @@
 {% block retour_stock %}active{% endblock %}
 {% block body %}
     <div class="container mt-4 pb-4 fond-7">
-        <h3 class="mt-4 mb-5 text-bold">
+        <h3 class="mt-4 mb-3 text-bold">
             <i class="fa fa-shop mr-2"></i>
             {{ "Retour Stock"|trans }}
         </h3>
@@ -55,21 +55,25 @@
                         <th>{{ "Pereption"|trans }}</th>
                         <th>{{ "Motif"|trans }}</th>
                         <th>{{ "Quantité"|trans }}</th>
+                        {% if is_granted("ROLE_ADMIN") %}
                         <th></th>
+                        {% endif %}
                     </tr>
                     </thead>
                     <tbody>
                     {% for retourproduit in retourproduits %}
-                        <tr id="listprod{{ commandeproduit.produit.id }}">
+                        <tr id="listprod{{ retourproduit.produit.id }}">
                             <td>{{ retourproduit.produit.reference }}</td>
                             <td>{{ retourproduit.produit.desigantion }}</td>
                             <td></td>
                             <td></td>
-                            <td>{{ retourproduit.produit.motif }}</td>
+                            <td>{{ retourproduit.motif }}</td>
                             <td>{{ retourproduit.quantite }}</td>
-                            <td></td>
+                            {% if is_granted("ROLE_ADMIN") %}
                             <td>
+                                <button type="button" class="btn btn-success"><i class="fas fa-warehouse"></i><i class="fa fa-arrow-left"></i>  {{ "Réapprovisionner"|trans }}</button>
                             </td>
+                            {% endif %}
                         </tr>
                     {% else %}
                         <tr>

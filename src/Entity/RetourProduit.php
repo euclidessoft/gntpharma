@@ -53,6 +53,16 @@ class RetourProduit
      */
     private $motif;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $lot;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $peremption;
+
 
 
     public function __construct()
@@ -134,6 +144,30 @@ class RetourProduit
     public function setCommande(?Commande $commande): self
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getLot(): ?int
+    {
+        return $this->lot;
+    }
+
+    public function setLot(int $lot): self
+    {
+        $this->lot = $lot;
+
+        return $this;
+    }
+
+    public function getPeremption(): ?\DateTimeInterface
+    {
+        return $this->peremption;
+    }
+
+    public function setPeremption(\DateTimeInterface $peremption): self
+    {
+        $this->peremption = $peremption;
 
         return $this;
     }

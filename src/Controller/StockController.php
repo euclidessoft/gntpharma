@@ -240,6 +240,8 @@ class StockController extends AbstractController
                 $retourproduit->setRetour($retour);
                 $retourproduit->setCommande($commande);
                 $retourproduit->setMotif($prod['motif']);
+                $retourproduit->setLot($prod['lot']);
+                $retourproduit->setPeremption($prod['peremption']);
                 $retourproduit->setQuantite($prod['quantite']);
                 $em->persist($retourproduit);
                 $em->flush();
@@ -351,9 +353,11 @@ class StockController extends AbstractController
             $id = $request->get('prod');// recuperation de id produit
             $motif = $request->get('motif');// recuperation de id produit
             $quantite = $request->get('quantite');// recuperation de la quantite commamde
+            $lot = $request->get('lot');// recuperation de la quantite commamde
+            $peremption = $request->get('quantite');// recuperation de la quantite commamde
 
             foreach ($retour as $key => $item) {
-                if ($item['id'] == $id) {
+                if ($item['id'] == $id && $item['lot'] = $lot) {
                     $res['id'] = 'Un produit avec les même reference a été ajouté';
                     goto suite;
                 }
@@ -361,6 +365,8 @@ class StockController extends AbstractController
                 $produit = $produitRepository->find($id);
                 $res['idp'] = 'ok';
                 $res['id'] = $id;
+                $res['lot'] = $lot;
+                $res['peremption'] = $peremption;
                 $res['ref'] = $produit->getReference();
                 $res['designation'] = $produit->getDesigantion();
                 $res['quantite'] = $quantite;//$produit->getQuantite();
@@ -426,8 +432,9 @@ class StockController extends AbstractController
         // On récupère le panier actuel
         $retour = $session->get("retour", []);
         $id = $request->get('prod');
+        $lot = $request->get('lot');
         foreach ($retour as $key => $item) {
-            if ($item['id'] == $id) {
+            if ($item['id'] == $id && $item['lot'] = $lot) {
                 unset($retour[$key]);
             }
         }

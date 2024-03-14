@@ -75,7 +75,7 @@
                                 {% endfor %}
                                 <!-- Button trigger modal -->
                                 <button type="button"
-                                        class="btn btn-success"  {% if commandeproduit.produit.id in inlist %} disabled {% endif %}"
+                                        class="btn btn-success"
                                         data-toggle="modal" data-target="#modal{{ commandeproduit.produit.id }}"
                                         id="btn{{ commandeproduit.produit.id }}">
                                     <i class="fa fa-plus"></i> {{ "Ajouter"|trans }}
@@ -96,13 +96,25 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body px-5">
-                                                <div class="mt-4">
+                                                <div class="mt-3">
                                                     Quantité retournée:
                                                     <label for="quant{{ commandeproduit.produit.id }}"></label>
                                                     <input type="number" class="form-control"
                                                            id="quant{{ commandeproduit.produit.id }}">
                                                 </div>
-                                                <div class="mt-4">
+                                                <div class="mt-3">
+                                                    N° Lot:
+                                                    <label for="lot{{ commandeproduit.produit.id }}"></label>
+                                                    <input type="number" class="form-control"
+                                                           id="quant{{ commandeproduit.produit.id }}">
+                                                </div>
+                                                <div class="mt-3">
+                                                    Date de peremption:
+                                                    <label for="peremp{{ commandeproduit.produit.id }}"></label>
+                                                    <input type="date" class="form-control"
+                                                           id="quant{{ commandeproduit.produit.id }}">
+                                                </div>
+                                                <div class="mt-3">
                                                     Motif:
                                                     <label for="numero{{ commandeproduit.produit.id }}"></label>
                                                     <textarea type="number" class="form-control"
@@ -154,6 +166,8 @@
                         <tr id="tr{{ produit['id'] }}">
                             <td>{{ produit['ref'] }}</td>
                             <td class="text-left">{{ produit['designation'] }}</td>
+                            <td>{{ produit['lot'] }}</td>
+                            <td>{{ produit['peremption'] }}</td>
 
                             <td>
 
@@ -205,19 +219,23 @@
 
             var quant = $("#quant" + produit);
             var motif = $("#motif" + produit);
+            var lot = $("#lot" + produit);
+            var peremp = $("#peremp" + produit);
             // var peremp = new Date($("#peremp" + produit).val());
-            if (quant.val() != "" && motif.val() != "" && quant.val() <= quantite) {
+            if (quant.val() != "" && motif.val() != "" && lot.val() != "" && quant.val() <= quantiteperemp.val() && new Date($("#peremp" + produit).val()) > new Date()) {
                 if (quant.val() > 0) {
                     $("#ajouter" + produit).html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
                     $.ajax({
                         type: "POST",
                         url: "{{ path('stock_retour_add') }}",
-                        data: {prod: produit, quantite: quant.val(), motif: motif.val()},
+                        data: {prod: produit, quantite: quant.val(), motif: motif.val(), lot: lot.val(), peremp : peremp.val()},
                         success: function (data) {
                             if (data['idp'] == 'ok') {
                                 $('#selectprod').append(" <tr id='tr" + produit + "'>\n" +
                                     "                        <td>" + data['ref'] + "</td>\n" +
                                     "                        <td>" + data['designation'] + "</td>\n" +
+                                    "                        <td>" + data['lot'] + "</td>\n" +
+                                    "                        <td>" + data['peremption'] + "</td>\n" +
                                     "                        <td class='text-center'><span id='changequantite" + produit + "'>" + data['quantite'] + "</span></td>" +
                                     "<td rowspan='2'><button class='btn btn-danger mr-2 mb-2'\n" +
                                     "                                   title='Supprimer cet article' onclick='retour_supprim(" + produit + ")'>\n" +
