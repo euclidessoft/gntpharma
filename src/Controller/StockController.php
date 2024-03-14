@@ -7,12 +7,14 @@ use App\Entity\Candidature;
 use App\Entity\Commande;
 use App\Entity\Produit;
 use App\Entity\Retour;
+use App\Entity\RetourProduit;
 use App\Form\CandidatureType;
 use App\Repository\CommandeProduitRepository;
 use App\Repository\CommandeRepository;
 use App\Repository\ImageRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\PromotionRepository;
+use App\Repository\RetourProduitRepository;
 use App\Repository\RetourRepository;
 use App\Repository\StockRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -142,7 +144,7 @@ class StockController extends AbstractController
         }
     }
     /**
-     * @Route("/RetourList/", name="retour_index", methods={"GET"})
+     * @Route("/Retour_index/", name="retour_index", methods={"GET"})
      */
     public function retourindex(RetourRepository $repository): Response
     {
@@ -165,7 +167,7 @@ class StockController extends AbstractController
     }
 
     /**
-     * @Route("/Retour_Show/{id}", name="retour_show", methods={"GET"})
+     * @Route("/Create_Retour_Show/{id}", name="retour_show", methods={"GET"})
      */
     public function retour_show(Commande $commande, CommandeProduitRepository $repository, SessionInterface $session): Response
     {
@@ -189,6 +191,33 @@ class StockController extends AbstractController
             return $response;
         }
     }
+
+
+    /**
+     * @Route("/Retour_history_show/{id}", name="retour_history_show", methods={"GET"})
+     */
+    public function retourhistoryshow(Retour $retour, RetourProduitRepository $repository, SessionInterface $session): Response
+    {
+
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
+            return $this->render('stock/history_show.html.twig', [
+                'retour' => $retour,
+                'retourproduits' => $repository->findBy(['retour' => $retour]),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
  /**
      * @Route("/Retour_valider/", name="retour_valider", methods={"POST"})
      */
@@ -201,17 +230,22 @@ class StockController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $commande = $em->getRepository(Commande::class)->find($com);
             $produits = $session->get('retour', []);
+            $retour = new Retour();
+            $em->persist($retour);
+            $retour->setCommande($commande);
             foreach ($produits as $prod){
                 $produit = $em->getRepository(Produit::class)->find($prod['id']);
-                $retour = new Retour();
-                $retour->setProduit($produit);
-                $retour->setCommande($commande);
-                $retour->setMotif($prod['motif']);
-                $retour->setQuantite($prod['quantite']);
-                $em->persist($retour);
+                $retourproduit = new RetourProduit();
+                $retourproduit->setProduit($produit);
+                $retourproduit->setRetour($retour);
+                $retourproduit->setCommande($commande);
+                $retourproduit->setMotif($prod['motif']);
+                $retourproduit->setQuantite($prod['quantite']);
+                $em->persist($retourproduit);
                 $em->flush();
 
             }
+            $em->flush();
             $this->addFlash('notice', 'Retour enregiste avec succes');
             $session->remove('retour');
 
