@@ -1,6 +1,5 @@
 {% extends 'livreur.html.twig' %}
 {% block title %} {{ "Commande déjà Livrée"|trans }} - GNT Pharma {% endblock %}
-{% block stock %}active{% endblock %}
 {% block livraison %}active{% endblock %}
 {% block all_livraison %}active{% endblock %}
 
@@ -146,13 +145,13 @@
             {% endfor %}
             </tbody>
         </table>
-{#        <div class="col-md-2 offset-md-4 mt-5 mb-5 pt-2 pb-2 fond-7">#}
-{#            <div class="centrer">#}
-{#                <a href="{{ path('livraison_valider_livreur_show', { 'id' : livrer.id}) }}" class="btn btn-success float-end">#}
-{#                    <i class="fa fa-check"></i> {{ "Valider"|trans }}#}
-{#                </a>#}
-{#            </div>#}
-{#        </div>#}
+        <div class="col-md-2 offset-md-4 mt-5 mb-5 pt-2 pb-2 fond-7">
+            <div class="centrer">
+                <a href="{{ path('livraison_historique_show_print',{'id': commandereference.id }) }}" class="btn btn-success float-end">
+                    <i class="fa fa-print"></i> {{ "Imprimer"|trans }}
+                </a>
+            </div>
+        </div>
 
     </div>
 {% endblock %}
