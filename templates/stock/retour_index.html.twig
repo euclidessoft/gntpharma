@@ -6,8 +6,8 @@
 {% block body %}
     <div class="container mt-4 fond-7">
         <h3 class="mt-4 mb-5 text-bold">
-            <i class="fa fa-shopping-cart mr-2"></i>
-            {{ "Retour de produit"|trans }}
+            <i class="fas fa-warehouse mr-2"></i><i class="fas fa-arrow-left mr-2"></i>
+            {{ "Liste des Retours de produits"|trans }}
         </h3>
 
         {% for message in app.flashes('notice') %}
@@ -36,7 +36,7 @@
                     <td>{{ retour.date|date('d/m/Y') }}</td>
                     <td>{{ retour.commande.user.nom }}</td>
                     <td>
-                        <a href="{{ path('stock_retour_show', {'id' : retour.id}) }}" class="btn btn-success">
+                        <a href="{{ path('stock_retour_history_show', {'id' : retour.id}) }}" class="btn btn-success">
                             <i class="fa fa-list"></i> Details
                         </a>
                     </td>

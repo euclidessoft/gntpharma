@@ -15,7 +15,6 @@
                     <th>Date de commande</th>
                     <th>Date de Livraison</th>
                     <th>Client</th>
-                    <th>Montant</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -24,7 +23,6 @@
                     <td>{{ commande.date|date('d/m/Y') }}</td>
                     <td>{{ commande.dateefectlivraison ? commande.datelivrer|date('d/m/Y') : '' }}</td>
                     <td> {{ commande.user.nom }}</td>
-                    <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
 
 
                 </tr>
