@@ -1,7 +1,7 @@
 {% extends 'admin.html.twig' %}
-{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
-{% block commande %}active{% endblock %}
-{% block my_commande %}active{% endblock %}
+{% block title %} {{ "Retour stock"|trans }} - GNT Pharma {% endblock %}
+{% block stock %}active{% endblock %}
+{% block retour_stock %}active{% endblock %}
 
 {% block body %}
     <div class="container mt-4 fond-7">
@@ -21,24 +21,22 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100 mt-4" id="liste">
             <thead>
             <tr>
-                <th>Numero Commande</th>
-                <th>Date de commande</th>
-                <th>Date de Livraison</th>
+                <th>N° Retour</th>
+                <th>N° Commande</th>
+                <th>Date de retour</th>
                 <th>Client </th>
-                <th>Montant</th>
                 <th> </th>
             </tr>
             </thead>
             <tbody>
-            {% for commande in commandes %}
+            {% for retour in retours %}
                 <tr>
-                    <td>{{ commande.id }}</td>
-                    <td>{{ commande.date|date('d/m/Y') }}</td>
-                    <td>{{ commande.dateefectlivraison ? commande.datelivrer|date('d/m/Y') : '' }}</td>
-                    <td> {{ commande.user.nom }}</td>
-                    <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
+                    <td>{{ retour.id }}</td>
+                    <td>{{ retour.commande.id }}</td>
+                    <td>{{ retour.date|date('d/m/Y') }}</td>
+                    <td>{{ retour.commande.user.nom }}</td>
                     <td>
-                        <a href="{{ path('stock_retour_show', {'id' : commande.id}) }}" class="btn btn-success">
+                        <a href="{{ path('stock_retour_show', {'id' : retour.id}) }}" class="btn btn-success">
                             <i class="fa fa-list"></i> Details
                         </a>
                     </td>

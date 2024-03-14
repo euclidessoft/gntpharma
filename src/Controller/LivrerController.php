@@ -33,7 +33,24 @@ class LivrerController extends AbstractController
      */
     public function test(Request $request, StockRepository $repository, SessionInterface $session)
     {
-        return $this->render('avoir/new.html.twig');
+        $res['id'] = 'ok';
+        $res['idp'] = 1;
+        $res['ref'] = 'dhdjdjdj';
+        $res['designation'] = 'ddhdjdd';
+        $res['quantite'] = 45;//$produit->getQuantite();
+        $res['motif'] = 'dhdjdd dkdkdddkdk';//$produit->getQuantite();
+        $retour[]= $res;
+
+
+        // On sauvegarde dans la session
+//            $session->set("retour", $retour);
+//
+        suite:
+        $response = new Response();
+        $response->headers->set('content-type', 'application/json');
+        $re = json_encode($retour);
+        $response->setContent($re);
+        return $response;
 
     }
 

@@ -39,6 +39,11 @@ class Retour
      */
     private $date;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $quantite;
+
 
     public function __construct()
     {
@@ -94,6 +99,18 @@ class Retour
     public function setProduit(?Produit $produit): self
     {
         $this->produit = $produit;
+
+        return $this;
+    }
+
+    public function getQuantite(): ?int
+    {
+        return $this->quantite;
+    }
+
+    public function setQuantite(int $quantite): self
+    {
+        $this->quantite = $quantite;
 
         return $this;
     }

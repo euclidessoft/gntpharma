@@ -122,8 +122,8 @@
                             </li>
                             <li class="dropdown-item">
                                 <a class="nav-link {% block retour_stock %}{% endblock %}"
-                                   href="{{ path('stock_index') }}">
-                                    <i class="fas fa-warehouse mr-2"></i>
+                                   href="{{ path('stock_retour') }}">
+                                    <i class="fas fa-warehouse mr-2"></i><i class="fas fa-arrow-left mr-2"></i>
                                     {{ 'Retour Stock'|trans }}
                                 </a>
                             </li>
@@ -132,7 +132,7 @@
                                    id="reapprovisionnement"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-warehouse"></i>
-                                    <i class="fas fa-warehouse fa-arrow-left mr-2"></i>
+                                    <i class="fas fa-arrow-left mr-2"></i>
                                     {{ 'Réapprovisionnement'|trans }}
                                 </a>
                                 <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
