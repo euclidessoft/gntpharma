@@ -13,14 +13,14 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100">
             <thead>
             <tr>
-                <th>Reference</th>
-                <th>Designation</th>
-                <th>Prix Cession</th>
-                <th>Reduction</th>
-                <th>TVA</th>
-                <th>Prix Public</th>
-                <th>Quantite</th>
-                <th>Total</th>
+                <th>{{ 'Reference'|trans }}</th>
+                <th>{{ 'Designation'|trans }}</th>
+                <th>{{ 'Prix Cession'|trans }}</th>
+                <th>{{ 'Reduction'|trans }}</th>
+                <th>{{ 'TVA'|trans }}</th>
+                <th>{{ 'Prix Public'|trans }}</th>
+                <th>{{ 'Quantite'|trans }}</th>
+                <th>{{ 'Total'|trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -86,7 +86,7 @@
 
             {% else %}
                 <tr>
-                    <td colspan="8">Aucun produit dans le panier</td>
+                    <td colspan="8">{{ 'Aucun produit dans le panier'|trans }}</td>
                 </tr>
             {% endfor %}
             <tr class="text-bold">
@@ -129,7 +129,7 @@
             <tr>
                 <td colspan="8" class="text-right">
                     <span id="total" class="text-bold"></span>
-                      Arretée la présente à la somme de : <b id="conversion"></b> <b>francs CFA TTC</b>
+                    {{'Arretée la présente à la somme de :'|trans}} <b id="conversion"></b> <b>francs CFA TTC</b>
                 </td>
             </tr>
             {#/***** end*****/#}

@@ -77,7 +77,7 @@
         </div>
     </div>
     <h3 class="text-center text-bold text-uppercase my-5">
-        Avoir
+        {{ 'Avoir'|trans }}
     </h3>
 <div class="row justify-content-end">
             <div class="col-6">
@@ -85,8 +85,8 @@
                     <tbody>
 
                     <tr>
-                        <th>Date</th>
-                        <th>Montant</th>
+                        <th>{{ 'Date'|trans }}</th>
+                        <th>{{ 'Montant'|trans }}</th>
                     </tr>
                     <tr>
                         <td>{{ avoir.date ? avoir.date|date('d/m/Y') : '' }}</td>
@@ -99,12 +99,12 @@
         <table class="table table-success-light text-center table-bordered mt-5 w-100">
             <thead>
             <tr>
-                <th>reference</th>
-                <th>designation</th>
-                <th>prix cession</th>
-                <th>Quantite Commande</th>
-                <th>Reste à livrée</th>
-                <th>Montant avoir</th>
+                <th>{{ 'reference'|trans }}</th>
+                <th>{{ 'designation'|trans }}</th>
+                <th>{{ 'prix cession'|trans }}</th>
+                <th>{{ 'Quantite Commande'|trans }}</th>
+                <th>{{'Reste à livrée'|trans}}</th>
+                <th>{{'Montant avoir'|trans}}</th>
             </tr>
             </thead>
             <tbody>
@@ -127,13 +127,15 @@
             {% else %}
             {% endfor %}
             <tr>
-                <td colspan="5" class="text-end fw-bold"> Total Avoir</td>
+                <td colspan="5" class="text-end fw-bold">
+                    {{ 'Total Avoir'|trans }}
+                </td>
                 <td class="fw-bold" id="total">{{ total|number_format(0, '' , ' ') }}</td>
             </tr>
         </table>
     </div>    {#Conversion prix en lettre #}
         <div class="mt-5">
-            Arretée la présente à la somme de : <b id="conversion"></b> <b>franc CFA TTC</b>
+            {{'Arretée la présente à la somme de : '|trans}}<b id="conversion"></b> <b>franc CFA TTC</b>
         </div>
     {#/***** end*****/#}
     {{ include('javascript.html.twig') }}

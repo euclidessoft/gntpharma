@@ -11,10 +11,14 @@
         </h3>
         <ul class="nav nav-tabs mb-4">
             <li class="nav-item">
-                <a class="nav-link active" href="#">En cours</a>
+                <a class="nav-link active" href="#">
+                    {{ 'En cours'|trans }}
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('reclamation_index_cloturer', {'user': app.user.id}) }}">Cloturées</a>
+                <a class="nav-link" href="{{ path('reclamation_index_cloturer', {'user': app.user.id}) }}">
+                    {{'Cloturées'|trans}}
+                </a>
             </li>
         </ul>
         {% for message in app.flashes('notice') %}
@@ -28,11 +32,11 @@
         <table class="table table-success-light table-bordered table-hover table-striped" id="list">
             <thead>
             <tr>
-                <th>Reference</th>
-                <th>Date de Creation</th>
-                <th>Status</th>
-                <th>Date de  Cloture</th>
-                <th>actions</th>
+                <th>{{ 'Reference'|trans }}</th>
+                <th>{{ 'Date de Creation'|trans }}</th>
+                <th>{{ 'Status'|trans }}</th>
+                <th>{{ 'Date de Cloture'|trans }}</th>
+                <th>{{ 'actions'|trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -43,13 +47,15 @@
                     <td>{{ reclamation.status ? 'Yes' : 'No' }}</td>
                     <td>{{ reclamation.cloture ? reclamation.cloture|date('Y-m-d') : '' }}</td>
                     <td>
-                        <a class="btn btn-success" href="{{ path('reclamation_show', {'id': reclamation.id, 'user' : app.user.id}) }}"><i class="fa fa-list"></i> Afficher</a>
+                        <a class="btn btn-success" href="{{ path('reclamation_show', {'id': reclamation.id, 'user' : app.user.id}) }}">
+                            <i class="fa fa-list"></i>
+                            {{ 'Afficher'|trans }}</a>
                         {#                    <a href="{{ path('reclamation_edit', {'id': reclamation.id}) }}">edit</a>#}
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6">Aucune réclamation</td>
+                    <td colspan="6">{{'Aucune réclamation'|trans}}</td>
                 </tr>
             {% endfor %}
             </tbody>

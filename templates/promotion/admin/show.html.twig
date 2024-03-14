@@ -13,11 +13,11 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100">
         <thead>
         <tr>
-            <th>Désignation</th>
-            <th>Date de début</th>
-            <th>Date de fin</th>
-            <th>Type</th>
-            <th>Avantages</th>
+            <th>{{'Désignation'|trans}}</th>
+            <th>{{'Date de début'|trans}}</th>
+            <th>{{'Date de fin'|trans}}</th>
+            <th>{{ 'Type'|trans }}</th>
+            <th>{{ 'Avantages'|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -28,7 +28,7 @@
                 <td>{{ promotion.type }}</td>
                 <td>
                     {% if promotion.premier is null %}
-                        {{ promotion.reduction }} % de réduction
+                        {{ promotion.reduction }} % {{'de réduction'|trans}}
 
                     {% else %}
                         {{ promotion.premier }} pour {{ promotion.ugpremier }} gratuits<br>
@@ -51,12 +51,12 @@
             <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
                 <thead>
                 <tr>
-                    <th>Reference</th>
-                    <th>Designation</th>
-                    <th>Session</th>
-                    <th>Publique</th>
-                    <th>Commande<br> Minimum</th>
-                    <th>Fabriquant</th>
+                    <th>{{ 'Reference'|trans }}</th>
+                    <th>{{ 'Designation'|trans }}</th>
+                    <th>{{ 'Session'|trans }}</th>
+                    <th>{{ 'Publique'|trans }}</th>
+                    <th>{{ 'Commande'|trans }}<br> {{ 'Minimum'|trans }}</th>
+                    <th>{{ 'Fabriquant'|trans }}</th>
                 </tr>
                 </thead>
                 <tbody>

@@ -31,8 +31,8 @@
                 <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
                     <thead>
                     <tr>
-                        <th>Reference</th>
-                        <th>Designation</th>
+                        <th>{{ 'Reference'|trans }}</th>
+                        <th>{{ 'Designation'|trans }}</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -48,7 +48,7 @@
                                         class="btn btn-success" {# {% if produit.id in inlist %} disabled {% endif %}" #}
                                         data-toggle="modal" data-target="#modal{{ produit.id }}"
                                         id="btn{{ produit.id }}">
-                                    <i class="fa fa-plus"></i> Ajouter
+                                    <i class="fa fa-plus"></i> {{ 'Ajouter'|trans }}
                                 </button>
 
                                 <!-- Modal -->
@@ -66,19 +66,19 @@
                                             </div>
                                             <div class="modal-body px-5">
                                                 <div class="mt-4">
-                                                    Renseignez la quantité:
+                                                    {{'Renseignez la quantité:'|trans}}
                                                     <label for="quant{{ produit.id }}"></label>
                                                     <input type="number" class="form-control"
                                                            id="quant{{ produit.id }}">
                                                 </div>
                                                 <div class="mt-4">
-                                                    Numero de lot:
+                                                    {{ 'Numero de lot:'|trans }}
                                                     <label for="numero{{ produit.id }}"></label>
                                                     <input type="number" class="form-control"
                                                            id="numero{{ produit.id }}">
                                                 </div>
                                                 <div class="mt-4">
-                                                    Date de péremption:
+                                                    {{' Date de péremption:'|trans}}
                                                     <label for="peremp{{ produit.id }}"></label>
                                                     <input type="date" class="form-control"
                                                            id="peremp{{ produit.id }}">
@@ -87,12 +87,14 @@
                                             </div>
                                             <div class="modal-footer px-5 py-4">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                                        id="annuler{{ produit.id }}">Annuler
+                                                        id="annuler{{ produit.id }}">
+                                                    {{ 'Annuler'|trans }}
                                                 </button>
                                                 <button type="button" class="btn btn-success ms-3"
                                                         id="ajouter{{ produit.id }}"
                                                         onclick="ajouter({{ produit.id }})"><i
-                                                            class="fa fa-plus"></i> Ajouter
+                                                            class="fa fa-plus"></i>
+                                                    {{ 'Ajouter'|trans }}
                                                 </button>
                                                 <div id="modification{{ produit.id }}"></div>
                                             </div>
@@ -114,18 +116,19 @@
                         class="btn btn-success float-right mb-3 {% if panier|length == 0 %} disabled {% endif %}"
                         id="valider1"
                         title="Valider">
-                    <i class="fa fa-check"></i> Valider
+                    <i class="fa fa-check"></i>
+                    {{ 'Valider'|trans }}
                 </button>
 
                 <table class="table table-success-light table-bordered table-hover table-striped w-100" id="aprovision">
                     <thead class="text-center">
                     <tr>
-                        <th>Ref</th>
-                        <th class="text-left">Designation</th>
-                        <th class="text-nowrap">N° Lot</th>
-                        <th>Peremption</th>
-                        <th>Quantite</th>
-                        <th>Actions</th>
+                        <th>{{ 'Ref'|trans }}</th>
+                        <th class="text-left">{{ 'Designation'|trans }}</th>
+                        <th class="text-nowrap">{{'N° Lot'|trans}}</th>
+                        <th>{{'Peremption'|trans}}</th>
+                        <th>{{ 'Quantite'|trans }}</th>
+                        <th>{{ 'Actions'|trans }}</th>
                     </tr>
                     </thead>
                     <tbody id="selectprod" class="text-center">
@@ -178,7 +181,8 @@
                         class="btn btn-success float-right  {% if panier|length == 0 %} disabled {% endif %}"
                         id="valider2"
                         title="Valider">
-                    <i class="fa fa-check"></i> Valider
+                    <i class="fa fa-check"></i>
+                    {{ 'Valider'|trans }}
                 </button>
 
             </div>

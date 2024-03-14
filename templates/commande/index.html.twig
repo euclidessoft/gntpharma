@@ -11,23 +11,24 @@
     {% if panier|length > 0 %}
     <a href="{{ path("commande_panier_choix_paiement", {'commande': 0}) }}" class="btn btn-success float-right mb-3"
        title="Valider la commande">
-        <i class="fa fa-check"></i> Valider la commande
+        <i class="fa fa-check"></i>
+        {{ 'Valider la commande'|trans }}
     </a>
 {% endif %}
     <table class="table table-success-light table-bordered table-hover table-striped w-100">
         <thead>
         <tr>
-            <th>Reference</th>
-            <th>Designation</th>
-            <th>Prix Cession</th>
-            <th>Reduction</th>
-            <th>TVA</th>
-            <th>Prix Public</th>
-            <th>Commande<br> Minimum</th>
-            <th>Quantite</th>
-            <th>Total</th>
+            <th>{{ 'Reference'|trans }}</th>
+            <th>{{ 'Designation'|trans }}</th>
+            <th>{{ 'Prix Cession'|trans }}</th>
+            <th>{{ 'Reduction'|trans }}</th>
+            <th>{{ 'TVA'|trans }}</th>
+            <th>{{ 'Prix Public'|trans }}</th>
+            <th>{{ 'Commande'|trans }}<br> {{ 'Minimum'|trans }}</th>
+            <th>{{ 'Quantite'|trans }}</th>
+            <th>{{ 'Total'|trans }}</th>
 
-            <th>actions</th>
+            <th>{{ 'actions'|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -94,14 +95,13 @@
                     <td>
                         <div style="display: inline;" id="btnaction{{ produit.produit.id }}">
                             <button onclick="edit({{ produit.produit.id }}, {{ produit.produit.quantite }}, {{ produit.produit.mincommande }}, {{ produit.produit.prix }}, {{ produit.produit.stock }})"
-                                    class="btn btn-success" title="Modifier quantite">
+                                    class="btn btn-success" title="{{ 'Modifier quantite'|trans }}">
                                 <i class="fa fa-edit"></i>
                             </button>
                         </div>
 
 
-                        <a href="{{ path("commande_delete", {id: produit.produit.id}) }}" class="btn btn-danger"
-                           title="Supprimer cet article">
+                        <a href="{{ path("commande_delete", {id: produit.produit.id}) }}" class="btn btn-danger" title="{{ 'Supprimer cet article'|trans }}">
                             <i class="fa fa-trash"></i>
                         </a>
 
@@ -110,7 +110,7 @@
 
         {% else %}
             <tr>
-                <td colspan="10">Aucun produit dans le panier</td>
+                <td colspan="10">{{ 'Aucun produit dans le panier'|trans }}</td>
             </tr>
         {% endfor %}
         {% if panier|length > 0 %}
@@ -163,13 +163,16 @@
     {% if panier|length > 0 %}
     <a href="{{ path("commande_panier_choix_paiement", {'commande': 0}) }}" class="btn btn-success mb-5"
        title="Valider la commande">
-        <i class="fa fa-check"></i> Valider la commande
+        <i class="fa fa-check"></i>
+        {{ 'Valider la commande'|trans }}
     </a>
     {% endif %}
 
     <input type="hidden" value="ok" id="tampon"/>
     {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('produit_new') }}">Create new</a>
+        <a href="{{ path('produit_new') }}">
+            {{'Créer un produit'|trans}}
+        </a>
     {% endif %}
 </div>
     {% block scripts %}

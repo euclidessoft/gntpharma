@@ -15,11 +15,11 @@
                     <tbody>
 
                     <tr>
-                        <th>Creer par</th>
-                        <th>Date Creation</th>
-                        <th>Client</th>
-                        <th>N° Commande</th>
-                        <th>Montant</th>
+                        <th>{{ 'Creer par'|trans }}</th>
+                        <th>{{ 'Date Creation'|trans }}</th>
+                        <th>{{ 'Client'|trans }}</th>
+                        <th>{{'N° Commande'|trans}}</th>
+                        <th>{{'Montant'|trans}}</th>
                     </tr>
                     <tr>
 
@@ -36,12 +36,12 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100">
             <thead>
             <tr>
-                <th>reference</th>
-                <th>designation</th>
-                <th>prix cession</th>
-                <th>Quantite Commande</th>
-                <th>Reste à livrée</th>
-                <th>Montant avoir</th>
+                <th>{{ 'reference'|trans }}</th>
+                <th>{{ 'designation'|trans }}</th>
+                <th>{{ 'prix cession'|trans }}</th>
+                <th>{{ 'Quantite Commande'|trans }}</th>
+                <th>{{'Reste à livrée'|trans}}</th>
+                <th>{{'Montant avoir'|trans}}</th>
             </tr>
             </thead>
             <tbody>
@@ -64,7 +64,9 @@
             {% else %}
             {% endfor %}
             <tr>
-                <td colspan="5" class="text-right"> Total Avoir</td>
+                <td colspan="5" class="text-right">
+                    {{ 'Total Avoir'|trans }}
+                </td>
                 <td>{{ total|number_format(0, '' , ' ') }}</td>
             </tr>
         </table>

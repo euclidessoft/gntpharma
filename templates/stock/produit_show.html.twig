@@ -15,30 +15,36 @@
             <tbody>
 
             <tr>
-                <th class="w-25">Code Produit</th>
+                <th class="w-25">
+                    {{'Code Produit'|trans }}
+                </th>
                 <td>{{ produit.reference }}</td>
-                <th class="text-center">Quantite en stock</th>
+                <th class="text-center">
+                    {{'Quantite en stock'|trans }}
+                </th>
             </tr>
 
             <tr>
-                <th>Desigantion</th>
+                <th>
+                    {{'Desigantion'|trans }}
+                </th>
                 <td>{{ produit.desigantion }}</td>
                 <td rowspan="5" class="text-center text-bolder w-25">{{ produit.stock|number_format(0, '' , ' ') }}</td>
             </tr>
             <tr>
-                <th>Prix Session</th>
+                <th>{{ 'Prix cession'|trans }}</th>
                 <td>{{ produit.prix }}</td>
             </tr>
             <tr>
-                <th>Prix Public</th>
+                <th>{{ 'Prix Public'|trans }}</th>
                 <td>{{ produit.prixpublic }}</td>
             </tr>
             <tr>
-                <th>Mincommande</th>
+                <th>{{ 'Mincommande'|trans }}</th>
                 <td>{{ produit.mincommande }}</td>
             </tr>
             <tr>
-                <th>Fabriquant</th>
+                <th>{{ 'Fabriquant'|trans }}</th>
                 <td>{{ produit.fabriquant }}</td>
             </tr>
 
@@ -53,8 +59,8 @@
             <thead>
             <tr>
                 <th class="w-25">N° Lot</th>
-                <th>Date peremption</th>
-                <th class="w-25">Quantité</th>
+                <th>{{ 'Date peremption'|trans }}</th>
+                <th class="w-25">{{'Quantité'|trans}}</th>
             </tr>
 
             </thead>
@@ -75,10 +81,10 @@
             <div class="centrer">
 
                 <a class="btn btn-success ml-3" href="{{ path('stock_index') }}">
-                    <i class="fa fa-undo"></i> Retour</a>
+                    <i class="fa fa-undo"></i> {{ 'Retour'|trans }}</a>
 
                 <a class="btn btn-success ml-3" href="{{ path('stock_produit_show_print', {'id': produit.id}) }}">
-                    <i class="fa fa-print"></i> Imprimer</a>
+                    <i class="fa fa-print"></i> {{ 'Imprimer'|trans }}</a>
             </div>
         </div>
 

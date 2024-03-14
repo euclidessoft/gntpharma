@@ -21,10 +21,10 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100 mt-4">
             <thead>
             <tr>
-                <th>Numero Commande</th>
-                <th>Date</th>
-                <th>Client </th>
-                <th>Montant</th>
+                <th>{{ 'Numero Commande'|trans }}</th>
+                <th>{{ 'Date'|trans }}</th>
+                <th>{{ 'Client'|trans }} </th>
+                <th>{{ 'Montant'|trans }}</th>
                 <th> </th>
             </tr>
             </thead>
@@ -38,7 +38,8 @@
                     <td>
                         {#                        <a href="{{ path('commande_panier_paiement_client', {'commande' : commande.id}) }}" class="btn btn-success">#}
                         <a href="{{ path('commande_panier_Detail', {'commande' : commande.id}) }}" class="btn btn-success">
-                            <i class="fa fa-list"></i> Details
+                            <i class="fa fa-list"></i>
+                            {{ 'Details'|trans }}
                         </a>
                     </td>
 
@@ -47,7 +48,7 @@
 
             {% else %}
                 <tr>
-                    <td colspan="5">Aucune commande</td>
+                    <td colspan="5">{{ 'Aucune commande'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

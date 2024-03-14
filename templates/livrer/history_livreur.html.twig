@@ -23,11 +23,11 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
             <thead>
             <tr>
-                <th>N° bordereau </th>
-                <th>Client</th>
-                <th>Date d'emission</th>
-                <th>Date de livraison</th>
-                <th>Details</th>
+                <th>{{'N° bordereau'|trans}} </th>
+                <th>{{'Client'|trans}}</th>
+                <th>{{ 'Date d\'emission'|trans}}</th>
+                <th>{{'Date de livraison'|trans}}</th>
+                <th>{{'Details'|trans}}</th>
             </tr>
             </thead>
             <tbody>
@@ -38,12 +38,14 @@
                     <td>{{ commande.date|date('d/m/Y') }}</td>
                     <td>{{ commande.dateefectlivraison|date('d/m/Y') }}</td>
                     <td>
-                        <a class="btn btn-success" href="{{ path('livraison_livreur_historique_show', {'id': commande.id}) }}"><i class="fa fa-list"></i> Afficher</a>
+                        <a class="btn btn-success" href="{{ path('livraison_livreur_historique_show', {'id': commande.id}) }}">
+                            <i class="fa fa-list"></i>
+                            {{'Afficher'|trans}}</a>
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="4">Aucune commande</td>
+                    <td colspan="4">{{'Aucune commande'|trans}}</td>
                 </tr>
             {% endfor %}
             </tbody>

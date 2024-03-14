@@ -13,10 +13,10 @@
 
         <div class="row">
             <div class="col-lg-6 fond-7">
-                <h3 class="mt-4 mb-5 text-bold">
-                    <i class="fa fa-product-hunt mr-2"></i>
-                    {{ "List de produits"|trans }}
-                </h3>
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-product-hunt mr-2"></i>
+            {{ "List de produits"|trans }}
+        </h3>
                 {% for message in app.flashes('notice') %}
                     <div class="alert alert-primaire alert-dismissible fade show radius-10 shadow-black">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
@@ -99,12 +99,11 @@
                 </table>
             </div>
             <div class="col-lg-6 mt-5">
-                {{ form_start(form, {'attr' : {'id':'form'}}) }}
+                {{ form_start(form) }}
                 {{ form_widget(form) }}
                 {{ form_end(form) }}
 
-                <table class="table table-success-light table-bordered table-hover table-striped mt-5 w-100"
-                       id="aprovision">
+                <table class="table table-success-light table-bordered table-hover table-striped mt-5 w-100" id="aprovision">
                     <thead>
                     <tr>
                         <th>Reference</th>
@@ -280,27 +279,13 @@
         }
 
         function validerappro() {
-            var client = $('#commande_user option:selected').val()
-            if ( client != '') {
-                $("#valider2").html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
-                if (confirm("Confirmation validation?")) {
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ path('commande_panier_client_extranet') }}",
-                        data: { client: client},
-                        success: function (data) {
-                            if (data['id'] == 'ok') {
-                                document.location.href = "{{ path("commande_panier_choix_paiement_extranet", {'commande': 0}) }}";
-                            }
-                        },
-                        error: function () {
-                            alert("{{ 'La requête n a pas abouti'|trans }}");
-                        }
-                    });
+            if($('#commande_user option:selected').val()!= '') {
+            if (confirm("Confirmation validation?")) {
 
+                    document.location.href = "{{ path("commande_panier_choix_paiement_extranet", {'commande': 0}) }}";
 
-                }
-            } else alert('Veuillez selectionner un client')
+            }
+            }else alert('Veuillez selectionner un client')
         }
 
     </script>

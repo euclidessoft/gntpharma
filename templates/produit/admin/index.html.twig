@@ -21,13 +21,13 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100 text-center" id="liste">
         <thead>
         <tr>
-            <th>Code</th>
-            <th class="text-left">Designation</th>
-            <th>Prix Cession</th>
-            <th>Prix Public</th>
-            <th>Commande<br> Minimum</th>
-            <th class="text-left">Fabriquant</th>
-            <th>Actions</th>
+            <th>{{ 'Code'|trans }}</th>
+            <th class="text-left">{{ 'Designation'|trans }}</th>
+            <th>{{ 'Prix Cession'|trans }}</th>
+            <th>{{ 'Prix Public'|trans }}</th>
+            <th>{{ 'Commande'|trans }}<br> {{ 'Minimum'|trans }}</th>
+            <th class="text-left">{{ 'Fabricant'|trans }}</th>
+            <th>{{ 'Actions'|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -40,10 +40,10 @@
                 <td>{{ produit.mincommande }}</td>
                 <td class="text-left">{{ produit.fabriquant }}</td>
                 <td class="text-nowrap">
-                    <a class="btn btn-success" title="Voir" href="{{ path('produit_show', {'id': produit.id}) }}">
+                    <a class="btn btn-success" title="{{ 'Voir'|trans }}" href="{{ path('produit_show', {'id': produit.id}) }}">
                         <i class="fa fa-eye"></i>
                     </a>
-                    <a class="btn btn-success-light" title="Modifier" href="{{ path('produit_edit', {'id': produit.id}) }}">
+                    <a class="btn btn-success-light" title="{{ 'Modifier'|trans }}" href="{{ path('produit_edit', {'id': produit.id}) }}">
                         <i class="fa fa-edit"></i>
                     </a>
                     {{ include('produit/admin/_delete_form.html.twig') }}

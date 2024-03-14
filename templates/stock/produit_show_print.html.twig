@@ -81,36 +81,40 @@
             </div>
         </div>
         <h3 class="text-center text-bold text-uppercase my-5">
-            Détail produit
+            {{'Détail produit'|trans}}
         </h3>
 
         <table class="table table-bordered w-100">
             <tbody>
             <tr>
-                <th class="w-25">Code Produit</th>
+                <th class="w-25">
+                    {{ 'Code Produit'|trans }}
+                </th>
                 <td>{{ produit.reference }}</td>
-                <th class="text-center">Quantite en stock</th>
+                <th class="text-center">
+                    {{ 'Quantite en stock'|trans }}
+                </th>
             </tr>
 
             <tr>
-                <th>Designaion</th>
+                <th>{{ 'Designaion'|trans }}</th>
                 <td>{{ produit.desigantion }}</td>
                 <td rowspan="5" class="text-center text-bolder w-25">{{ produit.stock|number_format(0, '' , ' ') }}</td>
             </tr>
             <tr>
-                <th>Prix Session</th>
+                <th>{{ 'Prix Session'|trans }}</th>
                 <td>{{ produit.prix }}</td>
             </tr>
             <tr>
-                <th>Prix Public</th>
+                <th>{{ 'Prix Public'|trans }}</th>
                 <td>{{ produit.prixpublic }}</td>
             </tr>
             <tr>
-                <th>Mincommande</th>
+                <th>{{ 'Mincommande'|trans }}</th>
                 <td>{{ produit.mincommande }}</td>
             </tr>
             <tr>
-                <th>Fabriquant</th>
+                <th>{{ 'Fabricant'|trans }}</th>
                 <td>{{ produit.fabriquant }}</td>
             </tr>
 
@@ -124,9 +128,9 @@
         <table class="table table-bordered text-center w-100" style="page-break-before: always">
             <thead>
             <tr>
-                <th class="w-25">N° Lot</th>
-                <th>Date peremption</th>
-                <th class="w-25">Quantité</th>
+                <th class="w-25">{{'N° Lot'|trans}}</th>
+                <th>{{ 'Date peremption'|trans}}</th>
+                <th class="w-25">{{ 'Quantité'|trans}}</th>
             </tr>
 
             </thead>

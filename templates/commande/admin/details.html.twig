@@ -16,14 +16,14 @@
                 <table class="table table-success-light table-bordered table-hover table-striped">
                     <thead>
                     <tr>
-                        <th>Numero Commande</th>
-                        <th>Date</th>
-                        <th>Client</th>
+                        <th>{{ 'Numero Commande'|trans }}</th>
+                        <th>{{ 'Date'|trans }}</th>
+                        <th>{{ 'Client'|trans }}</th>
                         {% if commande.paiement %}
-                            <th>Date de Paiement</th>
-                            <th>Type</th>
+                            <th>{{ 'Date de Paiement'|trans }}</th>
+                            <th>{{ 'Type'|trans }}</th>
                         {% else %}
-                            <th>Type</th>
+                            <th>{{ 'Type'|trans }}</th>
                         {% endif %}
 
                     </tr>
@@ -58,13 +58,13 @@
             <thead>
             <tr>
                 <th>Code Produit</th>
-                <th>Desigantion</th>
-                <th>Quantite Commandee</th>
-                <th>Prix Cession</th>
-                <th>Reduction</th>
-                <th>TVA</th>
-                <th>Prix Public</th>
-                <th>Montant</th>
+                <th>{{ 'Designation'|trans }}</th>
+                <th>{{ 'Quantite Commandee'|trans }}</th>
+                <th>{{ 'Prix Cession'|trans }}</th>
+                <th>{{ 'Reduction'|trans }}</th>
+                <th>{{ 'TVA'|trans }}</th>
+                <th>{{ 'Prix Public'|trans }}</th>
+                <th>{{ 'Montant'|trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -121,7 +121,7 @@
 
             {% else %}
                 <tr>
-                    <td colspan="10">Aucune commande</td>
+                    <td colspan="10">{{ 'Aucune commande'|trans }}</td>
                 </tr>
             {% endfor %}
             <tr>
@@ -163,7 +163,7 @@
             <tr>
                 <td colspan="10" class="text-right">
                     <span id="total" class="text-bold"></span>
-                    Arretée la présente à la somme de : <b id="conversion"></b> <b>francs CFA TTC</b>
+                    {{' Arretée la présente à la somme de :'|trans}} <b id="conversion"></b> <b>francs CFA TTC</b>
                 </td>
             </tr>
             {#/***** end*****/#}
@@ -180,9 +180,9 @@
             <table class="table table-success-light table-bordered table-hover table-striped">
                 <thead>
                 <tr>
-                    <th>numero versement</th>
-                    <th>Date</th>
-                    <th>Montant</th>
+                    <th>{{ 'numero versement'|trans }}</th>
+                    <th>{{ 'Date'|trans }}</th>
+                    <th>{{ 'Montant'|trans }}</th>
 
                 </tr>
                 </thead>
@@ -196,11 +196,11 @@
                 {% else %}
                 {% endfor %}
                 <tr>
-                    <td colspan="2" class="text-right text-nowrap">Total versement</td>
+                    <td colspan="2" class="text-right text-nowrap">{{ 'Total versement'|trans }}</td>
                     <td>{{ commande.versement|number_format(0, '' , ' ') }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="text-right">Montant Restant</td>
+                    <td colspan="2" class="text-right">{{ 'Montant Restant'|trans }}</td>
                     <td>{{ (commande.montant - commande.versement)|number_format(0, '' , ' ') }}</td>
                 </tr>
                 </tbody>

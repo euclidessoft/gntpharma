@@ -5,7 +5,9 @@
         {{ form_start(form,{'attr':{'id':'form'}}) }}
         {{ form_row(form.Montant, {'attr':{'placeholder':'Montant avoir *', 'class':'w-100'}, 'label':false}) }}
             {{ form_rest(form) }}
-            <button type="button" id="sender" onclick="soumission()" class="btn btn-success mt-5"><i class="fa fa-save"></i> Enregistrer</button>
+            <button type="button" id="sender" onclick="soumission()" class="btn btn-success mt-5"><i class="fa fa-save"></i>
+                {{ 'Enregistrer'|trans }}
+            </button>
             {{ form_end(form) }}
     </div>
 </div>

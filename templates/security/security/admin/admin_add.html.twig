@@ -16,7 +16,7 @@
                     </div>
                 {% endfor %}
                 <div class="col-12">
-                    Les champs avec * sont obligatoires
+                    {{ 'Les champs avec * sont obligatoires'|trans }}
                 </div>
                 {{ include('security/security/admin/userform.html.twig') }}
                 <br/>

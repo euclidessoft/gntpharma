@@ -1,4 +1,6 @@
 <form method="post" action="{{ path('promotion_cancel', {'id': promotion.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');" style="display: inline">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ promotion.id) }}">
-    <button class="btn btn-danger"><i class="fa fa-trash"></i> Supprimer</button>
+    <button class="btn btn-danger"><i class="fa fa-trash"></i>
+        {{ 'Supprimer'|trans }}
+    </button>
 </form>

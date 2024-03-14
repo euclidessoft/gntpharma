@@ -11,26 +11,34 @@
         </h3>
         <ul class="nav nav-tabs mb-4">
             <li class="nav-item">
-                <a class="nav-link active" href="#">Validation paiement</a>
+                <a class="nav-link active" href="#">
+                    {{ 'Validation paiement'|trans }}
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('commande_panier_validation_credit') }}">Validation crédit</a>
+                <a class="nav-link" href="{{ path('commande_panier_validation_credit') }}">
+                    {{' Validation crédit'|trans}}
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('commande_panier_credit') }}">Commandes à crédit</a>
+                <a class="nav-link" href="{{ path('commande_panier_credit') }}">
+                    {{'Commandes à crédit'|trans}}
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('commande_panier_history') }}">Commandes déjà payées</a>
+                <a class="nav-link" href="{{ path('commande_panier_history') }}">
+                    {{'Commandes déjà payées'|trans}}
+                </a>
             </li>
         </ul>
 
         <table class="table table-success-light table-bordered table-hover table-striped w-100 mt-4" id="liste">
             <thead>
             <tr>
-                <th>Numero Commande</th>
-                <th>Date</th>
-                <th>Client </th>
-                <th>Montant</th>
+                <th>{{'Numero Commande'|trans}}</th>
+                <th>{{ 'Date'|trans }}</th>
+                <th>{{ 'Client'|trans }} </th>
+                <th>{{ 'Montant'|trans }}</th>
                 <th> </th>
             </tr>
             </thead>
@@ -43,7 +51,8 @@
                     <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
                     <td>
                         <a href="{{ path('commande_panier_paiement', {'commande' : commande.id}) }}" class="btn btn-success">
-                            <i class="fa fa-gears"></i> Traitement
+                            <i class="fa fa-gears"></i>
+                            {{ 'Traitement'|trans }}
                         </a>
                     </td>
 
@@ -52,7 +61,7 @@
 
             {% else %}
                 <tr>
-                    <td colspan="5">Aucune commande</td>
+                    <td colspan="5">{{ 'Aucune commande'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

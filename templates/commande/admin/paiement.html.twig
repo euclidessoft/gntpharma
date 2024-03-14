@@ -22,9 +22,9 @@
             <table class="table table-success-light table-bordered table-hover table-striped">
                 <thead>
                 <tr>
-                    <th>Numero Commande</th>
-                    <th>Date</th>
-                    <th>Client</th>
+                    <th>{{ 'Numero Commande'|trans }}</th>
+                    <th>{{ 'Date'|trans }}</th>
+                    <th>{{ 'Client'|trans }}</th>
 
                 </tr>
                 </thead>
@@ -43,14 +43,14 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100">
         <thead>
         <tr>
-            <th>Code Produit</th>
-            <th>Designation</th>
-            <th>Quantite Commandee</th>
-            <th>Prix Cession</th>
-            <th>Reduction</th>
-            <th>TVA</th>
-            <th>Prix Public</th>
-            <th>Montant</th>
+            <th>{{ 'Code Produit'|trans }}</th>
+            <th>{{ 'Designation'|trans }}</th>
+            <th>{{ 'Quantite Commandee'|trans }}</th>
+            <th>{{ 'Prix Cession'|trans }}</th>
+            <th>{{ 'Reduction'|trans }}</th>
+            <th>{{ 'TVA'|trans }}</th>
+            <th>{{ 'Prix Public'|trans }}</th>
+            <th>{{ 'Montant'|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -105,7 +105,7 @@
 
         {% else %}
             <tr>
-                <td colspan="10">Aucune commande</td>
+                <td colspan="10">{{ 'Aucune commande'|trans }}</td>
             </tr>
         {% endfor %}
         <tr class="text-bold">
@@ -147,7 +147,7 @@
             <tr>
                 <td colspan="10" class="text-right">
                     <span id="total" class="text-bold"></span>
-                      Arretée la présente à la somme de : <b id="conversion"></b> <b>francs CFA TTC</b>
+                    {{' Arretée la présente à la somme de :'|trans}} <b id="conversion"></b> <b>francs CFA TTC</b>
                 </td>
             </tr>
 {#/***** end*****/#}
@@ -161,7 +161,8 @@
                         class="btn btn-success"
                         data-toggle="modal" data-target="#modal"
                         id="btn">
-                    <i class="fa fa-money-bill"></i> Paiement
+                    <i class="fa fa-money-bill"></i>
+                    {{ 'Paiement'|trans }}
                 </button>
 
 
@@ -209,12 +210,14 @@
                             </div>
                             <div class="modal-footer px-5 py-4">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                        id="annuler"><i class="fa fa-undo"></i> Annuler
+                                        id="annuler"><i class="fa fa-undo"></i>
+                                    {{ 'Annuler'|trans }}
                                 </button>
                                 <button type="button" class="btn btn-success ms-3"
                                         id="ajouter"
                                         onclick="number()"><i
-                                            class="fa fa-money-bill"></i> Payer
+                                            class="fa fa-money-bill"></i>
+                                    {{ 'Payer '|trans}}
                                 </button>
                             </div>
                             {{ form_end(form) }}

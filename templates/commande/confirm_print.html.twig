@@ -77,7 +77,7 @@
         </div>
     </div>
     <h3 class="text-center text-bold text-uppercase my-5">
-        Bon de Commande
+        {{' Bon de Commande'|trans }}
     </h3>
 
     <div class="row justify-content-end">
@@ -85,9 +85,9 @@
             <table class="table table-success-light text-center table-bordered">
                 <thead>
                 <tr>
-                    <th>Numero <br>Commande</th>
-                    <th>Date</th>
-                    <th>Client</th>
+                    <th>{{ 'Numero'|trans }} <br>{{ 'Commande'|trans }}</th>
+                    <th>{{ 'Date'|trans }}</th>
+                    <th>{{ 'Client'|trans }}</th>
 
                 </tr>
                 </thead>
@@ -107,14 +107,14 @@
     <table class="table table-success-light text-center table-bordered mt-5 w-100">
         <thead>
         <tr>
-            <th>N° Prod</th>
-            <th class="tt">Desigantion</th>
-            <th>Qté</th>
-            <th>Prix Ces.</th>
-            <th>Reduc.</th>
-            <th>TVA</th>
-            <th>Prix Public</th>
-            <th>Montant</th>
+            <th>{{'N° Prod'|trans}}</th>
+            <th class="tt">{{'Desigantion'|trans}}</th>
+            <th>{{'Qté'|trans}}</th>
+            <th>{{'Prix Ces.'|trans}}</th>
+            <th>{{ 'Reduc.'|trans }}</th>
+            <th>{{ 'TVA'|trans }}</th>
+            <th>{{ 'Prix Public'|trans }}</th>
+            <th>{{ 'Montant'|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -169,7 +169,7 @@
 
         {% else %}
             <tr>
-                <td colspan="10">Aucune commande</td>
+                <td colspan="10">{{ 'Aucune commande'|trans }}</td>
             </tr>
         {% endfor %}
         <tr>
@@ -211,7 +211,7 @@
     </table>
     {#Conversion prix en lettre #}
         <div class="mt-5">
-            Arretée la présente à la somme de : <b id="conversion"></b> <b>franc CFA TTC</b>
+            {{'Arretée la présente à la somme de : '|trans}}<b id="conversion"></b> <b>franc CFA TTC</b>
         </div>
     {#/***** end*****/#}
     {{ include('javascript.html.twig') }}
