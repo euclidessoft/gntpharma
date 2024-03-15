@@ -3,15 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Album;
+use App\Entity\Approvisionnement;
+use App\Entity\Approvisionner;
 use App\Entity\Candidature;
 use App\Entity\Commande;
 use App\Entity\Produit;
 use App\Entity\Retour;
 use App\Entity\RetourProduit;
+use App\Entity\Stock;
 use App\Form\CandidatureType;
 use App\Repository\CommandeProduitRepository;
 use App\Repository\CommandeRepository;
 use App\Repository\ImageRepository;
+use App\Repository\LivrerProduitRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\PromotionRepository;
 use App\Repository\RetourProduitRepository;
@@ -124,9 +128,10 @@ class StockController extends AbstractController
     /**
      * @Route("/Retour/", name="retour", methods={"GET"})
      */
-    public function retour(CommandeRepository $repository): Response
+    public function retour(CommandeRepository $repository, SessionInterface $session): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
+            $session->remove('retour');
             return $this->render('stock/retour.html.twig', [
                 'commandes' => $repository->findBy(['livrer' => true]),
             ]);
@@ -143,12 +148,14 @@ class StockController extends AbstractController
             return $response;
         }
     }
+
     /**
      * @Route("/Retour_index/", name="retour_index", methods={"GET"})
      */
-    public function retourindex(RetourRepository $repository): Response
+    public function retourindex(RetourRepository $repository, SessionInterface $session): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
+            $session->remove('retour');
             return $this->render('stock/retour_index.html.twig', [
                 'retours' => $repository->findAll(),
             ]);
@@ -169,8 +176,9 @@ class StockController extends AbstractController
     /**
      * @Route("/Create_Retour_Show/{id}", name="retour_show", methods={"GET"})
      */
-    public function retour_show(Commande $commande, CommandeProduitRepository $repository, SessionInterface $session): Response
+    public function retour_show(Commande $commande, LivrerProduitRepository $repository, SessionInterface $session): Response
     {
+        $session->remove('retour');
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
             return $this->render('stock/retour_show.html.twig', [
@@ -218,7 +226,7 @@ class StockController extends AbstractController
         }
     }
 
- /**
+    /**
      * @Route("/Retour_valider/", name="retour_valider", methods={"POST"})
      */
     public function retour_valider(Request $request, SessionInterface $session): Response
@@ -233,7 +241,7 @@ class StockController extends AbstractController
             $retour = new Retour();
             $em->persist($retour);
             $retour->setCommande($commande);
-            foreach ($produits as $prod){
+            foreach ($produits as $prod) {
                 $produit = $em->getRepository(Produit::class)->find($prod['id']);
                 $retourproduit = new RetourProduit();
                 $retourproduit->setProduit($produit);
@@ -241,7 +249,7 @@ class StockController extends AbstractController
                 $retourproduit->setCommande($commande);
                 $retourproduit->setMotif($prod['motif']);
                 $retourproduit->setLot($prod['lot']);
-                $retourproduit->setPeremption($prod['peremption']);
+                $retourproduit->setPeremption(new \Datetime($prod['peremption']));
                 $retourproduit->setQuantite($prod['quantite']);
                 $em->persist($retourproduit);
                 $em->flush();
@@ -252,6 +260,61 @@ class StockController extends AbstractController
             $session->remove('retour');
 
             $res['id'] = 'ok';
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/Reapprovisionner/", name="retour_reapprovisionner", methods={"POST"})
+     */
+    public function retour_reapprovisionner(Request $request, SessionInterface $session): Response
+    {
+
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+            $quantite = $request->get('quantite');
+            $lot = $request->get('lot');
+            $peremption = $request->get('peremption');
+            $id = $request->get('produit');
+            $retour = $request->get('retour');
+            $em = $this->getDoctrine()->getManager();
+            $approvisionner = new Approvisionner();
+            $approvisionner->setUser($this->getUser());
+            $em->persist($approvisionner);
+            $produit = $em->getRepository(Produit::class)->find($id);
+            $retour = $em->getRepository(RetourProduit::class)->findOneBy(['retour' => $retour, 'produit' => $produit, 'lot' => $lot]);
+            $retour->setReapprovisionner(true);
+            $em->persist($retour);
+            $approvisionnenment = new Approvisionnement($produit, $approvisionner, $quantite);
+            $approvisionnenment->setLot($lot);
+            $approvisionnenment->setPeremption(new \DateTime($peremption));
+            $stock = $em->getRepository(Stock::class)->findOneBy(['produit' => $produit, 'lot' => $lot]);
+            $stock == null ? $stock = new Stock($produit, $lot, $peremption, $quantite) : $stock->setQuantite($stock->getQuantite() + $quantite);
+            $em->persist($stock);
+            $produit->setStock($produit->getStock() + $quantite);
+            $em->persist($produit);
+            $em->persist($approvisionnenment);
+
+            $em->flush();
+            $session->remove('retour');
+
+            $res['id'] = 'Réapprovisionner avec succès';
             $response = new Response();
             $response->headers->set('content-type', 'application/json');
             $re = json_encode($res);
@@ -354,24 +417,24 @@ class StockController extends AbstractController
             $motif = $request->get('motif');// recuperation de id produit
             $quantite = $request->get('quantite');// recuperation de la quantite commamde
             $lot = $request->get('lot');// recuperation de la quantite commamde
-            $peremption = $request->get('quantite');// recuperation de la quantite commamde
+            $peremption = $request->get('peremption');// recuperation de la quantite commamde
 
             foreach ($retour as $key => $item) {
-                if ($item['id'] == $id && $item['lot'] = $lot) {
+                if ($item['id'] == $id && $item['lot'] == $lot) {
                     $res['id'] = 'Un produit avec les même reference a été ajouté';
                     goto suite;
                 }
             }
-                $produit = $produitRepository->find($id);
-                $res['idp'] = 'ok';
-                $res['id'] = $id;
-                $res['lot'] = $lot;
-                $res['peremption'] = $peremption;
-                $res['ref'] = $produit->getReference();
-                $res['designation'] = $produit->getDesigantion();
-                $res['quantite'] = $quantite;//$produit->getQuantite();
-                $res['motif'] = $motif;//$produit->getQuantite();
-                $retour[]= $res;
+            $produit = $produitRepository->find($id);
+            $res['idp'] = 'ok';
+            $res['id'] = $id;
+            $res['lot'] = $lot;
+            $res['peremption'] = $peremption;
+            $res['ref'] = $produit->getReference();
+            $res['designation'] = $produit->getDesigantion();
+            $res['quantite'] = $quantite;//$produit->getQuantite();
+            $res['motif'] = $motif;//$produit->getQuantite();
+            $retour[] = $res;
 
 
             // On sauvegarde dans la session
@@ -434,7 +497,7 @@ class StockController extends AbstractController
         $id = $request->get('prod');
         $lot = $request->get('lot');
         foreach ($retour as $key => $item) {
-            if ($item['id'] == $id && $item['lot'] = $lot) {
+            if ($item['id'] == $id && $item['lot'] == $lot) {
                 unset($retour[$key]);
             }
         }

@@ -63,11 +63,29 @@ class RetourProduit
      */
     private $peremption;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $reapprovisionner;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $rembourser;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $avoir;
+
 
 
     public function __construct()
     {
         $this->date = new \DateTime();
+        $this->reapprovisionner = false;
+        $this->rembourser = false;
+        $this->avoir = false;
     }
 
 
@@ -171,5 +189,42 @@ class RetourProduit
 
         return $this;
     }
+
+    public function getReapprovisionner(): ?bool
+    {
+        return $this->reapprovisionner;
+    }
+
+    public function setReapprovisionner(bool $reapprovisionner): self
+    {
+        $this->reapprovisionner = $reapprovisionner;
+
+        return $this;
+    }
+
+    public function getRembourser(): ?bool
+    {
+        return $this->rembourser;
+    }
+
+    public function setRembourser(bool $rembourser): self
+    {
+        $this->rembourser = $rembourser;
+
+        return $this;
+    }
+
+    public function getAvoir(): ?bool
+    {
+        return $this->avoir;
+    }
+
+    public function setAvoir(bool $avoir): self
+    {
+        $this->avoir = $avoir;
+
+        return $this;
+    }
+
 
 }

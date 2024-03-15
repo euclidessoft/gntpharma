@@ -46,15 +46,15 @@
 
                 {#                {% endfor %}#}
 
-                <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+                <table class="table table-success-light table-bordered table-hover table-striped text-center w-100" id="liste">
                     <thead>
                     <tr>
                         <th>{{ "Reference"|trans }}</th>
-                        <th>{{ "Designation"|trans }}</th>
+                        <th class="text-left">{{ "Designation"|trans }}</th>
                         <th>{{ "N° lot"|trans }}</th>
-                        <th>{{ "Pereption"|trans }}</th>
+{#                        <th>{{ "Pereption"|trans }}</th>#}
                         <th>{{ "Motif"|trans }}</th>
-                        <th>{{ "Quantité"|trans }}</th>
+                        <th>{{ "Qté retournée"|trans }}</th>
                         {% if is_granted("ROLE_ADMIN") %}
                         <th></th>
                         {% endif %}
@@ -64,15 +64,16 @@
                     {% for retourproduit in retourproduits %}
                         <tr id="listprod{{ retourproduit.produit.id }}">
                             <td>{{ retourproduit.produit.reference }}</td>
-                            <td>{{ retourproduit.produit.desigantion }}</td>
-                            <td></td>
-                            <td></td>
+                            <td class="text-left">{{ retourproduit.produit.desigantion }}</td>
+                            <td>{{ retourproduit.lot }}</td>
                             <td>{{ retourproduit.motif }}</td>
                             <td>{{ retourproduit.quantite }}</td>
-                            {% if is_granted("ROLE_ADMIN") %}
+                            {% if is_granted("ROLE_ADMIN") and retourproduit.reapprovisionner == 0 %}
                             <td>
-                                <button type="button" class="btn btn-success"><i class="fas fa-warehouse"></i><i class="fa fa-arrow-left"></i>  {{ "Réapprovisionner"|trans }}</button>
+                                <button type="button" id="btn{{ retourproduit.produit.id }}{{ retourproduit.lot }}" class="btn btn-success" onclick="retour_reapprovisionner({{ retour.id }}, {{ retourproduit.produit.id }},{{ retourproduit.lot }},'{{ retourproduit.peremption|date('Y-m-d') }}',{{ retourproduit.quantite }})"><i class="fas fa-warehouse"></i><i class="fa fa-arrow-left"></i>  {{ "Réapprovisionner"|trans }}</button>
                             </td>
+                                {% else %}
+                                    <td></td>
                             {% endif %}
                         </tr>
                     {% else %}
@@ -88,103 +89,23 @@
 {% endblock %}
 {% block scripts %}
     <script>
-        function ajouter(produit, quantite) {
+        function retour_reapprovisionner(id, produit, lot, peremption, quantite) {
 
-            var quant = $("#quant" + produit);
-            var motif = $("#motif" + produit);
-            // var peremp = new Date($("#peremp" + produit).val());
-            if (quant.val() != "" && motif.val() != "" && quant.val() <= quantite) {
-                if (quant.val() > 0) {
-                    $("#ajouter" + produit).html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
+
+                    $("#btn" + produit+lot).html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
                     $.ajax({
                         type: "POST",
-                        url: "{{ path('stock_retour_add') }}",
-                        data: {prod: produit, quantite: quant.val(), motif: motif.val()},
+                        url: "{{ path('stock_retour_reapprovisionner') }}",
+                        data: { produit : produit, quantite: quantite, lot: lot, peremption: peremption, retour: id},
                         success: function (data) {
-                            if (data['idp'] == 'ok') {
-                                $('#selectprod').append(" <tr id='tr" + produit + "'>\n" +
-                                    "                        <td>" + data['ref'] + "</td>\n" +
-                                    "                        <td>" + data['designation'] + "</td>\n" +
-                                    "                        <td class='text-center'><span id='changequantite" + produit + "'>" + data['quantite'] + "</span></td>" +
-                                    "<td rowspan='2'><button class='btn btn-danger mr-2 mb-2'\n" +
-                                    "                                   title='Supprimer cet article' onclick='retour_supprim(" + produit + ")'>\n" +
-                                    "                                    <i class='fa fa-trash'></i>\n" +
-                                    "                                </button></td></tr>" +
-                                    "<tr id='trs" + produit + "'>\n" +
-                                    "        <th>Motif</th><td colspan='2'>" + data['motif'] + "</td>" +
-                                    "</tr>");
-
-                                $('#btn' + produit).addClass('disabled');
-                                $('#valider1').removeClass('disabled');
-                                $('#valider2').removeClass('disabled');
-                                $("#annuler" + produit).trigger('click');
-                                quant.val("");
-                                motif.val("");
-                                $("#ajouter" + produit).html("<i class='fa fa-plus'></i> Ajouter");
-                            } else {
-                                $("#ajouter" + produit).html("<i class='fa fa-plus'></i> Ajouter");
-                            }
+                            document.location.href="#";
                         },
                         error: function () {
                             alert("{{ 'La requête n a pas abouti'|trans }}");
                         }
                     });
-                } else {
-                    alert("veuillez bien renseigner la quantité");
-                }
-            } else {
-                alert("veuillez bien reverifier les quantites");
-            }
         }
 
-        function retour_supprim(produit) {
-
-            if (confirm("Etes-vous sur de vouloir supprimer?")) {
-                $.ajax({
-                    type: "POST",
-                    url: "{{ path('stock_retour_delete') }}",
-                    data: {prod: produit},
-                    success: function (data) {
-                        if (data['id'] == 'ok') {
-                            $("#tr" + produit).remove();
-                            $("#trs" + produit).remove();
-                            $('#btn' + produit).removeClass('disabled');
-                            $("#quant" + produit).val('');// vider le champ quantite dans modal ajouter
-                            $("#ajouter" + produit).show();// afficher le bouton ajouter
-                            $("#ajouter" + produit).html("<i class=\"fa fa-plus\"></i> Ajouter");// afficher le bouton ajouter
-
-                            if (data['nb'] == 0) {
-                                $('#valider1').addClass('disabled');
-                                $('#valider2').addClass('disabled');
-                            }
-                        }
-                    },
-                    error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
-                    }
-                });
-            }
-        }
-
-
-        function validerRetour(commande) {
-            $("#valider2").html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
-            if (confirm("Voulez-vous confirmer la validation?")) {
-                $.ajax({
-                    type: "POST",
-                    url: "{{ path('stock_retour_valider') }}",
-                    data: {commande: commande},
-                    success: function (data) {
-                        if (data['id'] == 'ok') {
-                            document.location.href="{{ path('stock_retour_index') }}";
-                        }
-                    },
-                    error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
-                    }
-                });
-            }
-        }
 
     </script>
 
