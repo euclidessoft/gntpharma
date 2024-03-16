@@ -736,6 +736,7 @@ class LivrerController extends AbstractController
             $commande->setLivreur($livreur);
 
             foreach ($commandeproduits as $commandeproduit) {
+                if(isset($livraison[$commandeproduit->getProduit()->getId()])){
                 $produit = $repository->find($commandeproduit->getProduit()->getId());
                 $ug = 0;
                 // traitement promotion floor()
@@ -806,26 +807,6 @@ class LivrerController extends AbstractController
 
                         $stock = $em->getRepository(Stock::class)->findOneBy(['produit' => $id, 'lot' => $numerolot]);
 
-//                        if ($commandeproduit->getQuantite() > $produit->getStock() && $produit->getStock() > 0) {// livraison avec reste a livrer
-//                            $produit->livraison($quantite);
-//                            $stock->setQuantite($stock->getQuantite() - $quantite);
-//
-//                            $livrerProduit->setQuantitelivrer($quantite);
-//                            $livrerProduit->setArchive($stock->getQuantite());
-//                            $livrerProduit->setLot($numerolot);
-//                            $livrerProduit->setPeremption($stock->getPeremption());
-//                            $livrerProduit->setRestealivrer($restealivrer);
-//
-//                            $livrerProduit->setReste(true);
-//                            if ($stock->getQuantite() == 0) {//suppression produit dans stock
-//                                $em->remove($stock);
-//                            } else {
-//                                $em->persist($stock);
-//                            }
-//                            $restetamp = true;
-//                            $restealivrer = $restealivrer + $quantite;
-
-//                        } else if (($stock->getQuantite() - $quantite) >= 0) {// livraison avec un stock suffisant
                          if (($stock->getQuantite() - $quantite) >= 0) {// livraison avec un stock suffisant
 
                              $produit->livraison($quantite);
@@ -845,26 +826,6 @@ class LivrerController extends AbstractController
                                  $em->persist($stock);
                              }
 
-
-//                        } elseif (($stock->getQuantite() - $quantite) == 0) {// livraison avec
-//                            $produit->livraison($quantite);
-//                            $stock->setQuantite($stock->getQuantite() - $quantite);
-//                            $quantitelivrer = $quantitelivrer + $quantite;
-//
-//                            $livrerProduit->setQuantitelivrer($quantite);
-//                            $livrerProduit->setArchive($stock->getQuantite());
-//                            $livrerProduit->setLot($numerolot);
-//                            $livrerProduit->setPeremption($stock->getPeremption());
-//                            $livrerProduit->setRestealivrer($restealivrer);
-//
-//                            if ($ug != 0) $livrerProduit->setPromotion($commandeproduit->getPromotion());
-//                            if ($stock->getQuantite() == 0) {//suppression produit dans stock
-//                                $em->remove($stock);
-//                            } else {
-//                                $em->persist($stock);
-//                            }
-//
-//                        } else {
                         } else {
                             goto terminer;
                         }
@@ -882,6 +843,7 @@ class LivrerController extends AbstractController
                 }
 
                 $em->persist($produit);
+            }
             }
 
             $em->persist($livrer);
