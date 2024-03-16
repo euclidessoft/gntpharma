@@ -51,8 +51,10 @@
                     <td>{{ produit.fabriquant }}</td>
                     <td>{{ produit.stock|number_format(0, '' , ' ') }}</td>
                     <td>
-                        <a class="btn btn-success" href="{{ path('stock_produit_show', {'id': produit.id}) }}"><i class="fa fa-list"></i>
+                        <a id="{{produit.id }}" onclick="load({{ produit.id }})" class="btn btn-success" href="{{ path('stock_produit_show', {'id': produit.id}) }}">
+                            <i class="fa fa-list"></i>
                             {{'Détails'|trans}}
+
                         </a>
                     </td>
 

@@ -80,11 +80,15 @@
         <div class="col-md-4 offset-md-3 mt-4 py-3 fond-7">
             <div class="centrer">
 
-                <a class="btn btn-success ml-3" href="{{ path('stock_index') }}">
-                    <i class="fa fa-undo"></i> {{ 'Retour'|trans }}</a>
+                <a id="{{ produit.id }}" onclick="load({{ produit.id }})" class="btn btn-success ml-3" href="{{ path('stock_index') }}">
+                    <i class="fa fa-undo"></i>
+                    {{ 'Retour'|trans }}
+                </a>
 
-                <a class="btn btn-success ml-3" href="{{ path('stock_produit_show_print', {'id': produit.id}) }}">
-                    <i class="fa fa-print"></i> {{ 'Imprimer'|trans }}</a>
+                <a id="{{ produit.id }}" onclick="load({{ produit.id }})" class="btn btn-success ml-3" href="{{ path('stock_produit_show_print', {'id': produit.id}) }}">
+                    <i class="fa fa-print"></i>
+                    {{ 'Imprimer'|trans }}
+                </a>
             </div>
         </div>
 

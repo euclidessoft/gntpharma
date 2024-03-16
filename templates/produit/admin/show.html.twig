@@ -48,7 +48,7 @@
         <div class="centrer">
 {#            <a class="btn btn-success mr-3" href="{{ path('produit_edit', {'id': produit.id}) }}">#}
 {#                <i class="fa fa-edit"></i> Modifier</a>#}
-            <a class="btn btn-success-light text-green" href="{{ path('produit_index') }}">
+            <a id="{{ produit.id }}" onclick="load({{ produit.id }})" class="btn btn-success-light text-green" href="{{ path('produit_index') }}">
                 <i class="fa fa-undo"></i>
                 {{ 'Retour'|trans }}
             </a>

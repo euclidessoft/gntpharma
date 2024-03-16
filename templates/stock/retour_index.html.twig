@@ -37,7 +37,7 @@
                     <td>{{ retour.date|date('d/m/Y') }}</td>
                     <td>{{ retour.commande.user.nom }}</td>
                     <td>
-                        <a href="{{ path('stock_retour_history_show', {'id' : retour.id}) }}" class="btn btn-success">
+                        <a id="{{retour.id }}" onclick="load({{ retour.id }})" href="{{ path('stock_retour_history_show', {'id' : retour.id}) }}" class="btn btn-success">
                             <i class="fa fa-list"></i>
                             {{ 'Details'|trans }}
                         </a>

@@ -43,7 +43,7 @@
                     <td>{{ commande.datelivrer ? commande.datelivrer|date('d/m/Y') : '' }}</td>
                     <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
                     <td>
-                        <a href="{{ path('finance_dette_show', {'commande' : commande.id}) }}" class="btn btn-success">
+                        <a id="{{ commande.id }}" onclick="load({{ commande.id }})" href="{{ path('finance_dette_show', {'commande' : commande.id}) }}" class="btn btn-success">
                             <i class="fa fa-list"></i>
                             {{ 'Details'|trans }}
                         </a>

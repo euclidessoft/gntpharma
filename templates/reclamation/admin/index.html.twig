@@ -47,7 +47,7 @@
                     <td>{{ reclamation.status ? 'Yes' : 'No' }}</td>
                     <td>{{ reclamation.cloture ? reclamation.cloture|date('Y-m-d') : '' }}</td>
                     <td>
-                        <a class="btn btn-success" href="{{ path('reclamation_show', {'id': reclamation.id, 'user' : app.user.id}) }}">
+                        <a id="{{ reclamation.id }}" onclick="load({{ reclamation.id }})" class="btn btn-success" href="{{ path('reclamation_show', {'id': reclamation.id, 'user' : app.user.id}) }}">
                             <i class="fa fa-list"></i>
                             {{ 'Afficher'|trans }}</a>
                         {#                    <a href="{{ path('reclamation_edit', {'id': reclamation.id}) }}">edit</a>#}
