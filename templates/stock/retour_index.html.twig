@@ -22,10 +22,10 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100 mt-4" id="liste">
             <thead>
             <tr>
-                <th>N° Retour</th>
-                <th>N° Commande</th>
-                <th>Date de retour</th>
-                <th>Client </th>
+                <th>{{'N° Retour'|trans}}</th>
+                <th>{{'N° Commande'|trans}}</th>
+                <th>{{'Date de retour'|trans}}</th>
+                <th>{{ 'Client'|trans }} </th>
                 <th> </th>
             </tr>
             </thead>
@@ -38,7 +38,8 @@
                     <td>{{ retour.commande.user.nom }}</td>
                     <td>
                         <a href="{{ path('stock_retour_history_show', {'id' : retour.id}) }}" class="btn btn-success">
-                            <i class="fa fa-list"></i> Details
+                            <i class="fa fa-list"></i>
+                            {{ 'Details'|trans }}
                         </a>
                     </td>
 
@@ -47,7 +48,9 @@
 
             {% else %}
                 <tr>
-                    <td colspan="5">Aucune commande</td>
+                    <td colspan="5">
+                        {{ 'Aucune commande'|trans }}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

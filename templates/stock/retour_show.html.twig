@@ -13,10 +13,10 @@
             <table class="table table-success-light table-bordered table-hover table-striped mt-3 w-100">
                 <thead>
                 <tr>
-                    <th>Numero Commande</th>
-                    <th>Date de commande</th>
-                    <th>Date de Livraison</th>
-                    <th>Client</th>
+                    <th>{{ 'Numero Commande'|trans }}</th>
+                    <th>{{ 'Date de commande'|trans }}</th>
+                    <th>{{ 'Date de Livraison'|trans }}</th>
+                    <th>{{ 'Client'|trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -140,11 +140,11 @@
                 <table class="table table-success-light table-bordered table-hover table-striped w-100">
                     <thead class="text-center">
                     <tr>
-                        <th class="text-left">Designation</th>
-                        <th>N° Lot</th>
-                        <th>Peremption</th>
-                        <th>Qté retournée</th>
-                        <th>Actions</th>
+                        <th class="text-left">{{ 'Designation'|trans }}</th>
+                        <th>{{'N° Lot'|trans}}</th>
+                        <th>{{'Peremption'|trans}}</th>
+                        <th>{{'Qté retournée'|trans}}</th>
+                        <th>{{'Actions'|trans}}</th>
                     </tr>
                     </thead>
                     <tbody id="selectprod" class="text-center">
@@ -189,7 +189,7 @@
                         class="btn btn-success float-right  {% if retour|length == 0 %} disabled {% endif %}"
                         id="valider2"
                         title="Valider">
-                    <i class="fa fa-check"></i> Valider
+                    <i class="fa fa-check"></i> {{ 'Valider'|trans }}
                 </button>
 
             </div>
@@ -231,9 +231,9 @@ alert(peremption)
                                 $("#annuler" + produit+lot).trigger('click');
                                 quant.val("");
                                 motif.val("");
-                                $("#ajouter" + produit+lot).html("<i class='fa fa-plus'></i> Ajouter");
+                                $("#ajouter" + produit+lot).html("<i class='fa fa-plus'></i> {{ 'Ajouter'|trans }}");
                             } else {
-                                $("#ajouter" + produit+lot).html("<i class='fa fa-plus'></i> Ajouter");
+                                $("#ajouter" + produit+lot).html("<i class='fa fa-plus'></i> {{ 'Ajouter'|trans }}");
                             }
                         },
                         error: function () {
@@ -241,16 +241,16 @@ alert(peremption)
                         }
                     });
                 } else {
-                    alert("veuillez bien renseigner la quantité");
+                    alert("{{'veuillez bien renseigner la quantité'|trans}}");
                 }
             } else {
-                alert("veuillez bien reverifier les quantites");
+                alert("{{'veuillez bien reverifier les quantites'|trans}}");
             }
         }
 
         function retour_supprim(produit, lot) {
 
-            if (confirm("Etes-vous sur de vouloir supprimer?")) {
+            if (confirm("{{ 'Etes-vous sur de vouloir supprimer?'|trans }}")) {
                 $.ajax({
                     type: "POST",
                     url: "{{ path('stock_retour_delete') }}",
@@ -262,7 +262,7 @@ alert(peremption)
                             $('#btn' + produit+lot).removeClass('disabled');
                             $("#quant" + produit+lot).val('');// vider le champ quantite dans modal ajouter
                             $("#ajouter" + produit+lot).show();// afficher le bouton ajouter
-                            $("#ajouter" + produit+lot).html("<i class=\"fa fa-plus\"></i> Ajouter");// afficher le bouton ajouter
+                            $("#ajouter" + produit+lot).html("<i class=\"fa fa-plus\"></i> {{ 'Ajouter'|trans }}");// afficher le bouton ajouter
 
                             if (data['nb'] == 0) {
                                 $('#valider1').addClass('disabled');
@@ -280,7 +280,7 @@ alert(peremption)
 
         function validerRetour(commande) {
             $("#valider2").html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
-            if (confirm("Voulez-vous confirmer la validation?")) {
+            if (confirm("{{ 'Voulez-vous confirmer la validation?'|trans }}")) {
                 $.ajax({
                     type: "POST",
                     url: "{{ path('stock_retour_valider') }}",
