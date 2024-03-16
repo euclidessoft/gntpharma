@@ -25,6 +25,12 @@ class Livrer
     private $user;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Retour")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $retour;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -208,6 +214,18 @@ class Livrer
     public function setSignature(?string $signature): self
     {
         $this->signature = $signature;
+
+        return $this;
+    }
+
+    public function getRetour(): ?Retour
+    {
+        return $this->retour;
+    }
+
+    public function setRetour(?Retour $retour): self
+    {
+        $this->retour = $retour;
 
         return $this;
     }

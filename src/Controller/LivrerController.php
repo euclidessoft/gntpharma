@@ -401,20 +401,14 @@ class LivrerController extends AbstractController
     /**
      * @Route("/Reste_print/{id}", name="reste_show_print", methods={"GET"})
      */
-    public function resteprint(Commande $commande, LivrerResteRepository $livrerResteRepository, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session): Response
+    public function resteprint(Commande $commande, LivrerProduitRepository $livrerProduitRepository, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session): Response
     {// traitement livraison
 
-        $session->remove("livraison");
-        $commandeproduits = $livrerResteRepository->findBy(['commande' => $commande]);
-        $listcommande = [];
-        foreach ($commandeproduits as $commandeproduit) {
-            $stock = $repository->find($commandeproduit->getProduit()->getId())->getStock();
-            $commandeproduit->setStock($stock);
-            $listcommande[] = $commandeproduit;
-        }
-        $session->set("traitement", []);
+
+        $commandeproduits = $livrerProduitRepository->findBy(['commande' => $commande]);
+
         $response = $this->render('livrer/reste_show_print.html.twig', [
-            'commandes' => $listcommande,
+            'commandes' => $commandeproduits,
             'commandereference' => $commande,
         ]);
         $response->setSharedMaxAge(0);
@@ -431,20 +425,14 @@ class LivrerController extends AbstractController
     /**
      * @Route("/Retour_print/{id}", name="retour_show_print", methods={"GET"})
      */
-    public function retourprint(Request $request, Retour $retour, RetourProduitRepository $retourProduitRepository, ProduitRepository $repository, SessionInterface $session): Response
+    public function retourprint(Request $request, Retour $retour, LivrerProduitRepository $livrerProduitRepository, ProduitRepository $repository, SessionInterface $session): Response
     {// traitement livraison
 
 
-        $commandeproduits = $retourProduitRepository->findBy(['retour' => $retour, 'valider' => true, 'rembourser' => false]);
-        $listcommande = [];
-        foreach ($commandeproduits as $commandeproduit) {
-            $stock = $repository->find($commandeproduit->getProduit()->getId())->getStock();
-            $commandeproduit->setStock($stock);
-            $listcommande[] = $commandeproduit;
-        }
-        $session->set("traitement", []);
+        $commandeproduits = $livrerProduitRepository->findBy(['retour' => $retour, 'valider' => true, 'rembourser' => false]);
+
         $response = $this->render('livrer/retour_show_print.html.twig', [
-            'commandes' => $listcommande,
+            'commandes' => $commandeproduits,
             'commandereference' => $retour,
         ]);
         $response->setSharedMaxAge(0);
@@ -1056,6 +1044,7 @@ class LivrerController extends AbstractController
             $livreur = $em->getRepository(User::class)->find($session->get('livreur'));
             $livrer = new Livrer($commande, $this->getUser());
             $livrer->setLivreur($livreur);
+            $livrer->setRetour($retour);
             $em->persist($retour);
 
             foreach ($commandeproduits as $commandeproduit) {
