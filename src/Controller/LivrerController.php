@@ -429,7 +429,7 @@ class LivrerController extends AbstractController
     {// traitement livraison
 
 
-        $commandeproduits = $livrerProduitRepository->findBy(['retour' => $retour, 'valider' => true, 'rembourser' => false]);
+        $commandeproduits = $livrerProduitRepository->findBy(['retour' => $retour]);
 
         $response = $this->render('livrer/retour_show_print.html.twig', [
             'commandes' => $commandeproduits,
