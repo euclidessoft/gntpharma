@@ -736,8 +736,9 @@ class LivrerController extends AbstractController
             $commande->setLivreur($livreur);
 
             foreach ($commandeproduits as $commandeproduit) {
-                if(isset($livraison[$commandeproduit->getProduit()->getId()])){
                 $produit = $repository->find($commandeproduit->getProduit()->getId());
+                if(isset($livraison[$produit->getId()])){
+
                 $ug = 0;
                 // traitement promotion floor()
                 if (!empty($commandeproduit->getPromotion())) {
@@ -844,6 +845,13 @@ class LivrerController extends AbstractController
 
                 $em->persist($produit);
             }
+                else{
+                    $reste = new LivrerReste($livrer, $commande, $produit, $commandeproduit->getQuantite(), 0, $commande->getUser());
+                    $reste->setSession($commandeproduit->getSession());
+
+                    $em->persist($reste);
+                    $livrer->setReste(true);
+                }
             }
 
             $em->persist($livrer);
