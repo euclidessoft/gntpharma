@@ -431,11 +431,11 @@ class LivrerController extends AbstractController
     /**
      * @Route("/Retour_print/{id}", name="retour_show_print", methods={"GET"})
      */
-    public function retourprint(Retour $retour, RetourProduitRepository $retourProduitRepository, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session): Response
+    public function retourprint(Request $request, Retour $retour, RetourProduitRepository $retourProduitRepository, ProduitRepository $repository, SessionInterface $session): Response
     {// traitement livraison
 
-        $session->remove("livraison");
-        $commandeproduits = $retourProduitRepository->findBy(['retour' => $retour]);
+
+        $commandeproduits = $retourProduitRepository->findBy(['retour' => $retour, 'valider' => true, 'rembourser' => false]);
         $listcommande = [];
         foreach ($commandeproduits as $commandeproduit) {
             $stock = $repository->find($commandeproduit->getProduit()->getId())->getStock();
@@ -445,7 +445,7 @@ class LivrerController extends AbstractController
         $session->set("traitement", []);
         $response = $this->render('livrer/retour_show_print.html.twig', [
             'commandes' => $listcommande,
-            'commandereference' => $retour->getCommande(),
+            'commandereference' => $retour,
         ]);
         $response->setSharedMaxAge(0);
         $response->headers->addCacheControlDirective('no-cache', true);
