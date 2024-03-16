@@ -93,29 +93,6 @@ class LivrerController extends AbstractController
             return $response;
         }
     }
-//
-//    /**
-//     * @Route("/new", name="new", methods={"GET","POST"})
-//     */
-//    public function new(Request $request): Response
-//    {
-//        $livrer = new Livrer();
-//        $form = $this->createForm(LivrerType::class, $livrer);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $entityManager = $this->getDoctrine()->getManager();
-//            $entityManager->persist($livrer);
-//            $entityManager->flush();
-//
-//            return $this->redirectToRoute('livrer_index', [], Response::HTTP_SEE_OTHER);
-//        }
-//
-//        return $this->render('livrer/new.html.twig', [
-//            'livrer' => $livrer,
-//            'form' => $form->createView(),
-//        ]);
-//    }
 
     /**
      * @Route("/Historique/", name="historique")
@@ -254,7 +231,7 @@ class LivrerController extends AbstractController
     }
 
     /**
-     * @Route("Livraison_show/{id}", name="livreur_show", methods={"GET","POST"})
+     * @Route("/Livraison_show/{id}", name="livreur_show", methods={"GET","POST"})
      */
     public function livreurshow(Livrer $livrer): Response
     {// traitement livraison
@@ -294,7 +271,7 @@ class LivrerController extends AbstractController
     }
 
     /**
-     * @Route("Valider_Livraison_show/{id}", name="valider_livreur_show", methods={"GET","POST"})
+     * @Route("/Valider_Livraison_show/{id}", name="valider_livreur_show", methods={"GET","POST"})
      */
     public function validerlivreur(Livrer $livrer): Response
     {// traitement livraison
@@ -1186,6 +1163,7 @@ class LivrerController extends AbstractController
         $livraison = $em->getRepository(Livrer::class)->find($liver);
         $livraison->setLivrer(true);
         $livraison->getCommande()->setLivrer(true);
+        $livraison->getCommande()->setDateefectlivraison(new \DateTime());
         $livraison->setSignature("/Documents/". uniqid() .".PNG");
         $livraison->setDateefectlivraison(new \DateTime());
         $em->persist($livraison);

@@ -58,6 +58,23 @@ class CommandeRepository extends ServiceEntityRepository
             ;
     }
 
+    public function retour()
+    {
+        $date = new \Datetime();
+        date_sub($date,date_interval_create_from_date_string("3 days"));
+        $creation = date_format($date,"Y-m-d");
+
+
+
+        $query = $this->createQueryBuilder('a')
+            ->Where('a.dateefectlivraison > :date')
+            ->setParameter('date', $creation)
+            ->Andwhere('a.livrer = :val')
+            ->setParameter('val', true)
+            ->getQuery();
+        return $query->getResult();
+    }
+
 
     // /**
     //  * @return Commande[] Returns an array of Commande objects

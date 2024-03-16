@@ -133,7 +133,7 @@ class StockController extends AbstractController
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
             $session->remove('retour');
             return $this->render('stock/retour.html.twig', [
-                'commandes' => $repository->findBy(['livrer' => true]),
+                'commandes' => $repository->retour(),
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
