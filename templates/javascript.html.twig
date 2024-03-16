@@ -79,6 +79,10 @@
         }
 
     }
+    function load(id) {
+        $("#"+id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+
+    }
 
     function addprod(id, mincom, st) {// fonction pour ajouter un produit dans le panier
         var reg = new RegExp("^[0-9]+$");

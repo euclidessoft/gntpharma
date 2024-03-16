@@ -132,9 +132,19 @@ class StockController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
             $session->remove('retour');
-            return $this->render('stock/retour.html.twig', [
+
+            $response = $this->render('stock/retour.html.twig', [
                 'commandes' => $repository->retour(),
             ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
@@ -156,9 +166,19 @@ class StockController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
             $session->remove('retour');
-            return $this->render('stock/retour_index.html.twig', [
+
+            $response = $this->render('stock/retour_index.html.twig', [
                 'retours' => $repository->findAll(),
             ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
@@ -181,11 +201,21 @@ class StockController extends AbstractController
         $session->remove('retour');
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
-            return $this->render('stock/retour_show.html.twig', [
+
+            $response = $this->render('stock/retour_show.html.twig', [
                 'commande' => $commande,
                 'commandeproduits' => $repository->findBy(['commande' => $commande]),
                 'retour' => $session->get("retour", []),
             ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
@@ -208,10 +238,20 @@ class StockController extends AbstractController
     {
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
-            return $this->render('stock/history_show.html.twig', [
+
+            $response = $this->render('stock/history_show.html.twig', [
                 'retour' => $retour,
                 'retourproduits' => $repository->findBy(['retour' => $retour]),
             ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);

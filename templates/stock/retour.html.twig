@@ -26,7 +26,6 @@
                 <th>{{ 'Date de commande'|trans }}</th>
                 <th>{{ 'Date de Livraison'|trans }}</th>
                 <th>{{ 'Client'|trans }} </th>
-                <th>{{ 'Montant'|trans }}</th>
                 <th> </th>
             </tr>
             </thead>
@@ -35,11 +34,10 @@
                 <tr>
                     <td>{{ commande.id }}</td>
                     <td>{{ commande.date|date('d/m/Y') }}</td>
-                    <td>{{ commande.dateefectlivraison ? commande.datelivrer|date('d/m/Y') : '' }}</td>
+                    <td>{{ commande.dateefectlivraison ? commande.dateefectlivraison|date('d/m/Y') : '' }}</td>
                     <td> {{ commande.user.nom }}</td>
-                    <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
                     <td>
-                        <a href="{{ path('stock_retour_show', {'id' : commande.id}) }}" class="btn btn-success">
+                        <a href="{{ path('stock_retour_show', {'id' : commande.id}) }}" id="{{ commande.id }}" class="btn btn-success" onclick="load({{ commande.id }})">
                             <i class="fa fa-list"></i>
                             {{ 'Details'|trans }}
                         </a>
