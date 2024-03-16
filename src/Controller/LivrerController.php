@@ -423,6 +423,30 @@ class LivrerController extends AbstractController
     }
 
     /**
+     * @Route("/New_Reste_print/{id}/{livrer}", name="new_reste_show_print", methods={"GET"})
+     */
+    public function newresteprint(Commande $commande,Livrer $livrer, LivrerProduitRepository $livrerProduitRepository, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session): Response
+    {// traitement livraison
+
+
+        $commandeproduits = $livrerProduitRepository->findBy(['commande' => $commande, 'livrer' => $livrer]);
+
+        $response = $this->render('livrer/reste_show_print.html.twig', [
+            'commandes' => $commandeproduits,
+            'commandereference' => $commande,
+        ]);
+        $response->setSharedMaxAge(0);
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('no-store', true);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->setCache([
+            'max_age' => 0,
+            'private' => true,
+        ]);
+        return $response;
+    }
+
+    /**
      * @Route("/Retour_print/{id}", name="retour_show_print", methods={"GET"})
      */
     public function retourprint(Request $request, Retour $retour, LivrerProduitRepository $livrerProduitRepository, ProduitRepository $repository, SessionInterface $session): Response
@@ -937,8 +961,11 @@ class LivrerController extends AbstractController
                         $numerolot = $lot[1];
                         $quantite = $lot[2];
                         $stock = $em->getRepository(Stock::class)->findOneBy(['produit' => $id, 'lot' => $numerolot]);
-                        if($quantite == $commandeproduit->getQuantite()) {
-                            if (($stock->getQuantite() - $quantite) >= 0) {// livraison avec un stock suffisant
+//                        if ($commandeproduit->getQuantite() > $produit->getStock() && $produit->getStock() > 0) {
+//                            $restetamp = true;
+//                        }
+
+                        if (($stock->getQuantite() - $quantite) >= 0) {// livraison avec un stock suffisant
 
                                 $produit->livraison($quantite);
                                 $stock->setQuantite($stock->getQuantite() - $quantite);
@@ -954,11 +981,7 @@ class LivrerController extends AbstractController
 
 
                             }
-                        }
-                        else{
-                            $this->addFlash('notice', "La quantité à livrer et la quantité retournée doivent être la même");
-                            $this->redirectToRoute('livraison_reste_show', ['id' => $commande->getId()]);
-                        }
+
                     }
                 }
 
@@ -971,7 +994,7 @@ class LivrerController extends AbstractController
             $em->persist($commande);
             $em->flush();
             $this->addFlash('notice', 'Livraison enregistrée avec succés');
-            $response = $this->redirectToRoute('livraison_reste_show_print', ['id' => $commande->getId()]);
+            $response = $this->redirectToRoute('livraison_new_reste_show_print', ['id' => $commande->getId(), 'livrer' => $livrer->getId()]);
 
 
             $session->remove('traitement');
@@ -1035,7 +1058,7 @@ class LivrerController extends AbstractController
                         $numerolot = $lot[1];
                         $quantite = $lot[2];
                         $stock = $em->getRepository(Stock::class)->findOneBy(['produit' => $id, 'lot' => $numerolot]);
-                        if($quantite == $commandeproduit->getQuantite()) {
+//                        if($quantite == $commandeproduit->getQuantite()) {
                             if (($stock->getQuantite() - $quantite) >= 0) {// livraison avec un stock suffisant
 
                                 $produit->livraison($quantite);
@@ -1052,11 +1075,11 @@ class LivrerController extends AbstractController
 
 
                             }
-                        }
-                        else{
-                            $this->addFlash('notice', "La quantité à livrer et la quantité retournée doivent être la même");
-                            $this->redirectToRoute('livraison_retour_show', ['id' => $retour->getId()]);
-                        }
+//                        }
+//                        else{
+//                            $this->addFlash('notice', "La quantité à livrer et la quantité retournée doivent être la même");
+//                            $this->redirectToRoute('livraison_retour_show', ['id' => $retour->getId()]);
+//                        }
                     }
                 }
 
