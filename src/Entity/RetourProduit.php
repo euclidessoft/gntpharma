@@ -78,6 +78,14 @@ class RetourProduit
      */
     private $avoir;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $valider;
+
+
+    private $stock;
+
 
 
     public function __construct()
@@ -86,6 +94,7 @@ class RetourProduit
         $this->reapprovisionner = false;
         $this->rembourser = false;
         $this->avoir = false;
+        $this->valider = false;
     }
 
 
@@ -222,6 +231,30 @@ class RetourProduit
     public function setAvoir(bool $avoir): self
     {
         $this->avoir = $avoir;
+
+        return $this;
+    }
+
+    public function getValider(): ?bool
+    {
+        return $this->valider;
+    }
+
+    public function setValider(bool $valider): self
+    {
+        $this->valider = $valider;
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(?int $stock): self
+    {
+        $this->stock = $stock;
 
         return $this;
     }

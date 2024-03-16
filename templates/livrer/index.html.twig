@@ -56,7 +56,7 @@
     </div>
     <div class="col-lg-6">
         <h5 class="mt-3 mb-2 text-bold">
-            {{ "Commande avec reste à livrer"|trans }}
+            {{ "Reste à livrer ou retour de stock"|trans }}
         </h5>
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
             <thead>
@@ -68,6 +68,8 @@
             </tr>
             </thead>
             <tbody>
+            {% set reste = 0 %}
+            {% set retour = 0 %}
             {% for livrer in livrers %}
                 <tr>
                     <td>{{ livrer.commande.id }}</td>
@@ -81,9 +83,27 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="4">{{ 'Aucune commande'|trans }}</td>
+                    <td colspan="4">{{ 'Aucun reste à livrer'|trans }}</td>
                 </tr>
             {% endfor %}
+            {% for retour in retours %}
+                <tr>
+                    <td>{{ retour.commande.id }}</td>
+                    <td>{{ retour.date|date('d/m/Y') }}</td>
+                    <td>{{ retour.commande.user.nom }}</td>
+                    <td>
+                        <a class="btn btn-success" href="{{ path('livraison_retour_show', {'id': retour.id}) }}"><i class="fa fa-gears"></i>
+                            {{ 'Traitement'|trans }}
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                {% set reste = 1 %}
+                <tr>
+                    <td colspan="4">{{ 'Aucun retour de produit'|trans }}</td>
+                </tr>
+            {% endfor %}
+
             </tbody>
         </table>
     </div>

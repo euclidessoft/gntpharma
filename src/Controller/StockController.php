@@ -283,7 +283,7 @@ class StockController extends AbstractController
     /**
      * @Route("/Reapprovisionner/", name="retour_reapprovisionner", methods={"POST"})
      */
-    public function retour_reapprovisionner(Request $request, SessionInterface $session): Response
+    public function retour_reapprovisionner(Request $request): Response
     {
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -312,9 +312,50 @@ class StockController extends AbstractController
             $em->persist($approvisionnenment);
 
             $em->flush();
-            $session->remove('retour');
 
             $res['id'] = 'Réapprovisionner avec succès';
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+ /**
+     * @Route("/Valider_Remboursement/", name="retour_valider_remboursement", methods={"POST"})
+     */
+    public function retour_valider_remboursement(Request $request): Response
+    {
+
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+
+            $lot = $request->get('lot');
+            $id = $request->get('produit');
+            $retour = $request->get('retour');
+            $em = $this->getDoctrine()->getManager();
+
+            $produit = $em->getRepository(Produit::class)->find($id);
+            $retour = $em->getRepository(RetourProduit::class)->findOneBy(['retour' => $retour, 'produit' => $produit, 'lot' => $lot]);
+            $retour->setValider(true);
+            $em->persist($retour);
+
+            $em->flush();
+
+            $res['id'] = 'Remboursement accordé';
             $response = new Response();
             $response->headers->set('content-type', 'application/json');
             $re = json_encode($res);

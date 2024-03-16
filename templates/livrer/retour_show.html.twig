@@ -7,7 +7,7 @@
     <div class="container mt-4 fond-7">
         <h3 class="mt-4 mb-5 text-bold">
             <i class="fa fa-shopping-cart mr-2"></i>
-            {{ "traitement commande pour Livraison"|trans }}
+            {{ "traitement retour pour Livraison"|trans }}
         </h3>
         {% for message in app.flashes('echec') %}
             <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
@@ -22,9 +22,8 @@
                 <table class="table table-success-light table-bordered table-hover table-striped">
                     <thead>
                     <tr>
-                        <th>{{ 'Numero Commande'|trans }}</th>
-                        <th>{{ 'Date Commande'|trans }}</th>
-                        <th>{{ 'Date Paiement'|trans }}</th>
+                        <th>{{ 'N° Retour'|trans }}</th>
+                        <th>{{ 'Date Retour'|trans }}</th>
                         <th>{{ 'Client'|trans }}</th>
                         {#                    <th>Date prevu pour la livraison Livraison</th>#}
 
@@ -33,8 +32,7 @@
                     <tbody>
                     <td>{{ commandereference.id }}</td>
                     <td>{{ commandereference.date ? commandereference.date|date('d/m/Y') : '' }}</td>
-                    <td>{{ commandereference.paiement ? commandereference.paiement.date|date('d/m/Y') : '' }}</td>
-                    <td>{{ commandereference.user.nom }}</td>
+                    <td>{{ commandereference.commande.user.nom }}</td>
                     {#                <td><input type="date" class="form-control" id="datelivraison"/></td>#}
 
                     </tbody>
@@ -47,9 +45,7 @@
             <tr>
                 <th>{{ 'reference'|trans }}</th>
                 <th>{{ 'designation'|trans }}</th>
-                <th>{{ 'Quantite Commande'|trans }}</th>
-                <th>{{'Quantite déjà livrée'|trans}}</th>
-                <th>{{'Reste à livrée'|trans}}</th>
+                <th>{{'Qté retournée'|trans}}</th>
                 <th>{{'Quantite à livrée'|trans}}</th>
                 <th>{{'Stock disponible'|trans}}</th>
                 <th>{{ 'Details'|trans }}</th>
@@ -64,16 +60,13 @@
                 <td>
                     {{ commande.quantite }}
                 </td>
-                <td class="text-center">{{ commande.quantitelivre }}</td>
-
-                <td class="text-center">{{ commande.quantite - commande.quantitelivre }}</td>
                 <td class="text-center">
                 <span id="quantite{{ commande.produit.id }}">
 
                     </span>
 
                 </td>
-                <td class="text-center">{{ commande.stock }}</td>
+                <td class="text-center">{{ commande.stock|number_format(0, '' , ' ') }}</td>
                 <td class="text-center">
                     <button type="button"
                             class="btn btn-success"
@@ -118,14 +111,14 @@
 
                                 </div>
                                 <div class="modal-footer px-5 py-4">
-                                    {{ commande.quantite - commande.quantitelivre }} à livrer
+                                    <b>  {{ commande.quantite }} à livrer</b>
                                     <button type="button" class="btn btn-secondary ml-5" data-dismiss="modal"
                                             id="annuler{{ commande.produit.id }}">
                                         {{ 'Annuler'|trans }}
                                     </button>
                                     <button type="button" class="btn btn-success ms-3"
                                             id="ajouter{{ commande.produit.id }}"
-                                            onclick="validerProduit({{ commande.produit.id }}, {{ commande.quantite - commande.quantitelivre }}, {{ commande.stock }})">
+                                            onclick="validerProduit({{ commande.produit.id }}, {{ commande.quantite }}, {{ commande.stock }})">
 
                                     </button>
                                 </div>
@@ -300,7 +293,7 @@
                     });
 
                 }else{
-                    alert("veuillez verifier les quantités saisies");
+                    alert("La quantité à livrer et la quantité retournée doivent être la même");
                     $('#ajouter' + id).html("<i class='fa-solid fa-check'></i> Valider");
                 }
 
