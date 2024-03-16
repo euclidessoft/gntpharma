@@ -84,7 +84,9 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                        <button class="btn btn-primary text-center" type="submit" id="send" onclick="recherche()"> Rechercher</button>
+                        <button class="btn btn-primary text-center" type="submit" id="send" onclick="recherche()">
+                            {{' Rechercher'|trans }}
+                        </button>
                         </div>
                         {{ form_end(form)}}
                     </div>
@@ -110,7 +112,7 @@
     </div>
     {% endfor%}
     <div class="alert alert-primary">
-        {{ users|length }} élément(s) trouvé(s)
+        {{ users|length }} {{'élément(s) trouvé(s)'|trans}}
     </div>
     <table width="100%" class="table table-striped table-bordered table-hover" id="liste">
         <thead>

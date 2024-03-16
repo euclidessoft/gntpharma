@@ -188,7 +188,7 @@
                     $('#validation').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                     $('#form').submit();
                 }else{
-                    alert('selectionner un livreur')
+                    alert('{{ 'selectionner un livreur'|trans }}')
                 }
 
 
@@ -232,7 +232,7 @@
                         }
                         // ('#annuler' + id).trigger('click');
                         // $('#text' + id).val('');
-                        $('#ajouter' + id).html("<i class='fa fa-check'></i> Valider");
+                        $('#ajouter' + id).html("<i class='fa fa-check'></i> {{ 'Valider'|trans }}");
 
                         {#} else {#}
                         {#    alert("{{ 'verifier la quantite saisie'|trans }}")#}
@@ -301,7 +301,7 @@
 
                 }else{
                     alert("veuillez verifier les quantités saisies");
-                    $('#ajouter' + id).html("<i class='fa-solid fa-check'></i> Valider");
+                    $('#ajouter' + id).html("<i class='fa-solid fa-check'></i> {{ 'Valider'|trans }}");
                 }
 
 
