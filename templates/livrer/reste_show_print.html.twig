@@ -117,8 +117,6 @@
                 <th>{{ 'Quantite déjà livrée'|trans }}</th>
                 <th>{{ 'Reste à livrée'|trans }}</th>
                 <th>{{ 'Quantite à livrée'|trans }}</th>
-                <th>{{ 'Stock disponible'|trans }}</th>
-                <th>{{ 'Details'|trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -132,72 +130,12 @@
                 </td>
                 <td class="text-center">{{ commande.quantitelivrer }}</td>
 
-                <td class="text-center">{{ quantite.commande - commande.quantitelivrer }}</td>
+                <td class="text-center">{{ commande.quantitelivrer - commande.quantitelivrer }}</td>
                 <td class="text-center">
                 <span id="quantite{{ commande.produit.id }}">
 
                     </span>
 
-                </td>
-                <td class="text-center">{{ commande.stock }}</td>
-                <td class="text-center">
-                    <button type="button"
-                            class="btn btn-success"
-                            data-toggle="modal" data-target="#modal{{ commande.produit.id }}"
-                            id="btn{{ commande.produit.id }}" onclick="detaillivraison({{ commande.produit.id }})">
-                        <i class="fa fa-edit"></i>
-                        {{ 'Details'|trans }}
-                    </button>
-                    <div class="modal fade" id="modal{{ commande.produit.id }}" tabindex="-1" role="dialog"
-                         aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg text-center">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title fs-5" id="exampleModalLabel">
-                                        {{ commande.produit.reference }} {{ commande.produit.desigantion }} {{ commande.produit.fabriquant }}
-
-                                    </h5>
-                                    <button type="button" class="close" data-dismiss="modal"
-                                            aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body px-5">
-                                    <table class="table table-success-light table-bordered table-hover table-striped w-100">
-                                        <thead>
-                                        <tr>
-                                            <th>{{ 'N° Lot'|trans }}</th>
-                                            <th>{{ 'Peremption'|trans }}</th>
-                                            <th>{{ 'Commande en stock'|trans }}</th>
-                                            <th>{{ 'Quantite à livrée'|trans }}</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="numerolot{{ commande.produit.id }}">
-
-                                        <tr>
-                                            <td colspan="4">
-                                                <i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-
-                                </div>
-                                <div class="modal-footer px-5 py-4">
-                                    {{ commande.quantite - commande.quantitelivre }} à livrer
-                                    <button type="button" class="btn btn-secondary ml-5" data-dismiss="modal"
-                                            id="annuler{{ commande.produit.id }}">
-                                        {{ 'Annuler'|trans }}
-                                    </button>
-                                    <button type="button" class="btn btn-success ms-3"
-                                            id="ajouter{{ commande.produit.id }}"
-                                            onclick="validerProduit({{ commande.produit.id }}, {{ commande.quantite - commande.quantitelivre }}, {{ commande.stock }})">
-
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </td>
                 {% else %}
                 {% endfor %}
