@@ -361,6 +361,32 @@ class securityController extends AbstractController
     }
 
     /**
+     * @Route("/Clients", name="security_clients")
+     */
+    public function clients(UserRepository $userRepository)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
+
+            $response = $this->render('security/security/clients.html.twig', [
+                'users' => $userRepository->findBy(['client' => true]),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
+            return $this->redirectToRoute('security_logout');
+        }
+
+    }
+
+    /**
      * @Route("/User/{user}", name="security_user")
      */
     public function user(UserRepository $userRepository, User $user)

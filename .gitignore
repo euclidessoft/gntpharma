@@ -2,8 +2,10 @@
 ###> symfony/framework-bundle ###
 .htaccess
 /public/bundles/
+/public/Documents/
 /var/
 /vendor/
+.env
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
