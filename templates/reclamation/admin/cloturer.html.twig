@@ -38,7 +38,8 @@
                     <td>{{ reclamation.creation ? reclamation.creation|date('d/m/Y') : '' }}</td>
                     <td>{{ reclamation.cloture ? reclamation.cloture|date('d/m/Y') : '' }}</td>
                     <td>
-                        <a class="btn btn-success" href="{{ path('reclamation_show', {'id': reclamation.id, 'user' : app.user.id}) }}"><i class="fa fa-list"></i>
+                        <a id="{{ reclamation.id }}" onclick="load({{ reclamation.id }})" class="btn btn-success" href="{{ path('reclamation_show', {'id': reclamation.id, 'user' : app.user.id}) }}">
+                            <i class="fa fa-list"></i>
                             {{ 'Afficher'|trans }}</a>
                         {#                    <a href="{{ path('reclamation_edit', {'id': reclamation.id}) }}">edit</a>#}
                     </td>

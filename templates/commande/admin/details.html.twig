@@ -211,9 +211,10 @@
         <div class="centrer">
             <div class="row">
 
-                <a href="{{ path('commande_panier_print_Detail',{'commande': commande.id }) }}"
+                <a id="{{ commande.id }}" onclick="load({{ commande.id }})" href="{{ path('commande_panier_print_Detail',{'commande': commande.id }) }}"
                    class="btn btn-success float-end">
-                    <i class="fa fa-print"></i> {{ "Imprimer"|trans }}
+                    <i class="fa fa-print"></i>
+                    {{ "Imprimer"|trans }}
                 </a>
 
 

@@ -43,15 +43,14 @@
 
     <div class="col-md-6 offset-md-3 mt-4 py-3 fond-7">
         <div class="centrer">
-            <a id="{{ produit.id }}" onclick="load({{ produit.id }})" class="btn btn-success mr-3" href="{{ path('produit_edit', {'id': produit.id}) }}">
+            <a id="modif" onclick="load('modif')" class="btn btn-success mr-3" href="{{ path('produit_edit', {'id': produit.id}) }}">
                 <i class="fa fa-edit"></i>
                 {{ 'Modifier'|trans }}
 
             </a>
-
             {{ include('produit/admin/_delete_form.html.twig') }}
 
-            <a id="{{ produit.id }}" onclick="load({{ produit.id }})" class="btn btn-success ml-3" href="{{ path('produit_index') }}"><i class="fa fa-undo"></i>
+            <a id="retour" onclick="load('retour')" class="btn btn-success ml-3" href="{{ path('produit_index') }}"><i class="fa fa-undo"></i>
                 {{ 'Retour'|trans }}
 
             </a>
