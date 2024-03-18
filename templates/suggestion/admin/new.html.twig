@@ -1,0 +1,22 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block aide %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa-brands fa-product-hunt mr-2"></i>
+        {{ "Nouvelle suggestion"|trans }}
+    </h3>
+    {% for message in app.flashes('notice') %}
+        <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                &times;
+            </button>
+            {{ message|trans }}
+        </div>
+    {% endfor %}
+
+    {{ include('suggestion/_form.html.twig') }}
+</div>
+{% endblock %}

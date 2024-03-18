@@ -310,15 +310,15 @@
                 date2 != 'Invalid Date' &&
                 date1 >= new Date()) {
 
-                if(premier > ugpremier &&
-                    deuxieme > ugdeuxieme &&
-                    troisieme > ugtroisieme &&
-                    quatrieme > ugquatrieme &&
-                    cinquieme > ugcinquieme &&
-                    premier < deuxieme  &&
-                    deuxieme < troisieme &&
-                    troisieme < quatrieme &&
-                    quatrieme < cinquieme
+                if(premier >= ugpremier &&
+                    deuxieme >= ugdeuxieme &&
+                    troisieme >= ugtroisieme &&
+                    quatrieme >= ugquatrieme &&
+                    cinquieme >= ugcinquieme &&
+                    premier <= deuxieme  &&
+                    deuxieme <= troisieme &&
+                    troisieme <= quatrieme &&
+                    quatrieme <= cinquieme
                 ) {
                     valider.html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                     $('#form').submit();
