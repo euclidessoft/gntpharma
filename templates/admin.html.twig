@@ -297,7 +297,7 @@
                            data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
                             <div class="icone">
-                                <i class="fas fa-user fa-lg"></i>
+                                <i class="fas fa-staff-snake fa-lg"></i>
                             </div>
                             <div class="title">
                                 {{ 'Officine'|trans }}
@@ -320,9 +320,9 @@
                             </li>
                             <li class="dropdown-item">
                                 <a class="nav-link {% block clients %}{% endblock %}"
-                                   href="{{ path('security_profile') }}">
+                                   href="{{ path('security_clients') }}">
                                     <i class="fas fa-users mr-2"></i>
-                                    {{ 'Clients'|trans }}
+                                    {{ 'Liste des clients'|trans }}
                                 </a>
                             </li>
                         </ul>
