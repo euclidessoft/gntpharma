@@ -124,6 +124,7 @@ class User implements UserInterface
     {
         $this->enabled = false;
         $this->client = false;
+        $this->livreur = false;
     }
 
     public function getUsername(): ?string

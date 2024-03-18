@@ -280,9 +280,23 @@
 
         function validerappro() {
             if($('#commande_user option:selected').val()!= '') {
+                alert($('#commande_user option:selected').val())
             if (confirm("Confirmation validation?")) {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('commande_panier_client_extranet') }}",
+                    data: { client: $('#commande_user option:selected').val() },
+                    success: function (data) {
+                        if (data['id'] == 'ok') {
+                            document.location.href = "{{ path("commande_panier_choix_paiement_extranet", {'commande': 0}) }}";
+                        }
+                    },
+                    error: function () {
+                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                    }
+                });
 
-                    document.location.href = "{{ path("commande_panier_choix_paiement_extranet", {'commande': 0}) }}";
+
 
             }
             }else alert('Veuillez selectionner un client')
