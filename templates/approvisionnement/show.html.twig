@@ -66,7 +66,7 @@
 
         <div class="col-md-2 offset-md-4 mt-5 mb-5 pt-2 pb-2 fond-7">
             <div class="centrer">
-                <a href="{{ path('stock_show_print',{ 'id': approvisionner.id}) }}" class="btn btn-success float-end">
+                <a id="{{ approvisionner.id }}" onclick="load({{ approvisionner.id }})" href="{{ path('stock_show_print',{ 'id': approvisionner.id}) }}" class="btn btn-success float-end">
                     <i class="fa fa-print"></i>
                     {{ "Imprimer"|trans }}
                 </a>

@@ -35,7 +35,9 @@
                 <td class="text-left">{{ approv.user.prenom }} {{ approv.user.nom }}</td>
                 <td>{{ approv.date|date('d/m/Y') }}</td>
                 <td>
-                    <a class="btn btn-success" href="{{ path('stock_show', {'id': approv.id}) }}">Details</a>
+                    <a id="{{ approv.id }}" onclick="load({{ approv.id }})" class="btn btn-success" href="{{ path('stock_show', {'id': approv.id}) }}">
+                        {{ 'Details'|trans }}
+                    </a>
                 </td>
             </tr>
         {% else %}

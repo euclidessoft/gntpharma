@@ -27,7 +27,7 @@
                             <td>{{ livrer.commande.date|date('d/m/Y') }}</td>
                             <td>{{ livrer.commande.user.nom }}</td>
                             <td>
-                                <a class="btn btn-success" href="{{ path('avoir_new_reste', {'id': livrer.commande.id}) }}">
+                                <a id="{{ livrer.commande.id }}" onclick="load({{ livrer.commande.id }})" class="btn btn-success" href="{{ path('avoir_new_reste', {'id': livrer.commande.id}) }}">
                                     <i class="fa fa-gears"></i>
                                     {{'Création'|trans}}
                                 </a>

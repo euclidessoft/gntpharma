@@ -38,7 +38,7 @@
                 <td>{{ avoir.admin.nom }}</td>
                 <td>{{ avoir.Montant|number_format(0, '' , ' ') }}</td>
                 <td>
-                    <a class="btn btn-success" href="{{ path('avoir_show', {'id': avoir.id}) }}">
+                    <a id="{{ avoir.id }}" onclick="load({{ avoir.id }})" class="btn btn-success" href="{{ path('avoir_show', {'id': avoir.id}) }}">
                         <i class="fa fa-list"></i>
                         {{ 'Afficher'|trans }}
                     </a>
