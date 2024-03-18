@@ -93,13 +93,13 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="Aide">
                         <li class="dropdown-item">
-                            <a class="nav-link {% block manuel %}{% endblock %}" href="#">
+                            <a class="nav-link {% block manuel %}{% endblock %}" href="#" target="_blank">
                                 <i class="fas fa-book mr-2"></i>
                                 {{ 'Manuel'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link {% block suggestion %}{% endblock %}" href="#">
+                            <a class="nav-link {% block suggestion %}{% endblock %}" href="{{ path('suggestion_index') }}">
                                 <i class="fas fa-comments mr-2"></i>
                                 {{ 'Suggestions'|trans }}
                             </a>
@@ -111,7 +111,7 @@
                             </a>
                         </li>
                         <li class="dropdown-item">
-                            <a href="#" class="nav-link" data-toggle="modal" data-target="#about">
+                            <a href="{{ path('About') }}" target="_blank" class="nav-link">
                                 <i class="fas fa-check-circle mr-2"></i>
                                 {{ 'A propos de'|trans }} GNT Pharma
                             </a>

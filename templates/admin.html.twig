@@ -349,7 +349,7 @@
                             </a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link {% block suggestion %}{% endblock %}" href="#">
+                            <a class="nav-link {% block suggestiongit %}{% endblock %}" href="{{ path('suggestion_index') }}">
                                 <i class="fas fa-comments mr-2"></i>
                                 {{ 'Suggestions'|trans }}
                             </a>
@@ -361,7 +361,7 @@
                             </a>
                         </li>
                         <li class="dropdown-item">
-                            <a href="{{ path('About') }}" class="nav-link">
+                            <a href="{{ path('About') }}" target="_blank" class="nav-link">
                                 <i class="fas fa-check-circle mr-2"></i>
                                 {{ 'A propos de'|trans }} GNT Pharma
                             </a>
