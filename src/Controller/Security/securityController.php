@@ -59,7 +59,7 @@ class securityController extends AbstractController
                 $message = (new \Swift_Message('Activation compte utilisateur'))
                     ->setFrom('support@gntpharma-cameroun.com')
                     ->setTo($user->getEmail())
-                    ->setBody($this->renderView('security/security/mail/active.html.twig', [ 'url' => $url ]), 'text/html');
+                    ->setBody($this->renderView('security/security/mail/active.html.twig', ['url' => $url]), 'text/html');
 //                    ->setBody("Cliquez su->setBody($this->renderView('security/security/mail/active.html.twig', [ 'url' => $url ]), 'text/html');r le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
 //                $message = (new \Swift_Message('Activation compte utilisateur'))
 //                 ->setFrom('support@gntpharma-cameroun.com')
@@ -142,8 +142,7 @@ class securityController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        }
-        else if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
+        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
             $response = $this->render('security/security/admin/profile.html.twig', [
                 'user' => $this->getUser(),
@@ -157,8 +156,7 @@ class securityController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        }
-        else {
+        } else {
             $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_login');
         }
@@ -167,7 +165,7 @@ class securityController extends AbstractController
     /**
      * @Route("/edit_profile", name="security_profile_edit")
      */
-    public function edit(SessionInterface $session,Request $request)
+    public function edit(SessionInterface $session, Request $request)
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
             $panier = $session->get("panier", []);
@@ -198,45 +196,43 @@ class securityController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        }elseif ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
+        } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
-        $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository(User::class)->find($this->getUser()->getId());
-        $form = $this->createForm(UserType::class, $user);
-        $form->remove('username');
-        $form->remove('fonction');
+            $em = $this->getDoctrine()->getManager();
+            $user = $em->getRepository(User::class)->find($this->getUser()->getId());
+            $form = $this->createForm(UserType::class, $user);
+            $form->remove('username');
+            $form->remove('fonction');
 
-        $form->handleRequest($request);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('notice', 'Profil modifié avec succès');
-            return $this->redirectToRoute('security_profile', ['id' => $user->getId()]);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
+                $this->addFlash('notice', 'Profil modifié avec succès');
+                return $this->redirectToRoute('security_profile', ['id' => $user->getId()]);
 
-        }
+            }
             if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
                 $response = $this->render('security/security/edit.html.twig', [
                     'form' => $form->createView(),
                 ]);
-            }else{
-                    $response = $this->render('security/security/admin/edit.html.twig', [
-                        'form' => $form->createView(),
-                    ]);
+            } else {
+                $response = $this->render('security/security/admin/edit.html.twig', [
+                    'form' => $form->createView(),
+                ]);
 
-             }
+            }
 
-        $response->setSharedMaxAge(0);
-        $response->headers->addCacheControlDirective('no-cache', true);
-        $response->headers->addCacheControlDirective('no-store', true);
-        $response->headers->addCacheControlDirective('must-revalidate', true);
-        $response->setCache([
-            'max_age' => 0,
-            'private' => true,
-        ]);
-        return $response;
-    }
-
-        else {
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
             $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_logout');
         }
@@ -319,7 +315,7 @@ class securityController extends AbstractController
             $message = (new \Swift_Message('Réinitialisation mot de passe'))
                 ->setFrom('support@gntpharma-cameroun.com')
                 ->setTo($user->getEmail())
-                ->setBody($this->renderView('security/security/mail/forget.html.twig', [ 'url' => $url ]), 'text/html');
+                ->setBody($this->renderView('security/security/mail/forget.html.twig', ['url' => $url]), 'text/html');
 //                ->setBody("Cliquez sur le lien suivant pour réinitialiser votre mot de passe " . $url, 'text/html');
 
             $mail->send($message);
@@ -570,8 +566,7 @@ class securityController extends AbstractController
      */
     public function admin_new(Request $request, UserPasswordEncoderInterface $encoder, TokenGeneratorInterface $tokenGenerator, \Swift_Mailer $mail)
     {
-        if($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
-        {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             $manager = $this->getDoctrine()->getManager();
             $user = new User();
             $form = $this->createForm(RegistrationType::class, $user);
@@ -588,25 +583,30 @@ class securityController extends AbstractController
 
                 $user->setRoles(['ROLE_ADMIN']);
 
-                switch($user->getFonction()){
-                    case 'Administrateur':{
+                switch ($user->getFonction()) {
+                    case 'Administrateur':
+                    {
                         $user->setRoles(['ROLE_ADMIN']);
                         break;
                     }
-                    case 'Client':{
+                    case 'Client':
+                    {
                         $user->setRoles(['ROLE_CLIENT']);
                         $user->setClient(true);
                         break;
                     }
-                    case 'Financier':{
+                    case 'Financier':
+                    {
                         $user->setRoles(['ROLE_FINANCE']);
                         break;
                     }
-                    case 'Gestionnaire de stock':{
+                    case 'Gestionnaire de stock':
+                    {
                         $user->setRoles(['ROLE_STOCK']);
                         break;
                     }
-                    case 'Livreur':{
+                    case 'Livreur':
+                    {
                         $user->setRoles(['ROLE_LIVREUR']);
                         $user->setLivreur(true);
                         break;
@@ -622,7 +622,7 @@ class securityController extends AbstractController
                 $message = (new \Swift_Message('Activation compte utilisateur'))
                     ->setFrom('support@gntpharma-cameroun.com')
                     ->setTo($user->getEmail())
-                    ->setBody($this->renderView('security/security/mail/active.html.twig', [ 'url' => $url ]), 'text/html');
+                    ->setBody($this->renderView('security/security/mail/active.html.twig', ['url' => $url]), 'text/html');
 //                    ->setBody("Cliquez sur le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
 
 
@@ -648,9 +648,7 @@ class securityController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        }
-        else
-        {
+        } else {
             $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_login');
         }
@@ -664,20 +662,24 @@ class securityController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 
+            try {
+                $em = $this->getDoctrine()->getManager();
 
-            $em = $this->getDoctrine()->getManager();
+                $user = $em->getrepository(User::class)->find($request->get('usr'));
+                $em->remove($user);
 
-            $user = $em->getrepository(User::class)->find($request->get('usr'));
-            $em->remove($user);
-
-            $em->flush();
-            $this->addFlash('notice', 'Utilisateur suppriméé avec succés');
-            $res['ok'] =  $this->generateUrl('security_users', [], UrlGeneratorInterface::ABSOLUTE_URL);;
+                $em->flush();
+                $this->addFlash('notice', 'Utilisateur suppriméé avec succés');
+            } catch (\Exception $exception) {
+                $this->addFlash('notice', 'Cet utilisateur ne peut être supprimer pour des raisons de traçabilité');
+            }
+            $res['ok'] = $this->generateUrl('security_users', [], UrlGeneratorInterface::ABSOLUTE_URL);;
             $response = new Response();
             $response->headers->set('content-type', 'application/json');
             $re = json_encode($res);
             $response->setContent($re);
             return $response;
+
         } else {
             $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_logout');
