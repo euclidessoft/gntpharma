@@ -55,6 +55,9 @@
                             <input type="number" id="text{{ approvisionnement.produit.id }}" class="form-control"
                                    onfocus="focu({{ approvisionnement.produit.id }})" onblur="nofocu()" style="padding:0 10px" {% if approvisionnement.produit.stock <= approvisionnement.produit.mincommande %} disabled {%  endif %}>
                             <label for="text{{ approvisionnement.produit.id }}"></label>
+                            {% if approvisionnement.produit.stock <= approvisionnement.produit.mincommande %}
+                                {{ "indisponible"|trans }}
+                            {% endif %}
                         {% endif %}
                     </td>
                     <td>
