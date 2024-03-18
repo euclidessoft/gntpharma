@@ -99,9 +99,7 @@
                                 <i class="fa fa-edit"></i>
                             </button>
                         </div>
-
-
-                        <a href="{{ path("commande_delete", {id: produit.produit.id}) }}" class="btn btn-danger" title="{{ 'Supprimer cet article'|trans }}">
+                        <a id="{{ produit.produit.id }}" onclick="load({{ produit.produit.id }})" href="{{ path("commande_delete", {id: produit.produit.id}) }}" class="btn btn-danger" title="{{ 'Supprimer cet article'|trans }}">
                             <i class="fa fa-trash"></i>
                         </a>
 

@@ -104,11 +104,11 @@
         <div class="centrer">
             <div class="row">
 
-                <a id="{{ commande.id }}" onclick="load({{ commande.id }})" target="_blank" href="{{ path('commande_panier_print_Detail', {'commande' : commande.id}) }}" class="btn btn-success float-end">
+                <a id="print" onclick="load('print')" target="_blank" href="{{ path('commande_panier_print_Detail', {'commande' : commande.id}) }}" class="btn btn-success float-end">
                     <i class="fa fa-print"></i>
                     {{ "Imprimer"|trans }}
                 </a>
-                <a id="{{ commande.id }}" onclick="load({{ commande.id }})" href="{{ path('commande_panier_choix_paiement', {'commande' : commande.id}) }}" class="ml-3 btn btn-success float-end">
+                <a id="payer" onclick="load('payer')" href="{{ path('commande_panier_choix_paiement', {'commande' : commande.id}) }}" class="ml-3 btn btn-success float-end">
                     <i class="fa fa-money-bill"></i>
                     {{ "Payer"|trans }}
                 </a>
