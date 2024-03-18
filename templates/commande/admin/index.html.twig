@@ -280,7 +280,6 @@
 
         function validerappro() {
             if($('#commande_user option:selected').val()!= '') {
-                alert($('#commande_user option:selected').val())
             if (confirm("Confirmation validation?")) {
                 $.ajax({
                     type: "POST",
