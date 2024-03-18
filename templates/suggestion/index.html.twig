@@ -19,20 +19,14 @@
         <table class="table">
             <thead>
             <tr>
-                <th>Id</th>
                 <th>Message</th>
-                <th>actions</th>
             </tr>
             </thead>
             <tbody>
             {% for suggestion in suggestions %}
                 <tr>
-                    <td>{{ suggestion.id }}</td>
                     <td>{{ suggestion.message }}</td>
-                    <td>
-                        <a href="{{ path('suggestion_show', {'id': suggestion.id}) }}">show</a>
-                        <a href="{{ path('suggestion_edit', {'id': suggestion.id}) }}">edit</a>
-                    </td>
+
                 </tr>
             {% else %}
                 <tr>

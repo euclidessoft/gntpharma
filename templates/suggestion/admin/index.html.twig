@@ -19,24 +19,21 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Message</th>
-                <th>actions</th>
+{#                <th>actions</th>#}
             </tr>
         </thead>
         <tbody>
         {% for suggestion in suggestions %}
             <tr>
-                <td>{{ suggestion.id }}</td>
                 <td>{{ suggestion.message }}</td>
-                <td>
-                    <a href="{{ path('suggestion_show', {'id': suggestion.id}) }}">show</a>
-                    <a href="{{ path('suggestion_edit', {'id': suggestion.id}) }}">edit</a>
-                </td>
+{#                <td>#}
+{#                    <a  class="btn btn-success" href="{{ path('suggestion_show', {'id': suggestion.id}) }}">show</a>#}
+{#                </td>#}
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">{{ 'aucune suggestion'|trans }}</td>
             </tr>
         {% endfor %}
         </tbody>

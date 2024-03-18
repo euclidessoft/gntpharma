@@ -8,22 +8,38 @@ use App\Repository\SuggestionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/suggestion")
+ * @Route("/{_locale}/suggestion")
  */
 class SuggestionController extends AbstractController
 {
     /**
      * @Route("/", name="suggestion_index", methods={"GET"})
      */
-    public function index(SuggestionRepository $suggestionRepository): Response
+    public function index(SuggestionRepository $suggestionRepository, SessionInterface $session): Response
     {
 
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 
             $response = $this->render('suggestion/index.html.twig', [
+                'suggestions' => $suggestionRepository->findBy(['client' => $this->getUser()]),
+                'panier' => $session->get('panier', []),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
+
+            $response = $this->render('suggestion/admin/index.html.twig', [
                 'suggestions' => $suggestionRepository->findAll(),
             ]);
             $response->setSharedMaxAge(0);
@@ -52,7 +68,7 @@ class SuggestionController extends AbstractController
     /**
      * @Route("/new", name="suggestion_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, SessionInterface $session): Response
     {
         $suggestion = new Suggestion();
         $form = $this->createForm(SuggestionType::class, $suggestion);
@@ -69,6 +85,7 @@ class SuggestionController extends AbstractController
         return $this->render('suggestion/new.html.twig', [
             'suggestion' => $suggestion,
             'form' => $form->createView(),
+            'panier' => $session->get('panier', []),
         ]);
     }
 
