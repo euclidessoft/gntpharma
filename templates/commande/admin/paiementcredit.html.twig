@@ -162,7 +162,7 @@
                     {{' Règlement'|trans}}
                 </button>
                 {% else %}
-                    <a href="{{ path('commande_panier_valider_credit', {'commande': commande.id}) }}" type="button"
+                    <a id="valid" onclick="load('valid')" href="{{ path('commande_panier_valider_credit', {'commande': commande.id}) }}" type="button"
                        class="btn btn-success">
                         <i class="fa-solid fa-sack-dollar"></i>
                         {{' Valider Credit'|trans }}
@@ -243,9 +243,9 @@
         <table class="table table-success-light table-bordered table-hover table-striped">
             <thead>
             <tr>
-                <th>numero règlement</th>
-                <th>Date</th>
-                <th>Montant</th>
+                <th>{{'numero règlement'|trans}}</th>
+                <th>{{'Date'|trans}}</th>
+                <th>{{ 'Montant'|trans }}</th>
 
             </tr>
             </thead>
