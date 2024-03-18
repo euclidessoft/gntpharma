@@ -44,7 +44,7 @@
     </style>
 
 </head>
-<body onload="print()" onafterprint="history.back()">
+<body onload="print()" onafterprint="document.location.href='{{ path('commande_panier_paiement',{'commande': commande.id}) }}'">
 <div class="container-fluid">
 
 
