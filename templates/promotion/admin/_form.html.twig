@@ -1,6 +1,6 @@
 {{ form_start(form, {'attr' : { 'id' : 'form'}}) }}
 
-<div class="col-lg-8 offset-lg-2 my-4 fond-7 pb-5 pt-3 px-5">
+<div class="col-lg-10 offset-lg-1 my-4 fond-7 pb-5 pt-3 px-5">
     <h4 class="mb-3">
         <i class="fa fa-rotate mr-2"></i><i class="fa fa-plus mr-2"></i>
         {{ 'Nouvelle promotion'|trans }}
@@ -35,8 +35,8 @@
         <div class="col-md-6 mb-4">
             {{ form_row(form.fin, {'label':false, 'attr' : {'onchange' : 'gestdate()'}}) }}
         </div>
-        <div class="row" id="tranche">
-            <div class="col-md-4">
+        <div class="row offset-1" id="tranche">
+            <div class="col-md-2">
                 <div class="card">
                     <div class="card-header">
                         {{ 'Premier tranche'|trans }}
@@ -49,10 +49,10 @@
                 </div>
 
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <div class="card">
                     <div class="card-header">
-                        {{ 'Deuxieme tranche'|trans }}
+                        {{ 'Deuxième tranche'|trans }}
 
                     </div>
                     <div class="card-body">
@@ -63,15 +63,43 @@
 
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <div class="card">
                     <div class="card-header">
-                        {{' Troisieme tranche'|trans }}
+                        {{'Troisième tranche'|trans }}
 
                     </div>
                     <div class="card-body">
                         {{ form_row(form.troisieme, {'attr':{'placeholder':'nombre acheté'}, 'label':false}) }}
                         {{ form_row(form.ugtroisieme, {'attr':{'placeholder':'nombre U.G','class': 'mt-4'}, 'label':false}) }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-2">
+                <div class="card">
+                    <div class="card-header">
+                        {{'Quatrième tranche'|trans }}
+
+                    </div>
+                    <div class="card-body">
+                        {{ form_row(form.quatrieme, {'attr':{'placeholder':'nombre acheté'}, 'label':false}) }}
+                        {{ form_row(form.ugquatrieme, {'attr':{'placeholder':'nombre U.G','class': 'mt-4'}, 'label':false}) }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-2">
+                <div class="card">
+                    <div class="card-header">
+                        {{'Cinquième tranche'|trans }}
+
+                    </div>
+                    <div class="card-body">
+                        {{ form_row(form.cinquieme, {'attr':{'placeholder':'nombre acheté'}, 'label':false}) }}
+                        {{ form_row(form.ugcinquieme, {'attr':{'placeholder':'nombre U.G','class': 'mt-4'}, 'label':false}) }}
                     </div>
                 </div>
 
@@ -86,7 +114,6 @@
                 </div>
             </div>
         </div>
-        {{ form_rest(form) }}
 
     </div>
     <div class="col-md-6 offset-md-3 mt-4 pt-3 fond-7">

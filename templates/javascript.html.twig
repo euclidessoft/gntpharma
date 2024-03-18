@@ -287,6 +287,10 @@
         let ugdeuxieme = $('#promotion_deuxieme').val();
         let troisieme = $('#promotion_troisieme').val();
         let ugtroisieme = $('#promotion_troisieme').val();
+        let quatrieme = $('#promotion_quatrieme').val();
+        let ugquatrieme = $('#promotion_qutarieme').val();
+        let cinquieme = $('#promotion_cinquieme').val();
+        let ugcinquieme = $('#promotion_cinquieme').val();
         // valider.addClass("disabled");
         if ($('#promotion_type option:selected').val() == 'Unités Gratuites') {
 
@@ -297,16 +301,24 @@
                 $('#promotion_ugdeuxieme').val() != '' &&
                 $('#promotion_troisieme').val() != '' &&
                 $('#promotion_ugtroisieme').val() != '' &&
+                $('#promotion_quatrime').val() != '' &&
+                $('#promotion_ugquatrime').val() != '' &&
+                $('#promotion_cinquieme').val() != '' &&
+                $('#promotion_ugcinquieme').val() != '' &&
                 $('#promotion_designation').val() != '' &&
                 date1 != 'Invalid Date' &&
                 date2 != 'Invalid Date' &&
                 date1 >= new Date()) {
 
-                if(premier >= ugpremier &&
-                    deuxieme >= ugdeuxieme &&
-                    troisieme >= ugtroisieme &&
-                    premier <= deuxieme  &&
-                    deuxieme <= troisieme
+                if(premier > ugpremier &&
+                    deuxieme > ugdeuxieme &&
+                    troisieme > ugtroisieme &&
+                    quatrieme > ugquatrieme &&
+                    cinquieme > ugcinquieme &&
+                    premier < deuxieme  &&
+                    deuxieme < troisieme &&
+                    troisieme < quatrieme &&
+                    quatrieme < cinquieme
                 ) {
                     valider.html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                     $('#form').submit();

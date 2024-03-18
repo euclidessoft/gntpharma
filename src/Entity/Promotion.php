@@ -79,6 +79,28 @@ class Promotion
      */
     private $ugtroisieme;
 
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $quatrieme;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $ugquatrieme;
+
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $cinquieme;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $ugcinquieme;
+
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
@@ -230,6 +252,54 @@ class Promotion
     public function setReduction(int $reduction): self
     {
         $this->reduction = $reduction;
+
+        return $this;
+    }
+
+    public function getQuatrieme(): ?int
+    {
+        return $this->quatrieme;
+    }
+
+    public function setQuatrieme(?int $quatrieme): self
+    {
+        $this->quatrieme = $quatrieme;
+
+        return $this;
+    }
+
+    public function getUgquatrieme(): ?int
+    {
+        return $this->ugquatrieme;
+    }
+
+    public function setUgquatrieme(?int $ugquatrieme): self
+    {
+        $this->ugquatrieme = $ugquatrieme;
+
+        return $this;
+    }
+
+    public function getCinquieme(): ?int
+    {
+        return $this->cinquieme;
+    }
+
+    public function setCinquieme(?int $cinquieme): self
+    {
+        $this->cinquieme = $cinquieme;
+
+        return $this;
+    }
+
+    public function getUgcinquieme(): ?int
+    {
+        return $this->ugcinquieme;
+    }
+
+    public function setUgcinquieme(?int $ugcinquieme): self
+    {
+        $this->ugcinquieme = $ugcinquieme;
 
         return $this;
     }

@@ -37,6 +37,13 @@ class AccueilController extends AbstractController
     {
         return  $this->render('gnt/logistique.html.twig');
     }
+    /**
+     * @Route("/Conditions", name="Conditions")
+     */
+    public function condition(Request $request)
+    {
+        return  $this->render('gnt/condition.pdf');
+    }
 
     /**
      * @Route("/Distribution", name="Distribution")

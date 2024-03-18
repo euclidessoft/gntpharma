@@ -25,6 +25,10 @@ class PromotionType extends AbstractType
             ->add('ugdeuxieme' )
             ->add('troisieme'  )
             ->add('ugtroisieme' )
+            ->add('quatrieme'  )
+            ->add('ugquatrieme' )
+            ->add('cinquieme'  )
+            ->add('ugcinquieme' )
             ->add('reduction' )
         ;
     }
