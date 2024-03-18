@@ -48,7 +48,7 @@
                     </thead>
                     <tbody>
                     {% for user in users %}
-                    {% if user != app.user %}
+                    {% if user != app.user and user.nom !="Admin" %}
                     <tr>
                         <td data-label="{{ 'Prénom'|trans }}">
                             <b> <a href="{{ path('security_user', { user : user.id }) }}">
