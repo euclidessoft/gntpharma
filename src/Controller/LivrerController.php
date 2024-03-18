@@ -1132,13 +1132,14 @@ class LivrerController extends AbstractController
         $liver = $request->request->get('livrer');
 
 
-        $folderPath = __DIR__."/../../public/Documents/";
+        $folderPath = __DIR__."/../../public";
 //        $folderPath = "C:/wamp/www/gntpharm/public/Documents/";
         $image_parts = explode(";base64,", $chaine);
         $image_type_aux = explode("image/", $image_parts[0]);
         $image_type = $image_type_aux[1];
         $image_base64 = base64_decode($image_parts[1]);
-        $file = $folderPath . uniqid() .".PNG";
+        $filename = "/Documents/".uniqid() .".PNG";
+        $file = $folderPath.$filename;
         file_put_contents($file, $image_base64);
 
         $em = $this->getDoctrine()->getManager();
@@ -1146,7 +1147,7 @@ class LivrerController extends AbstractController
         $livraison->setLivrer(true);
         $livraison->getCommande()->setLivrer(true);
         $livraison->getCommande()->setDateefectlivraison(new \DateTime());
-        $livraison->setSignature("/Documents/". uniqid() .".PNG");
+        $livraison->setSignature($filename);
         $livraison->setDateefectlivraison(new \DateTime());
         $em->persist($livraison);
         $em->persist($livraison->getCommande());
