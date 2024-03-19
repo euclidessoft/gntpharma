@@ -7,7 +7,7 @@
     <div class="container mt-4 fond-7">
         <h3 class="mt-4 mb-5 text-bold">
             <i class="fa fa-shopping-cart mr-2"></i>
-            {{ "traitement commande pour Livraison"|trans }}
+            {{ "Traitement commande pour Livraison"|trans }}
         </h3>
         {% for message in app.flashes('echec') %}
             <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
@@ -22,7 +22,7 @@
                 <table class="table table-success-light table-bordered table-hover table-striped">
                     <thead>
                     <tr>
-                        <th>{{ 'Numero Commande'|trans }}</th>
+                        <th>{{ 'N° Commande'|trans }}</th>
                         <th>{{ 'Date Commande'|trans }}</th>
                         <th>{{ 'Date Paiement'|trans }}</th>
                         <th>{{ 'Client'|trans }}</th>
@@ -45,14 +45,14 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
             <thead>
             <tr>
-                <th>{{ 'reference'|trans }}</th>
-                <th>{{ 'designation'|trans }}</th>
-                <th>{{ 'Quantite Commande'|trans }}</th>
-                <th>{{'Quantite déjà livrée'|trans}}</th>
+                <th>{{ 'réfèrence'|trans }}</th>
+                <th>{{ 'désignation'|trans }}</th>
+                <th>{{ 'Quantité Commande'|trans }}</th>
+                <th>{{'Quantité déjà livrée'|trans}}</th>
                 <th>{{'Reste à livrée'|trans}}</th>
-                <th>{{'Quantite à livrée'|trans}}</th>
+                <th>{{'Quantité à livrée'|trans}}</th>
                 <th>{{'Stock disponible'|trans}}</th>
-                <th>{{ 'Details'|trans }}</th>
+                <th>{{ 'Détails'|trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -101,9 +101,9 @@
                                         <thead>
                                         <tr>
                                             <th>{{'N° Lot'|trans}}</th>
-                                            <th>{{'Peremption'|trans}}</th>
+                                            <th>{{'Péremption'|trans}}</th>
                                             <th>{{ 'Commande en stock'|trans }}</th>
-                                            <th>{{'Quantite à livrée'|trans}}</th>
+                                            <th>{{'Quantité à livrée'|trans}}</th>
                                         </tr>
                                         </thead>
                                         <tbody id="numerolot{{ commande.produit.id }}">
@@ -188,7 +188,7 @@
                     $('#validation').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                     $('#form').submit();
                 }else{
-                    alert('{{ 'selectionner un livreur'|trans }}')
+                    alert('{{ 'séléctionner un livreur'|trans }}')
                 }
 
 
@@ -202,51 +202,53 @@
                     url: "{{ path('livraison_details') }}",
                     data: "prod=" + id,
                     success: function (data) {
-                        // if (data['id'] == 'ok') {
+                        if (data[0]['id'] == 'ok') {
 
-                        for (var i=0; i < data.length; i++) {
-                            var date = new Date(data[i]['peremption']['date']).toLocaleDateString();
-                            // var dd = date.getDay();
-                            // var mm = date.getMonth();
-                            // var yy = date.getFullYear()
-                            if( i == 0) {
+                            for (var i=0; i < data.length; i++) {
+                                var date = new Date(data[i]['peremption']['date']).toLocaleDateString();
+                                // var dd = date.getDay();
+                                // var mm = date.getMonth();
+                                // var yy = date.getFullYear()
+                                if( i == 0) {
 
-                                $('#numerolot'+id).html(" <tr>\n" +
-                                    "                                            <td>"+ data[i]['lot']+"</td>\n" +
-                                    "                                            <td>"+ date +"</td>\n" +
-                                    "                                            <td>"+ data[i]['quantite']+"</td>\n" +
-                                    "                                            <td>" +
-                                    "<input type='number' id='"+ Number(data[i]['lot'])+"' class='form-control'/>" +
-                                    "</td>\n" +
-                                    "                                        </tr>");
-                            }else{
-                                $('#numerolot'+id).append(" <tr>\n" +
-                                    "                                            <td>"+ data[i]['lot']+"</td>\n" +
-                                    "                                            <td>"+ date +"</td>\n" +
-                                    "                                            <td>"+ data[i]['quantite']+"</td>\n" +
-                                    "                                            <td>" +
-                                    "<input type='number' id='"+ Number(data[i]['lot'])+"' class='form-control'/>" +
-                                    "</td>\n" +
-                                    "                                        </tr>");
+                                    $('#numerolot'+id).html(" <tr>\n" +
+                                        "                                            <td>"+ data[i]['lot']+"</td>\n" +
+                                        "                                            <td>"+ date +"</td>\n" +
+                                        "                                            <td>"+ data[i]['quantite']+"</td>\n" +
+                                        "                                            <td>" +
+                                        "<input type='number' id='"+ Number(data[i]['lot'])+"' class='form-control'/>" +
+                                        "</td>\n" +
+                                        "                                        </tr>");
+                                }else{
+                                    $('#numerolot'+id).append(" <tr>\n" +
+                                        "                                            <td>"+ data[i]['lot']+"</td>\n" +
+                                        "                                            <td>"+ date +"</td>\n" +
+                                        "                                            <td>"+ data[i]['quantite']+"</td>\n" +
+                                        "                                            <td>" +
+                                        "<input type='number' id='"+ Number(data[i]['lot'])+"' class='form-control'/>" +
+                                        "</td>\n" +
+                                        "                                        </tr>");
+                                }
                             }
-                        }
-                        // ('#annuler' + id).trigger('click');
-                        // $('#text' + id).val('');
-                        $('#ajouter' + id).html("<i class='fa fa-check'></i> {{ 'Valider'|trans }}");
+                            // ('#annuler' + id).trigger('click');
+                            // $('#text' + id).val('');
+                            $('#ajouter' + id).html("<i class='fa fa-check'></i> {{ "Valider"|trans }}");
 
-                        {#} else {#}
-                        {#    alert("{{ 'verifier la quantite saisie'|trans }}")#}
-                        {#}#}
+                        } else {
+                            $('#numerolot'+id).html(" <tr><td colspan='4'>{{ 'Produit en rupture'|trans }}</td></tr>");
+                            $('#ajouter' + id).html("<i class='fa fa-check'></i> {{ "Valider"|trans }}");
+                            $('#ajouter' + id).addClass('disabled');
+                        }
                     },
                     error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                        alert("{{ "La requête n'a pas abouti"|trans }}");
                     }
                 });
 
 
             }
             function selectProduit(produit,lot) {// fonction pour ajouter un produit dans le panier
-                alert('ggggg')
+               // alert('ggggg')
                 // $('#hid'+id).val(produit+"/"+lot+"/"+$('#text' + lot).val());
                 // alert($('#hid'+id).val())
                 // $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
@@ -295,12 +297,12 @@
                             }
                         },
                         error: function () {
-                            alert("{{ 'La requête n a pas abouti'|trans }}");
+                            alert("{{ "La requête n'a pas abouti"|trans }}");
                         }
                     });
 
                 }else{
-                    alert("veuillez verifier les quantités saisies");
+                    alert("veuillez vérifier les quantités saisies");
                     $('#ajouter' + id).html("<i class='fa-solid fa-check'></i> {{ 'Valider'|trans }}");
                 }
 

@@ -21,13 +21,13 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100">
             <thead>
             <tr>
-                <th>{{ 'Reference'|trans }}</th>
-                <th>{{ 'Designation'|trans }}</th>
-                <th>{{ 'Session'|trans }}</th>
-                <th>{{ 'Publique'|trans }}</th>
+                <th>{{ 'Réfèrence'|trans }}</th>
+                <th>{{ 'Désignation'|trans }}</th>
+                <th>{{ 'Cession'|trans }}</th>
+                <th>{{ 'Public'|trans }}</th>
                 <th>{{ 'Commande'|trans }}<br> {{ 'Minimum'|trans }}</th>
-                <th>{{ 'Fabriquant'|trans }}</th>
-                <th>{{ 'Quantite'|trans }}</th>
+                <th>{{ 'Fabricant'|trans }}</th>
+                <th>{{ 'Quantité'|trans }}</th>
 
                 <th>actions</th>
             </tr>
@@ -75,7 +75,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="7">no records found</td>
+                    <td colspan="7">{{ "Aucun produit"|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

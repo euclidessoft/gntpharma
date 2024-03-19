@@ -27,7 +27,7 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
         <thead>
             <tr>
-                <th>{{ 'no commande'|trans }} </th>
+                <th>{{ 'N° Commande'|trans }} </th>
                 <th>{{ 'Date'|trans }}</th>
                 <th>{{ 'Client'|trans }}</th>
                 <th>{{ 'actions'|trans }}</th>
@@ -40,7 +40,7 @@
                 <td>{{ commande.date|date('d/m/Y') }}</td>
                 <td>{{ commande.user.nom }}</td>
                 <td>
-                    <a class="btn btn-success" href="{{ path('livraison_show', {'id': commande.id}) }}">
+                    <a  id="cmd{{ commande.id }}" onclick="load('cmd{{ commande.id }}')"  class="btn btn-success" href="{{ path('livraison_show', {'id': commande.id}) }}">
                         <i class="fa fa-gears"></i>
                         {{ 'Traitement'|trans }}
                     </a>
@@ -61,7 +61,7 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
             <thead>
             <tr>
-                <th>{{ 'no commande'|trans }} </th>
+                <th>{{ 'N° Commande'|trans }} </th>
                 <th>{{ 'Date'|trans }}</th>
                 <th>{{ 'Client'|trans }}</th>
                 <th>{{ 'actions'|trans }}</th>
@@ -76,7 +76,7 @@
                     <td>{{ livrer.commande.date|date('d/m/Y') }}</td>
                     <td>{{ livrer.commande.user.nom }}</td>
                     <td>
-                        <a class="btn btn-success" href="{{ path('livraison_reste_show', {'id': livrer.commande.id}) }}"><i class="fa fa-gears"></i>
+                        <a  id="lvr{{ livrer.id }}" onclick="load('lvr{{ livrer.id }}')"  class="btn btn-success" href="{{ path('livraison_reste_show', {'id': livrer.commande.id}) }}"><i class="fa fa-gears"></i>
                             {{ 'Traitement'|trans }}
                         </a>
                     </td>
@@ -92,7 +92,7 @@
                     <td>{{ retour.date|date('d/m/Y') }}</td>
                     <td>{{ retour.commande.user.nom }}</td>
                     <td>
-                        <a class="btn btn-success" href="{{ path('livraison_retour_show', {'id': retour.id}) }}"><i class="fa fa-gears"></i>
+                        <a id="rtr{{ retour.id }}" onclick="load('rtr{{ retour.id }}')" class="btn btn-success" href="{{ path('livraison_retour_show', {'id': retour.id}) }}"><i class="fa fa-gears"></i>
                             {{ 'Traitement'|trans }}
                         </a>
                     </td>
