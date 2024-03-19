@@ -274,7 +274,7 @@
     <div class="container mt-4 mb-5 pt-3 pb-3 fond-7">
         <div class="centrer">
             <div class="row">
-                <a href="{{ path('commande_panier_print_Detail',{'commande': commande.id }) }}"
+                <a id="print" onclick="load('print')" href="{{ path('commande_panier_print_Detail',{'commande': commande.id }) }}"
                    class="btn btn-success float-end">
                     <i class="fa fa-print"></i>
                     {{ "Imprimer"|trans }}

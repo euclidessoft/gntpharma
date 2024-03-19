@@ -9,7 +9,7 @@
         {{ "Votre Panier"|trans }}
     </h3>
     {% if panier|length > 0 %}
-    <a href="{{ path("commande_panier_choix_paiement", {'commande': 0}) }}" class="btn btn-success float-right mb-3"
+    <a id="validorder" onclick="load('validorder')" href="{{ path("commande_panier_choix_paiement", {'commande': 0}) }}" class="btn btn-success float-right mb-3"
        title="Valider la commande">
         <i class="fa fa-check"></i>
         {{ 'Valider la commande'|trans }}
@@ -122,7 +122,7 @@
             </td>
             <td rowspan="4">
 
-                    <a href="{{ path('commande_delete_all') }}" class="btn btn-danger" title="vider le panier">
+                    <a id="vider" onclick=load('vider') href="{{ path('commande_delete_all') }}" class="btn btn-danger" title="vider le panier">
                         Vider le panier <i class="fa fa-trash-alt"></i>
                     </a>
 
@@ -159,7 +159,7 @@
         </tbody>
     </table>
     {% if panier|length > 0 %}
-    <a href="{{ path("commande_panier_choix_paiement", {'commande': 0}) }}" class="btn btn-success mb-5"
+    <a id="validecommande" onclick="load('validecommande')" href="{{ path("commande_panier_choix_paiement", {'commande': 0}) }}" class="btn btn-success mb-5"
        title="Valider la commande">
         <i class="fa fa-check"></i>
         {{ 'Valider la commande'|trans }}
