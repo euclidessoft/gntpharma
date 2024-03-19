@@ -301,8 +301,8 @@
                 $('#promotion_ugdeuxieme').val() != '' &&
                 $('#promotion_troisieme').val() != '' &&
                 $('#promotion_ugtroisieme').val() != '' &&
-                $('#promotion_quatrime').val() != '' &&
-                $('#promotion_ugquatrime').val() != '' &&
+                $('#promotion_quatrieme').val() != '' &&
+                $('#promotion_ugquatrieme').val() != '' &&
                 $('#promotion_cinquieme').val() != '' &&
                 $('#promotion_ugcinquieme').val() != '' &&
                 $('#promotion_designation').val() != '' &&
@@ -310,19 +310,19 @@
                 date2 != 'Invalid Date' &&
                 date1 >= new Date()) {
 
-                if(premier >= ugpremier &&
-                    deuxieme >= ugdeuxieme &&
-                    troisieme >= ugtroisieme &&
-                    quatrieme >= ugquatrieme &&
-                    cinquieme >= ugcinquieme &&
-                    premier <= deuxieme  &&
-                    deuxieme <= troisieme &&
-                    troisieme <= quatrieme &&
-                    quatrieme <= cinquieme
-                ) {
+                // if(premier >= ugpremier &&
+                //     deuxieme >= ugdeuxieme &&
+                //     troisieme >= ugtroisieme &&
+                //     quatrieme >= ugquatrieme &&
+                //     cinquieme >= ugcinquieme &&
+                //     premier <= deuxieme  &&
+                //     deuxieme <= troisieme &&
+                //     troisieme <= quatrieme &&
+                //     quatrieme <= cinquieme
+                // ) {
                     valider.html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                     $('#form').submit();
-                }else alert("Veuillez verifier les valeurs de la promotion");
+                // }else alert("Veuillez verifier les valeurs de la promotion");
 
             }else{
                 alert('Veuillez saisir tous les champs');
