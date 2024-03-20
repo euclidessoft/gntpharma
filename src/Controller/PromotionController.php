@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{_locale}/Commande_Promotion")
+ * @Route("/{_locale}/Promotion")
  */
 class PromotionController extends AbstractController
 {
@@ -105,8 +105,8 @@ class PromotionController extends AbstractController
                     $em->persist($promotion);
                     foreach ($promo as $product) {
                         $produit = $produitRepository->find($product['produit']->getId());
-                        $produit->setPromotion($promotion);
-                        $em->persist($produit);
+                        // $produit->setPromotion($promotion);
+                        //$em->persist($produit);
                         $promotionproduit = new PromotionProduit($produit, $promotion);
 
                         $em->persist($promotionproduit);
@@ -124,7 +124,7 @@ class PromotionController extends AbstractController
                         'private' => true,
                     ]);
                     return $response;
-                }else{
+                } else {
                     $this->addFlash('danger', 'Veuillez ajouter des produits à la promotion');
                 }
             }
@@ -210,7 +210,7 @@ class PromotionController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        }  else if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 
             $panier = $session->get("panier", []);
 
@@ -227,7 +227,7 @@ class PromotionController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        }  else {
+        } else {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
             $response->headers->addCacheControlDirective('no-cache', true);
@@ -248,35 +248,35 @@ class PromotionController extends AbstractController
     public function add(Request $request, ProduitRepository $produitRepository, SessionInterface $session)
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-        // On récupère le panier actuel
-        $promo = $session->get("promo", []);
-        if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
-            $id = $request->get('prod');// recuperation de id produit
-            if (empty($promo[$id])) {//verification existance produit dans le panier
-                $produit = $produitRepository->find($id); // recuperation de id produit dans la db
+            // On récupère le panier actuel
+            $promo = $session->get("promo", []);
+            if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
+                $id = $request->get('prod');// recuperation de id produit
+                if (empty($promo[$id])) {//verification existance produit dans le panier
+                    $produit = $produitRepository->find($id); // recuperation de id produit dans la db
 
-                $promo[$id] = [// placement produit et quantite dans le panier
-                    "produit" => $produit,
-                ];
+                    $promo[$id] = [// placement produit et quantite dans le panier
+                        "produit" => $produit,
+                    ];
 
-                // On sauvegarde dans la session
-                $session->set("promo", $promo);
+                    // On sauvegarde dans la session
+                    $session->set("promo", $promo);
 
-                $res['id'] = 'ok';
-                $res['ref'] = $produit->getReference();
-                $res['designation'] = $produit->getDesigantion();
-                $res['fabriquant'] = $produit->getFabriquant();
+                    $res['id'] = 'ok';
+                    $res['ref'] = $produit->getReference();
+                    $res['designation'] = $produit->getDesigantion();
+                    $res['fabriquant'] = $produit->getFabriquant();
 
-            } else {
-                $res['id'] = 'no';
+                } else {
+                    $res['id'] = 'no';
+                }
+
+                $response = new Response();
+                $response->headers->set('content-type', 'application/json');
+                $re = json_encode($res);
+                $response->setContent($re);
+                return $response;
             }
-
-            $response = new Response();
-            $response->headers->set('content-type', 'application/json');
-            $re = json_encode($res);
-            $response->setContent($re);
-            return $response;
-        }
         } else {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
@@ -299,23 +299,23 @@ class PromotionController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 
-        // On récupère le panier actuel
-        $promo = $session->get("promo", []);
-        $id = $repository->find($request->get('prod'))->getId();
+            // On récupère le panier actuel
+            $promo = $session->get("promo", []);
+            $id = $repository->find($request->get('prod'))->getId();
 
-        if (!empty($promo[$id])) {
-            unset($promo[$id]);
-        }
+            if (!empty($promo[$id])) {
+                unset($promo[$id]);
+            }
 
-        // On sauvegarde dans la session
-        $session->set("promo", $promo);
-        $res['id'] = 'ok';
-        $res['nb'] = count($promo);
-        $response = new Response();
-        $response->headers->set('content-type', 'application/json');
-        $re = json_encode($res);
-        $response->setContent($re);
-        return $response;
+            // On sauvegarde dans la session
+            $session->set("promo", $promo);
+            $res['id'] = 'ok';
+            $res['nb'] = count($promo);
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
@@ -337,23 +337,23 @@ class PromotionController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 
-        // On récupère le panier actuel
-        $promo = $session->get("promo", []);
-        $id = $repository->find($request->get('prod'))->getId();
+            // On récupère le panier actuel
+            $promo = $session->get("promo", []);
+            $id = $repository->find($request->get('prod'))->getId();
 
-        if (!empty($promo[$id])) {
-            unset($promo[$id]);
-        }
+            if (!empty($promo[$id])) {
+                unset($promo[$id]);
+            }
 
-        // On sauvegarde dans la session
-        $session->set("promo", $promo);
-        $res['id'] = 'ok';
-        $res['nb'] = count($promo);
-        $response = new Response();
-        $response->headers->set('content-type', 'application/json');
-        $re = json_encode($res);
-        $response->setContent($re);
-        return $response;
+            // On sauvegarde dans la session
+            $session->set("promo", $promo);
+            $res['id'] = 'ok';
+            $res['nb'] = count($promo);
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
@@ -368,6 +368,34 @@ class PromotionController extends AbstractController
         }
     }
 
+
+    /**
+     * @Route("/Activer/", name="promotion_activer", methods={"GET"})
+     */
+    public function activer(PromotionProduitRepository $produitrepo, SessionInterface $session): Response
+    {
+
+        $date = new \DateTime();
+        $em = $this->getDoctrine()->getManager();
+        $start = $em->getRepository(Promotion::class)->findBy(['debut' => $date]);
+        $end = $em->getRepository(Promotion::class)->findBy(['fin' => $date]);
+
+
+        foreach ($start as $promo) {
+            $promoproduits = $produitrepo->findBy(['promotion' => $promo]);
+            foreach ($promoproduits as $promoproduit) {
+                $promoproduit->getProduit()->setPromotion($promo);
+                $em->persist($promoproduit);
+            }
+            $em->flush();
+        }
+        return $this->render('promotion/admin/index.html.twig', [
+            'promotions' => $end,
+        ]);
+
+    }
+
+
     /**
      * @Route("/{id}", name="promotion_show", methods={"GET"})
      */
@@ -375,16 +403,15 @@ class PromotionController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
 
-        return $this->render('promotion/admin/show.html.twig', [
-            'promotion' => $promotion,
-            'produitspromotion' => $produitrepo->findBy(['promotion' => $promotion])
-        ]);
-        }
-        elseif ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+            return $this->render('promotion/admin/show.html.twig', [
+                'promotion' => $promotion,
+                'produitspromotion' => $produitrepo->findBy(['promotion' => $promotion])
+            ]);
+        } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
             $date = new \DateTime();
             $promo = 0;
-            if($promotion->getDebut() <= $date){
-               $promo = 1;
+            if ($promotion->getDebut() <= $date) {
+                $promo = 1;
             }
             $panier = $session->get("panier", []);
             $dataPanier = [];
@@ -398,12 +425,12 @@ class PromotionController extends AbstractController
 //                $total += $product->getPrix() * $quantite;
             }
 
-        return $this->render('promotion/show.html.twig', [
-            'promotion' => $promotion,
-            'produitspromotion' => $produitrepo->findBy(['promotion' => $promotion]),
-            'panier' => $dataPanier,
-            'promo' => $promo,
-        ]);
+            return $this->render('promotion/show.html.twig', [
+                'promotion' => $promotion,
+                'produitspromotion' => $produitrepo->findBy(['promotion' => $promotion]),
+                'panier' => $dataPanier,
+                'promo' => $promo,
+            ]);
         } else {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
@@ -445,9 +472,9 @@ class PromotionController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete' . $promotion->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
-           $promotionproduits = $entityManager->getRepository(PromotionProduit::class)->findBy(['promotion' => $promotion]);
-           foreach ($promotionproduits as $promotionproduit){
-               $entityManager->remove($promotionproduit);
+            $promotionproduits = $entityManager->getRepository(PromotionProduit::class)->findBy(['promotion' => $promotion]);
+            foreach ($promotionproduits as $promotionproduit) {
+                $entityManager->remove($promotionproduit);
             }
             $entityManager->remove($promotion);
             $entityManager->flush();
