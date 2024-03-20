@@ -18,9 +18,9 @@
                         {{'Voulez-vous vraiment vous déconnecter ?'|trans}}
                     </b>
                 </p>
-                <a id="oui" onclick="oui" href="{{ path('security_logout') }}" class="btn btn-danger mr-2">
+                <button type="button" id="oui" onclick="deconnexion()" class="btn btn-danger mr-2">
                     Oui
-                </a>
+                </button>
                 <button type="button" class="btn btn-success-light" data-dismiss="modal" aria-label="Close">
                     Non
                 </button>
