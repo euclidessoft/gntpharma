@@ -168,3 +168,203 @@ Manuel: Manuel
 Suggestions: Suggestions
 Signaler un bug: Report a bug
 A propos de: About us
+Êtes-vous sûr de vouloir supprimer cet élément: Are you sure you want to delete this item
+Editer approvisionnement: Edit supply
+NoAppr: No Appr
+Utilisateur: User
+Date: Date
+Détails: Details
+Historique des approvisionnements: Supply history
+Approvisionnement: Supply
+Reference: Reference
+Désignation: Designation
+Nouveau Approvisionnement: New Supply
+Ajouter: Add
+Annuler: Cancel
+N° Lot: Lot number
+Péremption: Expiry date
+Quantité: Quantity
+Actions: Actions
+Supprimer cet article: Delete this article
+La requête n’a pas abouti: The request was unsuccessful
+Veillez bien renseigner tous les champs: Make sure you fill in all the fields
+Etes-vous sur de vouloir supprimer: Are you sure you want to delete
+Modifier: Edit
+Confirmation validation: Validation confirmation
+Créer un nouvel approvisionnement: Create a new supply
+Détails Approvisionnement: Purchasing details
+Numéro: Number
+Code Produit: Product code
+Imprimer: Print
+Aucune commande: No order
+Valider: Validate
+Renseignez la quantité: Enter the quantity
+Date de péremption: Expiry date
+Client: Customer
+Créer par: Create by
+Montant: Amount
+référence: reference
+désignation: designation
+prix cession: price transfer
+Quantité Commande: Quantity Order
+Reste à livrer: Still to be delivered
+Montant avoir: Credit balance
+Arrêtée la présente à la somme de: Arranged the present at the sum of
+Créer un avoir par: Create a credit note by
+Total Avoir: Total equity
+Editer Avoir: Edit Credit
+Listes des avoirs: List of assets
+actions: actions
+Afficher: View
+N° Commande: Order number
+Message: Message
+veuillez renseigner le montant: please enter the amount
+Voulez-vous vraiment creer cet avoir: Do you really want to create this asset
+La requête n'a pas abouti: The request was unsuccessful
+Selectionnez au moins un produit: Select at least one product
+Création Avoir: Creation Have
+Numéro Commande: Order number
+Date Commande: Order date
+Date Paiement: Payment date
+Choisir: Choose
+Voulez-vous vraiment créer cet avoir: Do you really want to create that asset
+Sélectionnez au moins un produit: Select at least one product
+Création avoir: Create to have
+La requête n\'a pas abouti: The request was unsuccessful
+Création Avoir à partie de réclamation: Creation of claim credit notes
+no commande: no order
+Création: Creation
+Création avoir avec reste à livrer: Creation of credit notes with outstanding commitments
+N° Retour: N° Return
+Date retour: Return date
+Designation: Designation
+N° lot: N° batch
+Motif: Motif
+Qté retournée: Qty returned
+Réapprovisionner: Restock
+valider remboursement: validate repayment
+Aucun retour: No returns
+Etat stock Produits: Stock status Products
+Disponible: Available
+à surveiller: to watch out for
+En rupture: Out of stock
+Péremption Imminente: Imminent expiry
+Détails Produit: Product Details
+Quantité en stock: Quantity in stock
+Prix cession: Sale price
+Prix Public: Retail price
+Mincommande: Minorder
+Fabriquant: Manufacturer
+Date péremption: Expiry date
+Retour: Return
+Détail produit: Product details
+Prix Session: Price Session
+Fabricant: Manufacturer
+Liste des Retours de produits: Product Returns List
+Date de retour: Date of return
+Retour de produit: Product return
+Numero Commande: Order number
+Date de commande: Order Date
+Date de Livraison: Delivery Date
+Qté Livrée: Qty Delivered
+Quantité retournée: Quantity returned
+veuillez bien renseigner la quantité: please enter quantity correctly
+veuillez bien revérifier les quantités: please double check quantities
+Etes-vous sur de vouloir supprimer?: Are you sure you want to delete?
+Voulez-vous confirmer la validation?: Do you want to confirm the validation?
+Référence: Reference
+Prix Cession: Price Assignment
+Commande minimum: Minimum order
+Etat stock produits: Product stock status
+voulez-vous vraiment réapprovisionner ce produit?: do you really want to replenish this product?
+voulez-vous vraiment?: do you really want?
+Liste des promotions en cours: List of current promotions
+Date Début: Start date
+Date Fin: End date
+Type: Type
+Aucune promotion: No promotions
+Liste des promotions: List of promotions
+Début: Start Date
+Fin: End Date
+Date de début: Start date
+Date de fin: End date
+Avantages: Benefits
+pour: for
+gratuits: free
+Cession: Transfer
+Public: Public
+Minimum: Minimum
+Aucun promotion: No promotion
+Nouvelle promotion: New promotion
+Premier tranche: First tranche
+Deuxième tranche: Second tranche
+Troisième tranche: Third tranche
+Quatrième tranche: Fourth tranche
+Cinquième tranche: Fifth tranche
+Enregistrer: Save
+Effacer: Delete
+Editer Promotion: Edit Promotion
+Nouvelle Promotion: New promotion
+vérifier la quantité saisie: check the quantity entered
+Etes vous sûr de vouloir supprimer?: Are you sure you want to delete
+Publique: Public
+Nouvel Arrivage: New Arrival
+indisponible: unavailable
+Aucun produit: No products
+Liste Produits: Product List
+Code: Code
+Quantite: Quantity
+Liste des nouveaux Produits: List of new products
+Prix: Prices
+Mon Top: My Top
+Les meilleures Ventes: Best Sellers
+Nouveau Produit: New Products
+Liste des Produits: Product List
+Voir: See
+Désigantion: Desigantion
+TVA: VAT
+OUI: YES
+NON: NO
+Commande déjà Livrée: Order already delivered
+Date de Paiement: Payment date
+N° Bordereau: Packing slip no.
+Date d'émission: Date of issue
+Quantité livrée: Quantity delivered
+Quantité restante: Remaining quantity
+Signature client: Customer signature
+Recommencer: Repeat
+Traitement commande pour Livraison: Order processing for delivery
+Quantité à livrer: Quantity to be delivered
+Stock disponible: Available stock
+Quantite à livrer: Quantity to be delivered
+à livrer: to be delivered
+Assigner à un livreur: Assign to a delivery person
+Produit en rupture: Product out of stock
+séléctionner un livreur: select a delivery person
+veuillez verifier les quantités saisies: please check the quantities entered
+Bon de retour livraison: Return delivery note
+Date Retour: Return date
+Traitement retour pour Livraison: Return processing for delivery
+La quantité à livrer et la quantité retournée doivent être la même: The quantity to be delivered and the quantity returned must be the same
+Bon de livraison: Delivery note
+Quantité déjà livrée: Quantity already delivered
+Reste à livrée: Remainder to be delivered
+Quantité à livrée: Quantity to be delivered
+Commande en stock: Order in stock
+Créer une nouvelle livraison: Create a new delivery
+Liste des commandes pour livraison: List of orders for delivery
+Commande en attente de livraison: Order awaiting delivery
+Aucun livraison: No delivery
+Traitement: Processing
+Reste à livrer ou retour de stock: Backorder or return from stock
+Aucun reste à livrer: No backorder
+Aucun retour de produit: No product returns
+Date d\'émission: Issue date
+Date de livraison: Delivery date
+Quantité Totale Livrée: Total quantity delivered
+historique des livraisons: delivery history
+N° bordereau: Slip no.
+Date d\'emission: Date of issue
+N° commande: Order number
+Editer Livrer: Edit Deliver
+Numero de lot:

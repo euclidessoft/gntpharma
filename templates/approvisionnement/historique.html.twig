@@ -25,7 +25,7 @@
             <th>{{ 'No Appr'|trans }}</th>
             <th class="text-left">{{ 'Utilisateur'|trans }}</th>
             <th>{{ 'Date'|trans }}</th>
-            <th>{{ 'Detail'|trans }}</th>
+            <th>{{ 'Détails'|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -36,7 +36,7 @@
                 <td>{{ approv.date|date('d/m/Y') }}</td>
                 <td>
                     <a id="{{ approv.id }}" onclick="load({{ approv.id }})" class="btn btn-success" href="{{ path('stock_show', {'id': approv.id}) }}">
-                        {{ 'Details'|trans }}
+                        {{ 'Détails'|trans }}
                     </a>
                 </td>
             </tr>

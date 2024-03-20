@@ -7,7 +7,7 @@
     <div class="container-fluid mt-4 p-4 mb-5 fond-7">
         <h3 class="mb-5 text-bold">
             <i class="fa fa-money-bill mr-2"></i>
-            {{ "Creation avoir"|trans }}
+            {{ "Création avoir"|trans }}
         </h3>
         <div class="row">
             <div class="col-md-8">
@@ -36,7 +36,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Message</th>
+                            <th>{{ 'Message'|trans }}</th>
                             <td colspan="2">{{ reclamation.commentaire }}</td>
                         </tr>
 
@@ -46,7 +46,7 @@
                             data-toggle="modal" data-target="#modal"
                             id="btn">
                         <i class="fa fa-list"></i>
-                        {{ 'Details'|trans }}
+                        {{ 'Détails'|trans }}
                     </button>
 
 
@@ -56,7 +56,7 @@
                             <div class="modal-content ">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                        Reclamation</h1>
+                                        {{ 'Réclamation'|trans }}</h1>
                                     <button type="button" class="close" data-dismiss="modal"
                                             aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
@@ -129,7 +129,7 @@
                         }
                     });
                 if (prod != "0") {
-                    if (confirm("{{ 'Voulez-vous vraiment creer cet avoir ?'|trans }}")) {
+                    if (confirm("{{ 'Voulez-vous vraiment créer cet avoir ?'|trans }}")) {
 
                         $("#valider").html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                         $.ajax({
@@ -142,12 +142,12 @@
                                 }
                             },
                             error: function () {
-                                alert("{{ 'La requête n a pas abouti'|trans }}");
+                                alert("{{ 'La requête n\'a pas abouti'|trans }}");
                             }
                         });
                     }
 
-                } else alert("{{ 'Selectionnez au moins un produit'|trans }}");
+                } else alert("{{ 'Sélectionnez au moins un produit'|trans }}");
             }
         </script>
     {% endblock %}

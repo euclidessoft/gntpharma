@@ -20,13 +20,13 @@
                 </th>
                 <td>{{ produit.reference }}</td>
                 <th class="text-center">
-                    {{'Quantite en stock'|trans }}
+                    {{'Quantité en stock'|trans }}
                 </th>
             </tr>
 
             <tr>
                 <th>
-                    {{'Desigantion'|trans }}
+                    {{'Désignation'|trans }}
                 </th>
                 <td>{{ produit.desigantion }}</td>
                 <td rowspan="5" class="text-center text-bolder w-25">{{ produit.stock|number_format(0, '' , ' ') }}</td>
@@ -58,8 +58,8 @@
         <table class="table table-success-light table-bordered table-hover table-striped text-center w-100">
             <thead>
             <tr>
-                <th class="w-25">N° Lot</th>
-                <th>{{ 'Date peremption'|trans }}</th>
+                <th class="w-25">{{ 'N° Lot'|trans }}</th>
+                <th>{{ 'Date péremption'|trans }}</th>
                 <th class="w-25">{{'Quantité'|trans}}</th>
             </tr>
 
