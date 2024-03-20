@@ -274,7 +274,7 @@ Etes-vous sur de vouloir supprimer?: Are you sure you want to delete?
 Voulez-vous confirmer la validation?: Do you want to confirm the validation?
 Référence: Reference
 Prix Cession: Price Assignment
-Commande minimum: Minimum order
+Commande minimum: Min order
 Etat stock produits: Product stock status
 voulez-vous vraiment réapprovisionner ce produit?: do you really want to replenish this product?
 voulez-vous vraiment?: do you really want?
@@ -372,7 +372,7 @@ Code produit *: Product code
 Désignation *: Designation
 Prix Cession *: Transfer Price
 Prix Public *: Public price
-Commande minimum *: Minimum order
+Commande minimum *: Min order
 Fabriquant *: Manufacturer
 Téléphone *: Phone number
 description *: description
