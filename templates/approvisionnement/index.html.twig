@@ -92,8 +92,8 @@
                                                 </button>
                                                 <button type="button" class="btn btn-success ms-3"
                                                         id="ajouter{{ produit.id }}"
-                                                        onclick="ajouter({{ produit.id }})"><i
-                                                            class="fa fa-plus"></i>
+                                                        onclick="ajouter({{ produit.id }})">
+                                                    <i class="fa fa-plus"></i>
                                                     {{ 'Ajouter'|trans }}
                                                 </button>
                                                 <div id="modification{{ produit.id }}"></div>
@@ -218,7 +218,7 @@
                                 // "                                    <i class='fa fa-edit'></i>\n" +
                                 // "                                </button></span>\n" +
                                 "                                <button class='btn btn-danger mr-2 mb-2'\n" +
-                                "                                   title='{{ '"Supprimer cet article"' }}' onclick='supprim(" + produit + ","+ numero.val() +")'>\n" +
+                                "                                   title=\"{{ 'Supprimer cet article'|trans}}\" onclick='supprim(" + produit + ","+ numero.val() +")'>\n" +
                                 "                                    <i class='fa fa-trash'></i>\n" +
                                 "                                </button>\n");
                                // "<button type='button' class='btn btn-success mb-2' data-toggle='modal' data-target='#modal" + produit + "'  id='btn" + produit + "'> <i class='fa fa-plus'></i> Lot </button></td></tr>"

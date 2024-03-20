@@ -259,11 +259,11 @@
             {% else %}
             {% endfor %}
 <tr>
-    <td colspan="2" class="text-right text-nowrap">Total règlement</td>
+    <td colspan="2" class="text-right text-nowrap">{{'Total règlement'|trans}}</td>
     <td>{{ commande.versement|number_format(0, '' , ' ') }}</td>
 </tr>
             <tr>
-    <td colspan="2" class="text-right">Montant Restant</td>
+    <td colspan="2" class="text-right">{{ 'Montant Restant'|trans }}</td>
     <td>{{ (commande.montant - commande.versement)|number_format(0, '' , ' ') }}</td>
 </tr>
             </tbody>
@@ -280,7 +280,7 @@
                     if ($('#versement_montant').val() != '' && $('#versement_type').val() != '') {
                         $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                         $('#form').submit();
-                    } else alert('Veuillez renseigner tous les champs');
+                    } else alert('{{ 'Veuillez renseigner tous les champs'|trans }}');
                 } else {
                     if ($('#versement_montant').val() != '' && $('#versement_type').val() != '') {
                         $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
