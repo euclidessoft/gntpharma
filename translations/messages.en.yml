@@ -238,7 +238,7 @@ Création avoir avec reste à livrer: Creation of credit notes with outstanding 
 N° Retour: N° Return
 Date retour: Return date
 Designation: Designation
-N° lot: N° batch
+N° lot: N° lot
 Motif: Motif
 Qté retournée: Qty returned
 Réapprovisionner: Restock
@@ -252,7 +252,7 @@ Péremption Imminente: Imminent expiry
 Détails Produit: Product Details
 Quantité en stock: Quantity in stock
 Prix cession: Sale price
-Prix Public: Retail price
+Prix Public: Public price
 Mincommande: Minorder
 Fabriquant: Manufacturer
 Date péremption: Expiry date
@@ -367,4 +367,46 @@ N° bordereau: Slip no.
 Date d\'emission: Date of issue
 N° commande: Order number
 Editer Livrer: Edit Deliver
-Numero de lot:
+Numero lot: Lot number
+Code produit *: Product code
+Désignation *: Designation
+Prix Cession *: Transfer Price
+Prix Public *: Public price
+Commande minimum *: Minimum order
+Fabriquant *: Manufacturer
+Téléphone *: Phone number
+description *: description
+Adresse *: address
+Soumis à la TVA: Subject to VAT
+nombre U.G: number U.G
+nombre acheté: number purchased
+types de promotion *: promotion types
+Unités Gratuites: Free Units
+Réduction: Reduction
+Commande Extranet: Extranet ordering
+Liste de produits: List of products
+Modifier cet article: Modify this item
+veillez bien renseigner la quantité: Make sure you fill in the quantity
+Confirmation validation?: Confirmation validation?
+Veillez sélectionner un client: Please select a customer
+Détails commande: Order details
+Aucun produit dans le panier: No products in basket
+Total: Total
+Total Réduction: Total Discount
+Total TVA: Total VAT
+Net à payer: Net to pay
+Espèce: Species
+Quantité Commandée: Quantity ordered
+Total HT: Total before tax
+Historiques des versements: History of payments
+numero versement: payment number
+Total versement: Total payment
+Montant Restant: Amount remaining
+Suivi des commandes: Order tracking
+Validation paiement: Payment confirmation
+Commandes à crédit: Credit orders
+Commandes déjà payées: Orders already paid
+Quantite Commandée: Quantity ordered
+Paiement: Payment
+Payer: Pay
+Validation crédit: Credit validation

@@ -7,7 +7,7 @@
     <div class="container mt-4 fond-7">
         <h3 class="mt-4 mb-5 text-bold">
             <i class="fa fa-money-bill mr-2"></i>
-            {{ "Details commande"|trans }}
+            {{ "Détails commande"|trans }}
         </h3>
 
         <div class="row justify-content-end">
@@ -35,7 +35,7 @@
                     {% if commande.paiement %}
                         <td>{{ commande.paiement ? paiement.date|date('d/m/Y') : '' }}</td>
                         <td>
-                            {% if commande.paiement.type == "Espece" %}
+                            {% if commande.paiement.type == "Espèce" %}
                                 Espece
                             {% else %}
                                 {{ commande.paiement ? commande.paiement.type : '' }} :
@@ -58,10 +58,10 @@
             <thead>
             <tr>
                 <th>Code Produit</th>
-                <th>{{ 'Designation'|trans }}</th>
-                <th>{{ 'Quantite Commandee'|trans }}</th>
+                <th>{{ 'Désignation'|trans }}</th>
+                <th>{{ 'Quantité Commandée'|trans }}</th>
                 <th>{{ 'Prix Cession'|trans }}</th>
-                <th>{{ 'Reduction'|trans }}</th>
+                <th>{{ 'Réduction'|trans }}</th>
                 <th>{{ 'TVA'|trans }}</th>
                 <th>{{ 'Prix Public'|trans }}</th>
                 <th>{{ 'Montant'|trans }}</th>

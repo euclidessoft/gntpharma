@@ -6,7 +6,7 @@
     <div class="container mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fa fa-shopping-cart mr-2"></i>
-        {{ "Details commande"|trans }}
+        {{ "Détails commande"|trans }}
     </h3>
     {% for message in app.flashes('danger') %}
         <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
@@ -44,10 +44,10 @@
         <thead>
         <tr>
             <th>{{ 'Code Produit'|trans }}</th>
-            <th>{{ 'Designation'|trans }}</th>
-            <th>{{ 'Quantite Commandee'|trans }}</th>
+            <th>{{ 'Désignation'|trans }}</th>
+            <th>{{ 'Quantite Commandée'|trans }}</th>
             <th>{{ 'Prix Cession'|trans }}</th>
-            <th>{{ 'Reduction'|trans }}</th>
+            <th>{{ 'Réduction'|trans }}</th>
             <th>{{ 'TVA'|trans }}</th>
             <th>{{ 'Prix Public'|trans }}</th>
             <th>{{ 'Montant'|trans }}</th>
@@ -147,7 +147,7 @@
             <tr>
                 <td colspan="10" class="text-right">
                     <span id="total" class="text-bold"></span>
-                    {{' Arretée la présente à la somme de :'|trans}} <b id="conversion"></b> <b>francs CFA TTC</b>
+                    {{' Arrêtée la présente à la somme de :'|trans}} <b id="conversion"></b> <b>francs CFA TTC</b>
                 </td>
             </tr>
 {#/***** end*****/#}
@@ -172,7 +172,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                    Paiement</h1>
+                                    {{ 'Paiement'|trans }}
+                                    </h1>
                                 <button type="button" class="close" data-dismiss="modal"
                                         aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -217,7 +218,7 @@
                                         id="ajouter"
                                         onclick="number()"><i
                                             class="fa fa-money-bill"></i>
-                                    {{ 'Payer '|trans}}
+                                    {{ 'Payer'|trans}}
                                 </button>
                             </div>
                             {{ form_end(form) }}

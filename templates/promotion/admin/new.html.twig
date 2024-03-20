@@ -25,7 +25,7 @@
                     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
                         <thead>
                         <tr>
-                            <th>{{ 'Réference'|trans }}</th>
+                            <th>{{ 'Référence'|trans }}</th>
                             <th>{{ 'Désignation'|trans }}</th>
                             <th>{{ 'Fabricant'|trans }}</th>
                             <th></th>
@@ -62,7 +62,7 @@
                            id="aprovision">
                         <thead>
                         <tr>
-                            <th>{{ 'Réfèrence'|trans }}</th>
+                            <th>{{ 'Référence'|trans }}</th>
                             <th>{{ 'Désignation'|trans }}</th>
                             <th>{{ 'Fabricant'|trans }}</th>
 
@@ -79,7 +79,7 @@
 
                                 <td>
                                     <button class="btn btn-danger"
-                                            title="Supprimer cet article"
+                                            title="{{ 'Supprimer cet article'|trans }}"
                                             onclick="supprim_prod({{ produit.produit.id }})">
                                         <i class="fa fa-trash"></i>
                                     </button>
@@ -127,7 +127,7 @@
                             $('#valider1').removeClass('disabled');
                             $('#valider2').removeClass('disabled');
                             $("#annuler" + produit).trigger('click');
-                            $("#ajouter" + produit).html("<i class='fa fa-plus'></i> Ajouter");
+                            $("#ajouter" + produit).html("<i class='fa fa-plus'></i> {{ 'Ajouter'|trans }}");
                         } else {
                             alert("{{ 'vérifier la quantité saisie'|trans }}")
                         }
