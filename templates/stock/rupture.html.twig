@@ -31,7 +31,7 @@
             {% if is_granted('ROLE_STOCK') %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('stock_peremption') }}">
-                        {{' Péremption Imminente'|trans }}
+                        {{'Péremption Imminente'|trans }}
                     </a>
                 </li>
             {% endif %}
@@ -40,7 +40,7 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
             <thead>
             <tr>
-                <th>{{ 'Référence'|trans }}</th>
+                <th>{{ 'Reference'|trans }}</th>
                 <th>{{ 'Désignation'|trans }}</th>
                 <th>{{ 'Fabriquant'|trans }}</th>
             </tr>

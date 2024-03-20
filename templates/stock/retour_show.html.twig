@@ -53,9 +53,9 @@
                 <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
                     <thead>
                     <tr>
-                        <th>{{ "Désignation"|trans }}</th>
+                        <th>{{ "Designation"|trans }}</th>
                         <th>{{ "N° Lot"|trans }}</th>
-                        <th>{{ "Péremption"|trans }}</th>
+                        <th>{{ "Peremption"|trans }}</th>
                         <th>{{ "Qté Livrée"|trans }}</th>
                         <th></th>
                     </tr>
@@ -74,8 +74,7 @@
                                         class="btn btn-success {% if  commandeproduit.produit.id ~ commandeproduit.lot  in inlist %} disabled {% endif %}"
                                         data-toggle="modal" data-target="#modal{{ commandeproduit.produit.id }}{{ commandeproduit.lot }}"
                                         id="btn{{ commandeproduit.produit.id }}{{ commandeproduit.lot }}">
-                                    <i class="fa fa-plus"></i>
-                                    {{ "Ajouter"|trans }}
+                                    <i class="fa fa-plus"></i> {{ "Ajouter"|trans }}
                                 </button>
 
                                 <!-- Modal -->
@@ -94,7 +93,7 @@
                                             </div>
                                             <div class="modal-body px-5">
                                                 <div class="mt-3">
-                                                    {{ 'Quantité retournée'|trans }}
+                                                    Quantité retournée:
                                                     <label for="quant{{ commandeproduit.produit.id }}{{ commandeproduit.lot }}"></label>
                                                     <input type="number" class="form-control"
                                                            id="quant{{ commandeproduit.produit.id }}{{ commandeproduit.lot }}">
@@ -112,15 +111,13 @@
                                             <div class="modal-footer px-5 py-4">
                                                 <b>Lot n°: {{ commandeproduit.lot }}</b>
                                                 <button type="button" class="btn btn-secondary ml-5" data-dismiss="modal"
-                                                        id="annuler{{ commandeproduit.produit.id }}{{ commandeproduit.lot }}">
-                                                    {{ 'Annuler'|trans }}
+                                                        id="annuler{{ commandeproduit.produit.id }}{{ commandeproduit.lot }}">Annuler
                                                 </button>
 
                                                 <button type="button" class="btn btn-success ms-3"
                                                         id="ajouter{{ commandeproduit.produit.id }}{{ commandeproduit.lot }}"
                                                         onclick="ajouter({{ commandeproduit.produit.id }}, {{ commandeproduit.quantitelivrer }}, {{ commandeproduit.lot }}, '{{ commandeproduit.peremption|date('Y-m-d') }}')">
-                                                    <i class="fa fa-plus"></i>
-                                                    {{ 'Ajouter'|trans }}
+                                                    <i class="fa fa-plus"></i> Ajouter
                                                 </button>
                                                 <div id="modification{{ commandeproduit.produit.id }}"></div>
                                             </div>
@@ -240,14 +237,14 @@ alert(peremption)
                             }
                         },
                         error: function () {
-                            alert("{{ 'La requête n’a pas abouti'|trans }}");
+                            alert("{{ "La requête n'a pas abouti"|trans }}");
                         }
                     });
                 } else {
                     alert("{{'veuillez bien renseigner la quantité'|trans}}");
                 }
             } else {
-                alert("{{'veuillez bien revérifier les quantités'|trans}}");
+                alert("{{'Veuillez bien revérifier les quantités'|trans}}");
             }
         }
 
@@ -274,7 +271,7 @@ alert(peremption)
                         }
                     },
                     error: function () {
-                        alert("{{ 'La requête n’a pas abouti'|trans }}");
+                        alert("{{ "La requête n'a pas abouti"|trans }}");
                     }
                 });
             }
@@ -294,7 +291,7 @@ alert(peremption)
                         }
                     },
                     error: function () {
-                        alert("{{ 'La requête n’a pas abouti'|trans }}");
+                        alert("{{ "La requête n'a pas abouti"|trans }}");
                     }
                 });
             }

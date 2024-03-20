@@ -24,7 +24,7 @@
         </div>
     {% endfor %}
 
-    <form action="{{ path('security_forgotten_password') }}" method="POST" class="form-signin">
+    <form action="{{ path('security_forgotten_password') }}" method="POST" class="form-signin" id="form">
         <div class="input-group">
             <div class="input-group-prepend">
                 <span class="input-group-text">
@@ -38,10 +38,21 @@
                 {{ 'Retour à la page de connexion'|trans }}
             </a>
         </div>
-        <button class="btn btn-shadow btn-green mt-4 pl-4 pr-4" type="submit">
+        <button class="btn btn-shadow btn-green mt-4 pl-4 pr-4" id="valider" type="button" onclick="sub()" >
             {{ 'Réinitialiser'|trans }}
             <i class="fa fa-sync"></i>
         </button>
     </form>
+    <script>
+        function sub() {
+            if($("#_mail").val() != '') {
+                $("#valider").html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                $("#form").submit();
+            }
+            else{
+                alert("renseignez votre mail");
+            }
+        }
+    </script>
 
 {% endblock %}

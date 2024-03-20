@@ -7,7 +7,7 @@
     <div class="container mt-4 fond-7">
         <h3 class="mt-4 mb-5 text-bold">
             <i class="fa fa-shopping-cart mr-2"></i>
-            {{ "Liste des commandes avec credit"|trans }}
+            {{ "Liste des commandes avec crédit"|trans }}
         </h3>
 {#        <ul class="nav nav-tabs mb-4">#}
 {#            <li class="nav-item">#}
@@ -28,7 +28,7 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100 mt-4" id="liste">
             <thead>
             <tr>
-                <th>{{ 'Numero Commande'|trans }}</th>
+                <th>{{ 'Numéro Commande'|trans }}</th>
                 <th>{{ 'Date de commande'|trans }}</th>
                 <th>{{ 'Date de Livraison'|trans }}</th>
                 <th>{{ 'Montant'|trans }}</th>
@@ -45,7 +45,7 @@
                     <td>
                         <a id="{{ commande.id }}" onclick="load({{ commande.id }})" href="{{ path('finance_dette_show', {'commande' : commande.id}) }}" class="btn btn-success">
                             <i class="fa fa-list"></i>
-                            {{ 'Details'|trans }}
+                            {{ 'Détails'|trans }}
                         </a>
                     </td>
 
