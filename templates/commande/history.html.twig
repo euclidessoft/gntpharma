@@ -49,7 +49,7 @@
                 <td> {{ commande.user.nom }}</td>
                 <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
                 <td>
-                    <a href="{{ path('commande_panier_Detail', {'commande' : commande.id}) }}" class="btn btn-success">
+                    <a id="{{ commande.id }}" onclick="load({{ commande.id }})" href="{{ path('commande_panier_Detail', {'commande' : commande.id}) }}" class="btn btn-success">
                         <i class="fa fa-list"></i>
                         {{ 'Details'|trans }}
                     </a>

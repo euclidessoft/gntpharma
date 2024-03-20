@@ -52,7 +52,7 @@
                     <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
                     <td>{{ (commande.montant - commande.versement)|number_format(0, '' , ' ') }}</td>
                     <td>
-                        <a href="{{ path('commande_panier_paiement_credit', {'commande' : commande.id}) }}" class="btn btn-success">
+                        <a id="{{ commande.id }}" onclick="load({{ commande.id }})" href="{{ path('commande_panier_paiement_credit', {'commande' : commande.id}) }}" class="btn btn-success">
                             <i class="fa fa-gears"></i>
                             {{ 'Traitement'|trans }}
                         </a>

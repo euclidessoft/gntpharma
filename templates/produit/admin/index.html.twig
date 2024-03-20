@@ -7,7 +7,7 @@
 <div class="container-fluid mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fa-brands fa-product-hunt mr-2"></i>
-        {{ "Liste Produits"|trans }}
+        {{ "Liste des Produits"|trans }}
     </h3>
     {% for message in app.flashes('notice') %}
         <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
@@ -22,7 +22,7 @@
         <thead>
         <tr>
             <th>{{ 'Code'|trans }}</th>
-            <th class="text-left">{{ 'Designation'|trans }}</th>
+            <th class="text-left">{{ 'Désignation'|trans }}</th>
             <th>{{ 'Prix Cession'|trans }}</th>
             <th>{{ 'Prix Public'|trans }}</th>
             <th>{{ 'Commande'|trans }}<br> {{ 'Minimum'|trans }}</th>
@@ -51,7 +51,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="7">no records found</td>
+                <td colspan="7">{{ "Aucun produit"|trans }}</td>
             </tr>
         {% endfor %}
         </tbody>

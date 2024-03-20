@@ -81,7 +81,7 @@
             </div>
         </div>
         <h3 class="text-center text-bold text-uppercase my-5">
-            {{ ' Bon de livraison '| trans }}
+            {{ 'Bon de livraison'| trans }}
         </h3>
 
 
@@ -90,7 +90,7 @@
                 <table class="table table-success-light table-bordered">
                     <thead>
                     <tr>
-                        <th>{{ 'Numero Commande'|trans }}</th>
+                        <th>{{ 'N° Commande'|trans }}</th>
                         <th>{{ 'Client'|trans }}</th>
                         <th>{{ 'Date de commande'|trans }}</th>
                         <th>{{ 'Date de Paiement'|trans }}</th>
@@ -123,7 +123,7 @@
                                 <thead>
                                 <tr>
                                     <th>{{'N° Bordereau'|trans}}</th>
-                                    <th>{{'Date d\'emission'|trans}}</th>
+                                    <th>{{'Date d\'émission'|trans}}</th>
                                     <th>{{'Date de livraison'|trans}}</th>
 
                                 </tr>
@@ -147,7 +147,7 @@
 
 
                         <tr>
-                            <th colspan="2"> {{ "Quantite Totale Livree"|trans }}</th>
+                            <th colspan="2"> {{ "Quantité Totale Livrée"|trans }}</th>
                             <th> {{ quantite }}</th>
                         </tr>
                         <tr>
@@ -281,8 +281,8 @@
                     <tr>
 
                         <th>{{'N° Lot'|trans}}</th>
-                        <th>{{'Peremption'|trans}}</th>
-                        <th>{{'Quantite livrée'|trans}}</th>
+                        <th>{{'Péremption'|trans}}</th>
+                        <th>{{'Quantité livrée'|trans}}</th>
                     </tr>
                     </thead>
                 {% endif %}
@@ -303,7 +303,7 @@
                 {% if loop.last %}
 
                     <tr>
-                        <th colspan="2"> {{ "Quantite Totale Livree"|trans }}</th>
+                        <th colspan="2"> {{ "Quantité Totale Livrée"|trans }}</th>
                         <th> {{ quantite }}</th>
                     </tr>
                 {% endif %}
@@ -314,6 +314,9 @@
             </table>
         {% else %}
         {% endfor %}
+        <div class="col-4 mb-2 text-right">
+            <img src="{{ asset(livrer[0].signature) }}" alt="">
+        </div>
     </div>
 </div>
 </body>

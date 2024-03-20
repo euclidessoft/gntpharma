@@ -1,10 +1,10 @@
 <div class="col-lg-12 mt-5">
-    <a href="{{ path('security_profile_edit') }}" class="btn btn-normal btn-success-light mb-2 mr-2">
+    <a id="modif" onclick="load('modif')" href="{{ path('security_profile_edit') }}" class="btn btn-normal btn-success-light mb-2 mr-2">
         <i class="fa fa-edit"></i>
         {{ 'Modifier mon profil'|trans }}
     </a>
 
-    <a href="{{ path('security_change_password') }}" class="btn btn-outline-danger mb-2 mr-2">
+    <a id="changepass" onclick="load('changepass')" href="{{ path('security_change_password') }}" class="btn btn-outline-danger mb-2 mr-2">
         <i class="fa fa-lock"></i>
         {{ 'Changer mot de passe'|trans }}
     </a>

@@ -30,7 +30,7 @@
         {% endif %}
     </div>
 
-    <form action="{{ path('security_login') }}" method="POST" class="form-signin">
+    <form action="{{ path('security_login') }}" method="POST" class="form-signin" id="form">
         <div class="form-group mb-4">
             <div class="input-group">
                 <div class="input-group-prepend">
@@ -63,10 +63,21 @@
                 {{ 'Retour au site'|trans }}
             </a>
         </div>
-        <button type="submit" class="btn btn-shadow btn-green pl-4 pr-4">
+        <button id="valider" type="button" onclick="sub()" class="btn btn-shadow btn-green pl-4 pr-4">
             {{ 'Se connecter'|trans }}
             <i class="fa fa-sign-in-alt"></i>
         </button>
     </form>
+    <script>
+        function sub() {
+            if($("#_password").val() != '' && $("#_username").val() != '') {
+                $("#valider").html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                $("#form").submit();
+            }
+            else{
+                alert("renseignez les champs");
+            }
+        }
+    </script>
 
 {% endblock %}

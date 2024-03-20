@@ -27,14 +27,14 @@
                     <td>{{ promotion.type }}</td>
                     <td>
                         {% if promotion.premier is null %}
-                            {{ promotion.reduction }} % de réduction
+                            {{ promotion.reduction }} % {{"de réduction"|trans}}
 
                         {% else %}
-                            {{ promotion.premier }} pour {{ promotion.ugpremier }} gratuits<br>
-                            {{ promotion.deuxieme }} pour {{ promotion.ugdeuxieme }} gratuits<br>
-                            {{ promotion.troisieme }} pour {{ promotion.ugtroisieme }} gratuits<br>
-                            {{ promotion.quatrieme }} pour {{ promotion.ugquatrieme }} gratuits<br>
-                            {{ promotion.cinquieme }} pour {{ promotion.ugcinquieme }} gratuits<br>
+                            {{ promotion.premier }} {{ "pour"|trans }} {{ promotion.ugpremier }} {{ "gratuits"|trans }}<br>
+                            {{ promotion.deuxieme }} {{ "pour"|trans }} {{ promotion.ugdeuxieme }} {{ "gratuits"|trans }}<br>
+                            {{ promotion.troisieme }} {{ "pour"|trans }} {{ promotion.ugtroisieme }} {{ "gratuits"|trans }}<br>
+                            {{ promotion.quatrieme }} {{ "pour"|trans }} {{ promotion.ugquatrieme }} {{ "gratuits"|trans }}<br>
+                            {{ promotion.cinquieme }} {{ "pour"|trans }} {{ promotion.ugcinquieme }} {{ "gratuits"|trans }}<br>
                         {% endif %}
                     </td>
 
@@ -52,15 +52,15 @@
             <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
                 <thead>
                 <tr>
-                    <th>{{ 'Reference'|trans }}</th>
-                    <th>{{ 'Designation'|trans }}</th>
-                    <th>{{ 'Session'|trans }}</th>
-                    <th>{{ 'Publique'|trans }}</th>
+                    <th>{{ 'Réfèrence'|trans }}</th>
+                    <th>{{ 'Désignation'|trans }}</th>
+                    <th>{{ 'Cession'|trans }}</th>
+                    <th>{{ 'Public'|trans }}</th>
                     <th>{{ 'Commande'|trans }}<br> {{ 'Minimum'|trans }}</th>
-                    <th>{{ 'Fabriquant'|trans }}</th>
-                    <th>{{ 'Quantite'|trans }}</th>
+                    <th>{{ 'Fabricant'|trans }}</th>
+                    <th>{{ 'Quantité'|trans }}</th>
 
-                    <th>{{ 'actions'|trans }}</th>
+                    <th>{{ 'Actions'|trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -103,7 +103,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="7">no records found</td>
+                        <td colspan="7">{{ "Aucun promotion"|trans }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

@@ -134,7 +134,7 @@
         <div class="centrer">
             <div class="row">
 
-                <a href="{{ path('commande_panier_valider') }}"
+                <a id="valid" onclick="load('valid')" href="{{ path('commande_panier_valider') }}"
                    class="ml-3 btn btn-success float-end">
                     <i class="fa fa-money-bill"></i>
                     {{ "Valider"|trans }}

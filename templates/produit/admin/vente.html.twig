@@ -21,10 +21,10 @@
         <table class="table table-success-light table-bordered text-center table-hover table-striped w-100">
             <thead>
             <tr>
-                <th>{{ 'Reference'|trans }}</th>
-                <th class="text-left">{{ 'Designation'|trans }}</th>
-                <th>{{ 'Session'|trans }}</th>
-                <th>{{ 'Publique'|trans }}</th>
+                <th>{{ 'Réfèrence'|trans }}</th>
+                <th class="text-left">{{ 'Désignation'|trans }}</th>
+                <th>{{ 'Prix Cession'|trans }}</th>
+                <th>{{ 'Prix Public'|trans }}</th>
                 <th>{{ 'Commande minimum'|trans }}</th>
                 <th class="text-left">{{ 'Fabricant'|trans }}</th>
             </tr>
@@ -41,7 +41,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="7">no records found</td>
+                    <td colspan="7">{{ "Aucun produit"|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

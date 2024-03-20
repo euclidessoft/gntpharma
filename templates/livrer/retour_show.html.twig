@@ -7,7 +7,7 @@
     <div class="container mt-4 fond-7">
         <h3 class="mt-4 mb-5 text-bold">
             <i class="fa fa-shopping-cart mr-2"></i>
-            {{ "traitement retour pour Livraison"|trans }}
+            {{ "Traitement retour pour Livraison"|trans }}
         </h3>
         {% for message in app.flashes('echec') %}
             <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
@@ -43,12 +43,12 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
             <thead>
             <tr>
-                <th>{{ 'reference'|trans }}</th>
-                <th>{{ 'designation'|trans }}</th>
+                <th>{{ 'Réfèrence'|trans }}</th>
+                <th>{{ 'Désignation'|trans }}</th>
                 <th>{{'Qté retournée'|trans}}</th>
-                <th>{{'Quantite à livrée'|trans}}</th>
+                <th>{{'Quantité à livrer'|trans}}</th>
                 <th>{{'Stock disponible'|trans}}</th>
-                <th>{{ 'Details'|trans }}</th>
+                <th>{{ 'Détails'|trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -73,7 +73,7 @@
                             data-toggle="modal" data-target="#modal{{ commande.produit.id }}"
                             id="btn{{ commande.produit.id }}" onclick="detaillivraison({{ commande.produit.id }})">
                         <i class="fa fa-edit"></i>
-                        {{ 'Details'|trans }}
+                        {{ 'Détails'|trans }}
                     </button>
                     <div class="modal fade" id="modal{{ commande.produit.id }}" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -94,9 +94,9 @@
                                         <thead>
                                         <tr>
                                             <th>{{'N° Lot'|trans}}</th>
-                                            <th>{{'Peremption'|trans}}</th>
-                                            <th>{{ 'Commande en stock'|trans }}</th>
-                                            <th>{{'Quantite à livrée'|trans}}</th>
+                                            <th>{{'Péremption'|trans}}</th>
+                                            <th>{{ 'Quantité en stock'|trans }}</th>
+                                            <th>{{'Quantité à livrer'|trans}}</th>
                                         </tr>
                                         </thead>
                                         <tbody id="numerolot{{ commande.produit.id }}">
@@ -181,7 +181,7 @@
                     $('#validation').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                     $('#form').submit();
                 }else{
-                    alert('selectionner un livreur')
+                    alert('séléctionner un livreur')
                 }
 
 
@@ -232,14 +232,14 @@
                         {#}#}
                     },
                     error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                        alert("{{ "La requête n'a pas abouti"|trans }}");
                     }
                 });
 
 
             }
             function selectProduit(produit,lot) {// fonction pour ajouter un produit dans le panier
-                alert('ggggg')
+               // alert('ggggg')
                 // $('#hid'+id).val(produit+"/"+lot+"/"+$('#text' + lot).val());
                 // alert($('#hid'+id).val())
                 // $('#ajouter' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
@@ -288,13 +288,13 @@
                             }
                         },
                         error: function () {
-                            alert("{{ 'La requête n a pas abouti'|trans }}");
+                            alert("{{ "La requête n'a pas abouti"|trans }}");
                         }
                     });
 
                 }else{
-                    alert("La quantité à livrer et la quantité retournée doivent être la même");
-                    $('#ajouter' + id).html("<i class='fa-solid fa-check'></i> Valider");
+                    alert("{{'La quantité à livrer et la quantité retournée doivent être la même'|trans}}");
+                    $('#ajouter' + id).html("<i class='fa-solid fa-check'></i> {{ "Valider"|trans }}");
                 }
 
 

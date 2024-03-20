@@ -22,11 +22,11 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>{{ 'Designation'|trans }}</th>
-                <th>{{ 'Date Debut'|trans }}</th>
+                <th>{{ 'Désignation'|trans }}</th>
+                <th>{{ 'Date Début'|trans }}</th>
                 <th>{{ 'Date Fin'|trans }}</th>
                 <th>{{ 'Type'|trans }}</th>
-                <th>{{ 'actions'|trans }}</th>
+                <th>{{ 'Actions'|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -63,7 +63,7 @@
     {% block scripts %}
         <script>
             function arreter(id) {
-                if (confirm("{{ 'Voulez-vous vraiment arreter promotion ?'|trans }}")) {
+                if (confirm("{{ 'Voulez-vous vraiment arrêter la promotion?'|trans }}")) {
                     $('#btn' + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                     $.ajax({
                         type: "POST",
@@ -75,7 +75,7 @@
                             }
                         },
                         error: function () {
-                            alert("{{ 'La requête n\'a pas abouti'|trans }}");
+                            alert('{{ "La requête n'a pas abouti"|trans }}');
                         }
                     });
                 }

@@ -44,7 +44,7 @@
                     <thead>
                     <tr>
                         <th>{{'N° Bordereau'|trans}}</th>
-                        <th>{{'Date d\'emission'|trans}}</th>
+                        <th>{{'Date d\'émission'|trans}}</th>
                         <th>{{'Date de livraison'|trans}}</th>
 
                     </tr>
@@ -61,13 +61,13 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100 text-center mb-4">
             <thead>
             <tr>
-                <th>{{ 'reference'|trans }}</th>
-                <th>{{ 'designation'|trans }}</th>
+                <th>{{ 'réfèrence'|trans }}</th>
+                <th>{{ 'désignation'|trans }}</th>
                 <th>{{'N° Lot'|trans}}</th>
-                <th>{{'Peremption'|trans}}</th>
-                <th>{{ 'Quantite Commande'|trans }}</th>
-                <th>{{'Quantite livrée'|trans}}</th>
-                <th>{{'Quantite restante'|trans}}</th>
+                <th>{{'Péremption'|trans}}</th>
+                <th>{{ 'Quantité Commande'|trans }}</th>
+                <th>{{'Quantité livrée'|trans}}</th>
+                <th>{{'Quantité restante'|trans}}</th>
             </tr>
             </thead>
             <tbody>
@@ -211,14 +211,17 @@
             {% endfor %}
             </tbody>
         </table>
-        <div class="col-md-2 offset-md-4 mt-5 mb-5 pt-2 pb-2 fond-7">
-            <div class="centrer">
-                <a href="{{ path('livraison_historique_show_print',{'id': commandereference.id }) }}" class="btn btn-success float-end">
-                    <i class="fa fa-print"></i>
-                    {{ "Imprimer"|trans }}
-                </a>
-            </div>
+        <div class="col-4 mb-2">
+            <img src="{{ asset(livrer.signature) }}" alt="">
         </div>
+{#        <div class="col-md-2 offset-md-4 mt-5 mb-5 pt-2 pb-2 fond-7">#}
+{#            <div class="centrer">#}
+{#                <a href="{{ path('livraison_historique_show_print',{'id': commandereference.id }) }}" class="btn btn-success float-end">#}
+{#                    <i class="fa fa-print"></i>#}
+{#                    {{ "Imprimer"|trans }}#}
+{#                </a>#}
+{#            </div>#}
+{#        </div>#}
 
     </div>
 {% endblock %}

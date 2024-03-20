@@ -55,7 +55,7 @@
         <thead>
         <tr>
             <th>{{'N° Bordereau'|trans}}</th>
-            <th>{{'Date d\'emission'|trans}}</th>
+            <th>{{'Date d\'émission'|trans}}</th>
             <th>{{'Date de livraison'|trans}}</th>
 
         </tr>
@@ -79,7 +79,7 @@
 
 
                     <tr>
-                        <th colspan="2"> {{ "Quantite Totale Livree"|trans }}</th>
+                        <th colspan="2"> {{ "Quantité Totale Livrée"|trans }}</th>
                         <th> {{ quantite }}</th>
                     </tr>
                     <tr>
@@ -213,8 +213,8 @@
                 <tr>
 
                     <th>{{'N° Lot'|trans}}</th>
-                    <th>{{'Peremption'|trans}}</th>
-                    <th>{{'Quantite livrée'|trans}}</th>
+                    <th>{{'Péremption'|trans}}</th>
+                    <th>{{'Quantité livrée'|trans}}</th>
                 </tr>
                 </thead>
             {% endif %}
@@ -235,7 +235,7 @@
             {% if loop.last %}
 
                 <tr>
-                    <th colspan="2"> {{ "Quantite Totale Livree"|trans }}</th>
+                    <th colspan="2"> {{ "Quantité Totale Livrée"|trans }}</th>
                     <th> {{ quantite }}</th>
                 </tr>
             {% endif %}
@@ -246,6 +246,9 @@
             </table>
                 {% else %}
                 {% endfor %}
+        <div class="col-4 mb-2">
+            <img src="{{ asset(livrer[0].signature) }}" alt="">
+        </div>
         <div class="col-md-2 offset-md-4 mt-5 mb-5 pt-2 pb-2 fond-7">
             <div class="centrer">
                 <a href="{{ path('livraison_historique_show_print',{'id': commandereference.id }) }}" class="btn btn-success float-end">

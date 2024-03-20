@@ -25,9 +25,9 @@
                     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
                         <thead>
                         <tr>
-                            <th>{{ 'Reference'|trans }}</th>
-                            <th>{{ 'Designation'|trans }}</th>
-                            <th>{{ 'Fabriquant'|trans }}</th>
+                            <th>{{ 'Réference'|trans }}</th>
+                            <th>{{ 'Désignation'|trans }}</th>
+                            <th>{{ 'Fabricant'|trans }}</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -50,7 +50,7 @@
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="3">no records found</td>
+                                <td colspan="3">{{ "Aucune promotion" }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -62,11 +62,11 @@
                            id="aprovision">
                         <thead>
                         <tr>
-                            <th>{{ 'Reference'|trans }}</th>
-                            <th>{{ 'Designation'|trans }}</th>
-                            <th>{{ 'Fabriquant'|trans }}</th>
+                            <th>{{ 'Réfèrence'|trans }}</th>
+                            <th>{{ 'Désignation'|trans }}</th>
+                            <th>{{ 'Fabricant'|trans }}</th>
 
-                            <th>{{ 'actions'|trans }}</th>
+                            <th>{{ 'Actions'|trans }}</th>
                         </tr>
                         </thead>
                         <tbody id="selectprod">
@@ -129,18 +129,18 @@
                             $("#annuler" + produit).trigger('click');
                             $("#ajouter" + produit).html("<i class='fa fa-plus'></i> Ajouter");
                         } else {
-                            alert("{{ 'verifier la quantite saisie'|trans }}")
+                            alert("{{ 'vérifier la quantité saisie'|trans }}")
                         }
                     },
                     error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                        alert('{{ "La requête n'a pas abouti"|trans }}');
                     }
                 });
             }
 
             function supprim_prod(produit) {
 
-                if (confirm("Etes-vous sur de vouloir supprimer?")) {
+                if (confirm("Etes-vous sûr de vouloir supprimer?")) {
                     $.ajax({
                         type: "POST",
                         url: "{{ path('promotion_delete') }}",
@@ -156,7 +156,7 @@
                             }
                         },
                         error: function () {
-                            alert("{{ 'La requête n a pas abouti'|trans }}");
+                            alert('{{ "La requête n'a pas abouti"|trans }}');
                         }
                     });
                 }
