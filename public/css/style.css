@@ -438,14 +438,8 @@
 .navbar-light .nav-item .nav-link,
 .navbar-light .navbar-nav .nav-link {
     margin: 0 15px;
-    padding: 25px 0;
-    font-size: 18px;
-    text-transform: uppercase;
-    outline: none;
-    color: var(--blanc);
-    font-weight: 600;
-    transition: all 200ms ease-in-out;
-    border-bottom: 5px solid transparent;
+
+    
 }
 
 .navbar-light .navbar-nav .nav-link:focus {

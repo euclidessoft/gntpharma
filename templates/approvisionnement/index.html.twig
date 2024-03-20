@@ -32,7 +32,7 @@
                     <thead>
                     <tr>
                         <th>{{ 'Reference'|trans }}</th>
-                        <th>{{ 'Designation'|trans }}</th>
+                        <th>{{ 'Désignation'|trans }}</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -66,19 +66,19 @@
                                             </div>
                                             <div class="modal-body px-5">
                                                 <div class="mt-4">
-                                                    {{'Renseignez la quantité:'|trans}}
+                                                    {{'Renseignez la quantité'|trans}}
                                                     <label for="quant{{ produit.id }}"></label>
                                                     <input type="number" class="form-control"
                                                            id="quant{{ produit.id }}">
                                                 </div>
                                                 <div class="mt-4">
-                                                    {{ 'Numero de lot:'|trans }}
+                                                    {{ 'Numero lot'|trans }}
                                                     <label for="numero{{ produit.id }}"></label>
                                                     <input type="number" class="form-control"
                                                            id="numero{{ produit.id }}">
                                                 </div>
                                                 <div class="mt-4">
-                                                    {{' Date de péremption:'|trans}}
+                                                    {{ 'Date péremption'|trans}}
                                                     <label for="peremp{{ produit.id }}"></label>
                                                     <input type="date" class="form-control"
                                                            id="peremp{{ produit.id }}">
@@ -126,7 +126,7 @@
                         <th>{{ 'Ref'|trans }}</th>
                         <th class="text-left">{{ 'Designation'|trans }}</th>
                         <th class="text-nowrap">{{'N° Lot'|trans}}</th>
-                        <th>{{'Peremption'|trans}}</th>
+                        <th>{{'Péremption'|trans}}</th>
                         <th>{{ 'Quantite'|trans }}</th>
                         <th>{{ 'Actions'|trans }}</th>
                     </tr>
@@ -157,7 +157,7 @@
     {#                                </button>#}
 </span>
                                 <button class="btn btn-danger mr-2 mb-2"
-                                        title="Supprimer cet article" onclick="supprim({{ produit['id'] }}, {{ produit['lot'] }})">
+                                        title="{{ 'Supprimer cet article'|trans }}" onclick="supprim({{ produit['id'] }}, {{ produit['lot'] }})">
                                     <i class="fa fa-trash"></i>
                                 </button>
 
@@ -218,7 +218,7 @@
                                 // "                                    <i class='fa fa-edit'></i>\n" +
                                 // "                                </button></span>\n" +
                                 "                                <button class='btn btn-danger mr-2 mb-2'\n" +
-                                "                                   title='Supprimer cet article' onclick='supprim(" + produit + ","+ numero.val() +")'>\n" +
+                                "                                   title='{{ '"Supprimer cet article"' }}' onclick='supprim(" + produit + ","+ numero.val() +")'>\n" +
                                 "                                    <i class='fa fa-trash'></i>\n" +
                                 "                                </button>\n");
                                // "<button type='button' class='btn btn-success mb-2' data-toggle='modal' data-target='#modal" + produit + "'  id='btn" + produit + "'> <i class='fa fa-plus'></i> Lot </button></td></tr>"
@@ -230,22 +230,22 @@
                             quant.val("");
                             numero.val("");
                             peremp.val("");
-                           $("#ajouter" + produit).html("<i class='fa fa-plus'></i> Ajouter");
+                           $("#ajouter" + produit).html("<i class='fa fa-plus'></i> {{ 'Ajouter'|trans }}");
                         } else {
                             alert(data['id']);
-                            $("#ajouter" + produit).html("<i class='fa fa-plus'></i> Ajouter");
+                            $("#ajouter" + produit).html("<i class='fa fa-plus'></i> {{ 'Ajouter'|trans }}");
                         }
                     },
                     error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                        alert("{{ 'La requête n’a pas abouti'|trans }}");
                     }
                 });
             } else {
-                alert("veuillez bien renseigner la quantité");
+                alert("Veillez bien renseigner la quantité");
             }
                 }
             else{
-                alert("veuillez bien renseigner tous les champs");
+                alert("Veillez bien renseigner tous les champs");
             }
         }
 
@@ -262,7 +262,7 @@
                             $('#btn' + produit).removeClass('disabled');
                             $("#quant" + produit).val('');// vider le champ quantite dans modal ajouter
                             $("#ajouter" + produit).show();// afficher le bouton ajouter
-                            $("#ajouter" + produit).html("<i class=\"fa fa-plus\"></i> Ajouter");// afficher le bouton ajouter
+                            $("#ajouter" + produit).html("<i class=\"fa fa-plus\"></i> {{ 'Ajouter'|trans }}");// afficher le bouton ajouter
 
                             $("#modification" + produit).html("");// vider div modification
                             if (data['nb'] == 0) {
@@ -272,7 +272,7 @@
                         }
                     },
                     error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                        alert("{{ 'La requête n’a pas abouti'|trans }}");
                     }
                 });
             }
@@ -282,7 +282,7 @@
             $("#quant" + produit).val(quantite);
             $("#ajouter" + produit).hide();
             /* remplissage div modification*/
-            $("#modification" + produit).html("<button type='button' class='btn btn-success ms-3' id='modifier" + produit + "' onclick=modifier(" + produit + ")><i class='fa fa-edit'></i> Modifier</button>");
+            $("#modification" + produit).html("<button type='button' class='btn btn-success ms-3' id='modifier" + produit + "' onclick=modifier(" + produit + ")><i class='fa fa-edit'></i> {{ 'Modifier'|trans }}</button>");
             $("#btn" + produit).trigger('click');// declenchement modification
         }
 
@@ -306,11 +306,11 @@
                         }
                     },
                     error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                        alert("{{ 'La requête n’a pas abouti'|trans }}");
                     }
                 });
             } else {
-                alert("veuillez bien renseigner la quantité");
+                alert("Veillez bien renseigner la quantité");
             }
 
         }

@@ -7,7 +7,7 @@
     <div class="container mt-4 fond-7">
         <h3 class="mt-4 mb-5 text-bold">
             <i class="fa fa-money-bill mr-2"></i>
-            {{ "Ceation Avoir"|trans }}
+            {{ "Création Avoir"|trans }}
         </h3>
         {% for message in app.flashes('echec') %}
             <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
@@ -46,11 +46,11 @@
             <thead>
             <tr>
                 <th><input type="checkbox" id="tous" onchange="selectAll()" /></th>
-                <th>{{ 'reference'|trans }}</th>
-                <th>{{ 'designation'|trans }}</th>
+                <th>{{ 'référence'|trans }}</th>
+                <th>{{ 'désignation'|trans }}</th>
                 <th>{{ 'prix cession'|trans }}</th>
-                <th>{{ 'Quantite Commande'|trans }}</th>
-                <th>{{'Reste à livrée'|trans}}</th>
+                <th>{{ 'Quantité Commande'|trans }}</th>
+                <th>{{'Reste à livrer'|trans}}</th>
                 <th>{{'Montant avoir'|trans}}</th>
             </tr>
             </thead>
@@ -94,7 +94,7 @@
                         }
                     });
                 if (prod != "0") {
-                    if (confirm("{{'Voulez-vous vraiment creer cet avoir ?'|trans}}")) {
+                    if (confirm("{{'Voulez-vous vraiment créer cet avoir ?'|trans}}")) {
 
                             $("#valider").html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                             $.ajax({
@@ -107,12 +107,12 @@
                                     }
                                 },
                                 error: function() {
-                                    alert("{{'La requête n a pas abouti'|trans}}");
+                                    alert("{{'La requête n\'a pas abouti'|trans}}");
                                 }
                             });
                         }
 
-                } else alert("{{'Selectionnez au moins un produit'|trans}}");
+                } else alert("{{'Sélectionnez au moins un produit'|trans}}");
             }
         </script>
     {% endblock %}

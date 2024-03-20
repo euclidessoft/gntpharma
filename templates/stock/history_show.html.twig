@@ -45,8 +45,8 @@
                        id="liste">
                     <thead>
                     <tr>
-                        <th>{{ "Reference"|trans }}</th>
-                        <th class="text-left">{{ "Designation"|trans }}</th>
+                        <th>{{ "Référence"|trans }}</th>
+                        <th class="text-left">{{ "Désignation"|trans }}</th>
                         <th>{{ "N° lot"|trans }}</th>
                         {#                        <th>{{ "Pereption"|trans }}</th>#}
                         <th>{{ "Motif"|trans }}</th>
@@ -103,7 +103,7 @@
     <script>
         function retour_reapprovisionner(id, produit, lot, peremption, quantite) {
 
-            if (confirm("voulez-vous vraiment reapprovisionner ce produit?")) {
+            if (confirm("voulez-vous vraiment réapprovisionner ce produit?")) {
                 $("#btn" + produit + lot).html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
                 $.ajax({
                     type: "POST",
@@ -117,7 +117,7 @@
                         $("#spn" + produit + lot).html("");
                     },
                     error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                        alert("{{ 'La requête n’a pas abouti'|trans }}");
                     }
                 });
             }
@@ -139,7 +139,7 @@
                         $("#spnvalid" + produit + lot).html("");
                     },
                     error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                        alert("{{ 'La requête n’a pas abouti'|trans }}");
                     }
                 });
             }

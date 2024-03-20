@@ -90,7 +90,7 @@
                 <thead>
                 <tr>
                     <th colspan="2">{{ commande.produit.reference }} : {{ commande.produit.desigantion }}</th>
-                    <th>Quantite Commande:
+                    <th>{{ 'Quantité Commande'|trans }}:
                         {{ commande.quantitecommander }}
                         {% if commande.promotion is not null %}
                             {% if commande.promotion.premier is not null %}

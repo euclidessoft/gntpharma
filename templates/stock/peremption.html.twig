@@ -8,7 +8,7 @@
     <div class="container mt-4 fond-7">
         <h3 class="mt-4 mb-5 text-bold">
             <i class="fa fa-shopping-cart mr-2"></i>
-            {{ "Etat stock Produits"|trans }}
+            {{"Etat stock Produits"|trans}}
         </h3>
         <ul class="nav nav-tabs mb-4">
 {% if is_granted('ROLE_STOCK') %}
@@ -31,7 +31,7 @@
             {% if is_granted('ROLE_STOCK') %}
                 <li class="nav-item">
                     <a class="nav-link active" href="#">
-                        {{ 'Peremption Imminante'|trans }}
+                        {{ 'Péremption Imminente'|trans }}
                     </a>
                 </li>
             {% endif %}
@@ -41,7 +41,7 @@
             <thead>
             <tr>
                 <th>{{ 'Reference'|trans }}</th>
-                <th>{{ 'Designation'|trans }}</th>
+                <th>{{ 'Désignation'|trans }}</th>
                 <th>{{ 'Fabriquant'|trans }}</th>
                 <th>{{'N° Lot'|trans}}</th>
                 <th>{{'Péremption'|trans}}</th>

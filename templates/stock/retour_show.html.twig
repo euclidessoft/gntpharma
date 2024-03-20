@@ -13,7 +13,7 @@
             <table class="table table-success-light table-bordered table-hover table-striped mt-3 w-100">
                 <thead>
                 <tr>
-                    <th>{{ 'Numero Commande'|trans }}</th>
+                    <th>{{ 'Numéro Commande'|trans }}</th>
                     <th>{{ 'Date de commande'|trans }}</th>
                     <th>{{ 'Date de Livraison'|trans }}</th>
                     <th>{{ 'Client'|trans }}</th>
@@ -140,9 +140,9 @@
                 <table class="table table-success-light table-bordered table-hover table-striped w-100">
                     <thead class="text-center">
                     <tr>
-                        <th class="text-left">{{ 'Designation'|trans }}</th>
+                        <th class="text-left">{{ 'Désignation'|trans }}</th>
                         <th>{{'N° Lot'|trans}}</th>
-                        <th>{{'Peremption'|trans}}</th>
+                        <th>{{'Péremption'|trans}}</th>
                         <th>{{'Qté retournée'|trans}}</th>
                         <th>{{'Actions'|trans}}</th>
                     </tr>
@@ -237,14 +237,14 @@ alert(peremption)
                             }
                         },
                         error: function () {
-                            alert("{{ 'La requête n a pas abouti'|trans }}");
+                            alert("{{ "La requête n'a pas abouti"|trans }}");
                         }
                     });
                 } else {
                     alert("{{'veuillez bien renseigner la quantité'|trans}}");
                 }
             } else {
-                alert("{{'veuillez bien reverifier les quantites'|trans}}");
+                alert("{{'Veuillez bien revérifier les quantités'|trans}}");
             }
         }
 
@@ -271,7 +271,7 @@ alert(peremption)
                         }
                     },
                     error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                        alert("{{ "La requête n'a pas abouti"|trans }}");
                     }
                 });
             }
@@ -291,7 +291,7 @@ alert(peremption)
                         }
                     },
                     error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                        alert("{{ "La requête n'a pas abouti"|trans }}");
                     }
                 });
             }
