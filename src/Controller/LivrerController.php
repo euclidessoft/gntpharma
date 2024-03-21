@@ -171,7 +171,7 @@ class LivrerController extends AbstractController
     {// traitement livraison
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
             if ($commande->getLivraison()) {
-                $this->addFlash('notice', 'Livraison deja traite');
+                $this->addFlash('notice', 'Livraison déjà traitée');
                 $response = $this->redirectToRoute('livraison_index');
                 $response->setSharedMaxAge(0);
                 $response->headers->addCacheControlDirective('no-cache', true);
@@ -287,7 +287,7 @@ class LivrerController extends AbstractController
             $em->persist($livrer);
             $em->persist($livrer->getCommande());
             $em->flush();
-            $this->addFlash('notice', 'livraison effectue avec succes');
+            $this->addFlash('notice', 'livraison effectué avec succès');
 
 
             $response = $this->redirectToRoute('livraison_index');
@@ -772,7 +772,7 @@ class LivrerController extends AbstractController
 //            $panier = $session->get("livraison", []);
             $livraison = $session->get("traitement", []);
             if (count($livraison) == 0) {
-                $this->addFlash('notice', 'Donner les details des produits avant validation ');
+                $this->addFlash('notice', 'Donner les details des produits avant validation.');
                 return $this->redirectToRoute('livraison_show', ['id' => $commande->getid()]);
             }
             $em = $this->getDoctrine()->getManager();
@@ -923,7 +923,7 @@ class LivrerController extends AbstractController
             return $response;
 
             terminer:
-            $this->addFlash('echec', 'verifier les quantités avant validation');
+            $this->addFlash('echec', 'Vérifier les quantités avant validation');
             $response = $this->redirectToRoute('livraison_show', ['id' => $commande->getId()]);
 
             $response->setSharedMaxAge(0);
@@ -1089,7 +1089,7 @@ class LivrerController extends AbstractController
                             $produit->livraison($quantite);
                             $stock->setQuantite($stock->getQuantite() - $quantite);
                             $livrerProduit = new LivrerProduit($livrer, $produit, $commandeproduit->getQuantite(), $quantite, $stock->getQuantite(), $commande, $numerolot, $stock->getPeremption());
-
+                            $livrerProduit->setRetour($retour);
                             if ($stock->getQuantite() == 0) {//suppression produit dans stock
                                 $em->remove($stock);
                             } else {
@@ -1177,7 +1177,7 @@ class LivrerController extends AbstractController
         $em->persist($livraison);
         $em->persist($livraison->getCommande());
         $em->flush();
-        $this->addFlash('notice', 'livraison reussie avec succès');
+        $this->addFlash('notice', 'livraison réussie avec succès');
 
         $res['id'] = 'ok';
 

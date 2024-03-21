@@ -296,7 +296,7 @@ class StockController extends AbstractController
 
             }
             $em->flush();
-            $this->addFlash('notice', 'Retour enregiste avec succes');
+            $this->addFlash('notice', 'Retour enregisté avec succès');
             $session->remove('retour');
 
             $res['id'] = 'ok';
