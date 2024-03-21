@@ -209,21 +209,21 @@ prix cession: price transfer
 Quantité Commande: Quantity Order
 Reste à livrer: Still to be delivered
 Montant avoir: Credit balance
-Arrêtée la présente à la somme de : Arranged the present at the sum of
+Arrêtée la présente à la somme de: Arranged the present at the sum of
 Créer un avoir par: Create a credit note by
 Total Avoir: Total equity
 Editer Avoir: Edit Credit
 Listes des avoirs: List of assets
 actions: actions
 Afficher: View
-N° Commande: Order number
+N° Commande: n# order
 Message: Message
 veuillez renseigner le montant: please enter the amount
 Voulez-vous vraiment creer cet avoir: Do you really want to create this asset
 La requête n'a pas abouti: The request was unsuccessful
 Selectionnez au moins un produit: Select at least one product
 Création Avoir: Creation Have
-Numéro Commande: Order number
+Numéro Commande: n# order
 Date Commande: Order date
 Date Paiement: Payment date
 Choisir: Choose
@@ -485,4 +485,30 @@ Commentaire *: Comment
 Clôturer le: Close on
 Fermer: Close on
 Selectionnez un motif *: Select a motif
-
+Type de Paiement: Payment type
+action: action
+Profil: Profile
+Administration: Administration
+Déconnexion: Disconnect
+Voulez-vous vraiment vous déconnecter ?: Do you really want to log out?
+Vérifier: Check
+vérifier la quantité saisie 1: check the quantity entered 1
+Exportateur vers Excel: Export to Excel
+Produit facturé non Livré : Invoiced product not delivered
+Produit Livré non facturé : Undelivered product
+Produit périmé : Product expired
+Produit cassé : Broken product Péremption proche Near expiry
+Produit Avarié : Damaged product
+Quantité facturée erronée : Wrong quantity invoiced
+Produit trop cher : Product too expensive
+Retour bon état : Return in good condition
+Retour bon état - Doublon commande : Return in good condition - Duplicate order
+Retour bon état - Erreur commande : Return in good condition - Order error
+Retour bon état -  Surstock : Return good condition - Overstock
+Retour bon état- Surstock : Return good condition - Overstock
+Produit Facturée différent de produit livré : Invoiced product different from delivered product
+Produit livré en excédent : Product delivered in excess
+Rappel de lot : Batch recall
+Selectionnez commande *: Select order *
+Liste des commandes avec crédit: List of orders with credit
+Numéro versement: Payment number
