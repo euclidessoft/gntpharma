@@ -58,13 +58,20 @@
             <th>{{'Date d\'émission'|trans}}</th>
             <th>{{'Date de livraison'|trans}}</th>
 
+
         </tr>
         </thead>
         <tbody>
+        <tr>
         <td>{{ commande.livrer.id }}</td>
         <td>{{ commande.date|date('d/m/Y') }}</td>
         <td>{{ commande.livrer.dateefectlivraison|date('d/m/Y') }}</td>
-
+        </tr>
+        <tr>
+        {% if commande.retour is not null %}
+            <td colspan="3"><b>{{ "Remboursement retour Produit"|trans }}</b></td>
+        {% endif %}
+        </tr>
         </tbody>
     </table>
     </div>
@@ -244,11 +251,12 @@
                 {% endfor %}
             </tbody>
             </table>
+            <div class="col-4 mb-2">
+                <img src="{{ asset(liv.signature) }}" alt="">
+            </div>
                 {% else %}
                 {% endfor %}
-        <div class="col-4 mb-2">
-            <img src="{{ asset(livrer[0].signature) }}" alt="">
-        </div>
+
         <div class="col-md-2 offset-md-4 mt-5 mb-5 pt-2 pb-2 fond-7">
             <div class="centrer">
                 <a href="{{ path('livraison_historique_show_print',{'id': commandereference.id }) }}" class="btn btn-success float-end">

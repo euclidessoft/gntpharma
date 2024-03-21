@@ -73,15 +73,26 @@
                     <td>{{ livrer.commande.date|date('d/m/Y') }}</td>
 {#                    <td>{{ livrer.commande.user.nom }}</td>#}
                     <td>
-                        <a class="btn btn-success" href="{{ path('livraison_reste_show', {'id': livrer.commande.id}) }}">
-                            <i class="fa fa-gears"></i>
-                            {{ 'Traitement'|trans }}
-                        </a>
+
                     </td>
                 </tr>
             {% else %}
                 <tr>
                     <td colspan="4">{{ 'Aucune commande'|trans }}</td>
+                </tr>
+            {% endfor %}
+            {% for retour in retours %}
+                <tr>
+                    <td>{{ retour.commande.id }}</td>
+                    <td>{{ retour.date|date('d/m/Y') }}</td>
+                    <td>
+
+                    </td>
+                </tr>
+            {% else %}
+                {% set reste = 1 %}
+                <tr>
+                    <td colspan="4">{{ 'Aucun retour de produit'|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>

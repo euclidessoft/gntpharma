@@ -18,6 +18,12 @@ class LivrerProduit
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Retour")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $retour;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Promotion")
      * @ORM\JoinColumn(nullable=true)
      */
@@ -266,6 +272,18 @@ class LivrerProduit
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getRetour(): ?Retour
+    {
+        return $this->retour;
+    }
+
+    public function setRetour(?Retour $retour): self
+    {
+        $this->retour = $retour;
+
+        return $this;
     }
 
 }

@@ -19,6 +19,23 @@ class RetourProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, RetourProduit::class);
     }
 
+    public function retour_client($client)
+    {
+        return $this->createQueryBuilder('l')
+            ->Join('l.commande', 's', 'WITH', 's.user = :id')
+            ->setParameter('id', $client)
+            ->addSelect('s')
+            ->andWhere('l.rembourser = :rembourser')
+            ->setParameter('rembourser', false)
+            ->andWhere('l.avoir = :avoir')
+            ->setParameter('avoir', false)
+            ->andWhere('l.valider = :valider')
+            ->setParameter('valider', true)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return RetourProduit[] Returns an array of RetourProduit objects
     //  */
