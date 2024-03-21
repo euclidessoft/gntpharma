@@ -152,7 +152,7 @@
                         <li class="dropdown-item">
                             <a class="nav-link  {% block all_livraison %}{% endblock %}" href="{{ path('livraison_historique') }}">
                                 <i class="fas fa-truck-fast mr-2"></i>
-                                {{ 'Deja livrée'|trans }}
+                                {{ 'Déjà livrée'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
@@ -164,7 +164,7 @@
                     </ul>
                 </li>
                 <li class="nav-item dropright"
-                    title="{{ 'Reclamations'|trans }}">
+                    title="{{ 'Réclamations'|trans }}">
                     <a class="nav-link dropdown-toggle {% block reclamation %}{% endblock %}" href="#" id="Produits" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
@@ -178,13 +178,13 @@
                         <li class="dropdown-item">
                             <a class="nav-link {% block new_reclamation %}{% endblock %}" href="{{ path('reclamation_new', { 'user' : app.user.id }) }}">
                                 <i class="fas fa-user-plus mr-2"></i>
-                                {{ 'Creer une reclamation'|trans }}
+                                {{ 'Créer une réclamation'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block my_reclamation %}{% endblock %}" href="{{ path('reclamation_index',{'user':app.user.id}) }}">
                                 <i class="fas fa-user-plus mr-2"></i>
-                                {{ 'Mes reclamations'|trans }}
+                                {{ 'Mes réclamations'|trans }}
                             </a>
                         </li>
                     </ul>
