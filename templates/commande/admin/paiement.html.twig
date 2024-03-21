@@ -45,7 +45,7 @@
         <tr>
             <th>{{ 'Code Produit'|trans }}</th>
             <th>{{ 'Désignation'|trans }}</th>
-            <th>{{ 'Quantite Commandée'|trans }}</th>
+            <th>{{ 'Quantité Commandée'|trans }}</th>
             <th>{{ 'Prix Cession'|trans }}</th>
             <th>{{ 'Réduction'|trans }}</th>
             <th>{{ 'TVA'|trans }}</th>
@@ -244,12 +244,12 @@
                     if ($('#paiement_form_montant').val() != '' && $('#paiement_form_type').val() != '') {
                         $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                         $('#form').submit();
-                    } else alert('Veuillez renseigner tous les champs');
+                    } else alert('{{ 'Veuillez renseigner tous les champs'|trans }}');
                 } else {
                     if ($('#paiement_form_montant').val() != '' && $('#paiement_form_type').val() != '') {
                         $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                         $('#form').submit();
-                    } else alert('Veuillez renseigner tous les champs');
+                    } else alert('{{ 'Veuillez renseigner tous les champs'|trans }}');
                 }
             } else alert("{{ 'Nombre compris entre 3 et 9 chiffres'|trans }}");
 
