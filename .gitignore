@@ -6,6 +6,7 @@
 /var/
 /vendor/
 .env
+package-lock.json
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
