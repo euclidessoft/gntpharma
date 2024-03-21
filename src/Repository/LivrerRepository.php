@@ -36,6 +36,8 @@ class LivrerRepository extends ServiceEntityRepository
             ->Join('l.commande', 's', 'WITH', 's.user = :id')
             ->setParameter('id', $client)
             ->addSelect('s')
+            ->andWhere('l.livrer = :livrer')
+            ->setParameter('livrer', true)
             ->groupBy('l.commande')
             ->orderBy('l.id', 'DESC')
             ->getQuery()
