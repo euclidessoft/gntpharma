@@ -209,7 +209,7 @@ prix cession: price transfer
 Quantité Commande: Quantity Order
 Reste à livrer: Still to be delivered
 Montant avoir: Credit balance
-Arrêtée la présente à la somme de: Arranged the present at the sum of
+Arrêtée la présente à la somme de : Arranged the present at the sum of
 Créer un avoir par: Create a credit note by
 Total Avoir: Total equity
 Editer Avoir: Edit Credit
@@ -477,14 +477,12 @@ Status: Status
 Aucune réclamation: No claims
 Répondre: Reply
 Clôturer: Close
-Nouvelle Réclamation: Edit Reclamation
-Les champs marqués par * sont obligatoires:
+Nouvelle Réclamation: New Claims
+Les champs marqués par * sont obligatoires: Fields marked with * are mandatory
 Motif *: Reason
 commande *: order
 Commentaire *: Comment
-Edit Reclamation:
 Clôturer le: Close on
 Fermer: Close on
-
-
+Selectionnez un motif *: Select a motif
 
