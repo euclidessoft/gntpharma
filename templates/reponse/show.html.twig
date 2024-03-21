@@ -8,7 +8,7 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>{{ 'Id'|trans }}</th>
                 <td>{{ reponse.id }}</td>
             </tr>
             <tr>
@@ -20,7 +20,7 @@
 
     <a href="{{ path('reponse_index') }}">back to list</a>
 
-    <a href="{{ path('reponse_edit', {'id': reponse.id}) }}">edit</a>
+    <a href="{{ path('reponse_edit', {'id': reponse.id}) }}">{{ 'Modifier'|trans }}</a>
 
     {{ include('reponse/_delete_form.html.twig') }}
 {% endblock %}

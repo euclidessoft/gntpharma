@@ -16,7 +16,9 @@
                 <a class="nav-link active" href="#">{{ 'En cours'|trans }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('reclamation_index_cloturer', {'user': app.user.id}) }}">{{'Cloturées'|trans}}</a>
+                <a class="nav-link" href="{{ path('reclamation_index_cloturer', {'user': app.user.id}) }}">
+                    {{ 'Clôturées'|trans }}
+                </a>
             </li>
         </ul>
 
