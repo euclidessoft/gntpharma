@@ -19,13 +19,13 @@
         <thead>
         <tr>
             <th>{{ 'Reference'|trans }}</th>
-            <th>{{ 'Designation'|trans }}</th>
+            <th>{{ 'Désignation'|trans }}</th>
             <th>{{ 'Prix Cession'|trans }}</th>
-            <th>{{ 'Reduction'|trans }}</th>
+            <th>{{ 'Réduction'|trans }}</th>
             <th>{{ 'TVA'|trans }}</th>
             <th>{{ 'Prix Public'|trans }}</th>
             <th>{{ 'Commande'|trans }}<br> {{ 'Minimum'|trans }}</th>
-            <th>{{ 'Quantite'|trans }}</th>
+            <th>{{ 'Quantité'|trans }}</th>
             <th>{{ 'Total'|trans }}</th>
 
             <th>{{ 'actions'|trans }}</th>
@@ -95,7 +95,7 @@
                     <td>
                         <div style="display: inline;" id="btnaction{{ produit.produit.id }}">
                             <button onclick="edit({{ produit.produit.id }}, {{ produit.produit.quantite }}, {{ produit.produit.mincommande }}, {{ produit.produit.prix }}, {{ produit.produit.stock }})"
-                                    class="btn btn-success" title="{{ 'Modifier quantite'|trans }}">
+                                    class="btn btn-success" title="{{ 'Modifier quantité'|trans }}">
                                 <i class="fa fa-edit"></i>
                             </button>
                         </div>
@@ -123,14 +123,15 @@
             <td rowspan="4">
 
                     <a id="vider" onclick=load('vider') href="{{ path('commande_delete_all') }}" class="btn btn-danger" title="vider le panier">
-                        Vider le panier <i class="fa fa-trash-alt"></i>
+                        {{ 'Vider le panier'|trans }}
+                        <i class="fa fa-trash-alt"></i>
                     </a>
 
             </td>
         </tr>
         <tr>
             <td colspan="8" class="text-right">
-                {{ "Total Reduction"|trans }}
+                {{ "Total Réduction"|trans }}
             </td>
             <td class="text-center">
                 <span id="total">{{ reduction|number_format(0, '' , ' ') }}</span>
@@ -192,7 +193,7 @@
                         "                            <i class=\"fa fa-undo\"></i>\n" +
                         "                        </button>");
                     $('#tampon').val('no');
-                } else alert('Terminer la premiere operation' | trans);
+                } else alert('Terminer la première opération' | trans);
             }
 
             function editprod(id, mincom, quantite, prix, st) {
@@ -223,11 +224,11 @@
                                             "                        </button>");
                                         $('#tampon').val('ok');
                                     } else {
-                                        alert("{{ 'verifier la quantite saisie'|trans }}")
+                                        alert("{{ 'vérifier la quantité saisie'|trans }}")
                                     }
                                 },
                                 error: function () {
-                                    alert("{{ 'La requête n a pas abouti'|trans }}");
+                                    alert("{{ 'La requête n’a pas abouti'|trans }}");
                                 }
                             });
                         } else {
@@ -235,7 +236,7 @@
                             alert(mess);
                         }
                     } else {
-                        var mess = "{{ 'Commande minimun'|trans }} " + mincom;
+                        var mess = "{{ 'Commande minimum'|trans }} " + mincom;
                         alert(mess);
                     }
 

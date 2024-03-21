@@ -30,11 +30,11 @@
                         {{ promotion.reduction }} % {{'de réduction'|trans}}
 
                     {% else %}
-                        {{ promotion.premier }} pour {{ promotion.ugpremier }} gratuits<br>
-                        {{ promotion.deuxieme }} pour {{ promotion.ugdeuxieme }} gratuits<br>
-                        {{ promotion.troisieme }} pour {{ promotion.ugtroisieme }} gratuits<br>
-                        {{ promotion.quatrieme }} pour {{ promotion.ugquatrieme }} gratuits<br>
-                        {{ promotion.cinquieme }} pour {{ promotion.ugcinquieme }} gratuits<br>
+                        {{ promotion.premier }} {{ "pour"|trans }} {{ promotion.ugpremier }} {{ "gratuits"|trans }}<br>
+                        {{ promotion.deuxieme }} {{ "pour"|trans }} {{ promotion.ugdeuxieme }} {{ "gratuits"|trans }}<br>
+                        {{ promotion.troisieme }} {{ "pour"|trans }} {{ promotion.ugtroisieme }} {{ "gratuits"|trans }} <br>
+                        {{ promotion.quatrieme }} {{ "pour"|trans }} {{ promotion.ugquatrieme }} {{ "gratuits"|trans }}<br>
+                        {{ promotion.cinquieme }} {{ "pour"|trans }} {{ promotion.ugcinquieme }} {{ "gratuits"|trans }}<br>
                     {% endif %}
                 </td>
 

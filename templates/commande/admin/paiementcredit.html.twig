@@ -46,10 +46,10 @@
         <thead>
         <tr>
             <th>{{ 'Code Produit'|trans }}</th>
-            <th>{{ 'Designation'|trans }}</th>
-            <th>{{ 'Quantite Commandee'|trans }}</th>
+            <th>{{ 'Désignation'|trans }}</th>
+            <th>{{ 'Quantité Commandée'|trans }}</th>
             <th>{{ 'Prix Cession'|trans }}</th>
-            <th>{{ 'Reduction'|trans }}</th>
+            <th>{{ 'Réduction'|trans }}</th>
             <th>{{ 'TVA'|trans }}</th>
             <th>{{ 'Prix Public'|trans }}</th>
             <th>{{ 'Montant'|trans }}</th>
@@ -165,7 +165,7 @@
                     <a id="valid" onclick="load('valid')" href="{{ path('commande_panier_valider_credit', {'commande': commande.id}) }}" type="button"
                        class="btn btn-success">
                         <i class="fa-solid fa-sack-dollar"></i>
-                        {{' Valider Credit'|trans }}
+                        {{' Valider Crédit'|trans }}
                     </a>
                 {% endif %}
 
@@ -285,7 +285,7 @@
                     if ($('#versement_montant').val() != '' && $('#versement_type').val() != '') {
                         $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                         $('#form').submit();
-                    } else alert('Veuillez renseigner tous les champs');
+                    } else alert('{{ 'Veuillez renseigner tous les champs'|trans }}');
                 }
             } else alert("{{ 'Nombre compris entre 3 et 9 chiffres'|trans }}");
 
