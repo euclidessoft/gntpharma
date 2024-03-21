@@ -199,7 +199,7 @@
 {% block scripts %}
     <script>
         function ajouter(produit, quantite,lot,peremption) {
-alert(peremption)
+
             var quant = $("#quant" + produit+lot);
             var motif = $("#motif" + produit+lot);
             if (quant.val() != "" && motif.val() != "" && quant.val() <= quantite) {
@@ -210,7 +210,7 @@ alert(peremption)
                         url: "{{ path('stock_retour_add') }}",
                         data: {prod: produit, quantite: quant.val(), motif: motif.val(), lot: lot, peremption: peremption},
                         success: function (data) {
-                            alert(data['idp'])
+
                             if (data['idp'] == 'ok') {
                                 $('#selectprod').append(" <tr id='tr" + produit + lot + "'>\n" +
                                     "                        <td>" + data['designation'] + "</td>\n" +
