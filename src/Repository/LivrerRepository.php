@@ -33,8 +33,9 @@ class LivrerRepository extends ServiceEntityRepository
     public function historique_client($client)
     {
         return $this->createQueryBuilder('l')
-            ->andWhere('l.id = :id')
+            ->Join('l.commande', 's', 'WITH', 's.user = :id')
             ->setParameter('id', $client)
+            ->addSelect('s')
             ->groupBy('l.commande')
             ->orderBy('l.id', 'DESC')
             ->getQuery()
