@@ -215,7 +215,6 @@ Total Avoir: Total equity
 Editer Avoir: Edit Credit
 Listes des avoirs: List of assets
 actions: actions
-Afficher: View
 N° Commande: n# order
 Message: Message
 veuillez renseigner le montant: please enter the amount
@@ -524,3 +523,109 @@ Créer une réclamation: Create a complaint
 Mes réclamations: My complaints
 Avoirs: Credit notes
 Condition de vente: Terms and conditions of sale
+Les champs avec * sont obligatoires: Fields marked with * are required
+Changement mot de passe: Change password
+Mot de passe actuel: Current password
+Modifier profil: Change profile
+Les Champs avec * sont obligatoires: Fields marked with * are required
+Mot de passe *: Password
+Prénom *: First name
+Nom *: Last name
+Email *: Email
+Telephone *: Telephone
+Cliquez sur le lien ci-dessous pour activer votre compte: Click on the link below to activate your account
+Activez votre compte: Activate your account
+Cliquez sur le lien ci-dessous pour réinitialiser votre compte: Click on the link below to reset your account
+Réinitialisez votre compte: Reset your account
+Modifier mon profil: Edit my profile
+Changer mot de passe: Change my password
+Listes des clients: Customer lists
+email: email
+Voulez-vous vraiment supprimer cet utilisateur ?: Do you really want to delete this user?
+Retour à la page de connexion: Back to login page
+renseignez votre mail: fill in your email
+Bienvenue sur l\'inscription en ligne de: Welcome to the online registration of
+Adresse email ou mot de passe incorrecte: Incorrect email address or password
+Adresse email: Email Address
+Mot de passe: Password
+Mot de passe oublié: Forgotten password
+Retour au site: Back to website
+Se connecter: Sign in
+renseignez les champs: Fill in the fields
+Mon profil: My profile
+Profil Utilisateur: User profile
+Email: Email
+Nouveau mot de passe: New password
+Confirmer mot de passe: Confirm password
+Nom: Name
+Adresse: Address
+Affichage par critères: Display by criteria
+Département: Department
+élément(s) trouvé(s): item(s) found
+Nom et Prénom: First and last name
+Photo: Picture
+Identifiant: Username
+Prénom: First name
+Téléphone: Telephone
+Profession: Profession
+Voulez-vous vraiment désactiver cet utilisateur ?: Do you really want to deactivate this user?
+Activer: Activate
+Voulez-vous vraiment activer cet utilisateur ?: Do you really want to activate this user?
+Désactiver: Disable
+Créer nouvel utilisateur: Create new user
+Réinitialiser: Reset
+Traitement en cours...: Treatment in progress...
+Rechercher: Search for
+Afficher: Show
+élèments: elements
+Affichage de l'élement: Display element
+à: to
+sur: on
+Affichage de l'élèment 0 à 0 sur 0 élèments: Displaying item 0 to 0 on 0 items
+filtré de: filtered from
+élèment au total: element total
+Chargement en cours...: Loading in progress...
+Aucun élèment à afficher: No elements to display
+Aucune donnée disponible dans le tableau: No data available in table
+Premier: First
+Précédent: Prev
+Suivant: Next
+Dernier: Last
+activer pour trier la colonne par ordre croissant: activate to sort column in ascending order
+activer pour trier la colonne par ordre décroissant: activate to sort column in descending order
+Commande minimun : Minimum order
+Veuillez saisir tous les champs: Please enter all fields
+Candidature enregistrée avec succée: Successful application
+Approvisionnement réussie: Successful procurement
+Avoir créé avec succès: Creation successful
+Paiement déjà effectué: Payment already made
+Vérifier le montant saisi: Check amount entered
+Réglement effectué avec succés: Payment completed successfully
+Paiement effectué avec succés: Payment completed successfully
+Donner les details des produits avant validation.: Give product details before validation...
+Livraison déjà traitée: Delivery already made
+livraison réussie avec succès: Delivery completed successfully
+Livraison enregistrée avec succés: Delivery completed successfully
+Vérifier les quantités avant validation: Check quantities before validating
+Ce produit ne peut être supprimer pour des raisons de traçabilité: This product cannot be deleted for traceability reasons
+Le prix public doit être strictement supérieur au prix de cession: The public price must be strictly higher than the transfer price
+Produit modifié avec succès: Product modified successfully
+Nouveau Produit Ajouté: New product added
+Promotion supprimée: Promotion deleted
+Veuillez ajouter des produits à la promotion: Please add products to the promotion
+Promotion crée: Promotion created
+Reclamation  clocturée: Claim closed
+Retour enregisté avec succès: Return registered successfully
+Vous n'avez pas le droit d'acceder à cette partie de l'application: You are not allowed to access this part of the application
+Cet utilisateur ne peut être supprimer pour des raisons de traçabilité: This user cannot be deleted for traceability reasons
+Utilisateur suppriméé avec succés: User successfully deleted
+Utilisateur créé, un message a été envoyé à son adresse mail pour l'activation du compte: User created, a message has been sent to his/her e-mail address for account activation
+Modifié avec succès: Modified successfully
+Compte actif, veuillez  définir votre mot de passe pour la première connexion: Account active, please set your password for the first connection
+Chaine d'activation invalide: Invalid activation string
+Réinitialisation réussie: Reset successful
+Chaine de réinitialisation invalide: Invalid reset string
+Un message a été envoyé à votre adresse email, veuillez consulter votre boite de réception: A message has been sent to your email address, please check your inbox
+Adresse email inconnue: Unknown email address
+Votre mot de passe  a été modifié, veuillez vous reconnecter!: Your password has been changed, please log in again
+Profil modifié avec succès: Profile successfully modified
