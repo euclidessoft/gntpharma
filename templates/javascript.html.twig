@@ -330,7 +330,7 @@
                 // }else alert("Veuillez verifier les valeurs de la promotion");
 
             }else{
-                alert('Veuillez saisir tous les champs');
+                alert('{{ "Veuillez saisir tous les champs"|trans }}');
             }
 
         }else if ($('#promotion_type option:selected').val() == 'Réduction') {
@@ -402,9 +402,9 @@
         }],
         language: {
             processing: "{{ 'Traitement en cours...'|trans }}",
-            search: "{{ 'Rechercher|trans' }} :",
+            search: "{{ 'Rechercher'|trans }} :",
             lengthMenu: "{{ 'Afficher'|trans }} _MENU_ {{'élèments'|trans}}",
-            info: "{{'Affichage de l\'élement'|trans}} _START_ {{'à'|trans}}; _END_ {{ 'sur|trans' }} _TOTAL_ {{'élèments'|trans}}",
+            info: "{{'Affichage de l\'élement'|trans}} _START_ {{'à'|trans}} _END_ {{ 'sur'|trans }} _TOTAL_ {{'élèments'|trans}}",
             infoEmpty: "{{'Affichage de l\'élèment 0 à 0 sur 0 élèments'|trans}}",
             infoFiltered: "({{'filtré de'|trans}} _MAX_ {{'élèment au total'|trans}})",
             infoPostFix: "",
@@ -413,7 +413,7 @@
             emptyTable: "{{'Aucune donnée disponible dans le tableau'|trans}}",
             paginate: {
                 first: "{{ 'Premier'|trans }}",
-                previous: "{{'Précédent'|rans}}",
+                previous: "{{'Précédent'|trans}}",
                 next: "{{ 'Suivant'|trans }}",
                 last: "{{ 'Dernier'|trans }}"
             },
@@ -441,10 +441,10 @@
             }],
             language: {
                 processing: "{{ 'Traitement en cours...'|trans }}",
-                search: "{{ 'Rechercher|trans' }} :",
+                search: "{{ 'Rechercher'|trans }} :",
                 lengthMenu: "{{ 'Afficher'|trans }} _MENU_ {{'élèments'|trans}}",
-                info: "{{'Affichage de l\'élement|trans'}} _START_ {{'à'|trans}}; _END_ {{ 'sur|trans' }} _TOTAL_ {{'élèments'|trans}}",
-                infoEmpty: "{{'Affichage de l'élèment 0 à 0 sur 0 élèments'|trans}}",
+                info: "{{'Affichage de l\'élement|trans'}} _START_ {{'à'|trans}} _END_ {{ 'sur'|trans }} _TOTAL_ {{'élèments'|trans}}",
+                infoEmpty: "{{'Affichage de l\'élèment 0 à 0 sur 0 élèments'|trans}}",
                 infoFiltered: "({{'filtré de'|trans}} _MAX_ {{'élèment au total'|trans}})",
                 infoPostFix: "",
                 loadingRecords: "{{ 'Chargement en cours...'|trans }}",
@@ -452,7 +452,7 @@
                 emptyTable: "{{'Aucune donnée disponible dans le tableau'|trans}}",
                 paginate: {
                     first: "{{ 'Premier'|trans }}",
-                    previous: "{{'Précédent'|rans}}",
+                    previous: "{{'Précédent'|trans}}",
                     next: "{{ 'Suivant'|trans }}",
                     last: "{{ 'Dernier'|trans }}"
                 },
