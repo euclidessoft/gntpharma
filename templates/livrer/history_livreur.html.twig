@@ -38,7 +38,7 @@
                     <td>{{ commande.date|date('d/m/Y') }}</td>
                     <td>{{ commande.dateefectlivraison|date('d/m/Y') }}</td>
                     <td>
-                        <a class="btn btn-success" href="{{ path('livraison_livreur_historique_show', {'id': commande.id}) }}">
+                        <a id="{{ commande.id }}" onclick="load({{ commande.id }})" class="btn btn-success" href="{{ path('livraison_livreur_historique_show', {'id': commande.id}) }}">
                             <i class="fa fa-list"></i>
                             {{'Afficher'|trans}}</a>
                     </td>

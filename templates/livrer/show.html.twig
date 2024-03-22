@@ -296,7 +296,7 @@
                     $('#validation').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                     $('#form').submit();
                 }else{
-                    alert('{{"séléctionner un livreur"|trans}}')
+                    alert('{{"Selectionnez Livreur *"|trans}}')
                 }
 
 
@@ -334,7 +334,7 @@
                     });
 
                 }else{
-                    alert("veuillez verifier les quantités saisies");
+                    alert("{{ 'veuillez verifier les quantités saisies'|trans }}");
                     $('#ajouter' + id).html("<i class='fa-solid fa-check'></i> {{ "Valider"|trans }}");
                     // $('#ajouter' + id).addClass('disabled');
                 }
