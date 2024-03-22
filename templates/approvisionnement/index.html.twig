@@ -241,17 +241,17 @@
                     }
                 });
             } else {
-                alert("Veillez bien renseigner la quantité");
+                alert("{{'Veillez bien renseigner la quantité'|trans}}");
             }
                 }
             else{
-                alert("Veillez bien renseigner tous les champs");
+                alert("{{ 'Veillez bien renseigner tous les champs'|trans }}");
             }
         }
 
         function supprim(produit,numero) {
 
-            if (confirm("Etes-vous sur de vouloir supprimer?")) {
+            if (confirm("{{ 'Etes-vous sur de vouloir supprimer?'|trans }}")) {
                 $.ajax({
                     type: "POST",
                     url: "{{ path('stock_delete') }}",
@@ -310,7 +310,7 @@
                     }
                 });
             } else {
-                alert("Veillez bien renseigner la quantité");
+                alert("{{'Veillez bien renseigner la quantité'|trans}}");
             }
 
         }
