@@ -63,24 +63,53 @@ class LivrerController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
 
-            return $this->render('livrer/index.html.twig', [
+            $response = $this->render('livrer/index.html.twig', [
                 'retours' => $retourProduitRepository->findBy(['rembourser' => false, 'avoir' => false, 'valider' => true]),
                 'livrers' => $livrerRepository->findBy(['reste' => true]),
                 'commandes' => $repository->findBy(['suivi' => true, 'livraison' => false]),
             ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_LIVREUR')) {
 
-            return $this->render('livrer/index_livreur.html.twig', [
+
+            $response = $this->render('livrer/index_livreur.html.twig', [
                 'commandes' => $livrerRepository->findBy(['livreur' => $this->getUser()->getId(), 'livrer' => false]),
             ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 
-            return $this->render('livrer/index_client.html.twig', [
+
+            $response = $this->render('livrer/index_client.html.twig', [
                 'retours' => $retourProduitRepository->retour_client($this->getUser()->getId()),
                 'livrers' => $livrerRepository->findBy(['reste' => true, 'user' => $this->getUser()->getId()]),
                 'commandes' => $repository->findBy(['suivi' => true, 'livraison' => false, 'user' => $this->getUser()->getId()]),
                 'panier' => $session->get("panier", []),
             ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
