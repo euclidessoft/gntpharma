@@ -1,7 +1,8 @@
 
 <?php
 try {
-    $dbh = new PDO('mysql:host=localhost;dbname=gntpharma', 'root', '');
+//    $dbh = new PDO('mysql:host=localhost;dbname=gntpharma', 'root', '');
+    $dbh = new PDO('mysql:host=localhost;dbname=gntpharma_database', 'gntpharma_user', 'Izat95^0');
 //    $date = new \DateTime();
     $sth = $dbh->prepare( "SELECT * FROM promotion WHERE fin='".date('Y-m-d')."'");
     $sth->execute();
@@ -16,7 +17,7 @@ try {
 
             $s = $dbh->prepare( "UPDATE produit SET promotion_id = NULL WHERE id=".$promotionproduit['produit_id']);
             $s->execute();
-                echo "update successful";
+//                echo "update successful";
 
         }
     }
@@ -24,7 +25,6 @@ try {
 
 } catch (PDOException $e) {
     // tenter de réessayer la connexion après un certain délai, par exemple
-echo "echec de connexion";
    // DATABASE_URL = "mysql://gntpharma_user:Izat95^0@127.0.0.1:3306/gntpharma_database"
     }
 /*
