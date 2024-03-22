@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{_locale}/Promotion")
+ * @Route("/{_locale}/Promotions")
  */
 class PromotionController extends AbstractController
 {
