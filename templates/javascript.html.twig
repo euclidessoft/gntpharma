@@ -105,19 +105,19 @@
                             $('#btn' + id).html("<i class='fa fa-cart-shopping'></i>");
                             $('#btn' + id).addClass('disabled');
                         } else {
-                            alert("{{ 'verifier la quantite saisie 1'|trans }}")
+                            alert("{{ 'Vérifier la quantité saisie'|trans }}")
                         }
                     },
                     error: function () {
-                        alert("{{ 'La requête n a pas abouti'|trans }}");
+                        alert('{{ "La requête n'a pas abouti"|trans }}');
                     }
                 });
             } else {
-                var mess = "Maximum disponible  " + st;
+                var mess = "{{ 'Maximum disponible  ' }}" + st;
                 alert(mess);
             }
         } else {
-            var mess = "Commande minimun " + mincom;
+            var mess = "{{ 'Commande minimun '|trans}}" + mincom;
             alert(mess);
         }
 
@@ -330,7 +330,7 @@
                 // }else alert("Veuillez verifier les valeurs de la promotion");
 
             }else{
-                alert('Veuillez saisir tous les champs');
+                alert('{{ "Veuillez saisir tous les champs"|trans }}');
             }
 
         }else if ($('#promotion_type option:selected').val() == 'Réduction') {
@@ -343,10 +343,10 @@
                 valider.html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                 $('#form').submit();
             }else{
-                alert('Veuillez saisir tous les champs');
+                alert('{{ "Veuillez saisir tous les champs"|trans }}');
             }
         }else {
-            alert('Veuillez saisir tous les champs');
+            alert('{{ "Veuillez saisir tous les champs"|trans }}');
         }
     }
 
@@ -401,25 +401,25 @@
             },
         }],
         language: {
-            processing: "Traitement en cours...",
-            search: "Rechercher&nbsp;:",
-            lengthMenu: "Afficher _MENU_ &eacute;l&eacute;ments",
-            info: "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
-            infoEmpty: "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
-            infoFiltered: "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+            processing: "{{ 'Traitement en cours...'|trans }}",
+            search: "{{ 'Rechercher'|trans }} :",
+            lengthMenu: "{{ 'Afficher'|trans }} _MENU_ {{'élèments'|trans}}",
+            info: "{{'Affichage de l\'élement'|trans}} _START_ {{'à'|trans}} _END_ {{ 'sur'|trans }} _TOTAL_ {{'élèments'|trans}}",
+            infoEmpty: "{{'Affichage de l\'élèment 0 à 0 sur 0 élèments'|trans}}",
+            infoFiltered: "({{'filtré de'|trans}} _MAX_ {{'élèment au total'|trans}})",
             infoPostFix: "",
-            loadingRecords: "Chargement en cours...",
-            zeroRecords: "Aucun &eacute;l&eacute;ment &agrave; afficher",
-            emptyTable: "Aucune donnée disponible dans le tableau",
+            loadingRecords: "{{ 'Chargement en cours...'|trans }}",
+            zeroRecords: "{{'Aucun élèment à afficher'|trans}}",
+            emptyTable: "{{'Aucune donnée disponible dans le tableau'|trans}}",
             paginate: {
-                first: "Premier",
-                previous: "Pr&eacute;c&eacute;dent",
+                first: "{{ 'Premier'|trans }}",
+                previous: "{{'Précédent'|trans}}",
                 next: "{{ 'Suivant'|trans }}",
-                last: "Dernier"
+                last: "{{ 'Dernier'|trans }}"
             },
             aria: {
-                sortAscending: ": activer pour trier la colonne par ordre croissant",
-                sortDescending: ": activer pour trier la colonne par ordre décroissant"
+                sortAscending: ": {{ 'activer pour trier la colonne par ordre croissant'|trans }}",
+                sortDescending: ": {{'activer pour trier la colonne par ordre décroissant'|trans}}"
             }
         }
 
@@ -440,25 +440,25 @@
                 },
             }],
             language: {
-                processing: "Traitement en cours...",
-                search: "Rechercher &nbsp;:",
-                lengthMenu: "Afficher _MENU_ &eacute;l&eacute;ments",
-                info: "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
-                infoEmpty: "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
-                infoFiltered: "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+                processing: "{{ 'Traitement en cours...'|trans }}",
+                search: "{{ 'Rechercher'|trans }} :",
+                lengthMenu: "{{ 'Afficher'|trans }} _MENU_ {{'élèments'|trans}}",
+                info: "{{'Affichage de l\'élement|trans'}} _START_ {{'à'|trans}} _END_ {{ 'sur'|trans }} _TOTAL_ {{'élèments'|trans}}",
+                infoEmpty: "{{'Affichage de l\'élèment 0 à 0 sur 0 élèments'|trans}}",
+                infoFiltered: "({{'filtré de'|trans}} _MAX_ {{'élèment au total'|trans}})",
                 infoPostFix: "",
-                loadingRecords: "Chargement en cours...",
-                zeroRecords: "Aucun &eacute;l&eacute;ment &agrave; afficher",
-                emptyTable: "Aucune donnée disponible dans le tableau",
+                loadingRecords: "{{ 'Chargement en cours...'|trans }}",
+                zeroRecords: "{{'Aucun élèment à afficher'|trans}}",
+                emptyTable: "{{'Aucune donnée disponible dans le tableau'|trans}}",
                 paginate: {
-                    first: "Premier",
-                    previous: "Pr&eacute;c&eacute;dent",
-                    next: "Suivant",
-                    last: "Dernier"
+                    first: "{{ 'Premier'|trans }}",
+                    previous: "{{'Précédent'|trans}}",
+                    next: "{{ 'Suivant'|trans }}",
+                    last: "{{ 'Dernier'|trans }}"
                 },
                 aria: {
-                    sortAscending: ": activer pour trier la colonne par ordre croissant",
-                    sortDescending: ": activer pour trier la colonne par ordre décroissant"
+                    sortAscending: ": {{ 'activer pour trier la colonne par ordre croissant'|trans }}",
+                    sortDescending: ": {{'activer pour trier la colonne par ordre décroissant'|trans}}"
                 }
             }
 

@@ -107,7 +107,7 @@ class ProduitController extends AbstractController
                     return $response;
                 }
                 else{
-                    $this->addFlash('notice', 'Prix publique doit etre strictement superieur au prix de session');
+                    $this->addFlash('notice', 'Le prix public doit être strictement supérieur au prix de cession');
                 }
             }
             $response = $this->render('produit/admin/new.html.twig', [
@@ -473,7 +473,7 @@ class ProduitController extends AbstractController
 
                 if($produit->getPrix() < $produit->getPrixpublic()){
                     $this->getDoctrine()->getManager()->flush();
-                    $this->addFlash('notice', 'Produit modifie avec succes');
+                    $this->addFlash('notice', 'Produit modifié avec succès');
 
                     $response = $this->redirectToRoute('produit_edit', ['id' => $produit->getId()], Response::HTTP_SEE_OTHER);
                     $response->setSharedMaxAge(0);
@@ -488,7 +488,7 @@ class ProduitController extends AbstractController
 
                 }
                 else{
-                    $this->addFlash('notice', 'Prix publique doit etre strictement superieur au prix de session');
+                    $this->addFlash('notice', 'Le prix public doit être strictement supérieur au prix de cession');
                 }
 
 

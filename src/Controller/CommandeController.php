@@ -996,7 +996,7 @@ class CommandeController extends AbstractController
                     ]);
                     return $response;
                 } else {
-                    $this->addFlash('danger', 'Verifier le montant saisi');
+                    $this->addFlash('danger', 'Vérifier le montant saisi');
                     $response = $this->redirectToRoute('commande_panier_paiement', ['commande' => $commande->getId()], Response::HTTP_SEE_OTHER);
                     $response->setSharedMaxAge(0);
                     $response->headers->addCacheControlDirective('no-cache', true);
@@ -1085,7 +1085,7 @@ class CommandeController extends AbstractController
 //                    $entityManager->persist($commande);
                     $entityManager->persist($versement);
                     $entityManager->flush();
-                    $this->addFlash('notice', 'Versement effectué avec succés');
+                    $this->addFlash('notice', 'Réglement effectué avec succés');
 
                     $response = $this->redirectToRoute('commande_panier_paiement_credit', ['commande' => $commande->getId()], Response::HTTP_SEE_OTHER);
                     $response->setSharedMaxAge(0);
@@ -1098,7 +1098,7 @@ class CommandeController extends AbstractController
                     ]);
                     return $response;
                 } else {
-                    $this->addFlash('danger', 'Verifier le montant saisi');
+                    $this->addFlash('danger', 'Vérifier le montant saisi');
                     $response = $this->redirectToRoute('commande_panier_paiement_credit', ['commande' => $commande->getId()], Response::HTTP_SEE_OTHER);
                     $response->setSharedMaxAge(0);
                     $response->headers->addCacheControlDirective('no-cache', true);
