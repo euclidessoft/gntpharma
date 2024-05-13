@@ -769,6 +769,7 @@
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
+    border: 1px solid var(--secondaire);
 }
 
 .bloc-team .bloc-team-text {
