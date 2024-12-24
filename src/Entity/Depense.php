@@ -28,7 +28,7 @@ class Depense
     private $date;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="depenses")
      */
     private $categorie;
 
@@ -46,6 +46,8 @@ class Depense
      * @ORM\Column(type="string", length=255)
      */
     private $statut;
+
+   
 
     public function getId(): ?int
     {
@@ -76,17 +78,6 @@ class Depense
         return $this;
     }
 
-    public function getCategorie(): ?string
-    {
-        return $this->categorie;
-    }
-
-    public function setCategorie(string $categorie): self
-    {
-        $this->categorie = $categorie;
-
-        return $this;
-    }
 
     public function getMontant(): ?int
     {
@@ -123,4 +114,17 @@ class Depense
 
         return $this;
     }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): self
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
 }

@@ -1,0 +1,41 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block depense %}active{% endblock %}
+{% block all_categories %}active{% endblock %}
+{% block body %}
+<div class="container mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Liste des lignes de depenses"|trans }} <a href="{{ path('categorie_new') }}" class="btn btn-success">Ajouter</a>
+    </h3>
+
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+        <thead>
+            <tr>
+                <th>{{('Nom'|trans)}}</th>
+                <th>{{('Description'|trans)}}</th>
+                <th>{{('actions'|trans)}}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for categorie in categories %}
+            <tr>
+                <td>{{ categorie.nom }}</td>
+                <td>{{ categorie.description }}</td>
+                <td>
+                    <a href="{{ path('categorie_show', {'id': categorie.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('categorie_edit', {'id': categorie.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('categorie_new') }}">Create new</a>
+{% endblock %}
