@@ -2,29 +2,25 @@
 
 namespace App\Form;
 
-use App\Entity\Financement;
+use App\Entity\Categorie;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FinancementType extends AbstractType
+class CategorieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('provenance')
-            ->add('motif')
-            ->add('montant')
-            ->add('Type')
-            ->add('banque')
-            ->add('numero')
+            ->add('nom')
+            ->add('description')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Financement::class,
+            'data_class' => Categorie::class,
         ]);
     }
 }

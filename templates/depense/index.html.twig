@@ -1,4 +1,8 @@
 {% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block depense %}active{% endblock %}
+{% block all_depense %}active{% endblock %}
 {% block body %}
 <div class="container mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
@@ -24,7 +28,7 @@
             <tr>
                 <td>{{ depense.libelle }}</td>
                 <td>{{ depense.date ? depense.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ depense.categorie }}</td>
+                <td>{{ depense.categorie ?  depense.categorie.nom : ''}}</td>
                 <td>{{ depense.montant }}</td>
                 <td>{{ depense.reglement }}</td>
                 <td>{{ depense.statut }}</td>
@@ -46,6 +50,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('depense_new') }}">Create new</a>
 {% endblock %}
