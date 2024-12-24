@@ -328,7 +328,37 @@
                         </ul>
                     </li>
                 {% endif %}
+                {% if is_granted('ROLE_FINANCE') %}
+                    <li class="nav-item dropright" title="{{ 'Finance'|trans }}">
+                        <a class="nav-link dropdown-toggle {% block finance %} {% endblock %}" href="#" id="finance"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <div class="icone">
+                                <i class="fa-solid fa-sack-dollar fa-lg"></i>
 
+                            </div>
+                            <div class="title">
+                                {{ 'Finance'|trans }}
+                            </div>
+                        </a>
+                        <ul class=" dropdown-menu" aria-labelledby="finance">
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block new_depense %}{% endblock %}"
+                                   href="{{ path('depense_new') }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    {{ 'Créer une dépense'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block all_depense %}{% endblock %}"
+                                   href="{{ path('depense_index') }}">
+                                    <i class="fa fa-list mr-2"></i>
+                                    {{ 'Dépenses'|trans }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
 
                 <li class="nav-item dropright" title="{{ 'Aide'|trans }}">
                     <a class="nav-link dropdown-toggle {% block aide %}{% endblock %}" href="#" id="Aide"
