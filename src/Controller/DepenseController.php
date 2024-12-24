@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/depense")
+ * @Route("/{_locale}/depense")
  */
 class DepenseController extends AbstractController
 {
