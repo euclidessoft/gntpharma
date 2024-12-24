@@ -17,8 +17,26 @@ class Debit
      */
     private $id;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Depense::class)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $depense;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getDepense(): ?Depense
+    {
+        return $this->depense;
+    }
+
+    public function setDepense(?Depense $depense = null): self
+    {
+        $this->depense = $depense;
+
+        return $this;
     }
 }

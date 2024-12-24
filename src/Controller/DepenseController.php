@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Debit;
 use App\Entity\Depense;
 use App\Form\DepenseType;
 use App\Repository\DepenseRepository;
@@ -31,12 +32,15 @@ class DepenseController extends AbstractController
     public function new(Request $request): Response
     {
         $depense = new Depense();
+        $debit = new Debit();
         $form = $this->createForm(DepenseType::class, $depense);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $debit->setDepense($depense);
             $entityManager->persist($depense);
+            $entityManager->persist($debit);
             $entityManager->flush();
 
             return $this->redirectToRoute('depense_index', [], Response::HTTP_SEE_OTHER);
