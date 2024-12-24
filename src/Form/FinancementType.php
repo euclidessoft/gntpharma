@@ -15,7 +15,6 @@ class FinancementType extends AbstractType
             ->add('provenance')
             ->add('motif')
             ->add('montant')
-            ->add('date')
             ->add('Type')
             ->add('banque')
             ->add('numero')

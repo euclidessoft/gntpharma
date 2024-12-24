@@ -1,4 +1,8 @@
 {% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block depense %}active{% endblock %}
+{% block new_depense %}active{% endblock %}
 
 {% block body %}
     {{ include('depense/_form.html.twig') }}

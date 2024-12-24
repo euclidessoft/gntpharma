@@ -1,28 +1,32 @@
-<!DOCTYPE html>
-
-<title>Financement index</title>
-
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block financement %}active{% endblock %}
+{% block financement_index %}active{% endblock %}
 {% block body %}
-    <h1>Financement index</h1>
+<div class="container mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Listes des financements"|trans }}
+    </h3>
 
-    <table class="table">
+
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Provenance</th>
-                <th>Motif</th>
-                <th>Montant</th>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Banque</th>
-                <th>Numero</th>
-                <th>actions</th>
+                <th>{{ 'Provenance'|trans }}</th>
+                <th>{{ 'Motif'|trans }}</th>
+                <th>{{ 'Montant'|trans }}</th>
+                <th>{{ 'Date'|trans }}</th>
+                <th>{{ 'Type'|trans }}</th>
+                <th>{{ 'Banque'|trans }}</th>
+                <th>{{ 'Numero'|trans }}</th>
+                <th>{{ 'actions'|trans }}</th>
             </tr>
         </thead>
         <tbody>
         {% for financement in financements %}
             <tr>
-                <td>{{ financement.id }}</td>
                 <td>{{ financement.provenance }}</td>
                 <td>{{ financement.motif }}</td>
                 <td>{{ financement.montant }}</td>
@@ -31,8 +35,9 @@
                 <td>{{ financement.banque }}</td>
                 <td>{{ financement.numero }}</td>
                 <td>
-                    <a href="{{ path('financement_show', {'id': financement.id}) }}">show</a>
-                    <a href="{{ path('financement_edit', {'id': financement.id}) }}">edit</a>
+                    <a title="{{'Voir'|trans}}" class="btn btn-success" id="{{ financement.id }}" onclick="load({{ financement.id }})" href="{{ path('financement_show', {'id': financement.id}) }}"><i class="fa fa-eye"></i></a>
+                    <a title="{{'Modifier'|trans}}" class="btn btn-success-light" href="{{ path('financement_edit', {'id': financement.id}) }}"><i class="fa fa-edit"></i></a>
+                    {{ include('financement/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
@@ -42,6 +47,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('financement_new') }}">Create new</a>
 {% endblock %}

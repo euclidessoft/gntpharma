@@ -342,19 +342,86 @@
                             </div>
                         </a>
                         <ul class=" dropdown-menu" aria-labelledby="finance">
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block new_depense %}{% endblock %}"
-                                   href="{{ path('depense_new') }}">
-                                    <i class="fa fa-plus mr-2"></i>
-                                    {{ 'Créer une dépense'|trans }}
+                        <li class="dropdown-item submenu">
+                                <a class="nav-link dropdown-toggle {% block vente %}{% endblock %}" href="#"
+                                   id="reapprovisionnement"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-warehouse"></i>
+                                    <i class="fas fa-arrow-left mr-2"></i>
+                                    {{ 'Vente'|trans }}
                                 </a>
+                                <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+                                    <li class="dropdown-item">
+                                        <a class="nav-link  {% block new_ventes %}{% endblock %}"
+                                           href="">
+                                            <i class="fas fa-warehouse"></i>
+                                            <i class="fas fa-plus mr-2"></i>
+                                            {{ 'Créer une ventes'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block all_ventes %}{% endblock %}"
+                                           href="">
+                                            <i class="fas fa-warehouse"></i>
+                                            <i class="fas fa-warehouse fa-list mr-2"></i>
+                                            {{ 'Toutes les ventes'|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block all_depense %}{% endblock %}"
-                                   href="{{ path('depense_index') }}">
-                                    <i class="fa fa-list mr-2"></i>
-                                    {{ 'Dépenses'|trans }}
+                            <li class="dropdown-item submenu">
+                                <a class="nav-link dropdown-toggle {% block depense %}{% endblock %}" href="#"
+                                   id="reapprovisionnement"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-warehouse"></i>
+                                    <i class="fas fa-arrow-left mr-2"></i>
+                                    {{ 'Dépense'|trans }}
                                 </a>
+                                <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+                                    <li class="dropdown-item">
+                                        <a class="nav-link  {% block new_depense %}{% endblock %}"
+                                           href="{{ path('depense_new') }}">
+                                            <i class="fas fa-warehouse"></i>
+                                            <i class="fas fa-plus mr-2"></i>
+                                            {{ 'Créer une dépense'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block all_depense %}{% endblock %}"
+                                           href="{{ path('depense_index') }}">
+                                            <i class="fas fa-warehouse"></i>
+                                            <i class="fas fa-warehouse fa-list mr-2"></i>
+                                            {{ 'Toutes les dépenses'|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-item submenu">
+                                <a class="nav-link dropdown-toggle {% block financement %}{% endblock %}" href="#"
+                                   id="reapprovisionnement"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-warehouse"></i>
+                                    <i class="fas fa-arrow-left mr-2"></i>
+                                    {{ 'Financement'|trans }}
+                                </a>
+                                <ul class="dropdown-submenu" aria-labelledby="financement">
+                                    <li class="dropdown-item">
+                                        <a class="nav-link  {% block new_financement %}{% endblock %}"
+                                           href="{{ path('financement_new') }}">
+                                            <i class="fas fa-warehouse"></i>
+                                            <i class="fas fa-plus mr-2"></i>
+                                            {{ 'Nouvelle financement'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block financement_index %}{% endblock %}"
+                                           href="{{ path('financement_index') }}">
+                                            <i class="fas fa-warehouse"></i>
+                                            <i class="fas fa-warehouse fa-list mr-2"></i>
+                                            {{ 'Toutes les financements'|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </li>
