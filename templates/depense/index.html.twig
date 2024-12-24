@@ -1,36 +1,42 @@
-<!DOCTYPE html>
-
-<title>Depense index</title>
-
+{% extends 'admin.html.twig' %}
 {% block body %}
-    <h1>Depense index</h1>
+<div class="container mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Listes des depenses"|trans }}
+    </h3>
 
-    <table class="table">
+
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Libelle</th>
-                <th>Date</th>
-                <th>Categorie</th>
-                <th>Montant</th>
-                <th>Reglement</th>
-                <th>Statut</th>
-                <th>actions</th>
+                <th>{{ 'Libelle'|trans }}</th>
+                <th>{{ 'Date'|trans }}</th>
+                <th>{{ 'Ligne'|trans }}</th>
+                <th>{{ 'Montant'|trans }}</th>
+                <th>{{ 'Reglement'|trans }}</th>
+                <th>{{ 'Statut'|trans }}</th>
+                <th>{{ 'actions'|trans }}</th>
             </tr>
         </thead>
         <tbody>
         {% for depense in depenses %}
             <tr>
-                <td>{{ depense.id }}</td>
                 <td>{{ depense.libelle }}</td>
                 <td>{{ depense.date ? depense.date|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ depense.categorie }}</td>
                 <td>{{ depense.montant }}</td>
                 <td>{{ depense.reglement }}</td>
                 <td>{{ depense.statut }}</td>
-                <td>
-                    <a href="{{ path('depense_show', {'id': depense.id}) }}">show</a>
-                    <a href="{{ path('depense_edit', {'id': depense.id}) }}">edit</a>
+                <td class="text-nowrap">
+                    <a id="{{ depense.id }}" onclick="load({{ depense.id }})" href="{{ path('depense_show', {'id': depense.id}) }}" title="{{'Voir'|trans}}" class="btn btn-success">
+                    <i class="fa fa-eye"></i>
+                    </a>
+                    <a href="{{ path('depense_edit', {'id': depense.id}) }}" title="{{'Modifier'|trans}}" class="btn btn-success-light">
+                    <i class="fa fa-edit"></i>
+                    </a>            
+                    {{ include('depense/_delete_form.html.twig') }}
+                </td>
                 </td>
             </tr>
         {% else %}
