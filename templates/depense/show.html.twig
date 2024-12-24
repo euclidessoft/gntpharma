@@ -19,7 +19,7 @@
             </tr>
             <tr>
                 <th>Categorie</th>
-                <td>{{ depense.categorie }}</td>
+                <td>{{ depense.categorie ?  depense.categorie.nom : ''}}</td>
             </tr>
             <tr>
                 <th>Montant</th>
