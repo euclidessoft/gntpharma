@@ -28,7 +28,7 @@
             <tr>
                 <td>{{ depense.libelle }}</td>
                 <td>{{ depense.date ? depense.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ depense.categorie }}</td>
+                <td>{{ depense.categorie ?  depense.categorie.nom : ''}}</td>
                 <td>{{ depense.montant }}</td>
                 <td>{{ depense.reglement }}</td>
                 <td>{{ depense.statut }}</td>
