@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit Financement</title>
+
+{% block body %}
+    <h1>Edit Financement</h1>
+
+    {{ include('financement/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('financement_index') }}">back to list</a>
+
+    {{ include('financement/_delete_form.html.twig') }}
+{% endblock %}

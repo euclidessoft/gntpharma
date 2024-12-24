@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<title>Financement index</title>
+
+{% block body %}
+    <h1>Financement index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Provenance</th>
+                <th>Motif</th>
+                <th>Montant</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Banque</th>
+                <th>Numero</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for financement in financements %}
+            <tr>
+                <td>{{ financement.id }}</td>
+                <td>{{ financement.provenance }}</td>
+                <td>{{ financement.motif }}</td>
+                <td>{{ financement.montant }}</td>
+                <td>{{ financement.date ? financement.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ financement.Type }}</td>
+                <td>{{ financement.banque }}</td>
+                <td>{{ financement.numero }}</td>
+                <td>
+                    <a href="{{ path('financement_show', {'id': financement.id}) }}">show</a>
+                    <a href="{{ path('financement_edit', {'id': financement.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('financement_new') }}">Create new</a>
+{% endblock %}
