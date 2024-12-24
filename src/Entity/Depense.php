@@ -47,6 +47,15 @@ class Depense
      */
     private $statut;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->date = new \Datetime();
+        $this->statut= "éffectuée";
+    }
+
     public function getId(): ?int
     {
         return $this->id;
