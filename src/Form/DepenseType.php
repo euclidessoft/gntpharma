@@ -13,11 +13,9 @@ class DepenseType extends AbstractType
     {
         $builder
             ->add('libelle')
-            ->add('date')
             ->add('categorie')
             ->add('montant')
             ->add('reglement')
-            ->add('statut')
         ;
     }
 
