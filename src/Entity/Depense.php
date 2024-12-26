@@ -148,6 +148,7 @@ class Depense
     public function setCompte(int $compte): self
     {
         $this->compte = $compte;
+        return $this;
     }
 
     public function getBanque(): ?string
