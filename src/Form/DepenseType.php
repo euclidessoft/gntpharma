@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Categorie;
 use App\Entity\Depense;
+use App\Form\Type\VerserType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,8 +22,10 @@ class DepenseType extends AbstractType
                 'placeholder' => 'Sélectionnez une ligne de depense', 
                 'required' => true, 
             ])
+            ->add('type', VerserType::class,array('placeholder' => 'Type de Paiement'))
             ->add('montant')
-            ->add('reglement')
+            ->add('banque')
+            ->add('numero')
         ;
     }
 

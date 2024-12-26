@@ -40,12 +40,23 @@ class Depense
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $reglement;
+    private $statut;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $banque;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $numero;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $statut;
+    private $type;
+
 
     /**
      * @ORM\Column(type="integer")
@@ -104,18 +115,6 @@ class Depense
         return $this;
     }
 
-    public function getReglement(): ?string
-    {
-        return $this->reglement;
-    }
-
-    public function setReglement(string $reglement): self
-    {
-        $this->reglement = $reglement;
-
-        return $this;
-    }
-
     public function getStatut(): ?string
     {
         return $this->statut;
@@ -140,6 +139,7 @@ class Depense
         return $this;
     }
 
+
     public function getCompte(): ?int
     {
         return $this->compte;
@@ -148,6 +148,40 @@ class Depense
     public function setCompte(int $compte): self
     {
         $this->compte = $compte;
+    }
+
+    public function getBanque(): ?string
+    {
+        return $this->banque;
+    }
+
+    public function setBanque(?string $banque): self
+    {
+        $this->banque = $banque;
+
+        return $this;
+    }
+
+    public function getNumero(): ?int
+    {
+        return $this->numero;
+    }
+
+    public function setNumero(?int $numero): self
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
