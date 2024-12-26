@@ -30,7 +30,7 @@
                 <td>{{ depense.date ? depense.date|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ depense.categorie ?  depense.categorie.nom : ''}}</td>
                 <td>{{ depense.montant }}</td>
-                <td>{{ depense.reglement }}</td>
+                <td>{{ depense.type }}</td>
                 <td>{{ depense.statut }}</td>
                 <td class="text-nowrap">
                     <a id="{{ depense.id }}" onclick="load({{ depense.id }})" href="{{ path('depense_show', {'id': depense.id}) }}" title="{{'Voir'|trans}}" class="btn btn-success">
