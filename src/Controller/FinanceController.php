@@ -42,7 +42,7 @@ class FinanceController extends AbstractController
                         $caisse = $caisse + $credit->getGain()->getMontant();
                         //$gain[] = $credit;
                     } else {
-                        $banque = $banque + $credit->getGain()->getMontant();
+                        $banque = $banque + $credit->getFinancement()->getMontant();
                         //$gain[] = $credit;
                     }
 
@@ -62,10 +62,11 @@ class FinanceController extends AbstractController
            // }
         }
         return $this->render('finance/index.html.twig',[
+            'caisse' => $caisse,
             'banque' => $banque - $debitbanque,
             'transferer' => $transferer,
             'debits' => $debits,
-          //  'ecritures' => $repository->findAll(),
+            'ecritures' => $ecritures,
         ]);
     }
 //

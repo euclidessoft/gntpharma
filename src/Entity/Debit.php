@@ -23,6 +23,25 @@ class Debit
      */
     private $depense;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $date;
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->date = new \Datetime();
+    }
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $montant;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -36,6 +55,30 @@ class Debit
     public function setDepense(?Depense $depense = null): self
     {
         $this->depense = $depense;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getMontant(): ?int
+    {
+        return $this->montant;
+    }
+
+    public function setMontant(int $montant): self
+    {
+        $this->montant = $montant;
 
         return $this;
     }
