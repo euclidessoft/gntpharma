@@ -1,0 +1,75 @@
+{% extends "accueil.html.twig" %}
+{% block title %} {{ 'Modification financement'|trans }} - Hajjalbayt {% endblock %}
+{% block finance %} class="nav-item dropright active" {% endblock %}
+{% block body %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="col-md-6 offset-md-3 mt-5 fond-7">
+            <h3 class="mt-4 mb-5 text-bold">
+                <i class="fa fa-money-bill"></i><i class="fa fa-sign-in-alt ml-n2 mr-2"></i>
+                {{ 'Modification financement'|trans }}
+            </h3>
+            <div class="col-md-10 offset-md-1 mb-5">
+                {{form_start(form, {'attr':{'id': 'form'}})}}
+
+                <div class="form-group mt-4">
+                    {{ form_row(form.provenance, {'attr':{'placeholder':'Provenance'}, 'label':false})}}
+                </div>
+                <div class="form-group mt-4">
+                    {{ form_row(form.motif, {'attr':{'placeholder':'Motif'}, 'label':false})}}
+                </div>
+                <div class="form-group mt-4">
+                    {{ form_row(form.type, {'label':false, 'attr' : {'onchange' : 'typeversement()'}})}}
+                </div>
+                <div id="versement">
+                    <div class="form-group mt-4">
+                        {{ form_row(form.banque, {'label':false, 'attr' : {'placeholder':'Banque'}})}}
+                    </div>
+                    <div class="form-group mt-4">
+                        {{ form_row(form.numero, {'label':false, 'attr' : {'placeholder':'Numéro'}})}}
+                    </div>
+                </div>
+                <div class="form-group mt-4">
+                    {{form_errors(form.montant) }}
+                    <div class="input-group">
+                        {{form_widget(form.montant, {'attr':{'placeholder':'Montant'}, 'label':false})}}
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                F CFA
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 offset-md-3 mt-4 mb-5 pt-3 pb-2 fond-7">
+            <div class="centrer">
+                <div class="row">
+                    <button type="button" class="btn btn-shadow btn-green btn-normal mb-2 mr-2" id="send" onclick="number()">
+                        <i class="fa fa-save"></i>
+                        {{ 'Enregistrer'|trans }}
+                    </button>
+                    <a href="{{ path('Mecque_GainList')}}" class="btn btn-shadow btn-warning btn-normal mb-2">
+                        <i class="fa fa-undo"></i>
+                        {{ 'Annuler'|trans }}
+                    </a>
+                    {{ form_rest(form) }}
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+    {% block script %}
+        <script>
+
+            {{ include('scripts/typeversement.html.twig') }}
+
+            {{ include('scripts/number.html.twig') }}
+
+        </script>
+    {% endblock %}
+
+{% endblock %}

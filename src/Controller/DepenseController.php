@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Debit;
 use App\Entity\Depense;
+use App\Entity\Ecriture;
 use App\Form\DepenseType;
 use App\Repository\DepenseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,14 +34,19 @@ class DepenseController extends AbstractController
     {
         $depense = new Depense();
         $debit = new Debit();
+        $ecriture = new Ecriture();
         $form = $this->createForm(DepenseType::class, $depense);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $debit->setDepense($depense);
+            $ecriture->setDebit($debit);
+            $ecriture->setSolde(-$depense->getMontant());
+            $depense->setCompte($depense->getCategorie()->getCompte()->getNumero());
             $entityManager->persist($depense);
             $entityManager->persist($debit);
+            $entityManager->persist($ecriture);
             $entityManager->flush();
 
             return $this->redirectToRoute('depense_index', [], Response::HTTP_SEE_OTHER);

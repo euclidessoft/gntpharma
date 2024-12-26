@@ -47,6 +47,11 @@ class Depense
      */
     private $statut;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $compte;
+
    
     /**
      * Constructor
@@ -131,6 +136,18 @@ class Depense
     public function setCategorie(?Categorie $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getCompte(): ?int
+    {
+        return $this->compte;
+    }
+
+    public function setCompte(int $compte): self
+    {
+        $this->compte = $compte;
 
         return $this;
     }

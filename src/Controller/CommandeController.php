@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Commande;
 use App\Entity\CommandeProduit;
 use App\Entity\Credit;
+use App\Entity\Ecriture;
 use App\Entity\Paiement;
 use App\Entity\User;
 use App\Entity\Versement;
@@ -970,6 +971,7 @@ class CommandeController extends AbstractController
 
             $paiement = new Paiement();
             $credit = new Credit();
+            $ecriture = new Ecriture();
             $form = $this->createForm(PaiementFormType::class, $paiement);
             $form->handleRequest($request);
 
@@ -983,9 +985,13 @@ class CommandeController extends AbstractController
                     $commande->setPayer(true);
                     $commande->setPaiement($paiement);
                     $credit->setPaiement($paiement);// ecriture copmtable du paiement
+                    $credit->setTva($commande->getTva());
+                    $ecriture->setCredit($credit);
+                    $ecriture->setSolde($commande->getMontant());
                     $entityManager->persist($commande);
                     $entityManager->persist($paiement);
                     $entityManager->persist($credit);
+                    $entityManager->persist($ecriture);
                     $entityManager->flush();
                     $this->addFlash('notice', 'Paiement effectué avec succés');
 
@@ -1074,6 +1080,7 @@ class CommandeController extends AbstractController
 
             $versement = new Versement();
             $credit = new Credit();
+            $ecriture = new Ecriture();
             $form = $this->createForm(VersementType::class, $versement);
             $form->handleRequest($request);
 
@@ -1082,15 +1089,23 @@ class CommandeController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 if ($versement->getMontant() <= ($commande->getMontant() - $commande->getVersement())) {
                     $commande->setVersement($commande->getVersement() + $versement->getMontant());// MAJ versement
-                    if ($commande->getVersement() == $commande->getMontant()) $commande->setPayer(true);
+                    if ($commande->getVersement() == $commande->getMontant()) {
+
+                        $commande->setPayer(true);
+                        $credit->setTva($commande->getTva());
+
+                    }
                     $versement->setUser($this->getUser());
                     $versement->setCommande($commande);
 //                    $commande->setSuivi(true);
 //                    $commande->setPaiement($versement);
 //                    $entityManager->persist($commande);
                     $credit->setVersement($versement);// ecriture comptable
+                    $ecriture->setSolde($versement->getMontant());
+                    $ecriture->setCredit($credit);
                     $entityManager->persist($versement);
                     $entityManager->persist($credit);
+                    $entityManager->persist($ecriture);
                     $entityManager->flush();
                     $this->addFlash('notice', 'Réglement effectué avec succés');
 

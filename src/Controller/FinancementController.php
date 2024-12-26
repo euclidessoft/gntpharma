@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Credit;
+use App\Entity\Ecriture;
 use App\Entity\Financement;
 use App\Form\FinancementType;
 use App\Repository\FinancementRepository;
@@ -31,12 +33,19 @@ class FinancementController extends AbstractController
     public function new(Request $request): Response
     {
         $financement = new Financement();
+        $credit = new Credit();
+        $ecriture = new Ecriture();
         $form = $this->createForm(FinancementType::class, $financement);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $credit->setFinancement($financement);// ecriture comptable
+            $ecriture->setSolde($financement->getMontant());
+            $ecriture->setCredit($credit);
             $entityManager->persist($financement);
+            $entityManager->persist($credit);
+            $entityManager->persist($ecriture);
             $entityManager->flush();
 
             return $this->redirectToRoute('financement_index', [], Response::HTTP_SEE_OTHER);

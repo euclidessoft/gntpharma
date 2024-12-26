@@ -342,6 +342,13 @@
                             </div>
                         </a>
                         <ul class=" dropdown-menu" aria-labelledby="finance">
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block journal %}{% endblock %}"
+                                   href="{{ path('finance_index') }}">
+                                    <i class="fas fa-users mr-2"></i>
+                                    {{ 'Journal'|trans }}
+                                </a>
+                            </li>
                         <li class="dropdown-item submenu">
                                 <a class="nav-link dropdown-toggle {% block vente %}{% endblock %}" href="#"
                                    id="reapprovisionnement"
@@ -351,14 +358,7 @@
                                     {{ 'Vente'|trans }}
                                 </a>
                                 <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
-                                    <li class="dropdown-item">
-                                        <a class="nav-link  {% block new_ventes %}{% endblock %}"
-                                           href="">
-                                            <i class="fas fa-warehouse"></i>
-                                            <i class="fas fa-plus mr-2"></i>
-                                            {{ 'Créer une ventes'|trans }}
-                                        </a>
-                                    </li>
+
                                     <li class="dropdown-item">
                                         <a class="nav-link {% block all_ventes %}{% endblock %}"
                                            href="">
@@ -378,14 +378,7 @@
                                     {{ 'Dépense'|trans }}
                                 </a>
                                 <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
-                                    <li class="dropdown-item">
-                                        <a class="nav-link  {% block all_categories %}{% endblock %}"
-                                           href="{{ path('categorie_index') }}">
-                                            <i class="fas fa-warehouse"></i>
-                                            <i class="fas fa-plus mr-2"></i>
-                                            {{ 'Listes des Lignes de dépense'|trans }}
-                                        </a>
-                                    </li>
+
                                     <li class="dropdown-item">
                                         <a class="nav-link  {% block new_depense %}{% endblock %}"
                                            href="{{ path('depense_new') }}">
@@ -400,6 +393,14 @@
                                             <i class="fas fa-warehouse"></i>
                                             <i class="fas fa-warehouse fa-list mr-2"></i>
                                             {{ 'Toutes les dépenses'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link  {% block all_categories %}{% endblock %}"
+                                           href="{{ path('categorie_index') }}">
+                                            <i class="fas fa-warehouse"></i>
+                                            <i class="fas fa-plus mr-2"></i>
+                                            {{ 'Lignes de dépense'|trans }}
                                         </a>
                                     </li>
                                 </ul>

@@ -1,0 +1,129 @@
+{% extends "layout.html.twig" %}
+{% block title %} {{ 'Tous les versements'|trans }} - Hajjalbayt {% endblock %}
+{% block finance %} class="nav-item dropright active" {% endblock %}
+{% block body %}
+
+    <div class="col-md-8 offset-md-2 mt-5 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-money-bill"></i><i class="fa fa-sign-in-alt ml-n2 mr-2"></i>
+            {{ 'Tous les versements'|trans }}
+        </h3>
+        <table class="table table-success-light table-striped table-bordered" id="list">
+            <thead>
+            <tr>
+                <th class="text-center text-nowrap">
+                    {{ 'Nº versement'|trans }}
+                </th>
+                <th>
+                    {{ 'Provenance'|trans }}
+                </th>
+                <th>
+                    {{ 'Type'|trans }}
+                </th>
+                <th class="text-center">
+                    {{ 'Montant'|trans }}
+                </th>
+                <th class="text-center">
+                    {{ 'Facturation'|trans }}
+                </th>
+                <th class="text-center">
+                    {{ 'Encaissement'|trans }}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% if credits is not empty %}
+                {% for credit in credits %}
+
+                    <tr id="versement_{{ credit.versement.id }}">
+                        {% if credit.versement is null %}
+                            <td class="text-center">
+                                {{ credit.versementagence.agence.id }}
+                            </td>
+                            <td data-label="{{ 'Provenance'|trans }}">
+                                {{ credit.versementagence.agence.nom }}
+                            </td>
+                            <td data-label="{{ 'Type'|trans }}">
+
+                            </td>
+                            <td data-label="{{ 'Montant'|trans }}" class="montant">
+                                {{ credit.versementagence.montant|number_format(0, '', ' ') }}
+                            </td>
+                            <td data-label="{{ 'Facturation'|trans }}" class="text-center">
+                                {{ credit.versementagence.date|date('d/m/Y') }}
+                                <br>
+                                {{ credit.versementagence.date|date('H:i:s') }}
+                            </td>
+                            <td data-label="{{ 'Encaissement'|trans }}" class="text-center">
+                                {{ credit.date|date('d/m/Y') }}
+                            </td>
+
+                        {% else %}
+                            <td data-label="{{ 'Nº versement'|trans }}" class="text-center">
+                                {{ credit.versement.date|date('ymd') }}{{ credit.versement.id }}
+                            </td>
+                            <td data-label="{{ 'Provenance'|trans }}">
+                                {{ credit.versement.pelerin.prenom }}
+                                {{ credit.versement.pelerin.nom }}
+                            </td>
+                            <td data-label="{{ 'Type'|trans }}">
+                                {{ credit.versement.type|trans }}
+                                {% if credit.versement.banque is not null %}
+                                    {{ credit.versement.banque }}
+                                    <br>
+                                    <span class="text-nowrap">Nº : {{ credit.versement.numero }}</span>
+                                {% endif %}
+                            </td>
+                            <td data-label="{{ 'Montant'|trans }}" class="montant">
+                                {{ credit.versement.montant|number_format(0, '', ' ') }}
+                            </td>
+                            <td data-label="{{ 'Facturation'|trans }}" class="text-center">
+                                {{ credit.versement.date|date('d/m/Y') }}
+                                <br>
+                                {{ credit.versement.date|date('H:i:s') }}
+                                <br>
+                                <b> {{ credit.versement.facturer.username }} </b>
+                            </td>
+                            <td data-label="{{ 'Encaissement'|trans }}" class="text-center">
+                                {{ credit.date|date('d/m/Y') }}
+                                <br>
+                                <b> {{ credit.versement.encaisser.username }} </b>
+                            </td>
+
+                        {% endif %}
+                    </tr>
+
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td data-label="colspan" colspan="6">
+                        {{ 'Aucun versement'|trans }}
+                    </td>
+                </tr>
+            {% endif %}
+
+            </tbody>
+        </table>
+    </div>
+    {% if app.user.agence.licence == 1 %}
+        {% if credits is not empty %}
+            <div class="col-md-8 offset-md-2 mt-4 mb-5 fond-7 pt-3 pb-2">
+                <div class="centrer">
+                    <span id="exportexcel"></span>
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="col-md-8 offset-md-2 mt-4 mb-5 fond-7 pt-3 pb-2">
+            <div class="centrer">
+                <button data-toggle="modal" data-target="#licence" class="btn btn-shadow btn-bas btn-green">
+                    <i class="fa fa-file-excel fa-lg"></i>
+                    {{ 'Exporter vers Excel'|trans }}
+                </button>
+                {{ include('licence/licence-popup.html.twig') }}
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

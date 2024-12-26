@@ -13,6 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Categorie
 {
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Compte")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $compte;
+
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -94,6 +100,18 @@ class Categorie
                 $depense->setDepense(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCompte(): ?Compte
+    {
+        return $this->compte;
+    }
+
+    public function setCompte(?Compte $compte): self
+    {
+        $this->compte = $compte;
 
         return $this;
     }

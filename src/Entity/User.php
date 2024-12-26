@@ -119,6 +119,11 @@ class User implements UserInterface
      */
     private $livreur;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $compte;
+
 
     public function __construct()
     {
@@ -299,6 +304,18 @@ class User implements UserInterface
     public function setLivreur(bool $livreur): self
     {
         $this->livreur = $livreur;
+
+        return $this;
+    }
+
+    public function getCompte(): ?int
+    {
+        return $this->compte;
+    }
+
+    public function setCompte(?int $compte): self
+    {
+        $this->compte = $compte;
 
         return $this;
     }
