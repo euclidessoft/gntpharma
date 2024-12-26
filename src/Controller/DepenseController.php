@@ -41,6 +41,7 @@ class DepenseController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $debit->setDepense($depense);
+            $debit->setMontant($depense->getMontant());
             $ecriture->setDebit($debit);
             $ecriture->setSolde(-$depense->getMontant());
             $depense->setCompte($depense->getCategorie()->getCompte()->getNumero());
