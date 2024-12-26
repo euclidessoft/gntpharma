@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Financement;
+use App\Form\Type\VerserType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +16,7 @@ class FinancementType extends AbstractType
             ->add('provenance')
             ->add('motif')
             ->add('montant')
-            ->add('Type')
+            ->add('Type', VerserType::class,array('placeholder' => 'Type de Paiement'))
             ->add('banque')
             ->add('numero')
         ;

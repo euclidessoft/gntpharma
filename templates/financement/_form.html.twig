@@ -7,15 +7,15 @@
     </h4>
 
     {% for message in app.flashes('notice') %}
-        <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                &times;
-            </button>
-            {{ message|trans }}
-        </div>
+    <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+            &times;
+        </button>
+        {{ message|trans }}
+    </div>
     {% endfor %}
     <div class="row">
- 
+
         <div class="col-12 mb-4">
             {{ form_row(form.provenance, {'attr': {'placeholder': 'Provenance *'}, 'label': false}) }}
         </div>
@@ -29,19 +29,32 @@
         </div>
 
         <div class="col-12 mb-4">
-            {{ form_row(form.Type, {'attr': {'placeholder': 'Type *'}, 'label': false}) }}
-        </div>
-
-        <div class="col-12 mb-4">
-            {{ form_row(form.banque, {'attr': {'placeholder': 'Banque *'}, 'label': false}) }}
-        </div>
-
-        <div class="col-12 mb-4">
-            {{ form_row(form.numero, {'attr': {'placeholder': 'Numéro *'}, 'label': false}) }}
+            {{ form_row(form.Type, { 'attr' : {'onchange' : 'typeversement()'}, 'label': false}) }}
         </div>
     </div>
-
-{{ form_rest(form) }}
+    <div id="versement">
+        <div class="form-group mt-2">
+            {{ form_row(form.banque, {'label':false, 'attr' : {'placeholder':'Banque'}}) }}
+        </div>
+        <div class="form-group mt-4">
+            {{ form_row(form.numero, {'label':false, 'attr' : {'placeholder':'Numéro'}}) }}
+        </div>
+    </div>
+    {{ form_rest(form) }}
 </div>
 
-{{ form_end(form) }}
+
+{% block scripts %}
+<script>
+    function typeversement() {
+        if ($('#financement_Type option:selected').val() == 'Cheque' || $('#financement_Type option:selected').val() == 'Virement') {
+            $('#versement').show();
+            $('#depense_numero').val();
+        } else {
+            $('#versement').hide();
+            $('#depense_numero').val();
+        }
+    }
+</script>
+
+{% endblock %}
