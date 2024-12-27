@@ -349,6 +349,14 @@
                                     {{ 'Journal'|trans }}
                                 </a>
                             </li>
+                            
+                            <li class="dropdown-item ">
+                                <a class="nav-link {% block compte %}{% endblock %}"
+                                   href="{{ path('compte_index') }}">
+                                    <i class="fas fa-book mr-2"></i>
+                                    {{ 'Plan comptable'|trans }}
+                                </a>
+                            </li>
                         <li class="dropdown-item submenu">
                                 <a class="nav-link dropdown-toggle {% block vente %}{% endblock %}" href="#"
                                    id="reapprovisionnement"
