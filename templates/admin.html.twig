@@ -357,6 +357,14 @@
                                     {{ 'Plan comptable'|trans }}
                                 </a>
                             </li>
+
+                            <li class="dropdown-item ">
+                                <a class="nav-link {% block transfert %}{% endblock %}"
+                                   href="{{ path('transfert_index') }}">
+                                    <i class="fas fa-money-bill mr-2"></i>
+                                    {{ 'Transfert fonds'|trans }}
+                                </a>
+                            </li>
                         <li class="dropdown-item submenu">
                                 <a class="nav-link dropdown-toggle {% block vente %}{% endblock %}" href="#"
                                    id="reapprovisionnement"

@@ -1,0 +1,47 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block transfert %}active{% endblock %}
+{% block all_depense %}active{% endblock %}
+{% block body %}
+<div class="container mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Listes des transfert"|trans }}
+    </h3>
+
+
+    <a href="{{ path('transfert_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouvel transfert</a>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>Montant</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for transfert in transferts %}
+            <tr>
+                <td>{{ transfert.montant }}</td>
+                <td>{{ transfert.user.nom }}</td>
+                <td>{{ transfert.user.prenom }}</td>
+                <td>{{ transfert.source }}</td>
+                <td>{{ transfert.destination }}</td>
+                <td>
+                    <!-- <a id="{{ transfert.id}}" onclick="load({{ transfert.id }})" href="{{ path('transfert_show', {'id': transfert.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a> -->
+                    <a href="{{ path('transfert_edit', {'id': transfert.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
+                    {{ include('transfert/_delete_form.html.twig' )}}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

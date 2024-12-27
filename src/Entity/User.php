@@ -124,12 +124,18 @@ class User implements UserInterface
      */
     private $compte;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Transfert::class, mappedBy="user")
+     */
+    private $transferts;
+
 
     public function __construct()
     {
         $this->enabled = false;
         $this->client = false;
         $this->livreur = false;
+        $this->transferts = new ArrayCollection();
     }
 
     public function getUsername(): ?string
@@ -316,6 +322,36 @@ class User implements UserInterface
     public function setCompte(?int $compte): self
     {
         $this->compte = $compte;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transfert[]
+     */
+    public function getTransferts(): Collection
+    {
+        return $this->transferts;
+    }
+
+    public function addTransfert(Transfert $transfert): self
+    {
+        if (!$this->transferts->contains($transfert)) {
+            $this->transferts[] = $transfert;
+            $transfert->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransfert(Transfert $transfert): self
+    {
+        if ($this->transferts->removeElement($transfert)) {
+            // set the owning side to null (unless already changed)
+            if ($transfert->getUser() === $this) {
+                $transfert->setUser(null);
+            }
+        }
 
         return $this;
     }
