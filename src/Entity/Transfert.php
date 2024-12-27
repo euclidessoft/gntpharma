@@ -37,6 +37,19 @@ class Transfert
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
+
+        /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->date = new \Datetime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +99,18 @@ class Transfert
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }
