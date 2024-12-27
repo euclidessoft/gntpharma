@@ -42,6 +42,26 @@ class Ecriture
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $comptedebit;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $comptecredit;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $libelle;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $montant;
+
 
     /**
      * Constructor
@@ -112,6 +132,54 @@ class Ecriture
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getComptedebit(): ?string
+    {
+        return $this->comptedebit;
+    }
+
+    public function setComptedebit(string $comptedebit): self
+    {
+        $this->comptedebit = $comptedebit;
+
+        return $this;
+    }
+
+    public function getComptecredit(): ?string
+    {
+        return $this->comptecredit;
+    }
+
+    public function setComptecredit(?string $comptecredit): self
+    {
+        $this->comptecredit = $comptecredit;
+
+        return $this;
+    }
+
+    public function getLibelle(): ?string
+    {
+        return $this->libelle;
+    }
+
+    public function setLibelle(?string $libelle): self
+    {
+        $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    public function getMontant(): ?int
+    {
+        return $this->montant;
+    }
+
+    public function setMontant(int $montant): self
+    {
+        $this->montant = $montant;
 
         return $this;
     }
