@@ -27,19 +27,25 @@ class FinanceController extends AbstractController
         foreach($ecritures as $ecriture)
         {
             $credit= null;
+            $debit= null;
             if($ecriture->getCredit() != null)
                 $credit = $ecriture->getCredit();
             else
                 $debit = $ecriture->getDebit();
             if($credit != null) {
-                if ($credit->getVersement() != null) {
+                if ($credit->getPaiement() != null) {
+
+                    if ($credit->getPaiement()->getType() == 'Espece') {
+                        $caisse = $caisse + $credit->getPaiement()->getMontant();
+                    } else $banque = $banque + $credit->getPaiement()->getMontant();
+                } else if ($credit->getVersement() != null) {
 
                     if ($credit->getVersement()->getType() == 'Espece') {
                         $caisse = $caisse + $credit->getVersement()->getMontant();
                     } else $banque = $banque + $credit->getVersement()->getMontant();
                 } else if ($credit->getFinancement() != null) {
                     if ($credit->getFinancement()->getType() == 'Espece') {
-                        $caisse = $caisse + $credit->getGain()->getMontant();
+                        $caisse = $caisse + $credit->getFinancement()->getMontant();
                         //$gain[] = $credit;
                     } else {
                         $banque = $banque + $credit->getFinancement()->getMontant();
@@ -56,13 +62,14 @@ class FinanceController extends AbstractController
 //                } else {
                     if ($debit->getDepense()->getType() == 'Espece') {
                         $debitcaisse = $debitcaisse + $debit->getMontant();
-                    } else $debitbanque = $debitbanque + $debit->getMontant();
-                    $debits[] = $debit; // liste des depenses
+                    } else
+                        $debitbanque = $debitbanque + $debit->getMontant();
+                    //$debits[] = $debit; // liste des depenses
                 }
            // }
         }
         return $this->render('finance/index.html.twig',[
-            'caisse' => $caisse,
+            'caisse' => $caisse - $debitcaisse,
             'banque' => $banque - $debitbanque,
             'transferer' => $transferer,
             'debits' => $debits,
