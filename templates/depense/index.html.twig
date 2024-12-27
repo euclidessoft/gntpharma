@@ -14,6 +14,7 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
+                <th>{{ 'Compte'|trans }}</th>
                 <th>{{ 'Libelle'|trans }}</th>
                 <th>{{ 'Date'|trans }}</th>
                 <th>{{ 'Ligne'|trans }}</th>
@@ -26,6 +27,7 @@
         <tbody>
         {% for depense in depenses %}
             <tr>
+                <td>{{ depense.compte }}</td>
                 <td>{{ depense.libelle }}</td>
                 <td>{{ depense.date ? depense.date|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ depense.categorie ?  depense.categorie.nom : ''}}</td>
