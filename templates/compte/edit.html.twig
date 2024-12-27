@@ -1,13 +1,28 @@
-<!DOCTYPE html>
-
-<title>Edit Compte</title>
+{% extends 'admin.html.twig' %}
 
 {% block body %}
-    <h1>Edit Compte</h1>
 
-    {{ include('compte/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('compte_index') }}">back to list</a>
 
-    {{ include('compte/_delete_form.html.twig') }}
+{{ include('compte/_form.html.twig', {'button_label': 'Update'}) }}
+
+<div class="col-md-3 offset-md-3 mt-4 pt-3 fond-7">
+    <div class="centrer">
+        {#                <div class="row">#}
+        <button type="button" class="btn btn-shadow btn-green btn-normal mb-3 mr-3" id="send"
+            onclick="envoie()">
+            <i class="fa fa-save"></i>
+            {{ 'Enregistrer'|trans }}
+        </button>
+
+        <a id="{{ compte.id }}" onclick="load({{ compte.id }})" href="{{ path('compte_index') }}" class="btn btn-success-light btn-normal mb-3">
+            <i class="fa fa-undo"></i>
+            {{ 'Retour'|trans }}
+        </a>
+        {{ form_rest(form) }}
+        {#                </div>#}
+    </div>
+    {{ form_end(form) }}
+</div>
+
 {% endblock %}
