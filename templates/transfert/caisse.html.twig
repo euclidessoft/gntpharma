@@ -5,6 +5,11 @@
 {% block new_transfert %}active{% endblock %}
 
 {% block body %}
+<div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
+    <h4 class="mb-3">
+        <i class="fa-brands fa-product-hunt mr-2"></i><i class="fa fa-plus mr-2"></i>
+        {{ 'Transfert Caisse vers Banque'|trans }}
+    </h4>
     {{ include('transfert/_form.html.twig') }}
     <div class="col-md-3 offset-md-3 mt-4 pt-3 fond-7">
         <div class="centrer">
