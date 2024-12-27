@@ -42,6 +42,16 @@ class Debit
      */
     private $montant;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $type;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Transfert::class, cascade={"persist", "remove"})
+     */
+    private $transfert;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -79,6 +89,30 @@ class Debit
     public function setMontant(int $montant): self
     {
         $this->montant = $montant;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getTransfert(): ?Transfert
+    {
+        return $this->transfert;
+    }
+
+    public function setTransfert(?Transfert $transfert): self
+    {
+        $this->transfert = $transfert;
 
         return $this;
     }

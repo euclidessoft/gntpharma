@@ -45,6 +45,22 @@ class Credit
      */
     private $date;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $type;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Transfert::class, cascade={"persist", "remove"})
+     * * @ORM\JoinColumn(nullable=true)
+     */
+    private $transfert;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $montant;
+
 
     /**
      * Constructor
@@ -116,6 +132,42 @@ class Credit
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getTransfert(): ?Transfert
+    {
+        return $this->transfert;
+    }
+
+    public function setTransfert(?Transfert $transfert): self
+    {
+        $this->transfert = $transfert;
+
+        return $this;
+    }
+
+    public function getMontant(): ?int
+    {
+        return $this->montant;
+    }
+
+    public function setMontant(int $montant): self
+    {
+        $this->montant = $montant;
 
         return $this;
     }
