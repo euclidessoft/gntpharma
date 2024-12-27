@@ -2,7 +2,7 @@
 {% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
 {% block finance %}active{% endblock %}
 {% block transfert %}active{% endblock %}
-{% block all_depense %}active{% endblock %}
+{% block all_transfert %}active{% endblock %}
 {% block body %}
 <div class="container mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
@@ -11,7 +11,6 @@
     </h3>
 
 
-    <a href="{{ path('transfert_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouvel transfert</a>
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>

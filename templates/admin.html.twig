@@ -384,6 +384,14 @@
                                             {{ 'Banque ===> Caisse'|trans }}
                                         </a>
                                     </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block all_transfert %}{% endblock %}"
+                                           href="{{ path('transfert_index')}}">
+                                            <i class="fas fa-money-bill"></i>
+                                            <i class="fas fa-arrow-left mr-2"></i>
+                                            {{ 'Tous les transferts'|trans }}
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         <li class="dropdown-item submenu">
