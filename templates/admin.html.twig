@@ -358,12 +358,33 @@
                                 </a>
                             </li>
 
-                            <li class="dropdown-item ">
-                                <a class="nav-link {% block transfert %}{% endblock %}"
-                                   href="{{ path('transfert_index') }}">
-                                    <i class="fas fa-money-bill mr-2"></i>
-                                    {{ 'Transfert fonds'|trans }}
+                            <li class="dropdown-item submenu">
+                            <a class="nav-link dropdown-toggle {% block transfert %}{% endblock %}" href="#"
+                                   id="reapprovisionnement"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-money-bill"></i>
+                                    <i class="fas fa-arrow-right mr-2"></i>
+                                    {{ 'Transfert des fonds'|trans }}
                                 </a>
+                                <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block caisse_banque %}{% endblock %}"
+                                           href="">
+                                            <i class="fas fa-money-bill"></i>
+                                            <i class="fas fa-arrow-right mr-2"></i>
+                                            {{ 'Caisse ===> Banque'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block banque_caisse %}{% endblock %}"
+                                           href="">
+                                            <i class="fas fa-money-bill"></i>
+                                            <i class="fas fa-arrow-left mr-2"></i>
+                                            {{ 'Banque ===> Caisse'|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         <li class="dropdown-item submenu">
                                 <a class="nav-link dropdown-toggle {% block vente %}{% endblock %}" href="#"
