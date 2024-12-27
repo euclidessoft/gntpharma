@@ -370,7 +370,7 @@
 
                                     <li class="dropdown-item">
                                         <a class="nav-link {% block caisse_banque %}{% endblock %}"
-                                           href="">
+                                           href="{{ path('transfert_new')}}">
                                             <i class="fas fa-money-bill"></i>
                                             <i class="fas fa-arrow-right mr-2"></i>
                                             {{ 'Caisse ===> Banque'|trans }}
@@ -378,7 +378,7 @@
                                     </li>
                                     <li class="dropdown-item">
                                         <a class="nav-link {% block banque_caisse %}{% endblock %}"
-                                           href="">
+                                           href="{{ path('transfert_new')}}">
                                             <i class="fas fa-money-bill"></i>
                                             <i class="fas fa-arrow-left mr-2"></i>
                                             {{ 'Banque ===> Caisse'|trans }}
