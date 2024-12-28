@@ -31,7 +31,7 @@
                 <td>{{ depense.libelle }}</td>
                 <td>{{ depense.date ? depense.date|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ depense.categorie ?  depense.categorie.nom : ''}}</td>
-                <td>{{ depense.montant }}</td>
+                <td>{{ depense.montant|number_format(0, '' , ' ') }}</td>
                 <td>{{ depense.type }}</td>
                 <td>{{ depense.statut }}</td>
                 <td class="text-nowrap">

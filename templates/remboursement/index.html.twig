@@ -24,7 +24,7 @@
         <tbody>
         {% for remboursement in remboursements %}
             <tr>
-                <td>{{ remboursement.montant }}</td>
+                <td>{{ remboursement.montant|number_format(0, '' , ' ')}}</td>
                 <td>{{ remboursement.compte }}</td>
                 <td>{{ remboursement.date ? remboursement.date|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ remboursement.type }}</td>

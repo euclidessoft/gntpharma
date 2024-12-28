@@ -29,7 +29,7 @@
             <tr>
                 <td>{{ financement.provenance }}</td>
                 <td>{{ financement.motif }}</td>
-                <td>{{ financement.montant }}</td>
+                <td>{{ financement.montant|number_format(0, '' , ' ') }}</td>
                 <td>{{ financement.date ? financement.date|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ financement.Type }}</td>
                 <td>{{ financement.banque }}</td>
