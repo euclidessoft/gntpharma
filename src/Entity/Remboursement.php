@@ -52,6 +52,11 @@ class Remboursement
      */
     private $numero;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $libele;
+
         /**
      * Constructor
      */
@@ -145,6 +150,18 @@ class Remboursement
     public function setNumero(int $numero): self
     {
         $this->numero = $numero;
+
+        return $this;
+    }
+
+    public function getLibele(): ?string
+    {
+        return $this->libele;
+    }
+
+    public function setLibele(string $libele): self
+    {
+        $this->libele = $libele;
 
         return $this;
     }
