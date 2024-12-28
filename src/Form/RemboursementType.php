@@ -16,11 +16,10 @@ class RemboursementType extends AbstractType
     {
         $builder
             ->add('montant')
-            ->add('compte')
             ->add('type',VerserType::class,array('placeholder' => 'Type de Paiement'))
             ->add('financement', EntityType::class, [
                 'class' => Financement::class,
-                'choice_label' => 'id',
+                'choice_label' => 'motif',
                 'placeholder' => 'Sélectionnez un financement', 
                 'required' => true, 
             ])
