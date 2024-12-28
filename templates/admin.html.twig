@@ -377,6 +377,14 @@
                                     </a>
                                 </li>
                                 <li class="dropdown-item">
+                                    <a class="nav-link {% block remboursement_avoir %}{% endblock %}"
+                                        href="{{ path('remboursement_avoir') }}">
+                                        <i class="fas fa-money-bill"></i>
+                                        <i class="fas fa-arrow-left mr-2"></i>
+                                        {{ 'Remboursement avoir'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
                                     <a class="nav-link {% block all_remboursement %}{% endblock %}"
                                         href="{{ path('remboursement_index')}}">
                                         <i class="fas fa-money-bill"></i>
