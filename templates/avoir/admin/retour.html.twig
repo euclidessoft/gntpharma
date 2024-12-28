@@ -1,0 +1,46 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Livraison"|trans }} - GNT Pharma {% endblock %}
+{% block officine %}active{% endblock %}
+{% block new_avoir %}active{% endblock %}
+
+{% block body %}
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-money-billt mr-2"></i>
+            {{ "Création avoir avec reste à livrer"|trans }}
+        </h3>
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
+                    <thead>
+                    <tr>
+                        <th>{{ 'no commande'|trans }} </th>
+                        <th>{{ 'Date'|trans }}</th>
+                        <th>{{ 'Client'|trans }}</th>
+                        <th>{{ 'actions'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for livrer in livrers %}
+                        <tr>
+                            <td>{{ livrer.commande.id }}</td>
+                            <td>{{ livrer.commande.date|date('d/m/Y') }}</td>
+                            <td>{{ livrer.commande.user.nom }}</td>
+                            <td>
+                                <a id="{{ livrer.commande.id }}" onclick="load({{ livrer.commande.id }})" class="btn btn-success" href="{{ path('avoir_new_reste', {'id': livrer.commande.id}) }}">
+                                    <i class="fa fa-gears"></i>
+                                    {{'Création'|trans}}
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">{{ 'Aucune commande'|trans }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
