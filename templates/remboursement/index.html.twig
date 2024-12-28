@@ -1,0 +1,46 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block remboursement %}active{% endblock %}
+{% block all_remboursement %}active{% endblock %}
+{% block body %}
+<div class="container mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Listes des Remboursements"|trans }}
+    </h3>
+
+
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>Montant</th>
+                <th>Compte</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for remboursement in remboursements %}
+            <tr>
+                <td>{{ remboursement.montant }}</td>
+                <td>{{ remboursement.compte }}</td>
+                <td>{{ remboursement.date ? remboursement.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ remboursement.type }}</td>
+                <td>
+                    <!-- <a title="{{ 'Voir'|trans }}" id="{{ remboursement.id }}" onclick="load({{ remboursement.id }})" href="{{ path('remboursement_show', {'id': remboursement.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a> -->
+                    <a title="{{ 'Modifier'|trans }}" href="{{ path('remboursement_edit', {'id': remboursement.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
+                    {{ include('remboursement/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('remboursement_new') }}">Create new</a>
+{% endblock %}

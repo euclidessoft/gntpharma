@@ -5,15 +5,15 @@
 
     {{ include('head.html.twig') }}
 
-    <title> {% block title %} GNT Pharma  {% endblock %} </title>
+    <title> {% block title %} GNT Pharma {% endblock %} </title>
 
     {% block stylesheets %}
-        <link href="{{ asset('DataTables/datatables.css') }}" rel="stylesheet">
-        <link href="{{ asset('fontawesome/css/all.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/bootstrap-4plus.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/accueil.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/gntpharma.css') }}" rel="stylesheet">
-        <link rel="shortcut icon" href="{{ asset('images/gntpharma.jpeg') }}" type="image/x-icon">
+    <link href="{{ asset('DataTables/datatables.css') }}" rel="stylesheet">
+    <link href="{{ asset('fontawesome/css/all.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap-4plus.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/accueil.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/gntpharma.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('images/gntpharma.jpeg') }}" type="image/x-icon">
 
     {% endblock %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -28,7 +28,7 @@
 
 <body {% block facture %} {% endblock %}>
 
-{% block nav %}
+    {% block nav %}
     <nav id="navmenu" class="navmenu">
         <div class="session">
             <a id="session" class="navbar-brand text-white m-2" href="{{ path('Accueil') }}">
@@ -52,8 +52,8 @@
                 </li>
                 <li class="nav-item dropright" title="{{ 'Produits'|trans }}">
                     <a class="nav-link dropdown-toggle {% block produit %} {% endblock %}" href="#" id="produits"
-                       data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
                             <i class="fa-brands fa-product-hunt fa-lg"></i>
                         </div>
@@ -63,17 +63,17 @@
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="produits">
                         {% if is_granted('ROLE_STOCK') %}
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block new_produit %}{% endblock %}"
-                                   href="{{ path('produit_new') }}">
-                                    <i class="fa fa-plus mr-2"></i>
-                                    {{ 'Nouveau produit'|trans }}
-                                </a>
-                            </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block new_produit %}{% endblock %}"
+                                href="{{ path('produit_new') }}">
+                                <i class="fa fa-plus mr-2"></i>
+                                {{ 'Nouveau produit'|trans }}
+                            </a>
+                        </li>
                         {% endif %}
                         <li class="dropdown-item">
                             <a class="nav-link {% block all_produits %}{% endblock %}"
-                               href="{{ path('produit_index') }}">
+                                href="{{ path('produit_index') }}">
                                 <i class="fas fa-list mr-2"></i>
                                 {{ 'Tous les produits'|trans }}
                             </a>
@@ -81,7 +81,7 @@
 
                         <li class="dropdown-item">
                             <a class="nav-link {% block arrivage %}{% endblock %}"
-                               href="{{ path('produit_arrivage_admin') }}">
+                                href="{{ path('produit_arrivage_admin') }}">
                                 <i class="fas fa-plane-arrival mr-2"></i>
                                 {{ 'Arrivage'|trans }}
                             </a>
@@ -94,7 +94,7 @@
                          </li>#}
                         <li class="dropdown-item">
                             <a class="nav-link {% block ventes %}{% endblock %}"
-                               href="{{ path('produit_vente_admin') }}">
+                                href="{{ path('produit_vente_admin') }}">
                                 <i class="fas fa-money-bill-trend-up mr-1"></i>
                                 {{ 'Meilleures ventes'|trans }}
                             </a>
@@ -102,114 +102,114 @@
                     </ul>
                 </li>
                 {% if is_granted('ROLE_STOCK') %}
-                    <li class="nav-item dropright" title="{{ 'stock'|trans }}">
-                        <a class="nav-link dropdown-toggle {% block stock %}{% endblock %}" href="#" id="stock"
-                           data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <div class="icone">
-                                <i class="fas fa-warehouse fa-lg"></i>
-                            </div>
-                            <div class="title">
-                                {{ 'Stock'|trans }}
-                            </div>
-                        </a>
-                        <ul class=" dropdown-menu" aria-labelledby="stock">
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block etat_stock %}{% endblock %}"
-                                   href="{{ path('stock_index') }}">
-                                    <i class="fas fa-warehouse mr-2"></i>
-                                    {{ 'Etat du Stock'|trans }}
-                                </a>
-                            </li>
-                            <li class="dropdown-item submenu">
-                                <a class="nav-link dropdown-toggle {% block retour_stock %}{% endblock %}" href="#"
-                                   id="reapprovisionnement"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-warehouse"></i>
-                                    <i class="fas fa-arrow-left mr-2"></i>
-                                    {{ 'Retour Stock'|trans }}
-                                </a>
-                                <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
-                                    <li class="dropdown-item">
-                                        <a class="nav-link  {% block new_retour %}{% endblock %}"
-                                           href="{{ path('stock_retour') }}">
-                                            <i class="fas fa-warehouse"></i>
-                                            <i class="fas fa-plus mr-2"></i>
-                                            {{ 'Nouvelle'|trans }}
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item">
-                                        <a class="nav-link {% block all_retour %}{% endblock %}"
-                                           href="{{ path('stock_retour_index') }}">
-                                            <i class="fas fa-warehouse"></i>
-                                            <i class="fas fa-warehouse fa-list mr-2"></i>
-                                            {{ 'Historique'|trans }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown-item submenu">
-                                <a class="nav-link dropdown-toggle {% block appro %}{% endblock %}" href="#"
-                                   id="reapprovisionnement"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-warehouse"></i>
-                                    <i class="fas fa-arrow-left mr-2"></i>
-                                    {{ 'Réapprovisionnement'|trans }}
-                                </a>
-                                <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
-                                    <li class="dropdown-item">
-                                        <a class="nav-link  {% block new_appro %}{% endblock %}"
-                                           href="{{ path('stock_appro_index') }}">
-                                            <i class="fas fa-warehouse"></i>
-                                            <i class="fas fa-plus mr-2"></i>
-                                            {{ 'Nouvelle'|trans }}
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item">
-                                        <a class="nav-link {% block all_appro %}{% endblock %}"
-                                           href="{{ path('stock_historique') }}">
-                                            <i class="fas fa-warehouse"></i>
-                                            <i class="fas fa-warehouse fa-list mr-2"></i>
-                                            {{ 'Historique'|trans }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropright" title="{{ 'Livraison'|trans }}">
-                        <a class="nav-link dropdown-toggle {% block livraison %}{% endblock %}" href="#" id="stock"
-                           data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <div class="icone">
-                                <i class="fas fa-truck-fast fa-lg"></i>
-                            </div>
-                            <div class="title">
-                                {{ 'Livraison'|trans }}
-                            </div>
-                        </a>
-                        <ul class=" dropdown-menu" aria-labelledby="stock">
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block new_livraison %}{% endblock %}"
-                                   href="{{ path('livraison_index') }}">
-                                    <i class="fas fa-truck-fast mr-2"></i>
-                                    {{ 'Nouvelle'|trans }}
-                                </a>
-                            </li>
-                            <li class="dropdown-item">
-                                <a class="nav-link  {% block all_livraison %}{% endblock %}"
-                                   href="{{ path('livraison_historique') }}">
-                                    <i class="fas fa-truck-fast mr-2"></i>
-                                    {{ 'Historique'|trans }}
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                <li class="nav-item dropright" title="{{ 'stock'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block stock %}{% endblock %}" href="#" id="stock"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fas fa-warehouse fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Stock'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="stock">
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block etat_stock %}{% endblock %}"
+                                href="{{ path('stock_index') }}">
+                                <i class="fas fa-warehouse mr-2"></i>
+                                {{ 'Etat du Stock'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item submenu">
+                            <a class="nav-link dropdown-toggle {% block retour_stock %}{% endblock %}" href="#"
+                                id="reapprovisionnement"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-warehouse"></i>
+                                <i class="fas fa-arrow-left mr-2"></i>
+                                {{ 'Retour Stock'|trans }}
+                            </a>
+                            <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+                                <li class="dropdown-item">
+                                    <a class="nav-link  {% block new_retour %}{% endblock %}"
+                                        href="{{ path('stock_retour') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-plus mr-2"></i>
+                                        {{ 'Nouvelle'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block all_retour %}{% endblock %}"
+                                        href="{{ path('stock_retour_index') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-warehouse fa-list mr-2"></i>
+                                        {{ 'Historique'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-item submenu">
+                            <a class="nav-link dropdown-toggle {% block appro %}{% endblock %}" href="#"
+                                id="reapprovisionnement"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-warehouse"></i>
+                                <i class="fas fa-arrow-left mr-2"></i>
+                                {{ 'Réapprovisionnement'|trans }}
+                            </a>
+                            <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+                                <li class="dropdown-item">
+                                    <a class="nav-link  {% block new_appro %}{% endblock %}"
+                                        href="{{ path('stock_appro_index') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-plus mr-2"></i>
+                                        {{ 'Nouvelle'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block all_appro %}{% endblock %}"
+                                        href="{{ path('stock_historique') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-warehouse fa-list mr-2"></i>
+                                        {{ 'Historique'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropright" title="{{ 'Livraison'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block livraison %}{% endblock %}" href="#" id="stock"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fas fa-truck-fast fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Livraison'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="stock">
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block new_livraison %}{% endblock %}"
+                                href="{{ path('livraison_index') }}">
+                                <i class="fas fa-truck-fast mr-2"></i>
+                                {{ 'Nouvelle'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link  {% block all_livraison %}{% endblock %}"
+                                href="{{ path('livraison_historique') }}">
+                                <i class="fas fa-truck-fast mr-2"></i>
+                                {{ 'Historique'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 {% endif %}
                 <li class="nav-item dropright" title="{{ 'Promotion'|trans }}">
                     <a class="nav-link dropdown-toggle {% block promotion %}{% endblock %}" href="#" id="promotion"
-                       data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
                             <i class="fas fa-tags fa-lg"></i>
                         </div>
@@ -219,24 +219,24 @@
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="promotion">
                         {% if is_granted('ROLE_ADMIN') %}
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block new_promotion %}{% endblock %}"
-                                   href="{{ path('promotion_new') }}">
-                                    <i class="fa fa-plus mr-2"></i>
-                                    {{ 'Créer une promotion'|trans }}
-                                </a>
-                            </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block new_promotion %}{% endblock %}"
+                                href="{{ path('promotion_new') }}">
+                                <i class="fa fa-plus mr-2"></i>
+                                {{ 'Créer une promotion'|trans }}
+                            </a>
+                        </li>
                         {% endif %}
                         <li class="dropdown-item">
                             <a class="nav-link {% block current_promotion %}{% endblock %}"
-                               href="{{ path('promotion_courante') }}">
+                                href="{{ path('promotion_courante') }}">
                                 <i class="fas fa-tag mr-2"></i>
                                 {{ 'Promotions en cours'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block all_promotion %}{% endblock %}"
-                               href="{{ path('promotion_index') }}">
+                                href="{{ path('promotion_index') }}">
                                 <i class="fas fa-tags mr-2"></i>
                                 {{ 'Toutes les promotions'|trans }}
                             </a>
@@ -244,44 +244,44 @@
                     </ul>
                 </li>
                 {% if is_granted('ROLE_FINANCE') %}
-                    <li class="nav-item dropright" title="{{ 'Commande'|trans }}">
-                        <a class="nav-link dropdown-toggle {% block commande %}{% endblock %}" href="#" id="commande"
-                           data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <div class="icone">
-                                <i class="fa fa-shopping-cart fa-lg"></i>
-                            </div>
-                            <div class="title">
-                                {{ 'Commande'|trans }}
-                            </div>
-                        </a>
-                        <ul class=" dropdown-menu" aria-labelledby="commande">
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block suivi %}{% endblock %}"
-                                   href="{{ path('commande_panier_suivi') }}">
-                                    <i class="fas fa-shopping-cart mr-2"></i>
-                                    {{ 'Suivi Commande'|trans }}
-                                </a>
-                            </li>
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block extranet %}{% endblock %}"
-                                   href="{{ path('commande_panier_extranet') }}">
-                                    <i class="fas fa-cart-arrow-down mr-2"></i>
-                                    {{ 'Commandes Extranet'|trans }}
-                                </a>
-                            </li>
-                            {#<li class="dropdown-item">
+                <li class="nav-item dropright" title="{{ 'Commande'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block commande %}{% endblock %}" href="#" id="commande"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fa fa-shopping-cart fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Commande'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="commande">
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block suivi %}{% endblock %}"
+                                href="{{ path('commande_panier_suivi') }}">
+                                <i class="fas fa-shopping-cart mr-2"></i>
+                                {{ 'Suivi Commande'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block extranet %}{% endblock %}"
+                                href="{{ path('commande_panier_extranet') }}">
+                                <i class="fas fa-cart-arrow-down mr-2"></i>
+                                {{ 'Commandes Extranet'|trans }}
+                            </a>
+                        </li>
+                        {#<li class="dropdown-item">
                                 <a class="nav-link" href="#">
                                     <i class="fas fa-list mr-2"></i>
                                     {{ 'en preparation'|trans }}
                                 </a>
                             </li>#}
-                        </ul>
-                    </li>
+                    </ul>
+                </li>
                 {% endif %}
                 <li class="nav-item" title="{{ 'Réclamation'|trans }}">
                     <a class="nav-link {% block reclamation %} {% endblock %}"
-                       href="{{ path('reclamation_index',{'user':app.user.id}) }}">
+                        href="{{ path('reclamation_index',{'user':app.user.id}) }}">
                         <div class="icone">
                             <i class="fas fa-rotate fa-lg"></i>
                         </div>
@@ -292,199 +292,228 @@
                 </li>
 
                 {% if is_granted('ROLE_FINANCE') %}
-                    <li class="nav-item dropright" title="{{ 'Officine'|trans }}">
-                        <a class="nav-link dropdown-toggle {% block officine %} {% endblock %}" href="#" id="officine"
-                           data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <div class="icone">
-                                <i class="fas fa-staff-snake fa-lg"></i>
-                            </div>
-                            <div class="title">
-                                {{ 'Officine'|trans }}
-                            </div>
-                        </a>
-                        <ul class=" dropdown-menu" aria-labelledby="officine">
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block new_avoir %}{% endblock %}"
-                                   href="{{ path('avoir_choix') }}">
-                                    <i class="fa fa-plus mr-2"></i>
-                                    {{ 'Créer avoir'|trans }}
-                                </a>
-                            </li>
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block all_avoir %}{% endblock %}"
-                                   href="{{ path('avoir_index') }}">
-                                    <i class="fas fa-money-bill mr-2"></i>
-                                    {{ 'Tous les avoirs'|trans }}
-                                </a>
-                            </li>
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block clients %}{% endblock %}"
-                                   href="{{ path('security_clients') }}">
-                                    <i class="fas fa-users mr-2"></i>
-                                    {{ 'Liste des clients'|trans }}
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                <li class="nav-item dropright" title="{{ 'Officine'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block officine %} {% endblock %}" href="#" id="officine"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fas fa-staff-snake fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Officine'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="officine">
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block new_avoir %}{% endblock %}"
+                                href="{{ path('avoir_choix') }}">
+                                <i class="fa fa-plus mr-2"></i>
+                                {{ 'Créer avoir'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block all_avoir %}{% endblock %}"
+                                href="{{ path('avoir_index') }}">
+                                <i class="fas fa-money-bill mr-2"></i>
+                                {{ 'Tous les avoirs'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block clients %}{% endblock %}"
+                                href="{{ path('security_clients') }}">
+                                <i class="fas fa-users mr-2"></i>
+                                {{ 'Liste des clients'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 {% endif %}
                 {% if is_granted('ROLE_FINANCE') %}
-                    <li class="nav-item dropright" title="{{ 'Finance'|trans }}">
-                        <a class="nav-link dropdown-toggle {% block finance %} {% endblock %}" href="#" id="finance"
-                           data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <div class="icone">
-                                <i class="fa-solid fa-sack-dollar fa-lg"></i>
+                <li class="nav-item dropright" title="{{ 'Finance'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block finance %} {% endblock %}" href="#" id="finance"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fa-solid fa-sack-dollar fa-lg"></i>
 
-                            </div>
-                            <div class="title">
-                                {{ 'Finance'|trans }}
-                            </div>
-                        </a>
-                        <ul class=" dropdown-menu" aria-labelledby="finance">
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block journal %}{% endblock %}"
-                                   href="{{ path('finance_index') }}">
-                                    <i class="fas fa-users mr-2"></i>
-                                    {{ 'Journal'|trans }}
-                                </a>
-                            </li>
-                            
-                            <li class="dropdown-item ">
-                                <a class="nav-link {% block compte %}{% endblock %}"
-                                   href="{{ path('compte_index') }}">
-                                    <i class="fas fa-book mr-2"></i>
-                                    {{ 'Plan comptable'|trans }}
-                                </a>
-                            </li>
+                        </div>
+                        <div class="title">
+                            {{ 'Finance'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="finance">
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block journal %}{% endblock %}"
+                                href="{{ path('finance_index') }}">
+                                <i class="fas fa-users mr-2"></i>
+                                {{ 'Journal'|trans }}
+                            </a>
+                        </li>
 
-                            <li class="dropdown-item submenu">
-                            <a class="nav-link dropdown-toggle {% block transfert %}{% endblock %}" href="#"
-                                   id="reapprovisionnement"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-money-bill"></i>
-                                    <i class="fas fa-arrow-right mr-2"></i>
-                                    {{ 'Transfert des fonds'|trans }}
-                                </a>
-                                <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+                        <li class="dropdown-item ">
+                            <a class="nav-link {% block compte %}{% endblock %}"
+                                href="{{ path('compte_index') }}">
+                                <i class="fas fa-book mr-2"></i>
+                                {{ 'Plan comptable'|trans }}
+                            </a>
+                        </li>
 
-                                    <li class="dropdown-item">
-                                        <a class="nav-link {% block caisse_banque %}{% endblock %}"
-                                           href="{{ path('transfert_caisse')}}">
-                                            <i class="fas fa-money-bill"></i>
-                                            <i class="fas fa-arrow-right mr-2"></i>
-                                            {{ 'Caisse ===> Banque'|trans }}
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item">
-                                        <a class="nav-link {% block banque_caisse %}{% endblock %}"
-                                           href="{{ path('transfert_banque')}}">
-                                            <i class="fas fa-money-bill"></i>
-                                            <i class="fas fa-arrow-left mr-2"></i>
-                                            {{ 'Banque ===> Caisse'|trans }}
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item">
-                                        <a class="nav-link {% block all_transfert %}{% endblock %}"
-                                           href="{{ path('transfert_index')}}">
-                                            <i class="fas fa-money-bill"></i>
-                                            <i class="fas fa-arrow-left mr-2"></i>
-                                            {{ 'Tous les transferts'|trans }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
                         <li class="dropdown-item submenu">
-                                <a class="nav-link dropdown-toggle {% block vente %}{% endblock %}" href="#"
-                                   id="reapprovisionnement"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-warehouse"></i>
-                                    <i class="fas fa-arrow-left mr-2"></i>
-                                    {{ 'Vente'|trans }}
-                                </a>
-                                <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+                            <a class="nav-link dropdown-toggle {% block remboursement %}{% endblock %}" href="#"
+                                id="reapprovisionnement"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa-solid fa-coins"></i>
+                                <i class="fas fa-arrow-right mr-2"></i>
+                                {{ 'Remboursement fonds'|trans }}
+                            </a>
+                            <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
 
-                                    <li class="dropdown-item">
-                                        <a class="nav-link {% block all_ventes %}{% endblock %}"
-                                           href="">
-                                            <i class="fas fa-warehouse"></i>
-                                            <i class="fas fa-warehouse fa-list mr-2"></i>
-                                            {{ 'Toutes les ventes'|trans }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown-item submenu">
-                                <a class="nav-link dropdown-toggle {% block depense %}{% endblock %}" href="#"
-                                   id="reapprovisionnement"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-warehouse"></i>
-                                    <i class="fas fa-arrow-left mr-2"></i>
-                                    {{ 'Dépense'|trans }}
-                                </a>
-                                <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block new_remboursement %}{% endblock %}"
+                                        href="{{ path('remboursement_new')}}">
+                                        <i class="fas fa-money-bill"></i>
+                                        <i class="fas fa-arrow-left mr-2"></i>
+                                        {{ 'Nouvel remboursement'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block all_remboursement %}{% endblock %}"
+                                        href="{{ path('remboursement_index')}}">
+                                        <i class="fas fa-money-bill"></i>
+                                        <i class="fas fa-list mr-2"></i>
+                                        {{ 'Tous les remboursements'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown-item submenu">
+                            <a class="nav-link dropdown-toggle {% block transfert %}{% endblock %}" href="#"
+                                id="reapprovisionnement"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-money-bill"></i>
+                                <i class="fas fa-arrow-right mr-2"></i>
+                                {{ 'Transfert des fonds'|trans }}
+                            </a>
+                            <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
 
-                                    <li class="dropdown-item">
-                                        <a class="nav-link  {% block new_depense %}{% endblock %}"
-                                           href="{{ path('depense_new') }}">
-                                            <i class="fas fa-warehouse"></i>
-                                            <i class="fas fa-plus mr-2"></i>
-                                            {{ 'Créer une dépense'|trans }}
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item">
-                                        <a class="nav-link {% block all_depense %}{% endblock %}"
-                                           href="{{ path('depense_index') }}">
-                                            <i class="fas fa-warehouse"></i>
-                                            <i class="fas fa-warehouse fa-list mr-2"></i>
-                                            {{ 'Toutes les dépenses'|trans }}
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item">
-                                        <a class="nav-link  {% block all_categories %}{% endblock %}"
-                                           href="{{ path('categorie_index') }}">
-                                            <i class="fas fa-warehouse"></i>
-                                            <i class="fas fa-plus mr-2"></i>
-                                            {{ 'Lignes de dépense'|trans }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown-item submenu">
-                                <a class="nav-link dropdown-toggle {% block financement %}{% endblock %}" href="#"
-                                   id="reapprovisionnement"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-warehouse"></i>
-                                    <i class="fas fa-arrow-left mr-2"></i>
-                                    {{ 'Financement'|trans }}
-                                </a>
-                                <ul class="dropdown-submenu" aria-labelledby="financement">
-                                    <li class="dropdown-item">
-                                        <a class="nav-link  {% block new_financement %}{% endblock %}"
-                                           href="{{ path('financement_new') }}">
-                                            <i class="fas fa-warehouse"></i>
-                                            <i class="fas fa-plus mr-2"></i>
-                                            {{ 'Nouvelle financement'|trans }}
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item">
-                                        <a class="nav-link {% block financement_index %}{% endblock %}"
-                                           href="{{ path('financement_index') }}">
-                                            <i class="fas fa-warehouse"></i>
-                                            <i class="fas fa-warehouse fa-list mr-2"></i>
-                                            {{ 'Toutes les financements'|trans }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block caisse_banque %}{% endblock %}"
+                                        href="{{ path('transfert_caisse')}}">
+                                        <i class="fas fa-money-bill"></i>
+                                        <i class="fas fa-arrow-right mr-2"></i>
+                                        {{ 'Caisse ===> Banque'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block banque_caisse %}{% endblock %}"
+                                        href="{{ path('transfert_banque')}}">
+                                        <i class="fas fa-money-bill"></i>
+                                        <i class="fas fa-arrow-left mr-2"></i>
+                                        {{ 'Banque ===> Caisse'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block all_transfert %}{% endblock %}"
+                                        href="{{ path('transfert_index')}}">
+                                        <i class="fas fa-money-bill"></i>
+                                        <i class="fas fa-arrow-left mr-2"></i>
+                                        {{ 'Tous les transferts'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-item submenu">
+                            <a class="nav-link dropdown-toggle {% block vente %}{% endblock %}" href="#"
+                                id="reapprovisionnement"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-warehouse"></i>
+                                <i class="fas fa-arrow-left mr-2"></i>
+                                {{ 'Vente'|trans }}
+                            </a>
+                            <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block all_ventes %}{% endblock %}"
+                                        href="">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-warehouse fa-list mr-2"></i>
+                                        {{ 'Toutes les ventes'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-item submenu">
+                            <a class="nav-link dropdown-toggle {% block depense %}{% endblock %}" href="#"
+                                id="reapprovisionnement"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-warehouse"></i>
+                                <i class="fas fa-arrow-left mr-2"></i>
+                                {{ 'Dépense'|trans }}
+                            </a>
+                            <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+
+                                <li class="dropdown-item">
+                                    <a class="nav-link  {% block new_depense %}{% endblock %}"
+                                        href="{{ path('depense_new') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-plus mr-2"></i>
+                                        {{ 'Créer une dépense'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block all_depense %}{% endblock %}"
+                                        href="{{ path('depense_index') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-warehouse fa-list mr-2"></i>
+                                        {{ 'Toutes les dépenses'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link  {% block all_categories %}{% endblock %}"
+                                        href="{{ path('categorie_index') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-plus mr-2"></i>
+                                        {{ 'Lignes de dépense'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-item submenu">
+                            <a class="nav-link dropdown-toggle {% block financement %}{% endblock %}" href="#"
+                                id="reapprovisionnement"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-warehouse"></i>
+                                <i class="fas fa-arrow-left mr-2"></i>
+                                {{ 'Financement'|trans }}
+                            </a>
+                            <ul class="dropdown-submenu" aria-labelledby="financement">
+                                <li class="dropdown-item">
+                                    <a class="nav-link  {% block new_financement %}{% endblock %}"
+                                        href="{{ path('financement_new') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-plus mr-2"></i>
+                                        {{ 'Nouvelle financement'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block financement_index %}{% endblock %}"
+                                        href="{{ path('financement_index') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-warehouse fa-list mr-2"></i>
+                                        {{ 'Toutes les financements'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
                 {% endif %}
 
                 <li class="nav-item dropright" title="{{ 'Aide'|trans }}">
                     <a class="nav-link dropdown-toggle {% block aide %}{% endblock %}" href="#" id="Aide"
-                       data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false">
+                        data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
                         <div class="icone">
                             <i class="fas fa-question-circle fa-lg"></i>
                         </div>
@@ -525,15 +554,15 @@
         <div class="copyright">
             <span>
                 <a href="#" class="text-green" data-toggle="modal" data-target="#about">
-                <img class="mr-1" src="{{ asset('images/gnt.png') }}" alt="by Euclides" width="45">
-                <span class="version text-green">GNT PHARMA v{{ include('version.html.twig') }} <br> &copy; {{ 'now'|date('Y') }}</span>
+                    <img class="mr-1" src="{{ asset('images/gnt.png') }}" alt="by Euclides" width="45">
+                    <span class="version text-green">GNT PHARMA v{{ include('version.html.twig') }} <br> &copy; {{ 'now'|date('Y') }}</span>
                 </a>
             </span>
         </div>
     </nav>
-{% endblock %}
+    {% endblock %}
 
-{% block topbar %}
+    {% block topbar %}
     <div class="container-fluid topbar">
         <div class="row">
             <div class="topbar-menu">
@@ -546,11 +575,11 @@
                     <div class="col-lg-5 col-md-2 col-6 text-nowrap">
                         <span class="history-box">
                             <i class="fa fa-arrow-circle-left history-btn" title="Page précédente"
-                               onclick="window.history.back()"></i>
+                                onclick="window.history.back()"></i>
                             <i class="fa fa-arrow-circle-right history-btn ml-3" title="Page suivante"
-                               onclick="window.history.forward()"></i>
+                                onclick="window.history.forward()"></i>
                             <i class="fa fa-redo-alt fa-rotate-270 history-btn ml-3" title="Actualiser la page"
-                               onclick="window.location.reload()"></i>
+                                onclick="window.location.reload()"></i>
                         </span>
 
                         <button type="button" id="install_button" onclick="installApp()" hidden></button>
@@ -572,7 +601,7 @@
                                 <a href="#" class="" data-toggle="dropdown">
                                     {{ app.user.username }}
                                     <img src="{{ asset('images/team_1.avif') }}" class="user-image"
-                                         alt="User Image">
+                                        alt="User Image">
                                 </a>
                                 <div class="dropdown-menu">
                                     {{ include('security/security/deconnexion-menu.html.twig') }}
@@ -585,20 +614,20 @@
         </div>
     </div>
     {{ include('security/security/deconnexion-promt.html.twig') }}
-{% endblock %}
-{#{{ include('Default/about.html.twig') }}#}
+    {% endblock %}
+    {#{{ include('Default/about.html.twig') }}#}
 
 
-<div id="main" class="container-fluid main pt-5">
-    {% block body %}
+    <div id="main" class="container-fluid main pt-5">
+        {% block body %}
+
+        {% endblock %}
+    </div>
+
+    {{ include('javascript.html.twig') }}
+    {% block scripts %}
 
     {% endblock %}
-</div>
-
-{{ include('javascript.html.twig') }}
-{% block scripts %}
-
-{% endblock %}
 </body>
 
 </html>

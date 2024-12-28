@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<title>Remboursement</title>
+
+{% block body %}
+    <h1>Remboursement</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ remboursement.id }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ remboursement.montant }}</td>
+            </tr>
+            <tr>
+                <th>Compte</th>
+                <td>{{ remboursement.compte }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ remboursement.date ? remboursement.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ remboursement.type }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('remboursement_index') }}">back to list</a>
+
+    <a href="{{ path('remboursement_edit', {'id': remboursement.id}) }}">edit</a>
+
+    {{ include('remboursement/_delete_form.html.twig') }}
+{% endblock %}

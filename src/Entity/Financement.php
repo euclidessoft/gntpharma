@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FinancementRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -84,6 +86,11 @@ class Financement
     private $numero;
 
     /**
+     * @ORM\OneToMany(targetEntity=Remboursement::class, mappedBy="financement")
+     */
+    private $remboursements;
+
+    /**
      * Set provenance
      *
      * @param string $provenance
@@ -161,6 +168,7 @@ class Financement
     public function __construct()
     {
         $this->date = new \Datetime();
+        $this->remboursements = new ArrayCollection();
     }
 
     /**
@@ -220,6 +228,36 @@ class Financement
     public function setNumero(?int $numero): self
     {
         $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Remboursement[]
+     */
+    public function getRemboursements(): Collection
+    {
+        return $this->remboursements;
+    }
+
+    public function addRemboursement(Remboursement $remboursement): self
+    {
+        if (!$this->remboursements->contains($remboursement)) {
+            $this->remboursements[] = $remboursement;
+            $remboursement->setFinancement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRemboursement(Remboursement $remboursement): self
+    {
+        if ($this->remboursements->removeElement($remboursement)) {
+            // set the owning side to null (unless already changed)
+            if ($remboursement->getFinancement() === $this) {
+                $remboursement->setFinancement(null);
+            }
+        }
 
         return $this;
     }
