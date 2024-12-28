@@ -16,7 +16,7 @@ class FinanceController extends AbstractController
      */
     public function index(EcritureRepository $repository): Response
     {
-        $ecritures = $repository->findBy([], ['date' => 'desc']);
+        $ecritures = $repository->findAll();
         $caisse = 0;
         $banque = 0;
         $debitbanque = 0;
@@ -33,38 +33,40 @@ class FinanceController extends AbstractController
             else
                 $debit = $ecriture->getDebit();
             if($credit != null) {
-                if ($credit->getPaiement() != null) {
-
-                    if ($credit->getPaiement()->getType() == 'Espece') {
-                        $caisse = $caisse + $credit->getPaiement()->getMontant();
-                    } else $banque = $banque + $credit->getPaiement()->getMontant();
-                } else if ($credit->getVersement() != null) {
-
-                    if ($credit->getVersement()->getType() == 'Espece') {
-                        $caisse = $caisse + $credit->getVersement()->getMontant();
-                    } else $banque = $banque + $credit->getVersement()->getMontant();
-                } else if ($credit->getFinancement() != null) {
-                    if ($credit->getFinancement()->getType() == 'Espece') {
-                        $caisse = $caisse + $credit->getFinancement()->getMontant();
-                        //$gain[] = $credit;
-                    } else {
-                        $banque = $banque + $credit->getFinancement()->getMontant();
-                        //$gain[] = $credit;
-                    }
-
-                }
+                $credit->getType() == 'Espece' ?
+                    $caisse = $caisse + $credit->getMontant() :
+                    $banque = $banque + $credit->getMontant();
+//                if ($credit->getPaiement() != null) {
+//
+//                    if ($credit->getPaiement()->getType() == 'Espece') {
+//                        $caisse = $caisse + $credit->getPaiement()->getMontant();
+//                    } else $banque = $banque + $credit->getPaiement()->getMontant();
+//                } else if ($credit->getVersement() != null) {
+//
+//                    if ($credit->getVersement()->getType() == 'Espece') {
+//                        $caisse = $caisse + $credit->getVersement()->getMontant();
+//                    } else $banque = $banque + $credit->getVersement()->getMontant();
+//                } else if ($credit->getFinancement() != null) {
+//                    if ($credit->getFinancement()->getType() == 'Espece') {
+//                        $caisse = $caisse + $credit->getFinancement()->getMontant();
+//                        //$gain[] = $credit;
+//                    } else {
+//                        $banque = $banque + $credit->getFinancement()->getMontant();
+//                        //$gain[] = $credit;
+//                    }
+//
+//                }
             }
             else {
-//                if ($debit->getDepense()->getTransfert()) {
-//                    $transferer[] = $debit;//liste des fonds trnsferes
-//                    $caisse = $caisse - $debit->getDepense()->getMontant();
-//                    $banque = $banque + $debit->getDepense()->getMontant();
-//                } else {
-                    if ($debit->getDepense()->getType() == 'Espece') {
-                        $debitcaisse = $debitcaisse + $debit->getMontant();
-                    } else
-                        $debitbanque = $debitbanque + $debit->getMontant();
-                    //$debits[] = $debit; // liste des depenses
+                $debit->getType() == 'Espece' ?
+                    $debitcaisse = $debitcaisse + $debit->getMontant() :
+                    $debitbanque = $debitbanque + $debit->getMontant();
+//
+//                    if ($debit->getDepense()->getType() == 'Espece') {
+//                        $debitcaisse = $debitcaisse + $debit->getMontant();
+//                    } else
+//                        $debitbanque = $debitbanque + $debit->getMontant();
+
                 }
            // }
         }
