@@ -21,60 +21,28 @@ class FinanceController extends AbstractController
         $banque = 0;
         $debitbanque = 0;
         $debitcaisse = 0;
-        $debits = array();
-        $gain = array();
-        $transferer = array();
         foreach($ecritures as $ecriture)
         {
             $credit= null;
             $debit= null;
-            if($ecriture->getCredit() != null)
+            if($ecriture->getCredit() != null) {
                 $credit = $ecriture->getCredit();
-            else
-                $debit = $ecriture->getDebit();
-            if($credit != null) {
                 $credit->getType() == 'Espece' ?
                     $caisse = $caisse + $credit->getMontant() :
                     $banque = $banque + $credit->getMontant();
-//                if ($credit->getPaiement() != null) {
-//
-//                    if ($credit->getPaiement()->getType() == 'Espece') {
-//                        $caisse = $caisse + $credit->getPaiement()->getMontant();
-//                    } else $banque = $banque + $credit->getPaiement()->getMontant();
-//                } else if ($credit->getVersement() != null) {
-//
-//                    if ($credit->getVersement()->getType() == 'Espece') {
-//                        $caisse = $caisse + $credit->getVersement()->getMontant();
-//                    } else $banque = $banque + $credit->getVersement()->getMontant();
-//                } else if ($credit->getFinancement() != null) {
-//                    if ($credit->getFinancement()->getType() == 'Espece') {
-//                        $caisse = $caisse + $credit->getFinancement()->getMontant();
-//                        //$gain[] = $credit;
-//                    } else {
-//                        $banque = $banque + $credit->getFinancement()->getMontant();
-//                        //$gain[] = $credit;
-//                    }
-//
-//                }
-            }
-            else {
+            } else {
+                $debit = $ecriture->getDebit();
                 $debit->getType() == 'Espece' ?
                     $debitcaisse = $debitcaisse + $debit->getMontant() :
                     $debitbanque = $debitbanque + $debit->getMontant();
-//
-//                    if ($debit->getDepense()->getType() == 'Espece') {
-//                        $debitcaisse = $debitcaisse + $debit->getMontant();
-//                    } else
-//                        $debitbanque = $debitbanque + $debit->getMontant();
 
-                }
+            }
            // }
         }
+
         return $this->render('finance/index.html.twig',[
             'caisse' => $caisse - $debitcaisse,
             'banque' => $banque - $debitbanque,
-            'transferer' => $transferer,
-            'debits' => $debits,
             'ecritures' => $ecritures,
         ]);
     }

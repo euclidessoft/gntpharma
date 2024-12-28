@@ -63,6 +63,11 @@ class Depense
      */
     private $compte;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="depenses")
+     */
+    private $user;
+
    
     /**
      * Constructor
@@ -183,6 +188,18 @@ class Depense
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

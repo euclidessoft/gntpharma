@@ -984,10 +984,33 @@ class CommandeController extends AbstractController
                     $commande->setSuivi(true);
                     $commande->setPayer(true);
                     $commande->setPaiement($paiement);
-                    $credit->setPaiement($paiement);// ecriture copmtable du paiement
-                    $credit->setTva($commande->getTva());
+                    if($paiement->getType() == 'Espece'){
+
+                        $credit->setType('Espece');
+                        $credit->setCompte(54);
+
+                        $ecriture->setType('Espece');
+                        $ecriture->setComptecredit(54);
+                    }else{
+                        $credit->setType('Banque');
+                        $credit->setCompte(52);
+
+                        $ecriture->setType('Banque');
+                        $ecriture->setComptecredit(52);
+
+
+                    }
+
+//
+                    $credit->setPaiement($paiement);// ecriture comptable
+                    $credit->setMontant($paiement->getMontant());
+
+                    $ecriture->setSolde($paiement->getMontant());
                     $ecriture->setCredit($credit);
-                    $ecriture->setSolde($commande->getMontant());
+                    $ecriture->setMontant($paiement->getMontant());
+                    $ecriture->setLibelle('Paiement client');
+                    $ecriture->setComptedebit($paiement->getCommande()->getUser()->getCompte());
+
                     $entityManager->persist($commande);
                     $entityManager->persist($paiement);
                     $entityManager->persist($credit);
@@ -1097,12 +1120,34 @@ class CommandeController extends AbstractController
                     }
                     $versement->setUser($this->getUser());
                     $versement->setCommande($commande);
+                    if($versement->getType() == 'Espece'){
+
+                        $credit->setType('Espece');
+                        $credit->setCompte(54);
+
+                        $ecriture->setType('Espece');
+                        $ecriture->setComptecredit(54);
+                    }else{
+                        $credit->setType('Banque');
+                        $credit->setCompte(52);
+
+                        $ecriture->setType('Banque');
+                        $ecriture->setComptecredit(52);
+
+
+                    }
 //                    $commande->setSuivi(true);
 //                    $commande->setPaiement($versement);
 //                    $entityManager->persist($commande);
                     $credit->setVersement($versement);// ecriture comptable
+                    $credit->setMontant($versement->getMontant());
+
                     $ecriture->setSolde($versement->getMontant());
                     $ecriture->setCredit($credit);
+                    $ecriture->setMontant($versement->getMontant());
+                    $ecriture->setLibelle('Paiement client');
+                    $ecriture->setComptedebit($versement->getCommande()->getUser()->getCompte());
+
                     $entityManager->persist($versement);
                     $entityManager->persist($credit);
                     $entityManager->persist($ecriture);

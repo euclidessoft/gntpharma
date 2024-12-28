@@ -129,6 +129,11 @@ class User implements UserInterface
      */
     private $transferts;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Depense::class, mappedBy="user")
+     */
+    private $depenses;
+
 
     public function __construct()
     {
@@ -136,6 +141,7 @@ class User implements UserInterface
         $this->client = false;
         $this->livreur = false;
         $this->transferts = new ArrayCollection();
+        $this->depenses = new ArrayCollection();
     }
 
     public function getUsername(): ?string
@@ -350,6 +356,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($transfert->getUser() === $this) {
                 $transfert->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Depense[]
+     */
+    public function getDepenses(): Collection
+    {
+        return $this->depenses;
+    }
+
+    public function addDepense(Depense $depense): self
+    {
+        if (!$this->depenses->contains($depense)) {
+            $this->depenses[] = $depense;
+            $depense->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepense(Depense $depense): self
+    {
+        if ($this->depenses->removeElement($depense)) {
+            // set the owning side to null (unless already changed)
+            if ($depense->getUser() === $this) {
+                $depense->setUser(null);
             }
         }
 

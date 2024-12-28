@@ -21,13 +21,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for livrer in livrers %}
+                    {% for livrer in retours %}
                         <tr>
                             <td>{{ livrer.commande.id }}</td>
                             <td>{{ livrer.commande.date|date('d/m/Y') }}</td>
                             <td>{{ livrer.commande.user.nom }}</td>
                             <td>
-                                <a id="{{ livrer.commande.id }}" onclick="load({{ livrer.commande.id }})" class="btn btn-success" href="{{ path('avoir_new_reste', {'id': livrer.commande.id}) }}">
+                                <a id="{{ livrer.retour.id }}" onclick="load({{ livrer.retour.id }})" class="btn btn-success" href="{{ path('avoir_new_retour', {'id': livrer.retour.id}) }}">
                                     <i class="fa fa-gears"></i>
                                     {{'Création'|trans}}
                                 </a>

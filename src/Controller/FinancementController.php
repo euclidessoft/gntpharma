@@ -33,16 +33,29 @@ class FinancementController extends AbstractController
     public function new(Request $request): Response
     {
         $financement = new Financement();
-        $credit = new Credit();
-        $ecriture = new Ecriture();
+
         $form = $this->createForm(FinancementType::class, $financement);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+
+            $credit = new Credit();
             $credit->setFinancement($financement);// ecriture comptable
-            $ecriture->setSolde($financement->getMontant());
+            $credit->setType($financement->getType());
+            $credit->setMontant($financement->getMontant());
+            $credit->setCompte(54);
+            $financement->getType() == 'Espece' ? $credit->setType('Espece') : $credit->setType('Banque');
+
+            $ecriture = new Ecriture();
             $ecriture->setCredit($credit);
+            $financement->getType() == 'Espece' ? $ecriture->setType('Espece') : $ecriture->setType('Banque');
+            $ecriture->setComptecredit(54);
+            $ecriture->setComptedebit('aucun');
+            $ecriture->setMontant($financement->getMontant());
+            $ecriture->setLibelle($financement->getMotif());
+            $ecriture->setSolde($financement->getMontant());
+
             $entityManager->persist($financement);
             $entityManager->persist($credit);
             $entityManager->persist($ecriture);

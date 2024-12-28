@@ -59,6 +59,11 @@ class Avoir
     private $Montant;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $rebourser;
+
+    /**
      * Constructor
      */
     public function __construct(User $client, User $admin, Commande $commande)
@@ -155,6 +160,18 @@ class Avoir
     public function setReste(?LivrerReste $reste): self
     {
         $this->reste = $reste;
+
+        return $this;
+    }
+
+    public function getRebourser(): ?bool
+    {
+        return $this->rebourser;
+    }
+
+    public function setRebourser(bool $rebourser): self
+    {
+        $this->rebourser = $rebourser;
 
         return $this;
     }

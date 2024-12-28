@@ -52,6 +52,16 @@ class Debit
      */
     private $transfert;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $compte;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Remboursement::class)
+     */
+    private $remboursement;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -113,6 +123,30 @@ class Debit
     public function setTransfert(?Transfert $transfert): self
     {
         $this->transfert = $transfert;
+
+        return $this;
+    }
+
+    public function getCompte(): ?int
+    {
+        return $this->compte;
+    }
+
+    public function setCompte(int $compte): self
+    {
+        $this->compte = $compte;
+
+        return $this;
+    }
+
+    public function getRemboursement(): ?Remboursement
+    {
+        return $this->remboursement;
+    }
+
+    public function setRemboursement(?Remboursement $remboursement): self
+    {
+        $this->remboursement = $remboursement;
 
         return $this;
     }

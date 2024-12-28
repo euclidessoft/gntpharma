@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Avoir;
 use App\Entity\AvoirReste;
 use App\Entity\Commande;
+use App\Entity\Retour;
 use App\Entity\Livrer;
 use App\Entity\LivrerReste;
 use App\Entity\Reclamation;
@@ -17,6 +18,8 @@ use App\Repository\LivrerRepository;
 use App\Repository\LivrerResteRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\ReclamationRepository;
+use App\Repository\RetourProduitRepository;
+use App\Repository\RetourRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -102,6 +105,29 @@ class AvoirController extends AbstractController
     }
 
     /**
+     * @Route("/Retour", name="avoir_retour", methods={"GET"})
+     */
+    public function retour(RetourProduitRepository $repository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            return $this->render('avoir/admin/retour.html.twig', [
+                'retours' => $repository->findBy(['valider' => true, 'rembourser' => false, 'avoir' => false]),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
      * @Route("/Reclamation", name="avoir_reclamation", methods={"GET"})
      */
     public function reclamation(ReclamationRepository $repository): Response
@@ -110,6 +136,46 @@ class AvoirController extends AbstractController
             return $this->render('avoir/admin/reclamation.html.twig', [
                 'livrers' => $repository->findBy(['cloture' => null]),
             ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/new/retour/{id}", name="avoir_new_retour", methods={"GET","POST"})
+     */
+    public function newretour(Retour $retour, RetourProduitRepository $retourProduitRepository, CommandeProduitRepository $comprodrepository, ProduitRepository $repository, SessionInterface $session): Response
+    {// traitement livraison
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $session->remove("livraison");
+            $commandeproduits = $retourProduitRepository->findBy(['retour' => $retour]);
+            $listcommande = [];
+            foreach ($commandeproduits as $commandeproduit) {
+                $listcommande[] = $commandeproduit;
+            }
+            $session->set("traitement", []);
+            $response = $this->render('avoir/admin/new_retour.html.twig', [
+                'retours' => $listcommande,
+                'commandereference' => $retour->getCommande(),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);

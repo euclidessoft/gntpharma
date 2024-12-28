@@ -107,7 +107,7 @@ class Ecriture
 
     public function setSolde(int $solde): self
     {
-        $this->solde = $this->solde + $solde;
+        $this->solde = $this->getSolde() + $solde;
 
         return $this;
     }

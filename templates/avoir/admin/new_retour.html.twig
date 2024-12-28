@@ -45,31 +45,25 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="list">
             <thead>
             <tr>
-                <th><input type="checkbox" id="tous" onchange="selectAll()" /></th>
                 <th>{{ 'référence'|trans }}</th>
                 <th>{{ 'désignation'|trans }}</th>
                 <th>{{ 'prix cession'|trans }}</th>
-                <th>{{ 'Quantité Commande'|trans }}</th>
-                <th>{{'Reste à livrer'|trans}}</th>
+                <th>{{ 'Quantité Retourné'|trans }}</th>
                 <th>{{'Montant avoir'|trans}}</th>
             </tr>
             </thead>
             <tbody>
 
-            {% for commande in commandes %}
-            <tr id="tr{{ commande.produit.id }}">
-                <td data-label="{{ 'Choisir'|trans }}">
-                    <input type="checkbox" id="{{ commande.produit.id}}" onchange="trselect({{ commande.produit.id}})" />
-                </td>
-                <td>{{ commande.produit.reference }}</td>
-                <td>{{ commande.produit.desigantion }}</td>
-                <td>{{ commande.produit.prix|number_format(0, '' , ' ') }}</td>
-                <td>
-                    {{ commande.quantite }}
-                </td>
+            {% for retour in retours %}
+            <tr id="tr{{ retour.produit.id }}">
 
-                <td class="text-center">{{ commande.quantite - commande.quantitelivre }}</td>
-                <td>{{ (commande.produit.prix * (commande.quantite - commande.quantitelivre))|number_format(0, '' , ' ') }}</td>
+                <td>{{ retour.produit.reference }}</td>
+                <td>{{ retour.produit.desigantion }}</td>
+                <td>{{ retour.produit.prix|number_format(0, '' , ' ') }}</td>
+                <td>
+                    {{ retour.quantite }}
+                </td>
+                <td>{{ (retour.produit.prix * retour.quantite )|number_format(0, '' , ' ') }}</td>
                 {% else %}
                 {% endfor %}
         </table>

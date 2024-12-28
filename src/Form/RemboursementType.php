@@ -16,6 +16,7 @@ class RemboursementType extends AbstractType
     {
         $builder
             ->add('montant')
+            ->add('libele')
             ->add('type',VerserType::class,array('placeholder' => 'Type de Paiement'))
             ->add('financement', EntityType::class, [
                 'class' => Financement::class,

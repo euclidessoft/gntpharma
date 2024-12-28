@@ -1,0 +1,47 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Voir les avoir"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block avoir %}active{% endblock %}
+
+{% block body %}
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-money-bill mr-2"></i>
+            {{ "Remboursement des avoirs"|trans }}
+        </h3>
+
+
+        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+            <thead>
+            <tr>
+                <th>{{ 'Client'|trans }}</th>
+                <th>{{ 'Date'|trans }}</th>
+                <th>{{ 'Créer par'|trans }}</th>
+                <th>{{ 'Montant'|trans }}</th>
+                <th>{{ 'Actions'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for avoir in avoirs %}
+                <tr>
+                    <td>{{ avoir.client.nom }}</td>
+                    <td>{{ avoir.date ? avoir.date|date('d/m/Y') : '' }}</td>
+                    <td>{{ avoir.admin.nom }}</td>
+                    <td>{{ avoir.Montant|number_format(0, '' , ' ') }}</td>
+                    <td>
+                        <a id="{{ avoir.id }}" onclick="load({{ avoir.id }})" class="btn btn-success" href="{{ path('avoir_show', {'id': avoir.id}) }}"><i class="fa fa-list"></i>
+                            {{ 'Rembourser'|trans }}
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {#    <a href="{{ path('avoir_new') }}" class="btn btn-success mb-3">Create new</a>#}
+    </div>
+{% endblock %}

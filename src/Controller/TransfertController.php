@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Complement\Solde as Solde;
 
 /**
  * @Route("/{_locale}/transfert")
@@ -31,7 +32,7 @@ class TransfertController extends AbstractController
     /**
      * @Route("/caisse", name="transfert_caisse", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function caisse(Request $request, Solde $solde): Response
     {
         $transfert = new Transfert();
         $form = $this->createForm(TransfertType::class, $transfert);
@@ -39,17 +40,21 @@ class TransfertController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $montant = $solde->montantcaisse($entityManager,54);
+            if($transfert->getMontant() <= $montant){
             $transfert->setSource('Caisse');
             $transfert->setDestination('Banque');
+            $transfert->setUser($this->getUser());
             $debit = new Debit();
             $debit->setTransfert($transfert);
             $debit->setType('Espece');
-            $debit->setMontant(-$transfert->getMontant());
+            $debit->setCompte(54);
+            $debit->setMontant($transfert->getMontant());
             $debitecriture = new Ecriture();
             $debitecriture->setDebit($debit);
             $debitecriture->setType('Espece');
             $debitecriture->setLibelle('Transfert depuis');
-            $debitecriture->setSolde($transfert->getMontant());
+            $debitecriture->setSolde(-$transfert->getMontant());
             $debitecriture->setMontant($transfert->getMontant());
             $debitecriture->setComptedebit('54');
             $debitecriture->setComptecredit('52');
@@ -57,11 +62,13 @@ class TransfertController extends AbstractController
 
             $credit = new Credit();
             $credit->setTransfert($transfert);
-            $credit->setType('Espece');
+            $credit->setType('Banque');
+            $credit->setCompte(52);
             $credit->setMontant($transfert->getMontant());
+
             $creditecriture = new Ecriture();
             $creditecriture->setCredit($credit);
-            $creditecriture->setType('Espece');
+            $creditecriture->setType('Banque');
             $creditecriture->setLibelle('Transfert vers');
             $creditecriture->setSolde($transfert->getMontant());
             $creditecriture->setMontant($transfert->getMontant());
@@ -77,6 +84,10 @@ class TransfertController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('transfert_index', [], Response::HTTP_SEE_OTHER);
+            }
+            else{
+                $this->addFlash('notice', 'Montant disponible '.$montant);
+            }
         }
 
         return $this->render('transfert/caisse.html.twig', [
@@ -88,7 +99,7 @@ class TransfertController extends AbstractController
     /**
      * @Route("/banque", name="transfert_banque", methods={"GET","POST"})
      */
-    public function banque(Request $request): Response
+    public function banque(Request $request, Solde $solde): Response
     {
         $transfert = new Transfert();
         $form = $this->createForm(TransfertType::class, $transfert);
@@ -96,17 +107,21 @@ class TransfertController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $montant = $solde->montantbanque($entityManager, 52);
+            if($transfert->getMontant() <= $montant){
             $transfert->setSource('Banque');
             $transfert->setDestination('Caisse');
+            $transfert->setUser($this->getUser());
             $debit = new Debit();
             $debit->setTransfert($transfert);
             $debit->setType('Banque');
-            $debit->setMontant(-$transfert->getMontant());
+            $debit->setCompte(52);
+            $debit->setMontant($transfert->getMontant());
             $debitecriture = new Ecriture();
             $debitecriture->setDebit($debit);
             $debitecriture->setType('Banque');
             $debitecriture->setLibelle('Transfert depuis');
-            $debitecriture->setSolde($transfert->getMontant());
+            $debitecriture->setSolde(-$transfert->getMontant());
             $debitecriture->setMontant($transfert->getMontant());
             $debitecriture->setComptedebit('52');
             $debitecriture->setComptecredit('54');
@@ -114,11 +129,12 @@ class TransfertController extends AbstractController
 
             $credit = new Credit();
             $credit->setTransfert($transfert);
-            $credit->setType('Banque');
+            $credit->setType('Espece');
+            $credit->setCompte(54);
             $credit->setMontant($transfert->getMontant());
             $creditecriture = new Ecriture();
             $creditecriture->setCredit($credit);
-            $creditecriture->setType('Banque');
+            $creditecriture->setType('Espece');
             $creditecriture->setLibelle('Transfert vers');
             $creditecriture->setSolde($transfert->getMontant());
             $creditecriture->setMontant($transfert->getMontant());
@@ -134,6 +150,10 @@ class TransfertController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('transfert_index', [], Response::HTTP_SEE_OTHER);
+            }
+            else{
+                $this->addFlash('notice', 'Montant disponible '.$montant);
+            }
         }
 
         return $this->render('transfert/banque.html.twig', [
@@ -185,4 +205,5 @@ class TransfertController extends AbstractController
 
         return $this->redirectToRoute('transfert_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

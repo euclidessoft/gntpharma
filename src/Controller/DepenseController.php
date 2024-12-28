@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Complement\Solde as Solde;
 
 /**
  * @Route("/{_locale}/depense")
@@ -31,7 +32,7 @@ class DepenseController extends AbstractController
     /**
      * @Route("/new", name="depense_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Solde $solde): Response
     {
         $depense = new Depense();
         $debit = new Debit();
@@ -41,19 +42,40 @@ class DepenseController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $solde = 0;
-            if($depense->getType() == "Espece"){
-                $solde = $this->montantcaisse();
+            $depense->setUser($this->getUser());
+            $montant = 0;
+            if($depense->getType() == 'Espece'){
+                $montant = $solde->montantcaisse($entityManager, 54);
+                $depense->setCompte($depense->getCategorie()->getCompte()->getNumero());
+
+                $debit->setType('Espece');
+                $debit->setCompte(54);
+
+                $ecriture->setType('Espece');
+                $ecriture->setComptecredit($depense->getCategorie()->getCompte()->getNumero());
+                $ecriture->setComptedebit(52);
             }
             else{
-                $solde = $this->montantbanque();
+                $montant = $solde->montantbanque($entityManager, 52);
+                $depense->setType('Banque');
+                $depense->setCompte($depense->getCategorie()->getCompte()->getNumero());
+
+                $debit->setType('Banque');
+                $debit->setCompte(52);
+
+                $ecriture->setType('Banque');
+                $ecriture->setComptecredit($depense->getCategorie()->getCompte()->getNumero());
+                $ecriture->setComptedebit(54);
             }
-            if($depense->getMontant() <= $solde){
+            if($depense->getMontant() <= $montant){
             $debit->setDepense($depense);
             $debit->setMontant($depense->getMontant());
+
             $ecriture->setDebit($debit);
             $ecriture->setSolde(-$depense->getMontant());
-            $depense->setCompte($depense->getCategorie()->getCompte()->getNumero());
+            $ecriture->setMontant($depense->getMontant());
+            $ecriture->setLibelle($depense->getLibelle());
+
             $entityManager->persist($depense);
             $entityManager->persist($debit);
             $entityManager->persist($ecriture);
@@ -113,117 +135,5 @@ class DepenseController extends AbstractController
         }
 
         return $this->redirectToRoute('depense_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    private function montantcaisse(){
-        $em = $this->getDoctrine()->getManager();
-
-
-        $credits = $em->getRepository(Credit::class)->findAll();
-        $caisse = 0;
-        $debitcaisse = 0;
-        foreach($credits as $credit)
-        {
-            if ($credit->getVersement() != null) {
-
-                if($credit->getVersement()->getType() == 'Espece')
-                {
-                    $caisse = $caisse + $credit->getVersement()->getMontant();
-                }
-            }
-            else if($credit->getFinancement() != null)
-            {
-                if($credit->getFinancement()->getType() == 'Espece')
-                {
-                    $caisse = $caisse + $credit->getFinancement()->getMontant();
-                    //$gain[] = $credit;
-                }
-
-            }
-            else
-            {
-                if($credit->getPaiement()->getType() == 'Espece')
-                {
-                    $caisse = $caisse + $credit->getPaiement()->getMontant();
-                }
-
-            }
-        }
-        $deb = $em->getRepository(Debit::class)->findAll();
-        foreach($deb as $debit)
-        {
-
-//            if($debit->getDepense()->getTransfert())
-//            {
-//                $caisse = $caisse - $debit->getDepense()->getMontant();
-//            }
-//            else
-//            {
-                if($debit->getDepense()->getType() == 'Espece')
-                {
-                    $debitcaisse = $debitcaisse + $debit->getMontant();
-                }
-           // }
-        }
-
-        $result = $caisse - $debitcaisse;
-        return $result;
-
-    }
-
-    private function montantbanque(){
-        $em = $this->getDoctrine()->getManager();
-
-
-        $credits = $em->getRepository(Credit::class)->findAll();
-        $caisse = 0;
-        $debitcaisse = 0;
-        foreach($credits as $credit)
-        {
-            if ($credit->getVersement() != null) {
-
-                if($credit->getVersement()->getType() != 'Espece')
-                {
-                    $caisse = $caisse + $credit->getVersement()->getMontant();
-                }
-            }
-            else if($credit->getFinancement() != null)
-            {
-                if($credit->getFinancement()->getType() != 'Espece')
-                {
-                    $caisse = $caisse + $credit->getFinancement()->getMontant();
-                    //$gain[] = $credit;
-                }
-
-            }
-            else
-            {
-                if($credit->getPaiement()->getType() != 'Espece')
-                {
-                    $caisse = $caisse + $credit->getPaiement()->getMontant();
-                }
-
-            }
-        }
-        $deb = $em->getRepository(Debit::class)->findAll();
-        foreach($deb as $debit)
-        {
-
-//            if($debit->getDepense()->getTransfert())
-//            {
-//                $caisse = $caisse + $debit->getDepense()->getMontant();
-//            }
-//            else
-//            {
-                if($debit->getDepense()->getType() != 'Espece')
-                {
-                    $debitcaisse = $debitcaisse + $debit->getMontant();
-                }
-          //  }
-        }
-
-        $result = $caisse - $debitcaisse;
-        return $result;
-
     }
 }
