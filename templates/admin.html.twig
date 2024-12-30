@@ -468,6 +468,34 @@
                             </ul>
                         </li>
                         <li class="dropdown-item submenu">
+                            <a class="nav-link dropdown-toggle {% block banque %}{% endblock %}" href="#"
+                                id="reapprovisionnement"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa-solid fa-landmark"></i>
+                                <i class="fas fa-arrow-left mr-2"></i>
+                                {{ 'Banque'|trans }}
+                            </a>
+                            <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+
+                                <li class="dropdown-item">
+                                    <a class="nav-link  {% block new_banque %}{% endblock %}"
+                                        href="{{ path('banque_new') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-plus mr-2"></i>
+                                        {{ 'Créer une banque'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block all_banque %}{% endblock %}"
+                                        href="{{ path('banque_index') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-warehouse fa-list mr-2"></i>
+                                        {{ 'Toutes les banques'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-item submenu">
                             <a class="nav-link dropdown-toggle {% block financement %}{% endblock %}" href="#"
                                 id="reapprovisionnement"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

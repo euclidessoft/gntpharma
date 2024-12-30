@@ -13,16 +13,13 @@
     <div class="row">
  
         <div class="col-12 mb-4">
-            {{ form_row(form.nom, {'attr': {'placeholder': 'Nom ligne de dépense *'}, 'label': false}) }}
+            {{ form_row(form.numero, {'attr': {'placeholder': 'Numero banque *'}, 'label': false}) }}
         </div>
 
         <div class="col-12 mb-4">
-            {{ form_row(form.compte, {'attr': {'placeholder': 'Numéro de compte  *'}, 'label': false}) }}
+            {{ form_row(form.nom, {'attr': {'placeholder': 'Nom de la banque  *'}, 'label': false}) }}
         </div>
 
-        <div class="col-12 mb-4">
-            {{ form_row(form.description, {'attr': {'placeholder': 'Description *'}, 'label': false}) }}
-        </div>
     </div>
 
     {{ form_rest(form) }}
