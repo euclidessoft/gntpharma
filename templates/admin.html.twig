@@ -279,55 +279,6 @@
                     </ul>
                 </li>
                 {% endif %}
-                <li class="nav-item" title="{{ 'Réclamation'|trans }}">
-                    <a class="nav-link {% block reclamation %} {% endblock %}"
-                        href="{{ path('reclamation_index',{'user':app.user.id}) }}">
-                        <div class="icone">
-                            <i class="fas fa-rotate fa-lg"></i>
-                        </div>
-                        <div class="title">
-                            {{ 'Réclamation'|trans }}
-                        </div>
-                    </a>
-                </li>
-
-                {% if is_granted('ROLE_FINANCE') %}
-                <li class="nav-item dropright" title="{{ 'Officine'|trans }}">
-                    <a class="nav-link dropdown-toggle {% block officine %} {% endblock %}" href="#" id="officine"
-                        data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <div class="icone">
-                            <i class="fas fa-staff-snake fa-lg"></i>
-                        </div>
-                        <div class="title">
-                            {{ 'Officine'|trans }}
-                        </div>
-                    </a>
-                    <ul class=" dropdown-menu" aria-labelledby="officine">
-                        <li class="dropdown-item">
-                            <a class="nav-link {% block new_avoir %}{% endblock %}"
-                                href="{{ path('avoir_choix') }}">
-                                <i class="fa fa-plus mr-2"></i>
-                                {{ 'Créer avoir'|trans }}
-                            </a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a class="nav-link {% block all_avoir %}{% endblock %}"
-                                href="{{ path('avoir_index') }}">
-                                <i class="fas fa-money-bill mr-2"></i>
-                                {{ 'Tous les avoirs'|trans }}
-                            </a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a class="nav-link {% block clients %}{% endblock %}"
-                                href="{{ path('security_clients') }}">
-                                <i class="fas fa-users mr-2"></i>
-                                {{ 'Liste des clients'|trans }}
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                {% endif %}
                 {% if is_granted('ROLE_FINANCE') %}
                 <li class="nav-item dropright" title="{{ 'Finance'|trans }}">
                     <a class="nav-link dropdown-toggle {% block finance %} {% endblock %}" href="#" id="finance"
@@ -517,7 +468,55 @@
                     </ul>
                 </li>
                 {% endif %}
+                <li class="nav-item" title="{{ 'Réclamation'|trans }}">
+                    <a class="nav-link {% block reclamation %} {% endblock %}"
+                        href="{{ path('reclamation_index',{'user':app.user.id}) }}">
+                        <div class="icone">
+                            <i class="fas fa-rotate fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Réclamation'|trans }}
+                        </div>
+                    </a>
+                </li>
 
+                {% if is_granted('ROLE_FINANCE') %}
+                <li class="nav-item dropright" title="{{ 'Officine'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block officine %} {% endblock %}" href="#" id="officine"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fas fa-staff-snake fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Officine'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="officine">
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block new_avoir %}{% endblock %}"
+                                href="{{ path('avoir_choix') }}">
+                                <i class="fa fa-plus mr-2"></i>
+                                {{ 'Créer avoir'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block all_avoir %}{% endblock %}"
+                                href="{{ path('avoir_index') }}">
+                                <i class="fas fa-money-bill mr-2"></i>
+                                {{ 'Tous les avoirs'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block clients %}{% endblock %}"
+                                href="{{ path('security_clients') }}">
+                                <i class="fas fa-users mr-2"></i>
+                                {{ 'Liste des clients'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
                 <li class="nav-item dropright" title="{{ 'Aide'|trans }}">
                     <a class="nav-link dropdown-toggle {% block aide %}{% endblock %}" href="#" id="Aide"
                         data-toggle="dropdown" aria-haspopup="true"
