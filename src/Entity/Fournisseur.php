@@ -42,6 +42,11 @@ class Fournisseur
      */
     private $designation;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $compte;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +109,18 @@ class Fournisseur
     public function setDesignation(string $designation): self
     {
         $this->designation = $designation;
+
+        return $this;
+    }
+
+    public function getCompte(): ?int
+    {
+        return $this->compte;
+    }
+
+    public function setCompte(int $compte): self
+    {
+        $this->compte = $compte;
 
         return $this;
     }

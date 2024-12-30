@@ -24,11 +24,11 @@
         <tbody>
         {% for fournisseur in fournisseurs %}
             <tr>
-                <td>{{ fournisseur.designation }}</td>
-                <td>{{ fournisseur.adresse }}</td>
-                <td>{{ fournisseur.email }}</td>
-                <td>{{ fournisseur.pays }}</td>
-                <td>{{ fournisseur.telephone }}</td>
+                <td data-label="Désignation">{{ fournisseur.designation }}</td>
+                <td data-label="Adresse">{{ fournisseur.adresse }}</td>
+                <td data-label="Email">{{ fournisseur.email }}</td>
+                <td data-label="Pays">{{ fournisseur.pays }}</td>
+                <td data-label="Téléphone">{{ fournisseur.telephone }}</td>
                 <td data-label="actions" class="text-nowrap">
                     <a id="{{ fournisseur.id }}" onclick="load({{ fournisseur.id }})" href="{{ path('fournisseur_show', {'id': fournisseur.id}) }}" title="{{'Voir'|trans}}" class="btn btn-success">
                     <i class="fa fa-eye"></i>
