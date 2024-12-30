@@ -21,9 +21,9 @@
         <tbody>
         {% for categorie in categories %}
             <tr>
-                <td>{{ categorie.nom }}</td>
-                <td>{{ categorie.description }}</td>
-                <td>
+                <td data-label="nom">{{ categorie.nom }}</td>
+                <td data-label="description">{{ categorie.description }}</td>
+                <td data-label="actions">
                     <!-- <a href="{{ path('categorie_show', {'id': categorie.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a> -->
                     <a href="{{ path('categorie_edit', {'id': categorie.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
                 </td>

@@ -29,12 +29,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <td>{{ commande.id }}</td>
-                    <td>{{ commande.date|date('d/m/Y') }}</td>
-                    <td>{{ commande.user.nom }}</td>
+                    <td data-label="Numero Commande">{{ commande.id }}</td>
+                    <td data-label="Date">{{ commande.date|date('d/m/Y') }}</td>
+                    <td data-label="Client">{{ commande.user.nom }}</td>
                     {% if commande.paiement %}
-                        <td>{{ commande.paiement ? paiement.date|date('d/m/Y') : '' }}</td>
-                        <td>
+                        <td data-label="Date de Paiement">{{ commande.paiement ? paiement.date|date('d/m/Y') : '' }}</td>
+                        <td data-label="Type">
                             {% if commande.paiement.type == "Espèce" %}
                                 Espece
                             {% else %}
@@ -44,7 +44,7 @@
                             {% endif %}
                         </td>
                     {% else %}
-                        <td>  Credit </td>
+                        <td data-label="Credit">  Credit </td>
                     {% endif %}
 
                     </tbody>

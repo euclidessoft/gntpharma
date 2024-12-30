@@ -1,0 +1,48 @@
+{% extends 'admin.html.twig' %}
+
+{% block body %}
+<div class="col-lg-6 mt-4 pb-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa-brands fa-product-hunt mr-2"></i>
+        {{ "Informations du fournisseur"|trans }}
+    </h3>
+
+    <table class="table table-success-light table-bordered text-center table-hover table-striped w-100">
+        <tbody>
+            <tr>
+                <th>Désignation</th>
+                <td>{{ fournisseur.designation }}</td>
+            </tr>
+            <tr>
+                <th>Téléphone</th>
+                <td>{{ fournisseur.telephone }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ fournisseur.email }}</td>
+            </tr>
+            <tr>
+                <th>Pays</th>
+                <td>{{ fournisseur.pays }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ fournisseur.adresse }}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="col-md-4 offset-md-3 mt-4 py-3 fond-7">
+        <div class="centrer">
+{#            <a class="btn btn-success mr-3" href="{{ path('fournisseur_edit', {'id': fournisseur.id}) }}">#}
+{#                <i class="fa fa-edit"></i> Modifier</a>#}
+            <a id="{{ fournisseur.id }}" onclick="load({{ fournisseur.id }})" class="btn btn-success-light text-green" href="{{ path('fournisseur_index') }}">
+                <i class="fa fa-undo"></i>
+                {{ 'Retour'|trans }}
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

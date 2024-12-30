@@ -27,14 +27,14 @@
         <tbody>
         {% for financement in financements %}
             <tr>
-                <td>{{ financement.provenance }}</td>
-                <td>{{ financement.motif }}</td>
-                <td>{{ financement.montant|number_format(0, '' , ' ') }}</td>
-                <td>{{ financement.date ? financement.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ financement.Type }}</td>
-                <td>{{ financement.banque }}</td>
-                <td>{{ financement.numero }}</td>
-                <td>
+                <td data-label="Provenance">{{ financement.provenance }}</td>
+                <td data-label="Motif">{{ financement.motif }}</td>
+                <td data-label="Montant">{{ financement.montant|number_format(0, '' , ' ') }}</td>
+                <td data-label="Date">{{ financement.date ? financement.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td data-label="Type">{{ financement.Type }}</td>
+                <td data-label="Banque">{{ financement.banque }}</td>
+                <td data-label="Numero">{{ financement.numero }}</td>
+                <td data-label="actions">
                     <a title="{{'Voir'|trans}}" class="btn btn-success" id="{{ financement.id }}" onclick="load({{ financement.id }})" href="{{ path('financement_show', {'id': financement.id}) }}"><i class="fa fa-eye"></i></a>
                     <a title="{{'Modifier'|trans}}" class="btn btn-success-light" href="{{ path('financement_edit', {'id': financement.id}) }}"><i class="fa fa-edit"></i></a>
                     {{ include('financement/_delete_form.html.twig') }}

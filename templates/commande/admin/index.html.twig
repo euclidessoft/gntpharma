@@ -45,8 +45,8 @@
                     <tbody>
                     {% for produit in produits %}
                         <tr id="listprod{{ produit.id }}">
-                            <td>{{ produit.reference }}</td>
-                            <td>{{ produit.desigantion }}</td>
+                            <td data-label="Réference">{{ produit.reference }}</td>
+                            <td data-label="Désignation">{{ produit.desigantion }}</td>
                             <td>
 
                                 <!-- Button trigger modal -->

@@ -101,6 +101,35 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item dropright" title="{{ 'Fournisseur'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block fournisseur %} {% endblock %}" href="#" id="fournisseur"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fa-solid fa-hospital-user"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Fournisseur'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="founisseurs">
+                       
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block new_fournisseur %}{% endblock %}"
+                                href="{{ path('fournisseur_new') }}">
+                                <i class="fa-solid fa-user mr-2"></i>
+                                {{ 'Nouveau fournisseur'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block all_fournisseurs %}{% endblock %}"
+                                href="{{ path('fournisseur_index') }}">
+                                <i class="fas fa-list mr-2"></i>
+                                {{ 'Tous les fournisseurs'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 {% if is_granted('ROLE_STOCK') %}
                 <li class="nav-item dropright" title="{{ 'stock'|trans }}">
                     <a class="nav-link dropdown-toggle {% block stock %}{% endblock %}" href="#" id="stock"

@@ -30,10 +30,10 @@
             {% for produit in panier %}
                 {% set reductionproduit = 0 %}
                 <tr>
-                    <td>{{ produit['produit'].reference }}</td>
-                    <td>{{ produit['produit'].desigantion }}</td>
-                    <td>{{ produit['produit'].prix }}</td>
-                    <td>
+                    <td data-label="Référence">{{ produit['produit'].reference }}</td>
+                    <td data-label="Désignation">{{ produit['produit'].desigantion }}</td>
+                    <td data-label="Prix Cession">{{ produit['produit'].prix }}</td>
+                    <td data-label="Réduction">
                         {% if produit['produit'].promotion is not null %}
                             {% if produit['promotion'] != 0 %}
                                 {% set reductionproduit =  produit['produit'].quantite * produit['produit'].prix * produit['promotion'] /100 %}
@@ -49,7 +49,7 @@
                             -
                         {% endif %}
                     </td>
-                    <td>
+                    <td data-label="TVA">
                         {% if produit['produit'].tva == 1 %}
                             {% set tva = tva + (((produit['produit'].quantite * produit['produit'].prix) - reductionproduit) * 0.1925) %}
                             {{ (produit['produit'].prix - (produit['produit'].prix * produit['promotion'] /100)) * 0.1925 }}
@@ -57,16 +57,16 @@
                             -
                         {% endif %}
                     </td>
-                    <td>{{ produit.produit.prixpublic }}</td>
+                    <td data-label="Prix Public">{{ produit.produit.prixpublic }}</td>
 
-                    <td class="text-center" id="tdprod{{ produit.produit.id }}">
+                    <td data-label="Quantité" class="text-center" id="tdprod{{ produit.produit.id }}">
 
 
                         {{ produit['produit'].quantite }}
 
 
                     </td>
-                    <td class="text-center" id="soustotal{{ produit.produit.id }}">
+                    <td data-label="Total" class="text-center" id="soustotal{{ produit.produit.id }}">
                         {{ (produit['produit'].prix * produit['produit'].quantite)|number_format(0, '' , ' ') }}
                         {% set total = total + (produit.produit.prix * produit['produit'].quantite) %}
                         {#<div class="input-group align-center" style="width:100px">
