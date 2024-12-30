@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Categorie;
-use App\Entity\Compte;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,12 +14,6 @@ class CategorieType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('compte', EntityType::class, [
-                'class' => Compte::class,
-                'choice_label' => 'numero',
-                'placeholder' => 'Sélectionnez la classe',
-                'required' => true,
-            ])
             ->add('description')
         ;
     }

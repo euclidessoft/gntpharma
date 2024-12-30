@@ -12,11 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Categorie
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Compte")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $compte;
 
     /**
      * @ORM\Id
@@ -39,6 +34,11 @@ class Categorie
      * @ORM\OneToMany(targetEntity=Depense::class, mappedBy="categorie")
      */
     private $depenses;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $compte;
 
     public function __construct()
     {
@@ -104,15 +104,16 @@ class Categorie
         return $this;
     }
 
-    public function getCompte(): ?Compte
+    public function getCompte(): ?int
     {
         return $this->compte;
     }
 
-    public function setCompte(?Compte $compte): self
+    public function setCompte(int $compte): self
     {
         $this->compte = $compte;
 
         return $this;
     }
+ 
 }
