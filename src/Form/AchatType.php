@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Achat;
+use App\Entity\Banque;
 use App\Entity\Fournisseur;
 use App\Form\Type\VerserType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -25,7 +26,12 @@ class AchatType extends AbstractType
                 'required' => true,
             ])
             ->add('type', VerserType::class,array('placeholder' => 'Type de Paiement'))
-            ->add('banque')
+            ->add('banque',EntityType::class, [
+                'class' => Banque::class,
+                'choice_label' => 'Nom',
+                'placeholder' => "Sélectionnez le nom de la banque",
+                'required' => true,
+            ])
             ->add('numero')
         ;
     }
