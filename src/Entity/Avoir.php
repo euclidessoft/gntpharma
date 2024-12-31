@@ -64,6 +64,12 @@ class Avoir
     private $rebourser;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Retour::class)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $retour;
+
+    /**
      * Constructor
      */
     public function __construct(User $client, User $admin, Commande $commande)
@@ -73,6 +79,7 @@ class Avoir
         $this->admin = $admin;
         $this->commande = $commande;
         $this->Montant = 0;
+        $this->rebourser    = 0;
     }
 
     public function getId(): ?int
@@ -172,6 +179,18 @@ class Avoir
     public function setRebourser(bool $rebourser): self
     {
         $this->rebourser = $rebourser;
+
+        return $this;
+    }
+
+    public function getRetour(): ?Retour
+    {
+        return $this->retour;
+    }
+
+    public function setRetour(?Retour $retour): self
+    {
+        $this->retour = $retour;
 
         return $this;
     }

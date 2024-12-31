@@ -67,7 +67,7 @@
                 {% else %}
                 {% endfor %}
         </table>
-        <button type="button" id="valider" onclick="avoir({{ commandereference.id }})" class="btn btn-success mb-4">
+        <button type="button" id="valider" onclick="avoir({{ retours[0].retour.id }})" class="btn btn-success mb-4">
             <i class="fa fa-check"></i>
             {{ 'Valider'|trans }}
         </button>
@@ -79,34 +79,25 @@
     {% block script %}
         <script>
             //embarquement pelerin dans un bus
-            function avoir(commande) {
-                var prod = "0";
-                $("input[type=checkbox]:checked").each(
-                    function() {
-                        if ($(this).attr("id") != 'tous') {
-                            prod = prod + ";" + $(this).attr("id");
+            function avoir(retour) {
+
+                if (confirm("{{'Voulez-vous vraiment créer cet avoir ?'|trans}}")) {
+
+                    $("#valider").html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('avoir_valider_retour') }}",
+                        data: "retour=" + retour,
+                        success: function(data) {
+                            if (data['id'] != '') {
+                                document.location.href = "{{ path('avoir_index') }}";
+                            }
+                        },
+                        error: function() {
+                            alert("{{'La requête n\'a pas abouti'|trans}}");
                         }
                     });
-                if (prod != "0") {
-                    if (confirm("{{'Voulez-vous vraiment créer cet avoir ?'|trans}}")) {
-
-                            $("#valider").html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
-                            $.ajax({
-                                type: "POST",
-                                url: "{{ path('avoir_valider_reste') }}",
-                                data: "commande=" + commande + "&prod=" + prod,
-                                success: function(data) {
-                                    if (data['id'] != '') {
-                                        document.location.href = "{{ path('avoir_index') }}";
-                                    }
-                                },
-                                error: function() {
-                                    alert("{{'La requête n\'a pas abouti'|trans}}");
-                                }
-                            });
-                        }
-
-                } else alert("{{'Sélectionnez au moins un produit'|trans}}");
+                }
             }
         </script>
     {% endblock %}

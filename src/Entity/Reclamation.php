@@ -94,6 +94,12 @@ class Reclamation
      */
     private $motif;
 
+//    /**
+//     * @ORM\OneToOne(targetEntity=Avoir::class, cascade={"persist", "remove"})
+//     * @ORM\JoinColumn(nullable=true)
+//     */
+//    private $avoir;
+
     public function __construct()
     {
         $this->produits = new ArrayCollection();
@@ -256,4 +262,16 @@ class Reclamation
 
         return $this;
     }
+//
+//    public function getAvoir(): ?Avoir
+//    {
+//        return $this->avoir;
+//    }
+//
+//    public function setAvoir(?Avoir $avoir): self
+//    {
+//        $this->avoir = $avoir;
+//
+//        return $this;
+//    }
 }

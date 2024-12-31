@@ -9,6 +9,7 @@ use App\Entity\Retour;
 use App\Entity\Livrer;
 use App\Entity\LivrerReste;
 use App\Entity\Reclamation;
+use App\Entity\RetourProduit;
 use App\Form\AvoirType;
 use App\Repository\AvoirRepository;
 use App\Repository\AvoirResteRepository;
@@ -110,9 +111,18 @@ class AvoirController extends AbstractController
     public function retour(RetourProduitRepository $repository): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
-            return $this->render('avoir/admin/retour.html.twig', [
+            return $response = $this->render('avoir/admin/retour.html.twig', [
                 'retours' => $repository->findBy(['valider' => true, 'rembourser' => false, 'avoir' => false]),
             ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
@@ -127,28 +137,6 @@ class AvoirController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/Reclamation", name="avoir_reclamation", methods={"GET"})
-     */
-    public function reclamation(ReclamationRepository $repository): Response
-    {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
-            return $this->render('avoir/admin/reclamation.html.twig', [
-                'livrers' => $repository->findBy(['cloture' => null]),
-            ]);
-        } else {
-            $response = $this->redirectToRoute('security_logout');
-            $response->setSharedMaxAge(0);
-            $response->headers->addCacheControlDirective('no-cache', true);
-            $response->headers->addCacheControlDirective('no-store', true);
-            $response->headers->addCacheControlDirective('must-revalidate', true);
-            $response->setCache([
-                'max_age' => 0,
-                'private' => true,
-            ]);
-            return $response;
-        }
-    }
 
     /**
      * @Route("/new/retour/{id}", name="avoir_new_retour", methods={"GET","POST"})
@@ -189,6 +177,74 @@ class AvoirController extends AbstractController
             return $response;
         }
     }
+
+    /**
+     * @Route("/validerNewRetour/", name="avoir_valider_retour")
+     */
+    public function validernewretour(Request $request, LivrerResteRepository $livrerResteRepository)
+    {
+        // On récupère le panier actuel
+
+        if ($request->isXmlHttpRequest()) {// traitement de la requete ajax
+            $em = $this->getDoctrine()->getManager();
+            $produits = explode(";", $request->get('prod'));// recuperation des produit
+            $com = $request->get('retour');// recuperation de retour
+            $retour = $em->getRepository(Retour::class)->find($com);
+            $retours = $em->getRepository(RetourProduit::class)->findBy(['retour' => $retour]);
+
+            $avoir = new Avoir($retour->getCommande()->getUser(), $this->getUser(), $retour->getCommande());
+            $avoir->setMontant(5000);
+            $avoir->setRebourser(true);
+            $avoir->setRetour($retour);
+
+            foreach ($retours as $ret) {
+
+//                $ret->set;
+
+
+            }
+            $em->persist($avoir);
+            $em->flush();
+            // verification epuisement reste a livrer
+
+            //fin verif
+            $this->addFlash('notice', 'Avoir créé avec succès');
+            $res['id'] = 'ok';
+
+
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+        }
+
+    }
+
+    /**
+     * @Route("/Reclamation", name="avoir_reclamation", methods={"GET"})
+     */
+    public function reclamation(ReclamationRepository $repository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            return $this->render('avoir/admin/reclamation.html.twig', [
+                'livrers' => $repository->findBy(['cloture' => null]),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+
 
     /**
      * @Route("/new/reste/{id}", name="avoir_new_reste", methods={"GET","POST"})
@@ -246,7 +302,10 @@ class AvoirController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+                $reclamation->setCloture(new \Datetime());
+                $reclamation->setUsercloture($this->getUser());
                 $em->persist($avoir);
+                $em->persist($reclamation);
                 $em->flush();
 
 
@@ -348,6 +407,8 @@ class AvoirController extends AbstractController
         }
 
     }
+
+
 
 //    public function new(Request $request, LivrerReste $reste): Response
 //    {
