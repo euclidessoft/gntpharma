@@ -43,14 +43,14 @@ class Achat
     private $type;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $banque;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $numero;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Banque::class, inversedBy="achats")
+     */
+    private $banque;
 
     public function getId(): ?int
     {
@@ -117,18 +117,6 @@ class Achat
         return $this;
     }
 
-    public function getBanque(): ?string
-    {
-        return $this->banque;
-    }
-
-    public function setBanque(string $banque): self
-    {
-        $this->banque = $banque;
-
-        return $this;
-    }
-
     public function getNumero(): ?int
     {
         return $this->numero;
@@ -137,6 +125,18 @@ class Achat
     public function setNumero(int $numero): self
     {
         $this->numero = $numero;
+
+        return $this;
+    }
+
+    public function getBanque(): ?Banque
+    {
+        return $this->banque;
+    }
+
+    public function setBanque(?Banque $banque): self
+    {
+        $this->banque = $banque;
 
         return $this;
     }
