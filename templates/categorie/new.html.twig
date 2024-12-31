@@ -1,14 +1,14 @@
 {% extends 'admin.html.twig' %}
-{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block title %} {{ "Nouvelle ligne de dépense"|trans }} - GNT Pharma {% endblock %}
 {% block finance %}active{% endblock %}
 {% block depense %}active{% endblock %}
 {% block new_categorie %}active{% endblock %}
 
 {% block body %}
 <div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
-    <h4 class="mb-3">
-        <i class="fa-brands fa-product-hunt mr-2"></i><i class="fa fa-plus mr-2"></i>
-        {{ 'Nouvelle dépense'|trans }}
+    <h4 class="mb-5">
+        <i class="fa-solid fa-credit-card"></i><i class="fa fa-plus mr-2"></i>
+        {{ 'Nouvelle ligne'|trans }}
     </h4>
 
     {{ include('categorie/_form.html.twig') }}
