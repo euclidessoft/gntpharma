@@ -458,7 +458,7 @@ class StockController extends AbstractController
     }
 
     /**
-     * @Route("/Creer_avoir/", name="retour_crer_avoir", methods={"POST"})
+     * @Route("/Creer_avoir/", name="retour_creer_avoir", methods={"POST"})
      */
     public function retour_avoir(Request $request): Response
     {
@@ -476,7 +476,7 @@ class StockController extends AbstractController
 
             $RetourProduit->setValider(true);
             $RetourProduit->setRembourser(true);
-            $RetourProduit->setAvoir($avoir);
+            $RetourProduit->setAvoir(true);
 
             $em->persist($RetourProduit);
             $em->persist($avoir);

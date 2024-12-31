@@ -52,6 +52,17 @@ class Achat
      */
     private $numero;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $user;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $compte;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +148,31 @@ class Achat
     public function setNumero(int $numero): self
     {
         $this->numero = $numero;
+
+        return $this;
+    }
+
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCompte(): ?string
+    {
+        return $this->compte;
+    }
+
+    public function setCompte(string $compte): self
+    {
+        $this->compte = $compte;
 
         return $this;
     }

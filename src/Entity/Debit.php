@@ -62,6 +62,12 @@ class Debit
      */
     private $remboursement;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Achat::class)
+     */
+    private $achat;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -150,4 +156,17 @@ class Debit
 
         return $this;
     }
+
+    public function getAchat(): ?Achat
+    {
+        return $this->achat;
+    }
+
+    public function setAchat(?Achat $achat): self
+    {
+        $this->achat = $achat;
+
+        return $this;
+    }
+
 }
