@@ -46,12 +46,12 @@
             <tbody>
             {% for commande in commandes %}
                 <tr>
-                    <td>{{ commande.id }}</td>
-                    <td>{{ commande.date|date('d/m/Y') }}</td>
-                    <td> {{ commande.user.nom }}</td>
-                    <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
-                    <td>{{ (commande.montant - commande.versement)|number_format(0, '' , ' ') }}</td>
-                    <td>
+                    <td data-label="Numero Commande">{{ commande.id }}</td>
+                    <td data-label="Date">{{ commande.date|date('d/m/Y') }}</td>
+                    <td data-label="Client"> {{ commande.user.nom }}</td>
+                    <td data-label="Montant Commande">{{ commande.montant|number_format(0, '' , ' ') }}</td>
+                    <td data-label="Montant Restant">{{ (commande.montant - commande.versement)|number_format(0, '' , ' ') }}</td>
+                    <td data-label="traitement">
                         <a id="{{ commande.id }}" onclick="load({{ commande.id }})" href="{{ path('commande_panier_paiement_credit', {'commande' : commande.id}) }}" class="btn btn-success">
                             <i class="fa fa-gears"></i>
                             {{ 'Traitement'|trans }}

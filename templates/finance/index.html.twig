@@ -1,7 +1,11 @@
 {% extends "admin.html.twig" %}
-{% block title %} {{ 'Journal comptable'|trans }} - GNT Pharma {% endblock %}
-{% block finance %} class="nav-item dropright active" {% endblock %}
-{% block facture %} onload="reponse()" {% endblock %}
+
+{% block title %}{{ 'Journal comptable'|trans }} - GNT Pharma{% endblock %}
+
+{% block finance %}active{% endblock %}
+
+{% block journal %}active{% endblock %}
+
 {% block body %}
 
     <div class="col-lg-11 mt-5 mb-5 fond-7">
@@ -261,8 +265,8 @@
                     <tr>
                         <th class="text-center"> {{ 'n'|trans }}</th>
                         <th class="text-center"> {{ 'Date'|trans }}</th>
-                        <th>{{ 'Compte Débité'|trans }}</th>
-                        <th>{{ 'Compte Crédité'|trans }}</th>
+                        <th>{{ 'Compte'|trans }} <br>{{ 'Débité'|trans }}</th>
+                        <th>{{ 'Compte'|trans }} <br>{{ 'Crédité'|trans }}</th>
                         <th>{{ 'Reference'|trans }}</th>
                         <th>{{ 'Libelé'|trans }}</th>
                         <th class="text-center">{{ 'Debit'|trans }}</th>
@@ -302,12 +306,12 @@
                                     {{ ecriture.credit ? ecriture.libelle : '' }}
 
                                 </td>
-                                <td data-label="{{ 'debit'|trans }}"  class="text-center">
+                                <td data-label="{{ 'debit'|trans }}"  class="text-right">
                                     {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}
 {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
 
                                 </td>
-                                <td data-label="{{ 'credit'|trans }}"  class="text-center">
+                                <td data-label="{{ 'credit'|trans }}"  class="text-right">
 {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                     {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}
                                 </td>

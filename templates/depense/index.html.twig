@@ -27,14 +27,14 @@
         <tbody>
         {% for depense in depenses %}
             <tr>
-                <td>{{ depense.compte }}</td>
-                <td>{{ depense.libelle }}</td>
-                <td>{{ depense.date ? depense.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ depense.categorie ?  depense.categorie.nom : ''}}</td>
-                <td>{{ depense.montant|number_format(0, '' , ' ') }}</td>
-                <td>{{ depense.type }}</td>
-                <td>{{ depense.statut }}</td>
-                <td class="text-nowrap">
+                <td data-label="Compte">{{ depense.compte }}</td>
+                <td data-label="Libelle">{{ depense.libelle }}</td>
+                <td data-label="Date">{{ depense.date ? depense.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td data-label="Ligne">{{ depense.categorie ?  depense.categorie.nom : ''}}</td>
+                <td data-label="Montant">{{ depense.montant|number_format(0, '' , ' ') }}</td>
+                <td data-label="Réglement">{{ depense.type }}</td>
+                <td data-label="Status">{{ depense.statut }}</td>
+                <td data-label="actions" class="text-nowrap">
                     <a id="{{ depense.id }}" onclick="load({{ depense.id }})" href="{{ path('depense_show', {'id': depense.id}) }}" title="{{'Voir'|trans}}" class="btn btn-success">
                     <i class="fa fa-eye"></i>
                     </a>

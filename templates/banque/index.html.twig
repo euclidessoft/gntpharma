@@ -1,31 +1,32 @@
 {% extends 'admin.html.twig' %}
 {% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
 {% block finance %}active{% endblock %}
-{% block depense %}active{% endblock %}
-{% block all_categories %}active{% endblock %}
+{% block banque %}active{% endblock %}
+{% block all_banque %}active{% endblock %}
 {% block body %}
 <div class="container mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fa fa-money-bill mr-2"></i>
-        {{ "Liste des lignes de depenses"|trans }}
+        {{ "Liste des banques"|trans }}
     </h3>
-    <a href="{{ path('categorie_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouvelle ligne</a>
+    <a href="{{ path('banque_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouvelle ligne</a>
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
                 <th>{{('Nom'|trans)}}</th>
-                <th>{{('Description'|trans)}}</th>
+                <th>{{('Numéro'|trans)}}</th>
                 <th>{{('actions'|trans)}}</th>
             </tr>
         </thead>
         <tbody>
-        {% for categorie in categories %}
+        {% for banque in banques %}
             <tr>
-                <td data-label="nom">{{ categorie.nom }}</td>
-                <td data-label="description">{{ categorie.description }}</td>
+                <td data-label="nom">{{ banque.nom }}</td>
+                <td data-label="Numéro">{{ banque.numero }}</td>
                 <td data-label="actions">
-                    <!-- <a href="{{ path('categorie_show', {'id': categorie.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a> -->
-                    <a href="{{ path('categorie_edit', {'id': categorie.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
+                    <!-- <a href="{{ path('banque_show', {'id': banque.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a> -->
+                    <a href="{{ path('banque_edit', {'id': banque.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
+                    {{ include('banque/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}

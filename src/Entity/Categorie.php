@@ -6,17 +6,17 @@ use App\Repository\CategorieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=CategorieRepository::class)
+ * @UniqueEntity(
+ *     fields={"compte"},
+ *     message="Ce compte existe déjà."
+ * )
  */
 class Categorie
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Compte")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $compte;
 
     /**
      * @ORM\Id
@@ -39,6 +39,11 @@ class Categorie
      * @ORM\OneToMany(targetEntity=Depense::class, mappedBy="categorie")
      */
     private $depenses;
+
+    /**
+     * @ORM\Column(type="integer", unique=true)
+     */
+    private $compte;
 
     public function __construct()
     {
@@ -104,15 +109,16 @@ class Categorie
         return $this;
     }
 
-    public function getCompte(): ?Compte
+    public function getCompte(): ?int
     {
         return $this->compte;
     }
 
-    public function setCompte(?Compte $compte): self
+    public function setCompte(int $compte): self
     {
         $this->compte = $compte;
 
         return $this;
     }
+ 
 }

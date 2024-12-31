@@ -101,6 +101,35 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item dropright" title="{{ 'Fournisseur'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block fournisseur %} {% endblock %}" href="#" id="fournisseur"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fa-solid fa-hospital-user"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Fournisseur'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="founisseurs">
+                       
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block new_fournisseur %}{% endblock %}"
+                                href="{{ path('fournisseur_new') }}">
+                                <i class="fa-solid fa-user mr-2"></i>
+                                {{ 'Nouveau fournisseur'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block all_fournisseurs %}{% endblock %}"
+                                href="{{ path('fournisseur_index') }}">
+                                <i class="fas fa-list mr-2"></i>
+                                {{ 'Tous les fournisseurs'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 {% if is_granted('ROLE_STOCK') %}
                 <li class="nav-item dropright" title="{{ 'stock'|trans }}">
                     <a class="nav-link dropdown-toggle {% block stock %}{% endblock %}" href="#" id="stock"
@@ -279,55 +308,6 @@
                     </ul>
                 </li>
                 {% endif %}
-                <li class="nav-item" title="{{ 'Réclamation'|trans }}">
-                    <a class="nav-link {% block reclamation %} {% endblock %}"
-                        href="{{ path('reclamation_index',{'user':app.user.id}) }}">
-                        <div class="icone">
-                            <i class="fas fa-rotate fa-lg"></i>
-                        </div>
-                        <div class="title">
-                            {{ 'Réclamation'|trans }}
-                        </div>
-                    </a>
-                </li>
-
-                {% if is_granted('ROLE_FINANCE') %}
-                <li class="nav-item dropright" title="{{ 'Officine'|trans }}">
-                    <a class="nav-link dropdown-toggle {% block officine %} {% endblock %}" href="#" id="officine"
-                        data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <div class="icone">
-                            <i class="fas fa-staff-snake fa-lg"></i>
-                        </div>
-                        <div class="title">
-                            {{ 'Officine'|trans }}
-                        </div>
-                    </a>
-                    <ul class=" dropdown-menu" aria-labelledby="officine">
-                        <li class="dropdown-item">
-                            <a class="nav-link {% block new_avoir %}{% endblock %}"
-                                href="{{ path('avoir_choix') }}">
-                                <i class="fa fa-plus mr-2"></i>
-                                {{ 'Créer avoir'|trans }}
-                            </a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a class="nav-link {% block all_avoir %}{% endblock %}"
-                                href="{{ path('avoir_index') }}">
-                                <i class="fas fa-money-bill mr-2"></i>
-                                {{ 'Tous les avoirs'|trans }}
-                            </a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a class="nav-link {% block clients %}{% endblock %}"
-                                href="{{ path('security_clients') }}">
-                                <i class="fas fa-users mr-2"></i>
-                                {{ 'Liste des clients'|trans }}
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                {% endif %}
                 {% if is_granted('ROLE_FINANCE') %}
                 <li class="nav-item dropright" title="{{ 'Finance'|trans }}">
                     <a class="nav-link dropdown-toggle {% block finance %} {% endblock %}" href="#" id="finance"
@@ -352,7 +332,7 @@
 
                         <li class="dropdown-item ">
                             <a class="nav-link {% block compte %}{% endblock %}"
-                                href="{{ path('compte_index') }}">
+                                href="#">
                                 <i class="fas fa-book mr-2"></i>
                                 {{ 'Plan comptable'|trans }}
                             </a>
@@ -488,6 +468,34 @@
                             </ul>
                         </li>
                         <li class="dropdown-item submenu">
+                            <a class="nav-link dropdown-toggle {% block banque %}{% endblock %}" href="#"
+                                id="reapprovisionnement"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa-solid fa-landmark"></i>
+                                <i class="fas fa-arrow-left mr-2"></i>
+                                {{ 'Banque'|trans }}
+                            </a>
+                            <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+
+                                <li class="dropdown-item">
+                                    <a class="nav-link  {% block new_banque %}{% endblock %}"
+                                        href="{{ path('banque_new') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-plus mr-2"></i>
+                                        {{ 'Créer une banque'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block all_banque %}{% endblock %}"
+                                        href="{{ path('banque_index') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-warehouse fa-list mr-2"></i>
+                                        {{ 'Toutes les banques'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-item submenu">
                             <a class="nav-link dropdown-toggle {% block financement %}{% endblock %}" href="#"
                                 id="reapprovisionnement"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -517,7 +525,55 @@
                     </ul>
                 </li>
                 {% endif %}
+                <li class="nav-item" title="{{ 'Réclamation'|trans }}">
+                    <a class="nav-link {% block reclamation %} {% endblock %}"
+                        href="{{ path('reclamation_index',{'user':app.user.id}) }}">
+                        <div class="icone">
+                            <i class="fas fa-rotate fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Réclamation'|trans }}
+                        </div>
+                    </a>
+                </li>
 
+                {% if is_granted('ROLE_FINANCE') %}
+                <li class="nav-item dropright" title="{{ 'Officine'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block officine %} {% endblock %}" href="#" id="officine"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fas fa-staff-snake fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Officine'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="officine">
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block new_avoir %}{% endblock %}"
+                                href="{{ path('avoir_choix') }}">
+                                <i class="fa fa-plus mr-2"></i>
+                                {{ 'Créer avoir'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block all_avoir %}{% endblock %}"
+                                href="{{ path('avoir_index') }}">
+                                <i class="fas fa-money-bill mr-2"></i>
+                                {{ 'Tous les avoirs'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block clients %}{% endblock %}"
+                                href="{{ path('security_clients') }}">
+                                <i class="fas fa-users mr-2"></i>
+                                {{ 'Liste des clients'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
                 <li class="nav-item dropright" title="{{ 'Aide'|trans }}">
                     <a class="nav-link dropdown-toggle {% block aide %}{% endblock %}" href="#" id="Aide"
                         data-toggle="dropdown" aria-haspopup="true"
