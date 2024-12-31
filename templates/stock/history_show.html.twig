@@ -117,7 +117,7 @@
                                                                         </button>
                                                                         <button type="button"
                                                                                 class="btn btn-shadow btn-primary"
-                                                                                onclick="retour_creer_avoir({{ retour.id }}, {{ retourproduit.produit.id }},{{ retourproduit.lot }})">
+                                                                                onclick="retour_creer_avoir({{ retourproduit.id }}, {{ retourproduit.produit.id }},{{ retourproduit.lot }})">
                                                                             &emsp;
                                                                             <i class="fa fa-sack-dollar fa-lg"></i>
                                                                             {{ 'Créer avoir'|trans }}
@@ -201,7 +201,7 @@
                 $("#valid" + produit + lot).html("<i class='fa-solid fa-spinner fa-spin-pulse'></i>");
                 $.ajax({
                     type: "POST",
-                    url: "{{ path('retour_crer_avoir') }}",
+                    url: "{{ path('stock_retour_creer_avoir') }}",
                     data: {retour: id},
                     success: function (data) {
                         $("#message").html("<div class=\"alert alert-success alert-dismissible fade show radius-10 shadow-black\">\n" +

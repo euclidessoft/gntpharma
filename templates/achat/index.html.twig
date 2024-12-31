@@ -27,7 +27,7 @@
                 <td>{{ achat.libele }}</td>
                 <td><a href="{{ path('fournisseur_show', { id: achat.fournisseur.id }) }}">{{ achat.fournisseur.designation }}</a></td>
                 <td>{{ achat.montant|number_format(0, '' , ' ') }}</td>
-                <td>{{ achat.banque }}</td>
+                <td>{{ achat.banque ? achat.banque.nom : '' }}</td>
                 <td>{{ achat.numero }}</td>
             </tr>
         {% else %}

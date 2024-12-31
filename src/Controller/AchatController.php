@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Complement\Solde as Solde;
 use App\Entity\Achat;
+use App\Entity\Debit;
+use App\Entity\Ecriture;
 use App\Form\AchatType;
 use App\Repository\AchatRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,15 +31,54 @@ class AchatController extends AbstractController
     /**
      * @Route("/new", name="achat_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Solde $solde): Response
     {
         $achat = new Achat();
+        $debit = new Debit();
+        $ecriture = new Ecriture();
         $form = $this->createForm(AchatType::class, $achat);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $achat->setUser($this->getUser());
+            $montant = 0;
+            if($achat->getType() == 'Espece'){
+                $montant = $solde->montantcaisse($entityManager, 54);
+                $achat->setCompte($achat->getFournisseur()->getCompte());
+
+                $debit->setType('Espece');
+                $debit->setCompte(54);
+
+                $ecriture->setType('Espece');
+                $ecriture->setComptecredit($achat->getFournisseur()->getCompte());
+                $ecriture->setComptedebit(52);
+            }
+            else{
+                $montant = $solde->montantbanque($entityManager, 52);
+                $achat->setType('Banque');
+                $achat->setCompte($achat->getFournisseur()->getCompte());
+
+                $debit->setType('Banque');
+                $debit->setCompte(52);
+
+                $ecriture->setType('Banque');
+                $ecriture->setComptecredit($achat->getFournisseur()->getCompte());
+                $ecriture->setComptedebit(54);
+            }
+            if($achat->getMontant() <= $montant) {
+                $debit->setAchat($achat);
+                $debit->setMontant($achat->getMontant());
+
+                $ecriture->setDebit($debit);
+                $ecriture->setSolde(-$achat->getMontant());
+                $ecriture->setMontant($achat->getMontant());
+                $ecriture->setLibelle($achat->getLibele());
+            }
+
             $entityManager->persist($achat);
+            $entityManager->persist($debit);
+            $entityManager->persist($ecriture);
             $entityManager->flush();
 
             return $this->redirectToRoute('achat_index', [], Response::HTTP_SEE_OTHER);

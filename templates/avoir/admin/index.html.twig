@@ -23,10 +23,11 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>{{ 'Client'|trans }}</th>
                 <th>{{ 'Date'|trans }}</th>
-                <th>{{ 'Créer par'|trans }}</th>
+                <th>{{ 'Client'|trans }}</th>
                 <th>{{ 'Montant'|trans }}</th>
+                <th>{{ 'Créer par'|trans }}</th>
+                <th>{{ 'Motif'|trans }}</th>
                 <th>{{ 'actions'|trans }}</th>
             </tr>
         </thead>
@@ -37,6 +38,11 @@
                 <td>{{ avoir.date ? avoir.date|date('d/m/Y') : '' }}</td>
                 <td>{{ avoir.admin.nom }}</td>
                 <td>{{ avoir.Montant|number_format(0, '' , ' ') }}</td>
+                <td>
+                    {{ avoir.reste?"Reste à livré":'' }}
+                    {{ avoir.reclamation?"Reclamation":'' }}
+                    {{ avoir.retour?"Retour produit":'' }}
+                </td>
                 <td>
                     <a id="{{ avoir.id }}" onclick="load({{ avoir.id }})" class="btn btn-success" href="{{ path('avoir_show', {'id': avoir.id}) }}">
                         <i class="fa fa-list"></i>
