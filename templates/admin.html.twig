@@ -412,6 +412,33 @@
                             </ul>
                         </li>
                         <li class="dropdown-item submenu">
+                            <a class="nav-link dropdown-toggle {% block achat %}{% endblock %}" href="#"
+                               id="reapprovisionnement"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-warehouse"></i>
+                                <i class="fas fa-arrow-left mr-2"></i>
+                                {{ 'Achat'|trans }}
+                            </a>
+                            <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block new_achat %}{% endblock %}"
+                                       href="{{ path('achat_new') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-warehouse fa-list mr-2"></i>
+                                        {{ 'Nouvel Achat'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block all_achat %}{% endblock %}"
+                                       href="{{ path('achat_index') }}">
+                                        <i class="fas fa-warehouse"></i>
+                                        <i class="fas fa-warehouse fa-list mr-2"></i>
+                                        {{ 'Tous les achats'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-item submenu">
                             <a class="nav-link dropdown-toggle {% block vente %}{% endblock %}" href="#"
                                 id="reapprovisionnement"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -420,7 +447,6 @@
                                 {{ 'Vente'|trans }}
                             </a>
                             <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
-
                                 <li class="dropdown-item">
                                     <a class="nav-link {% block all_ventes %}{% endblock %}"
                                         href="">
