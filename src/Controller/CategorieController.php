@@ -32,7 +32,6 @@ class CategorieController extends AbstractController
     {
         $categorie = new Categorie();
         $form = $this->createForm(CategorieType::class, $categorie);
-        $form->remove('compte');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -66,6 +65,7 @@ class CategorieController extends AbstractController
     public function edit(Request $request, Categorie $categorie): Response
     {
         $form = $this->createForm(CategorieType::class, $categorie);
+        $form->remove('compte');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

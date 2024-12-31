@@ -68,6 +68,7 @@ class FournisseurController extends AbstractController
     public function edit(Request $request, Fournisseur $fournisseur): Response
     {
         $form = $this->createForm(FournisseurType::class, $fournisseur);
+        $form->remove('compte');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
