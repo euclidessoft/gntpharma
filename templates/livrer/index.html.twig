@@ -90,7 +90,7 @@
                     <td>{{ retour.date|date('d/m/Y') }}</td>
                     <td>{{ retour.commande.user.nom }}</td>
                     <td>
-                        <a id="rtr{{ retour.id }}" onclick="load('rtr{{ retour.id }}')" class="btn btn-success" href="{{ path('livraison_retour_show', {'id': retour.id}) }}"><i class="fa fa-gears"></i>
+                        <a id="rtr{{ retour.id }}" onclick="load('rtr{{ retour.id }}')" class="btn btn-success" href="{{ path('livraison_retour_show', {'id': retour.retour.id}) }}"><i class="fa fa-gears"></i>
                             {{ 'Traitement'|trans }}
                         </a>
                     </td>

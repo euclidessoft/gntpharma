@@ -380,7 +380,7 @@
                                 id="reapprovisionnement"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-money-bill"></i>
-                                <i class="fas fa-arrow-right mr-2"></i>
+                                <i class="fas fa-sync mr-2"></i>
                                 {{ 'Transfert des fonds'|trans }}
                             </a>
                             <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
@@ -390,7 +390,7 @@
                                         href="{{ path('transfert_caisse')}}">
                                         <i class="fas fa-money-bill"></i>
                                         <i class="fas fa-arrow-right mr-2"></i>
-                                        {{ 'Caisse ===> Banque'|trans }}
+                                        {{ 'Caisse => Banque'|trans }}
                                     </a>
                                 </li>
                                 <li class="dropdown-item">
@@ -398,14 +398,14 @@
                                         href="{{ path('transfert_banque')}}">
                                         <i class="fas fa-money-bill"></i>
                                         <i class="fas fa-arrow-left mr-2"></i>
-                                        {{ 'Banque ===> Caisse'|trans }}
+                                        {{ 'Banque => Caisse'|trans }}
                                     </a>
                                 </li>
                                 <li class="dropdown-item">
                                     <a class="nav-link {% block all_transfert %}{% endblock %}"
                                         href="{{ path('transfert_index')}}">
                                         <i class="fas fa-money-bill"></i>
-                                        <i class="fas fa-arrow-left mr-2"></i>
+                                        <i class="fas fa-sync mr-2"></i>
                                         {{ 'Tous les transferts'|trans }}
                                     </a>
                                 </li>
