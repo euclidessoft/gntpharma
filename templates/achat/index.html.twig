@@ -1,0 +1,41 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block achat %}active{% endblock %}
+{% block all_achat %}active{% endblock %}
+{% block body %}
+<div class="container mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Liste des achats"|trans }}
+    </h3>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>{{ ('Reference'|trans) }}</th>
+                <th>{{ ('Libele'|trans) }}</th>
+                <th>{{ ('Fournisseur'|trans) }}</th>
+                <th>{{ ('Montant'|trans) }}</th>
+                <th>{{ ('Banque'|trans) }}</th>
+                <th>{{ ('Numéro'|trans) }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for achat in achats %}
+            <tr>
+                <td>{{ achat.reference }}</td>
+                <td>{{ achat.libele }}</td>
+                <td><a href="{{ path('fournisseur_show', { id: achat.fournisseur.id }) }}">{{ achat.fournisseur.designation }}</a></td>
+                <td>{{ achat.montant }}</td>
+                <td>{{ achat.banque }}</td>
+                <td>{{ achat.numero }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

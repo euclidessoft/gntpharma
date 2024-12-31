@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Album;
 use App\Entity\Approvisionnement;
 use App\Entity\Approvisionner;
+use App\Entity\Avoir;
 use App\Entity\Candidature;
 use App\Entity\Commande;
 use App\Entity\Produit;
@@ -433,6 +434,52 @@ class StockController extends AbstractController
             $retour->setValider(true);
             $em->persist($retour);
 
+            $em->flush();
+
+            $res['id'] = 'Remboursement accordé';
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/Creer_avoir/", name="retour_crer_avoir", methods={"POST"})
+     */
+    public function retour_avoir(Request $request): Response
+    {
+
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+
+
+            $em = $this->getDoctrine()->getManager();
+            $retourProduit = $request->get('retour');
+            $RetourProduit = $em->getRepository(RetourProduit::class)->find($retourProduit);
+            $avoir = new Avoir($RetourProduit->getCommande()->getUser(), $this->getUser(), $RetourProduit->getCommande());
+            $avoir->setMontant($RetourProduit->getQuantite() * $RetourProduit->getProduit()->getPrix());
+            $avoir->setRetour($RetourProduit->getRetour());
+
+            $RetourProduit->setValider(true);
+            $RetourProduit->setRembourser(true);
+            $RetourProduit->setAvoir($avoir);
+
+            $em->persist($RetourProduit);
+            $em->persist($avoir);
             $em->flush();
 
             $res['id'] = 'Remboursement accordé';
