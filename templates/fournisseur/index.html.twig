@@ -13,6 +13,7 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
+                <th>{{'N Compte'|trans }}</th>
                 <th>{{'Désignation'|trans }}</th>
                 <th>{{'Adresse'|trans }}</th>
                 <th>{{'Email'|trans }}</th>
@@ -24,6 +25,7 @@
         <tbody>
         {% for fournisseur in fournisseurs %}
             <tr>
+                <td data-label="Désignation">{{ fournisseur.compte }}</td>
                 <td data-label="Désignation">{{ fournisseur.designation }}</td>
                 <td data-label="Adresse">{{ fournisseur.adresse }}</td>
                 <td data-label="Email">{{ fournisseur.email }}</td>

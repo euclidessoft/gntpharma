@@ -12,7 +12,7 @@ class BanqueType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('numero')
+            ->add('compte')
             ->add('nom')
         ;
     }

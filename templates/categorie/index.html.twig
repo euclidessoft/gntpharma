@@ -13,6 +13,7 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
+                <th>{{('Compte'|trans)}}</th>
                 <th>{{('Nom'|trans)}}</th>
                 <th>{{('Description'|trans)}}</th>
                 <th>{{('actions'|trans)}}</th>
@@ -21,6 +22,7 @@
         <tbody>
         {% for categorie in categories %}
             <tr>
+                <td data-label="compte">{{ categorie.compte }}</td>
                 <td data-label="nom">{{ categorie.nom }}</td>
                 <td data-label="description">{{ categorie.description }}</td>
                 <td data-label="actions">

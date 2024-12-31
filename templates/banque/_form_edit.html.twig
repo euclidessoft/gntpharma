@@ -10,19 +10,15 @@
         </div>
     {% endfor %}
 
-    <div class="row">
- 
-        <div class="col-12 mb-4">
-            {{ form_row(form.compte, {'attr': {'placeholder': 'Numéro compte *'}, 'label': false}) }}
-        </div>
+<div class="row">
 
-        <div class="col-12 mb-4">
-            {{ form_row(form.nom, {'attr': {'placeholder': 'Nom de la banque  *'}, 'label': false}) }}
-        </div>
-
+    <div class="col-12 mb-4">
+        {{ form_row(form.nom, {'attr': {'placeholder': 'Nom de la banque  *'}, 'label': false}) }}
     </div>
 
-    {{ form_rest(form) }}
+</div>
+
+{{ form_rest(form) }}
 </div>
 
 {{ form_end(form) }}

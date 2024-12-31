@@ -7,7 +7,7 @@
 <div class="container mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fa fa-money-bill mr-2"></i>
-        {{ "Liste des achats"|trans }}
+        {{ "Liste des paiements"|trans }}
     </h3>
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
@@ -26,7 +26,7 @@
                 <td>{{ achat.reference }}</td>
                 <td>{{ achat.libele }}</td>
                 <td><a href="{{ path('fournisseur_show', { id: achat.fournisseur.id }) }}">{{ achat.fournisseur.designation }}</a></td>
-                <td>{{ achat.montant }}</td>
+                <td>{{ achat.montant|number_format(0, '' , ' ') }}</td>
                 <td>{{ achat.banque }}</td>
                 <td>{{ achat.numero }}</td>
             </tr>

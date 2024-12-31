@@ -45,7 +45,7 @@ class Fournisseur
     private $designation;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string" , length=255)
      */
     private $compte;
 
@@ -125,12 +125,12 @@ class Fournisseur
         return $this;
     }
 
-    public function getCompte(): ?int
+    public function getCompte(): ?string
     {
         return $this->compte;
     }
 
-    public function setCompte(int $compte): self
+    public function setCompte(string $compte): self
     {
         $this->compte = $compte;
 

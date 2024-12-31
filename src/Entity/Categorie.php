@@ -41,7 +41,7 @@ class Categorie
     private $depenses;
 
     /**
-     * @ORM\Column(type="integer", unique=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $compte;
 
@@ -109,12 +109,12 @@ class Categorie
         return $this;
     }
 
-    public function getCompte(): ?int
+    public function getCompte(): ?string
     {
         return $this->compte;
     }
 
-    public function setCompte(int $compte): self
+    public function setCompte(string $compte): self
     {
         $this->compte = $compte;
 

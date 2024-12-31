@@ -32,10 +32,12 @@ class CategorieController extends AbstractController
     {
         $categorie = new Categorie();
         $form = $this->createForm(CategorieType::class, $categorie);
+        $form->remove('compte');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $categorie->setCompte('605'.str_pad($categorie->getCompte(), 3, '0', STR_PAD_LEFT));
             $entityManager->persist($categorie);
             $entityManager->flush();
 

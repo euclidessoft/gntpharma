@@ -36,6 +36,9 @@ class BanqueController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $totalbanque = $entityManager->getRepository(Banque::class)->findAll();
+
+            $banque->setCompte('52'.$banque->getCompte());
             $entityManager->persist($banque);
             $entityManager->flush();
 
@@ -64,6 +67,7 @@ class BanqueController extends AbstractController
     public function edit(Request $request, Banque $banque): Response
     {
         $form = $this->createForm(BanqueType::class, $banque);
+        $form->remove('compte');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
