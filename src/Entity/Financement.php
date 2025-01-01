@@ -92,6 +92,11 @@ class Financement
     private $banque;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $compte;
+
+    /**
      * Set provenance
      *
      * @param string $provenance
@@ -260,6 +265,18 @@ class Financement
     public function setBanque(?Banque $banque): self
     {
         $this->banque = $banque;
+
+        return $this;
+    }
+
+    public function getCompte(): ?string
+    {
+        return $this->compte;
+    }
+
+    public function setCompte(?string $compte): self
+    {
+        $this->compte = $compte;
 
         return $this;
     }
