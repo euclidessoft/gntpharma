@@ -16,6 +16,7 @@ class FinancementType extends AbstractType
     {
         $builder
             ->add('provenance')
+            ->add('compte')
             ->add('motif')
             ->add('montant')
             ->add('Type', VerserType::class,array('placeholder' => 'Type de Financement'))
