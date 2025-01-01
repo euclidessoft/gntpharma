@@ -52,19 +52,20 @@ class AchatController extends AbstractController
 
                 $ecriture->setType('Espece');
                 $ecriture->setComptecredit($achat->getFournisseur()->getCompte());
-                $ecriture->setComptedebit(52);
+                $ecriture->setComptedebit(54);
             }
             else{
-                $montant = $solde->montantbanque($entityManager, 52);
+                $montant = $solde->montantbanque($entityManager, $achat->getBanque()->getCompte());//sole compte
                 $achat->setType('Banque');
                 $achat->setCompte($achat->getFournisseur()->getCompte());
 
                 $debit->setType('Banque');
-                $debit->setCompte(52);
+                $debit->setMontant($achat->getMontant());
+                $debit->setCompte($achat->getBanque()->getCompte());
 
                 $ecriture->setType('Banque');
                 $ecriture->setComptecredit($achat->getFournisseur()->getCompte());
-                $ecriture->setComptedebit(54);
+                $ecriture->setComptedebit($achat->getBanque()->getCompte());
             }
             if($achat->getMontant() <= $montant) {
                 $debit->setAchat($achat);
@@ -74,14 +75,14 @@ class AchatController extends AbstractController
                 $ecriture->setSolde(-$achat->getMontant());
                 $ecriture->setMontant($achat->getMontant());
                 $ecriture->setLibelle($achat->getLibele());
-            }
-
-            $entityManager->persist($achat);
-            $entityManager->persist($debit);
-            $entityManager->persist($ecriture);
-            $entityManager->flush();
-
+                $entityManager->persist($achat);
+                $entityManager->persist($debit);
+                $entityManager->persist($ecriture);
+                $entityManager->flush();
             return $this->redirectToRoute('achat_index', [], Response::HTTP_SEE_OTHER);
+            }else{
+                $this->addFlash('notice', 'Montant non disponible');
+            }
         }
 
         return $this->render('achat/new.html.twig', [
