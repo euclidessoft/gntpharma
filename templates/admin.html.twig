@@ -113,7 +113,7 @@
                         </div>
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="founisseurs">
-                       
+
                         <li class="dropdown-item">
                             <a class="nav-link {% block new_fournisseur %}{% endblock %}"
                                 href="{{ path('fournisseur_new') }}">
@@ -190,7 +190,7 @@
                             <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
                                 <li class="dropdown-item">
                                     <a class="nav-link  {% block new_appro %}{% endblock %}"
-                                        href="{{ path('stock_appro_index') }}"> 
+                                        href="{{ path('stock_appro_index') }}">
                                         <i class="fa-solid fa-arrows-down-to-line fa-rotate-90"></i>
                                         <i class="fas fa-plus mr-2"></i>
                                         {{ 'Nouvelle'|trans }}
@@ -346,7 +346,6 @@
                                 id="reapprovisionnement"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa-solid fa-hand-holding-dollar"></i>
-                                <i class="fas fa-arrow-right mr-2"></i>
                                 {{ 'Remboursement'|trans }}
                             </a>
                             <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
@@ -355,7 +354,6 @@
                                     <a class="nav-link {% block new_remboursement %}{% endblock %}"
                                         href="{{ path('remboursement_new')}}">
                                         <i class="fas fa-money-bill"></i>
-                                        <i class="fas fa-arrow-right"></i>
                                         {{ 'Financement'|trans }}
                                     </a>
                                 </li>
@@ -377,15 +375,12 @@
                                 </li>
                             </ul>
                         </li>
-                        
+
                         <li class="dropdown-item submenu">
                             <a class="nav-link dropdown-toggle {% block transfert %}{% endblock %}" href="#"
                                 id="reapprovisionnement"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-money-bill"></i>
-                                <i class="fas fa-sync mr-2"></i>
                                 <i class="fa-solid fa-money-bill-transfer"></i>
-                                <i class="fas fa-arrow-right mr-2"></i>
                                 {{ 'Transfert des fonds'|trans }}
                             </a>
                             <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
@@ -409,8 +404,6 @@
                                 <li class="dropdown-item">
                                     <a class="nav-link {% block all_transfert %}{% endblock %}"
                                         href="{{ path('transfert_index')}}">
-                                        <i class="fas fa-money-bill"></i>
-                                        <i class="fas fa-sync mr-2"></i>
                                         <i class="fa-solid fa-money-bill-transfer"></i>
                                         <i class="fas fa-list"></i>
                                         {{ 'Tous les transferts'|trans }}
@@ -418,10 +411,64 @@
                                 </li>
                             </ul>
                         </li>
+
+                        <li class="dropdown-item submenu">
+                            <a class="nav-link dropdown-toggle {% block banque %}{% endblock %}" href="#"
+                                id="reapprovisionnement"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa-solid fa-landmark"></i>
+                                {{ 'Banque'|trans }}
+                            </a>
+                            <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+
+                                <li class="dropdown-item">
+                                    <a class="nav-link  {% block new_banque %}{% endblock %}"
+                                        href="{{ path('banque_new') }}">
+                                        <i class="fa-solid fa-landmark"></i>
+                                        <i class="fas fa-plus"></i>
+                                        {{ 'Créer une banque'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block all_banque %}{% endblock %}"
+                                        href="{{ path('banque_index') }}">
+                                        <i class="fa-solid fa-landmark"></i>
+                                        <i class="fas fa-landmark fa-list"></i>
+                                        {{ 'Toutes les banques'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-item submenu">
+                            <a class="nav-link dropdown-toggle {% block financement %}{% endblock %}" href="#"
+                                id="reapprovisionnement"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-money-bills"></i>
+                                {{ 'Financement'|trans }}
+                            </a>
+                            <ul class="dropdown-submenu" aria-labelledby="financement">
+                                <li class="dropdown-item">
+                                    <a class="nav-link  {% block new_financement %}{% endblock %}"
+                                        href="{{ path('financement_new') }}">
+                                        <i class="fas fa-money-bills"></i>
+                                        <i class="fas fa-plus"></i>
+                                        {{ 'Nouvelle financement'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block financement_index %}{% endblock %}"
+                                        href="{{ path('financement_index') }}">
+                                        <i class="fas fa-money-bills"></i>
+                                        <i class="fas fa-money-bills fa-list"></i>
+                                        {{ 'Toutes les financements'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="dropdown-item submenu">
                             <a class="nav-link dropdown-toggle {% block achat %}{% endblock %}" href="#"
-                               id="reapprovisionnement"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                id="reapprovisionnement"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa-solid fa-hospital-user"></i>
                                 <i class="fas fa-arrow-right"></i>
                                 {{ 'Paiement Fournisseur'|trans }}
@@ -429,16 +476,16 @@
                             <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
                                 <li class="dropdown-item">
                                     <a class="nav-link {% block new_achat %}{% endblock %}"
-                                       href="{{ path('achat_new') }}">
-                                       <i class="fa-solid fa-money-bill"></i>
+                                        href="{{ path('achat_new') }}">
+                                        <i class="fa-solid fa-money-bill"></i>
                                         <i class="fas fa-warehouse fa-plus"></i>
                                         {{ 'Nouveau'|trans }}
                                     </a>
                                 </li>
                                 <li class="dropdown-item">
                                     <a class="nav-link {% block all_achat %}{% endblock %}"
-                                       href="{{ path('achat_index') }}">
-                                       <i class="fa-solid fa-hospital-user"></i>
+                                        href="{{ path('achat_index') }}">
+                                        <i class="fa-solid fa-hospital-user"></i>
                                         <i class="fas fa-hospital-user fa-list"></i>
                                         {{ 'Tous les paiements'|trans }}
                                     </a>
@@ -447,21 +494,11 @@
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block vente %}{% endblock %}" href="#"
-                                id="reapprovisionnement"        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                id="reapprovisionnement" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-money-bill"></i>
                                 <i class="fas fa-arrow-left"></i>
                                 {{ 'Vente'|trans }}
                             </a>
-                            <!-- <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
-                                <li class="dropdown-item">
-                                    <a class="nav-link {% block all_ventes %}{% endblock %}"
-                                        href="">
-                                        <i class="fas fa-warehouse"></i>
-                                        <i class="fas fa-warehouse fa-list"></i>
-                                        {{ 'Toutes les ventes'|trans }}
-                                    </a>
-                                </li>
-                            </ul> -->
                         </li>
                         <li class="dropdown-item submenu">
                             <a class="nav-link dropdown-toggle {% block depense %}{% endblock %}" href="#"
@@ -495,61 +532,6 @@
                                         <i class="fas fa-money-check"></i>
                                         <i class="fas fa-plus"></i>
                                         {{ 'Lignes de dépense'|trans }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown-item submenu">
-                            <a class="nav-link dropdown-toggle {% block banque %}{% endblock %}" href="#"
-                                id="reapprovisionnement"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa-solid fa-landmark"></i>
-                                <i class="fas fa-arrow-left"></i>
-                                {{ 'Banque'|trans }}
-                            </a>
-                            <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
-
-                                <li class="dropdown-item">
-                                    <a class="nav-link  {% block new_banque %}{% endblock %}"
-                                        href="{{ path('banque_new') }}">
-                                        <i class="fa-solid fa-landmark"></i>
-                                        <i class="fas fa-plus"></i>
-                                        {{ 'Créer une banque'|trans }}
-                                    </a>
-                                </li>
-                                <li class="dropdown-item">
-                                    <a class="nav-link {% block all_banque %}{% endblock %}"
-                                        href="{{ path('banque_index') }}">
-                                        <i class="fa-solid fa-landmark"></i>
-                                        <i class="fas fa-landmark fa-list"></i>
-                                        {{ 'Toutes les banques'|trans }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown-item submenu">
-                            <a class="nav-link dropdown-toggle {% block financement %}{% endblock %}" href="#"
-                                id="reapprovisionnement"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-money-bills"></i>
-                                <i class="fas fa-arrow-left"></i>
-                                {{ 'Financement'|trans }}
-                            </a>
-                            <ul class="dropdown-submenu" aria-labelledby="financement">
-                                <li class="dropdown-item">
-                                    <a class="nav-link  {% block new_financement %}{% endblock %}"
-                                        href="{{ path('financement_new') }}">
-                                        <i class="fas fa-money-bills"></i>
-                                        <i class="fas fa-plus"></i>
-                                        {{ 'Nouvelle financement'|trans }}
-                                    </a>
-                                </li>
-                                <li class="dropdown-item">
-                                    <a class="nav-link {% block financement_index %}{% endblock %}"
-                                        href="{{ path('financement_index') }}">
-                                        <i class="fas fa-money-bills"></i>
-                                        <i class="fas fa-money-bills fa-list"></i>
-                                        {{ 'Toutes les financements'|trans }}
                                     </a>
                                 </li>
                             </ul>
