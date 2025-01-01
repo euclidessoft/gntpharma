@@ -1,5 +1,5 @@
 {% extends 'admin.html.twig' %}
-{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block title %} {{ "Nouvel arrivage"|trans }} - GNT Pharma {% endblock %}
 {% block produit %}active{% endblock %}
 {% block arrivage %}active{% endblock %}
 
@@ -7,10 +7,10 @@
     <div class="container mt-4 fond-7">
         <h3 class="mt-4 mb-5 text-bold">
             <i class="fa-solid  fa-plane-arrival mr-2"></i>
-            {{ "Nouvel Arrivage"|trans }}
+            {{ "Nouvel arrivage"|trans }}
         </h3>
         {% for message in app.flashes('notice') %}
-            <div class="alert alert-primaire alert-dismissible fade show radius-10 shadow-black">
+            <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
                     &times;
                 </button>
