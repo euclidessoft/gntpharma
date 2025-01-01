@@ -35,9 +35,9 @@
             <th>{{ 'Numero Commande'|trans }}</th>
             <th>{{ 'Date de commande'|trans }}</th>
             <th>{{ 'Date de Livraison'|trans }}</th>
-            <th>{{ 'Client'|trans }} </th>
+            <!-- <th>{{ 'Client'|trans }} </th> -->
             <th>{{ 'Montant'|trans }}</th>
-            <th> </th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -46,7 +46,7 @@
                 <td>{{ commande.id }}</td>
                 <td>{{ commande.date|date('d/m/Y') }}</td>
                 <td>{{ commande.datelivrer ? commande.datelivrer|date('d/m/Y') : '' }}</td>
-                <td> {{ commande.user.nom }}</td>
+                <!-- <td> {{ commande.user.nom }}</td> -->
                 <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
                 <td>
                     <a id="{{ commande.id }}" onclick="load({{ commande.id }})" href="{{ path('commande_panier_Detail', {'commande' : commande.id}) }}" class="btn btn-success">

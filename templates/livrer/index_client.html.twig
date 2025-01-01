@@ -29,7 +29,7 @@
             <tr>
                 <th>{{ 'N° Commande '|trans}}</th>
                 <th>{{ 'Date'|trans }}</th>
-                <th>{{ 'Client'|trans }}</th>
+                <th>{{ 'Montant'|trans }}</th>
                 <th>{{ 'Actions'|trans }}</th>
             </tr>
         </thead>
@@ -38,7 +38,7 @@
             <tr>
                 <td>{{ commande.id }}</td>
                 <td>{{ commande.date|date('d/m/Y') }}</td>
-                <td>{{ commande.user.nom }}</td>
+                <td>{{ commande.montant }}</td>
                 <td>
                     <a  id="cmd{{ commande.id }}" onclick="load('cmd{{ commande.id }}')" class="btn btn-success" href="{{ path('commande_panier_Detail', {'commande': commande.id}) }}"><i class="fa fa-list"></i>
                         {{ 'Afficher'|trans }}
@@ -62,7 +62,7 @@
             <tr>
                 <th>{{ 'N° Commande'|trans }} </th>
                 <th>{{ 'Date'|trans }}</th>
-{#                <th>{{ 'Client'|trans }}</th>#}
+{#                <th>{{ 'Montant'|trans }}</th>#}
                 <th>{{ 'Actions'|trans }}</th>
             </tr>
             </thead>
@@ -71,7 +71,7 @@
                 <tr>
                     <td>{{ livrer.commande.id }}</td>
                     <td>{{ livrer.commande.date|date('d/m/Y') }}</td>
-{#                    <td>{{ livrer.commande.user.nom }}</td>#}
+{#                    <td>{{ livrer.commande.montant }}</td>#}
                     <td>
 
                     </td>

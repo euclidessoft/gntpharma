@@ -23,9 +23,9 @@
             <tr>
                 <th>{{ 'Numero Commande'|trans }}</th>
                 <th>{{ 'Date'|trans }}</th>
-                <th>{{ 'Client'|trans }} </th>
+                <th>{{ 'Passé par'|trans }} </th>
                 <th>{{ 'Montant'|trans }}</th>
-                <th> </th>
+                <th>Actions </th>
             </tr>
             </thead>
             <tbody>
@@ -33,7 +33,9 @@
                 <tr>
                     <td>{{ commande.id }}</td>
                     <td>{{ commande.date|date('d/m/Y') }}</td>
-                    <td> {{ commande.user.nom }}</td>
+                   
+                    <!-- <td> {{ commande.user.nom }}</td> -->
+                     <td>Personne qui a passe la commande</td>
                     <td>{{ commande.montant|number_format(0, '' , ' ') }}</td>
                     <td>
                         {#                        <a href="{{ path('commande_panier_paiement_client', {'commande' : commande.id}) }}" class="btn btn-success">#}

@@ -10,7 +10,7 @@
             {{ "Détails commande"|trans }}
         </h3>
 
-        <a href="{{ path('commande_panier_history', {'_locale': 'fr'}) }}" class="btn btn-success mb-3"><i
+        <a href="#" onclick="history.back()" class="btn btn-success mb-3"><i
                     class="fa fa-chevron-left"></i> {{ "Retour"|trans }} </a>
 
         <div class="row justify-content-end">
@@ -20,12 +20,14 @@
                     <tr>
                         <th>{{ 'Date'|trans }}</th>
                         <th>{{ 'Numero Commande'|trans }}</th>
+                        <th>{{ 'Status Commande'|trans }}</th>
                         {#            <th>Date de Livraison</th>#}
                     </tr>
                     </thead>
                     <tbody>
                     <td>{{ commande.date|date('d/m/Y') }}</td>
                     <td>{{ commande.id }}</td>
+                    <td>Paye/Non paye</td>
                     {#        <td> </td>#}
                     </tbody>
                 </table>

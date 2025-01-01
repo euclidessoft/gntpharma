@@ -11,14 +11,16 @@
         </h3>
         <div class="row justify-content-end">
             <div class="col-lg-5">
-                <table class="table table-success table-bordered">
+                <table class="table table-success-light table-bordered">
                     <tbody>
 
                     <tr>
+                        <th>{{ 'Numero commande'|trans }}</th>
                         <th>{{ 'Date'|trans }}</th>
                         <th>{{ 'Montant'|trans }}</th>
                     </tr>
                     <tr>
+                        <td>{{ avoir.commande.id }}</td>
                         <td>{{ avoir.date ? avoir.date|date('d/m/Y') : '' }}</td>
                         <td>{{ avoir.Montant|number_format(0, '' , ' ') }}</td>
                     </tr>

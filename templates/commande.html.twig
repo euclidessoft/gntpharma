@@ -5,15 +5,15 @@
 
     {{ include('head.html.twig') }}
 
-    <title> {% block title %} GNT Pharma  {% endblock %} </title>
+    <title> {% block title %} GNT Pharma {% endblock %} </title>
 
     {% block stylesheets %}
-        <link href="{{ asset('DataTables/datatables.css') }}" rel="stylesheet">
-        <link href="{{ asset('fontawesome/css/all.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/bootstrap-4plus.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/accueil.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/gntpharma.css') }}" rel="stylesheet">
-        <link rel="shortcut icon" href="{{ asset('images/gntpharma.jpeg') }}" type="image/x-icon">
+    <link href="{{ asset('DataTables/datatables.css') }}" rel="stylesheet">
+    <link href="{{ asset('fontawesome/css/all.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap-4plus.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/accueil.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/gntpharma.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('images/gntpharma.jpeg') }}" type="image/x-icon">
     {% endblock %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -27,7 +27,7 @@
 
 <body {% block facture %}{% endblock %}>
 
-{% block nav %}
+    {% block nav %}
     <nav id="navmenu" class="navmenu">
         <div class="session">
             <a id="session" class="navbar-brand text-white m-2" href="{{ path('Accueil') }}">
@@ -51,7 +51,7 @@
                 </li>
                 <li class="nav-item dropright" title="{{ 'Produits'|trans }}">
                     <a class="nav-link dropdown-toggle {% block produit %}{% endblock %}" href="#" id="produits" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
+                        aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
                             <i class="fa-brands fa-product-hunt fa-lg"></i>
                         </div>
@@ -110,7 +110,7 @@
                 </li>
                 <li class="nav-item dropright" title="{{ 'Commande'|trans }}">
                     <a class="nav-link dropdown-toggle {% block commande %}{% endblock %}" href="#" id="commande" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
+                        aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
                             <i class="fa fa-shopping-cart fa-lg"></i>
                         </div>
@@ -121,26 +121,36 @@
                     <ul class=" dropdown-menu" aria-labelledby="pelerin">
                         <li class="dropdown-item">
                             <a class="nav-link {% block my_commande %}{% endblock %}" href="{{ path('commande_panier_suivi') }}">
-                                <i class="fas fa-user-plus"></i>
+                                <i class="fas fa-shopping-cart"></i>
+                                <i class="fas fa-plus"></i>
                                 {{ 'Mes Commandes'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block commande_extranet %}{% endblock %}" href="{{ path('commande_panier_suivi_extranet') }}">
-                                <i class="fas fa-users mr-2"></i>
+                                <i class="fa-solid fa-cart-arrow-down"></i>
                                 {{ 'Commandes Extranet'|trans }}
                             </a>
                         </li>
+
+                        <li class="dropdown-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-shopping-cart"></i>
+                                <i class="fas fa-list"></i>
+                                {{ 'Toutes les commandes'|trans }}
+                            </a>
+                        </li>
+
                         {#<li class="dropdown-item">
                             <a class="nav-link" href="#">
-                                <i class="fas fa-list mr-2"></i>
+                                <i class="fas fa-list"></i>
                                 {{ 'en preparation'|trans }}
                             </a>
                         </li>#}
                     </ul>
                 </li>
                 <li class="nav-item dropright" title="{{ 'Livraison'|trans }}">
-                    <a class="nav-link dropdown-toggle {% block livraison %}{% endblock %}" href="#"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle {% block livraison %}{% endblock %}" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
                             <i class="fa fas fa-truck-fast fa-lg"></i>
                         </div>
@@ -151,13 +161,13 @@
                     <ul class=" dropdown-menu" aria-labelledby="pelerin">
                         <li class="dropdown-item">
                             <a class="nav-link  {% block all_livraison %}{% endblock %}" href="{{ path('livraison_historique') }}">
-                                <i class="fas fa-truck-fast mr-2"></i>
+                                <i class="fas fa-truck-fast"></i>
                                 {{ 'Déjà livrée'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link  {% block new_livraison %}{% endblock %}" href="{{ path('livraison_index') }}">
-                                <i class="fas fa-truck-fast mr-2"></i>
+                                <i class="fas fa-truck-fast"></i>
                                 {{ 'En attente de livraison'|trans }}
                             </a>
                         </li>
@@ -166,9 +176,9 @@
                 <li class="nav-item dropright"
                     title="{{ 'Réclamations'|trans }}">
                     <a class="nav-link dropdown-toggle {% block reclamation %}{% endblock %}" href="#" id="Produits" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
+                        aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
-                            <i class="fas fa-rotate fa-lg"></i>
+                            <i class="fa-solid fa-user-clock fa-lg"></i>
                         </div>
                         <div class="title">
                             {{ 'Réclamation'|trans }}
@@ -177,13 +187,15 @@
                     <ul class=" dropdown-menu" aria-labelledby="pelerin">
                         <li class="dropdown-item">
                             <a class="nav-link {% block new_reclamation %}{% endblock %}" href="{{ path('reclamation_new', { 'user' : app.user.id }) }}">
-                                <i class="fas fa-user-plus mr-2"></i>
+                                <i class="fas fa-user-clock"></i>
+                                <i class="fas fa-plus"></i>
                                 {{ 'Créer une réclamation'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block my_reclamation %}{% endblock %}" href="{{ path('reclamation_index',{'user':app.user.id}) }}">
-                                <i class="fas fa-user-plus mr-2"></i>
+                                <i class="fas fa-user-clock"></i>
+                                <i class="fas fa-list"></i>
                                 {{ 'Mes réclamations'|trans }}
                             </a>
                         </li>
@@ -191,7 +203,7 @@
                 </li>
                 <li class="nav-item dropright" title="{{ 'Officine'|trans }}">
                     <a class="nav-link dropdown-toggle {% block officine %}{% endblock %}" href="#" id="officine" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
+                        aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
                             <i class="fas fa-staff-snake fa-lg"></i>
                         </div>
@@ -202,19 +214,19 @@
                     <ul class=" dropdown-menu" aria-labelledby="officine">
                         <li class="dropdown-item">
                             <a class="nav-link {% block avoir %}{% endblock %}" href="{{ path('avoir_index') }}">
-                                <i class="fas fa-money-bill mr-2"></i>
+                                <i class="fas fa-sack-dollar"></i>
                                 {{ 'Avoirs'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block dette %}{% endblock %}" href="{{ path('finance_dette', {'user': app.user.id}) }}">
-                                <i class="fas fa-users mr-2"></i>
+                                <i class="fas fa-sack-xmark "></i>
                                 {{ 'Dettes'|trans }}
                             </a>
                         </li>
                         {#<li class="dropdown-item">
                             <a class="nav-link" href="{{ path('security_profile') }}">
-                                <i class="fas fa-user mr-2"></i>
+                                <i class="fas fa-user"></i>
                                 {{ 'Compte Client'|trans }}
                             </a>
                         </li>#}
@@ -224,7 +236,7 @@
 
                 <li class="nav-item dropright" title="{{ 'Aide'|trans }}">
                     <a class="nav-link dropdown-toggle {% block aide %}{% endblock %}" href="#" id="Aide" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false">
+                        aria-expanded="false">
                         <div class="icone">
                             <i class="fas fa-question-circle fa-lg"></i>
                         </div>
@@ -236,31 +248,31 @@
 
                         <li class="dropdown-item">
                             <a class="nav-link {% block manuel %}{% endblock %}" target="_blank" href="/images/condition.pdf">
-                                <i class="fas fa-book mr-2"></i>
+                                <i class="fas fa-book"></i>
                                 {{ 'Condition de vente'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link" target="_blank" href="/images/condition.pdf">
-                                <i class="fas fa-book mr-2"></i>
+                                <i class="fas fa-book"></i>
                                 {{ 'Manuel'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block suggestion %}{% endblock %}" href="{{ path('suggestion_new') }}">
-                                <i class="fas fa-comments mr-2"></i>
+                                <i class="fas fa-comments"></i>
                                 {{ 'Suggestions'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block bug %}{% endblock %}" href="#">
-                                <i class="fas fa-bug mr-2"></i>
+                                <i class="fas fa-bug"></i>
                                 {{ 'Signaler un bug'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a href="{{ path('About') }}" class="nav-link" target="_blank">
-                                <i class="fas fa-check-circle mr-2"></i>
+                                <i class="fas fa-check-circle"></i>
                                 {{ 'A propos de'|trans }} GNT Pharma
                             </a>
 
@@ -273,14 +285,14 @@
         <div class="copyright">
             <span>
                 <a href="#" class="text-green" data-toggle="modal" data-target="#about">
-                <img class="mr-1" src="{{ asset('images/gnt.png') }}" alt="by Euclides" width="45">
+                    <img class="mr-1" src="{{ asset('images/gnt.png') }}" alt="by Euclides" width="45">
                 </a>
             </span>
         </div>
     </nav>
-{% endblock %}
+    {% endblock %}
 
-{% block topbar %}
+    {% block topbar %}
     <div class="container-fluid topbar">
         <div class="row">
             <div class="topbar-menu">
@@ -293,20 +305,20 @@
                     <div class="col-lg-5 col-md-2 col-6 text-nowrap">
                         <span class="history-box">
                             <i class="fa fa-arrow-circle-left history-btn" title="Page précédente"
-                               onclick="window.history.back()"></i>
+                                onclick="window.history.back()"></i>
                             <i class="fa fa-arrow-circle-right history-btn ml-3" title="Page suivante"
-                               onclick="window.history.forward()"></i>
+                                onclick="window.history.forward()"></i>
                             <i class="fa fa-redo-alt fa-rotate-270 history-btn ml-3" title="Actualiser la page"
-                               onclick="window.location.reload()"></i>
+                                onclick="window.location.reload()"></i>
                         </span>
 
                         <button type="button" id="install_button" onclick="installApp()" hidden></button>
                     </div>
                     <div class="col-lg-2 col-md-1 col-6 text-nowrap">
                         <a class="panier" href="{{ path('commande_panier_panier') }}">
-                    <span id="gest_panier" class="badge badge-danger panierNombre">
-                            {{ panier|length }}
-                    </span><i class="fa fa-cart-shopping fa-2x"></i>
+                            <span id="gest_panier" class="badge badge-danger panierNombre">
+                                {{ panier|length }}
+                            </span><i class="fa fa-cart-shopping fa-2x"></i>
                         </a>
                     </div>
                     <div class="col-lg-2 col-md-3 col-6 text-nowrap">
@@ -325,7 +337,7 @@
                                 <a href="#" class="" data-toggle="dropdown">
                                     {{ app.user.username }}
                                     <img src="{{ asset('images/avatar-homme.avif') }}" class="user-image"
-                                         alt="User Image">
+                                        alt="User Image">
                                 </a>
                                 <div class="dropdown-menu">
                                     {{ include('security/security/deconnexion-menu.html.twig') }}
@@ -339,17 +351,17 @@
     </div>
     {{ include('security/security/deconnexion-promt.html.twig') }}
 
-{% endblock %}
-{#{{ include('Default/about.html.twig') }}#}
-
-
-<div id="main" class="container-fluid main pt-5">
-    {% block body %}
-
     {% endblock %}
-</div>
+    {#{{ include('Default/about.html.twig') }}#}
 
-{{ include('javascript.html.twig') }}
+
+    <div id="main" class="container-fluid main pt-5">
+        {% block body %}
+
+        {% endblock %}
+    </div>
+
+    {{ include('javascript.html.twig') }}
 
 </body>
 

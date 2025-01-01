@@ -14,7 +14,6 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>{{ 'Client'|trans }}</th>
                 <th>{{ 'Date'|trans }}</th>
                 <th>{{ 'Créer par'|trans }}</th>
                 <th>{{ 'Montant'|trans }}</th>
@@ -24,7 +23,6 @@
         <tbody>
         {% for avoir in avoirs %}
             <tr>
-                <td>{{ avoir.client.nom }}</td>
                 <td>{{ avoir.date ? avoir.date|date('d/m/Y') : '' }}</td>
                 <td>{{ avoir.admin.nom }}</td>
                 <td>{{ avoir.Montant|number_format(0, '' , ' ') }}</td>

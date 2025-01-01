@@ -44,10 +44,15 @@ class securityController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $hashpass = $encoder->encodePassword($user, 'Passer2023');
                 //$hashpass = $encoder->encodePassword($user, $user->getPassword());
+                
+                //Creation compte client
+                $total = $manager->getRepository(User::class)->findBy(['client' => true]);
+                $compte = '411' . str_pad(count($total) + 1, 4, '0', STR_PAD_LEFT);
+                $user->setCompte($compte);
                 //$password = $user->getPassword();
                 $user->setPassword($hashpass);
                 $user->setusername($user->getNom());
-//                $user->setRoles(['ROLE_CLIENT']);
+                //                $user->setRoles(['ROLE_CLIENT']);
                 $user->setRoles(['ROLE_ADMIN']);
                 // envoie mail
                 $token = $tokenGenerator->generateToken();
@@ -60,11 +65,11 @@ class securityController extends AbstractController
                     ->setFrom('support@gntpharma-cameroun.com')
                     ->setTo($user->getEmail())
                     ->setBody($this->renderView('security/security/mail/active.html.twig', ['url' => $url]), 'text/html');
-//                    ->setBody("Cliquez su->setBody($this->renderView('security/security/mail/active.html.twig', [ 'url' => $url ]), 'text/html');r le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
-//                $message = (new \Swift_Message('Activation compte utilisateur'))
-//                 ->setFrom('support@gntpharma-cameroun.com')
-//                 ->setTo($user->getEmail())
-//                 ->setBody($this->renderView('licence/facture.html.twig'), 'text/html');
+                //                    ->setBody("Cliquez su->setBody($this->renderView('security/security/mail/active.html.twig', [ 'url' => $url ]), 'text/html');r le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
+                //                $message = (new \Swift_Message('Activation compte utilisateur'))
+                //                 ->setFrom('support@gntpharma-cameroun.com')
+                //                 ->setTo($user->getEmail())
+                //                 ->setBody($this->renderView('licence/facture.html.twig'), 'text/html');
 
                 $mail->send($message);
                 // fin envoie mail
@@ -117,10 +122,7 @@ class securityController extends AbstractController
     /**
      * @Route("/logout", name="security_logout")
      */
-    public function logout()
-    {
-
-    }
+    public function logout() {}
 
     /**
      * @Route("/profile", name="security_profile")
@@ -181,7 +183,6 @@ class securityController extends AbstractController
                 $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('notice', 'Profil modifié avec succès');
                 return $this->redirectToRoute('security_profile', ['id' => $user->getId()]);
-
             }
             $response = $this->render('security/security/edit.html.twig', [
                 'form' => $form->createView(),
@@ -210,7 +211,6 @@ class securityController extends AbstractController
                 $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('notice', 'Profil modifié avec succès');
                 return $this->redirectToRoute('security_profile', ['id' => $user->getId()]);
-
             }
             if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
                 $response = $this->render('security/security/edit.html.twig', [
@@ -220,7 +220,6 @@ class securityController extends AbstractController
                 $response = $this->render('security/security/admin/edit.html.twig', [
                     'form' => $form->createView(),
                 ]);
-
             }
 
             $response->setSharedMaxAge(0);
@@ -269,7 +268,6 @@ class securityController extends AbstractController
                 } else {
                     $form->addError(new FormError('Ancien mot de passe incorrecte'));
                 }
-
             }
             $response = $this->render('security/security/changepassword.html.twig', [
                 'form' => $form->createView(),
@@ -284,7 +282,6 @@ class securityController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-
         } else {
             $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_login');
@@ -316,7 +313,7 @@ class securityController extends AbstractController
                 ->setFrom('support@gntpharma-cameroun.com')
                 ->setTo($user->getEmail())
                 ->setBody($this->renderView('security/security/mail/forget.html.twig', ['url' => $url]), 'text/html');
-//                ->setBody("Cliquez sur le lien suivant pour réinitialiser votre mot de passe " . $url, 'text/html');
+            //                ->setBody("Cliquez sur le lien suivant pour réinitialiser votre mot de passe " . $url, 'text/html');
 
             $mail->send($message);
             $this->addFlash('change', 'Un message a été envoyé à votre adresse email, veuillez consulter votre boite de réception');
@@ -353,7 +350,6 @@ class securityController extends AbstractController
             $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_logout');
         }
-
     }
 
     /**
@@ -379,7 +375,6 @@ class securityController extends AbstractController
             $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_logout');
         }
-
     }
 
     /**
@@ -405,7 +400,6 @@ class securityController extends AbstractController
             $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_login');
         }
-
     }
 
     /**
@@ -448,7 +442,9 @@ class securityController extends AbstractController
         }
 
 
-        return $this->render('security/security/reset.html.twig', ['form' => $form->createView()]
+        return $this->render(
+            'security/security/reset.html.twig',
+            ['form' => $form->createView()]
         );
     }
 
@@ -471,7 +467,9 @@ class securityController extends AbstractController
         return $this->redirectToRoute('security_reset_password', ['token' => $token]);
 
 
-        return $this->render('security/security/reset.html.twig', ['form' => $form->createView()]
+        return $this->render(
+            'security/security/reset.html.twig',
+            ['form' => $form->createView()]
         );
     }
 
@@ -540,7 +538,6 @@ class securityController extends AbstractController
                 $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('notice', 'Modifié avec succès');
                 return $this->redirectToRoute('security_user', ['user' => $user->getId()]);
-
             }
             $response = $this->render('security/security/edit.html.twig', [
                 'form' => $form->createView(),
@@ -573,44 +570,45 @@ class securityController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-//                $hashpass = $encoder->encodePassword($user, 'Moda2020');
+                // $hashpass = $encoder->encodePassword($user, 'Moda2020');
                 $hashpass = $encoder->encodePassword($user, $user->getPassword());
+
+                //creation compte client
+
+                $total = $manager->getRepository(User::class)->findBy(['client' => true]);
+                $compte = '411' . str_pad(count($total) + 1, 4, '0', STR_PAD_LEFT);
+                $user->setCompte($compte);
                 //$password = $user->getPassword();
                 $user->setPassword($hashpass);
                 $user->setUsername($user->getNom());
 
-//                $user->setDatenaiss(date_create_from_format('j/m/Y', $user->getBirthday()));//creation de la date de naissance
+                //$user->setDatenaiss(date_create_from_format('j/m/Y', $user->getBirthday()));//creation de la date de naissance
 
                 $user->setRoles(['ROLE_ADMIN']);
 
                 switch ($user->getFonction()) {
-                    case 'Administrateur':
-                    {
-                        $user->setRoles(['ROLE_ADMIN']);
-                        break;
-                    }
-                    case 'Client':
-                    {
-                        $user->setRoles(['ROLE_CLIENT']);
-                        $user->setClient(true);
-                        break;
-                    }
-                    case 'Financier':
-                    {
-                        $user->setRoles(['ROLE_FINANCE']);
-                        break;
-                    }
-                    case 'Gestionnaire de stock':
-                    {
-                        $user->setRoles(['ROLE_STOCK']);
-                        break;
-                    }
-                    case 'Livreur':
-                    {
-                        $user->setRoles(['ROLE_LIVREUR']);
-                        $user->setLivreur(true);
-                        break;
-                    }
+                    case 'Administrateur': {
+                            $user->setRoles(['ROLE_ADMIN']);
+                            break;
+                        }
+                    case 'Client': {
+                            $user->setRoles(['ROLE_CLIENT']);
+                            $user->setClient(true);
+                            break;
+                        }
+                    case 'Financier': {
+                            $user->setRoles(['ROLE_FINANCE']);
+                            break;
+                        }
+                    case 'Gestionnaire de stock': {
+                            $user->setRoles(['ROLE_STOCK']);
+                            break;
+                        }
+                    case 'Livreur': {
+                            $user->setRoles(['ROLE_LIVREUR']);
+                            $user->setLivreur(true);
+                            break;
+                        }
                 }
                 // envoie mail
                 $token = $tokenGenerator->generateToken();
@@ -623,7 +621,7 @@ class securityController extends AbstractController
                     ->setFrom('support@gntpharma-cameroun.com')
                     ->setTo($user->getEmail())
                     ->setBody($this->renderView('security/security/mail/active.html.twig', ['url' => $url]), 'text/html');
-//                    ->setBody("Cliquez sur le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
+                //                    ->setBody("Cliquez sur le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
 
 
                 $mail->send($message);
@@ -633,7 +631,6 @@ class securityController extends AbstractController
 
                 //return $this->redirectToRoute('security_profile');
                 return $this->redirectToRoute('security_admin_register');
-
             }
 
             $response = $this->render('security/security/admin/admin_add.html.twig', [
@@ -652,7 +649,6 @@ class securityController extends AbstractController
             $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_login');
         }
-
     }
 
     /**
@@ -679,7 +675,6 @@ class securityController extends AbstractController
             $re = json_encode($res);
             $response->setContent($re);
             return $response;
-
         } else {
             $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
             return $this->redirectToRoute('security_logout');
