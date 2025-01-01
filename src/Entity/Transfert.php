@@ -42,6 +42,12 @@ class Transfert
      */
     private $date;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Banque::class, inversedBy="transferts")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $banque;
+
         /**
      * Constructor
      */
@@ -111,6 +117,18 @@ class Transfert
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getBanque(): ?Banque
+    {
+        return $this->banque;
+    }
+
+    public function setBanque(?Banque $banque): self
+    {
+        $this->banque = $banque;
 
         return $this;
     }

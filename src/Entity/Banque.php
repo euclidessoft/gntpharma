@@ -39,9 +39,15 @@ class Banque
      */
     private $achats;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Transfert::class, mappedBy="banque")
+     */
+    private $transferts;
+
     public function __construct()
     {
         $this->achats = new ArrayCollection();
+        $this->transferts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -98,6 +104,36 @@ class Banque
             // set the owning side to null (unless already changed)
             if ($achat->getBanque() === $this) {
                 $achat->setBanque(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transfert[]
+     */
+    public function getTransferts(): Collection
+    {
+        return $this->transferts;
+    }
+
+    public function addTransfert(Transfert $transfert): self
+    {
+        if (!$this->transferts->contains($transfert)) {
+            $this->transferts[] = $transfert;
+            $transfert->setBanque($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransfert(Transfert $transfert): self
+    {
+        if ($this->transferts->removeElement($transfert)) {
+            // set the owning side to null (unless already changed)
+            if ($transfert->getBanque() === $this) {
+                $transfert->setBanque(null);
             }
         }
 
