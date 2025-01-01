@@ -45,10 +45,7 @@ class securityController extends AbstractController
                 $hashpass = $encoder->encodePassword($user, 'Passer2023');
                 //$hashpass = $encoder->encodePassword($user, $user->getPassword());
                 
-                //Creation compte client
-                $total = $manager->getRepository(User::class)->findBy(['client' => true]);
-                $compte = '411' . str_pad(count($total) + 1, 4, '0', STR_PAD_LEFT);
-                $user->setCompte($compte);
+        
                 //$password = $user->getPassword();
                 $user->setPassword($hashpass);
                 $user->setusername($user->getNom());
@@ -59,6 +56,12 @@ class securityController extends AbstractController
                 $user->setResetToken($token);
                 $manager->persist($user);
                 $manager->flush();
+
+                       //Creation compte client
+                       $compte = '411' . str_pad(count($user->getId()) + 1, 4, '0', STR_PAD_LEFT);
+                       $user->setCompte($compte);
+                       $manager->persist($user);
+                       $manager->flush();
                 $url = $this->generateUrl('security_activation', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $message = (new \Swift_Message('Activation compte utilisateur'))
@@ -573,11 +576,6 @@ class securityController extends AbstractController
                 // $hashpass = $encoder->encodePassword($user, 'Moda2020');
                 $hashpass = $encoder->encodePassword($user, $user->getPassword());
 
-                //creation compte client
-
-                $total = $manager->getRepository(User::class)->findBy(['client' => true]);
-                $compte = '411' . str_pad(count($total) + 1, 4, '0', STR_PAD_LEFT);
-                $user->setCompte($compte);
                 //$password = $user->getPassword();
                 $user->setPassword($hashpass);
                 $user->setUsername($user->getNom());
@@ -615,6 +613,12 @@ class securityController extends AbstractController
                 $user->setResetToken($token);
                 $manager->persist($user);
                 $manager->flush();
+
+                $compte = '411' . str_pad($user->getId(), 4, '0', STR_PAD_LEFT);
+                $user->setCompte($compte);
+                $manager->persist($user);
+                $manager->flush();
+
                 $url = $this->generateUrl('security_activation', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $message = (new \Swift_Message('Activation compte utilisateur'))

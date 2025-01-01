@@ -57,6 +57,7 @@ class Fournisseur
     public function __construct()
     {
         $this->achats = new ArrayCollection();
+        $this->compte = 0;
     }
 
     public function getId(): ?int

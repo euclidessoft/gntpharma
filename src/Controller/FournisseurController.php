@@ -36,10 +36,12 @@ class FournisseurController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $total = $entityManager->getRepository(Fournisseur::class)->findAll();
-            $compte = '401'.str_pad(count($total) + 1, 4, '0', STR_PAD_LEFT);
-            $fournisseur->setCompte($compte);
+            
+            $entityManager->persist($fournisseur);
+            $entityManager->flush();
 
+            $compte = '401'.str_pad($fournisseur->getId(), 4, '0', STR_PAD_LEFT);
+            $fournisseur->setCompte($compte);
             $entityManager->persist($fournisseur);
             $entityManager->flush();
 
