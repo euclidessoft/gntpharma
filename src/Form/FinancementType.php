@@ -18,7 +18,7 @@ class FinancementType extends AbstractType
             ->add('provenance')
             ->add('motif')
             ->add('montant')
-            ->add('Type', VerserType::class,array('placeholder' => 'Type de Paiement'))
+            ->add('Type', VerserType::class,array('placeholder' => 'Type de Financement'))
             ->add('banque',EntityType::class,[
                 'class' => Banque::class,
                 'choice_label' => "nom",
