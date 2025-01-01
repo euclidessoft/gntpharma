@@ -62,37 +62,37 @@
                     <ul class=" dropdown-menu" aria-labelledby="produits">
                         <li class="dropdown-item">
                             <a class="nav-link {% block all_produits %}{% endblock %}" href="{{ path('produit_index') }}">
-                                <i class="fas fa-user-plus mr-2"></i>
+                                <i class="fas fa-list"></i>
                                 {{ 'Tous les produits'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block new_produit %}{% endblock %}" href="{{ path('produit_nouveaute') }}">
-                                <i class="fas fa-plus mr-2"></i>
+                                <i class="fas fa-plus"></i>
                                 {{ 'Nouveautés'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block arrivage %}{% endblock %}" href="{{ path('produit_arrivage') }}">
-                                <i class="fa-solid fa-plane-arrival mr-2"></i>
+                                <i class="fa-solid fa-plane-arrival"></i>
                                 {{ 'Arrivage'|trans }}
                             </a>
                         </li>
                         {#<li class="dropdown-item">
                             <a class="nav-link" href="#">
-                                <i class="fas fa-user-clock mr-1"></i>
+                                <i class="fas fa-user-clock"></i>
                                 {{ 'Pré-arrivages'|trans }}
                             </a>
                         </li>#}
                         <li class="dropdown-item">
                             <a class="nav-link {% block ventes %}{% endblock %}" href="{{ path('produit_vente') }}">
-                                <i class="fas fa-money-bill-trend-up mr-1"></i>
+                                <i class="fas fa-money-bill-trend-up"></i>
                                 {{ 'Meilleures ventes'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block top %}{% endblock %}" href="{{ path('produit_top') }}">
-                                <i class="fas fa-arrow-up-wide-short mr-1"></i>
+                                <i class="fas fa-arrow-up-wide-short"></i>
                                 {{ 'Mon Top'|trans }}
                             </a>
                         </li>
@@ -121,7 +121,7 @@
                     <ul class=" dropdown-menu" aria-labelledby="pelerin">
                         <li class="dropdown-item">
                             <a class="nav-link {% block my_commande %}{% endblock %}" href="{{ path('commande_panier_suivi') }}">
-                                <i class="fas fa-user-plus mr-2"></i>
+                                <i class="fas fa-user-plus"></i>
                                 {{ 'Mes Commandes'|trans }}
                             </a>
                         </li>
