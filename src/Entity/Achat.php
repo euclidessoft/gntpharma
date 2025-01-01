@@ -159,6 +159,8 @@ class Achat
     public function setCompte(string $compte): self
     {
         $this->compte = $compte;
+
+        return $this;
     }
     public function getBanque(): ?Banque
     {

@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Banque;
 use App\Entity\Financement;
 use App\Entity\Remboursement;
 use App\Form\Type\VerserType;
@@ -24,7 +25,12 @@ class RemboursementType extends AbstractType
                 'placeholder' => 'Sélectionnez un financement', 
                 'required' => true, 
             ])
-            ->add('banque')
+            ->add('banque',EntityType::class,[
+                'class' => Banque::class,
+                'choice_label' => "nom",
+                'placeholder' => "Sélectionnez une banque",
+                'required' => true,
+            ])
             ->add('numero')
         ;
     }

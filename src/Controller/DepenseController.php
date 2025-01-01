@@ -46,26 +46,26 @@ class DepenseController extends AbstractController
             $montant = 0;
             if($depense->getType() == 'Espece'){
                 $montant = $solde->montantcaisse($entityManager, 54);
-                $depense->setCompte($depense->getCategorie()->getCompte()->getNumero());
+                $depense->setCompte($depense->getCategorie()->getCompte());
 
                 $debit->setType('Espece');
                 $debit->setCompte(54);
 
                 $ecriture->setType('Espece');
-                $ecriture->setComptecredit($depense->getCategorie()->getCompte()->getNumero());
-                $ecriture->setComptedebit(52);
+                $ecriture->setComptecredit($depense->getCategorie()->getCompte());
+                $ecriture->setComptedebit(54);
             }
             else{
-                $montant = $solde->montantbanque($entityManager, 52);
+                $montant = $solde->montantbanque($entityManager, $depense->getBanque()->getCompte());
                 $depense->setType('Banque');
-                $depense->setCompte($depense->getCategorie()->getCompte()->getNumero());
+                $depense->setCompte($depense->getCategorie()->getCompte());
 
                 $debit->setType('Banque');
-                $debit->setCompte(52);
+                $debit->setCompte($depense->getBanque()->getCompte());
 
                 $ecriture->setType('Banque');
-                $ecriture->setComptecredit($depense->getCategorie()->getCompte()->getNumero());
-                $ecriture->setComptedebit(54);
+                $ecriture->setComptecredit($depense->getCategorie()->getCompte());
+                $ecriture->setComptedebit($depense->getBanque()->getCompte());
             }
             if($depense->getMontant() <= $montant){
             $debit->setDepense($depense);

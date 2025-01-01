@@ -14,10 +14,11 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
+                <th>{{ 'Date'|trans }}</th>
+                <th>{{ 'Compte'|trans }}</th>
                 <th>{{ 'Provenance'|trans }}</th>
                 <th>{{ 'Motif'|trans }}</th>
                 <th>{{ 'Montant'|trans }}</th>
-                <th>{{ 'Date'|trans }}</th>
                 <th>{{ 'Type'|trans }}</th>
                 <th>{{ 'Banque'|trans }}</th>
                 <th>{{ 'Numero'|trans }}</th>
@@ -25,14 +26,15 @@
             </tr>
         </thead>
         <tbody>
-        {% for financement in financements %}
+            {% for financement in financements %}
             <tr>
+                <td data-label="Date">{{ financement.date ? financement.date|date('d/m/Y') }}</td>
+                <td data-label="Provenance">{{ financement.compte }}</td>
                 <td data-label="Provenance">{{ financement.provenance }}</td>
                 <td data-label="Motif">{{ financement.motif }}</td>
                 <td data-label="Montant">{{ financement.montant|number_format(0, '' , ' ') }}</td>
-                <td data-label="Date">{{ financement.date ? financement.date|date('Y-m-d H:i:s') : '' }}</td>
                 <td data-label="Type">{{ financement.Type }}</td>
-                <td data-label="Banque">{{ financement.banque }}</td>
+                <td data-label="Banque">{{ financement.banque ? financement.banque.nom:'' }}</td>
                 <td data-label="Numero">{{ financement.numero }}</td>
                 <td data-label="actions">
                     <a title="{{'Voir'|trans}}" class="btn btn-success" id="{{ financement.id }}" onclick="load({{ financement.id }})" href="{{ path('financement_show', {'id': financement.id}) }}"><i class="fa fa-eye"></i></a>
@@ -40,11 +42,11 @@
                     {{ include('financement/_delete_form.html.twig') }}
                 </td>
             </tr>
-        {% else %}
+            {% else %}
             <tr>
                 <td colspan="9">no records found</td>
             </tr>
-        {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
-{% endblock %}
+    {% endblock %}

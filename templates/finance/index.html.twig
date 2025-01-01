@@ -286,16 +286,16 @@
                                 <td data-label="{{ 'Date'|trans }}" class="text-center">
                                     {{ ecriture.date|date('d/m/Y') }}
                                 </td>
-                                <td data-label="{{ 'debit'|trans }}" class="debit">
+                                <td data-label="{{ 'debit'|trans }}" class="credit">
+
+                                    {{ ecriture.debit ? ecriture.comptecredit : '' }}
+                                    {{ ecriture.credit ? ecriture.comptecredit : '' }}
+
+                                </td>
+                                <td data-label="{{ 'credit'|trans }}" class="debit">
 
                                         {{ ecriture.credit ? ecriture.comptedebit : '' }}
                                         {{ ecriture.debit ? ecriture.comptedebit : '' }}
-
-                                </td>
-                                <td data-label="{{ 'credit'|trans }}" class="credit">
-
-                                        {{ ecriture.debit ? ecriture.comptecredit : '' }}
-                                        {{ ecriture.credit ? ecriture.comptecredit : '' }}
 
                                 </td>
                                 <td data-label="{{ 'reference'|trans }}">
@@ -306,14 +306,14 @@
                                     {{ ecriture.credit ? ecriture.libelle : '' }}
 
                                 </td>
+                                <td data-label="{{ 'credit'|trans }}"  class="text-right">
+                                    {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
+                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}
+                                </td>
                                 <td data-label="{{ 'debit'|trans }}"  class="text-right">
                                     {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}
 {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
 
-                                </td>
-                                <td data-label="{{ 'credit'|trans }}"  class="text-right">
-{#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
-                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}
                                 </td>
 {#                                <td data-label="{{ 'solde'|trans }}"  class="text-center">#}
 
