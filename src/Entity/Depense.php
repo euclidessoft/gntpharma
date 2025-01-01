@@ -43,11 +43,6 @@ class Depense
     private $statut;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $banque;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $numero;
@@ -67,6 +62,12 @@ class Depense
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="depenses")
      */
     private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Banque::class, inversedBy="depenses")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $banque;
 
    
     /**
@@ -156,18 +157,7 @@ class Depense
         return $this;
     }
 
-    public function getBanque(): ?string
-    {
-        return $this->banque;
-    }
-
-    public function setBanque(?string $banque): self
-    {
-        $this->banque = $banque;
-
-        return $this;
-    }
-
+    
     public function getNumero(): ?int
     {
         return $this->numero;
@@ -200,6 +190,18 @@ class Depense
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getBanque(): ?Banque
+    {
+        return $this->banque;
+    }
+
+    public function setBanque(?Banque $banque): self
+    {
+        $this->banque = $banque;
 
         return $this;
     }

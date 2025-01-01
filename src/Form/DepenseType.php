@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Banque;
 use App\Entity\Categorie;
 use App\Entity\Depense;
 use App\Form\Type\VerserType;
@@ -24,7 +25,12 @@ class DepenseType extends AbstractType
             ])
             ->add('type', VerserType::class,array('placeholder' => 'Type de Paiement'))
             ->add('montant')
-            ->add('banque')
+            ->add('banque',EntityType::class,[
+                'class' => Banque::class,
+                'choice_label' => "nom",
+                'placeholder' => "Sélectionnez une banque",
+                'required' => true,
+            ])
             ->add('numero')
         ;
     }

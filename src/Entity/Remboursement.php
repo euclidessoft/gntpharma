@@ -43,11 +43,6 @@ class Remboursement
     private $type;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $banque;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $numero;
@@ -56,6 +51,12 @@ class Remboursement
      * @ORM\Column(type="string", length=255)
      */
     private $libele;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Banque::class, inversedBy="remboursements")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $banque;
 
         /**
      * Constructor
@@ -130,18 +131,6 @@ class Remboursement
         return $this;
     }
 
-    public function getBanque(): ?string
-    {
-        return $this->banque;
-    }
-
-    public function setBanque(string $banque): self
-    {
-        $this->banque = $banque;
-
-        return $this;
-    }
-
     public function getNumero(): ?int
     {
         return $this->numero;
@@ -162,6 +151,18 @@ class Remboursement
     public function setLibele(string $libele): self
     {
         $this->libele = $libele;
+
+        return $this;
+    }
+
+    public function getBanque(): ?Banque
+    {
+        return $this->banque;
+    }
+
+    public function setBanque(?Banque $banque): self
+    {
+        $this->banque = $banque;
 
         return $this;
     }

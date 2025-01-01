@@ -76,11 +76,6 @@ class Financement
     private $Type;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $banque;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $numero;
@@ -89,6 +84,12 @@ class Financement
      * @ORM\OneToMany(targetEntity=Remboursement::class, mappedBy="financement")
      */
     private $remboursements;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Banque::class, inversedBy="financements")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $banque;
 
     /**
      * Set provenance
@@ -208,17 +209,6 @@ class Financement
         return $this;
     }
 
-    public function getBanque(): ?string
-    {
-        return $this->banque;
-    }
-
-    public function setBanque(?string $banque): self
-    {
-        $this->banque = $banque;
-
-        return $this;
-    }
 
     public function getNumero(): ?int
     {
@@ -258,6 +248,18 @@ class Financement
                 $remboursement->setFinancement(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBanque(): ?Banque
+    {
+        return $this->banque;
+    }
+
+    public function setBanque(?Banque $banque): self
+    {
+        $this->banque = $banque;
 
         return $this;
     }

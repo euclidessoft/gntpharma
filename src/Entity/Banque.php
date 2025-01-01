@@ -44,10 +44,28 @@ class Banque
      */
     private $transferts;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Remboursement::class, mappedBy="banque")
+     */
+    private $remboursements;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Financement::class, mappedBy="banque")
+     */
+    private $financements;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Depense::class, mappedBy="banque")
+     */
+    private $depenses;
+
     public function __construct()
     {
         $this->achats = new ArrayCollection();
         $this->transferts = new ArrayCollection();
+        $this->remboursements = new ArrayCollection();
+        $this->financements = new ArrayCollection();
+        $this->depenses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,6 +152,96 @@ class Banque
             // set the owning side to null (unless already changed)
             if ($transfert->getBanque() === $this) {
                 $transfert->setBanque(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Remboursement[]
+     */
+    public function getRemboursements(): Collection
+    {
+        return $this->remboursements;
+    }
+
+    public function addRemboursement(Remboursement $remboursement): self
+    {
+        if (!$this->remboursements->contains($remboursement)) {
+            $this->remboursements[] = $remboursement;
+            $remboursement->setBanque($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRemboursement(Remboursement $remboursement): self
+    {
+        if ($this->remboursements->removeElement($remboursement)) {
+            // set the owning side to null (unless already changed)
+            if ($remboursement->getBanque() === $this) {
+                $remboursement->setBanque(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Financement[]
+     */
+    public function getFinancements(): Collection
+    {
+        return $this->financements;
+    }
+
+    public function addFinancement(Financement $financement): self
+    {
+        if (!$this->financements->contains($financement)) {
+            $this->financements[] = $financement;
+            $financement->setBanque($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFinancement(Financement $financement): self
+    {
+        if ($this->financements->removeElement($financement)) {
+            // set the owning side to null (unless already changed)
+            if ($financement->getBanque() === $this) {
+                $financement->setBanque(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Depense[]
+     */
+    public function getDepenses(): Collection
+    {
+        return $this->depenses;
+    }
+
+    public function addDepense(Depense $depense): self
+    {
+        if (!$this->depenses->contains($depense)) {
+            $this->depenses[] = $depense;
+            $depense->setBanque($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepense(Depense $depense): self
+    {
+        if ($this->depenses->removeElement($depense)) {
+            // set the owning side to null (unless already changed)
+            if ($depense->getBanque() === $this) {
+                $depense->setBanque(null);
             }
         }
 
