@@ -138,7 +138,7 @@ class FinancementController extends AbstractController
             return $this->redirectToRoute('financement_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('financement/new.html.twig', [
+        return $this->render('financement/financement_bancaire.html.twig', [
             'financement' => $financement,
             'form' => $form->createView(),
         ]);
