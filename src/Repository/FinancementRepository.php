@@ -23,19 +23,19 @@ class FinancementRepository extends ServiceEntityRepository
     //  * @return Financement[] Returns an array of Financement objects
     //  */
 
-    public function financementEspece()
+    public function financementApport()
     {
         return $this->createQueryBuilder('f')
-            ->Where('f.Type = :val')
-            ->setParameter('val', 'Espece')
+            ->Where('f.apport = :val')
+            ->setParameter('val', true)
         ;
     }
 
-    public function financementBancaire()
+    public function financementPret()
     {
         return $this->createQueryBuilder('f')
-            ->Where('f.Type = :val')
-            ->setParameter('val', 'Banque')
+            ->Where('f.apport = :val')
+            ->setParameter('val', false)
         ;
     }
   

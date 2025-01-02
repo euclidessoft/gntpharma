@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Banque;
 use App\Repository\EcritureRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,19 +32,60 @@ class FinanceController extends AbstractController
                     $caisse = $caisse + $credit->getMontant() :
                     $banque = $banque + $credit->getMontant();
             } else {
+
                 $debit = $ecriture->getDebit();
                 $debit->getType() == 'Espece' ?
                     $debitcaisse = $debitcaisse + $debit->getMontant() :
                     $debitbanque = $debitbanque + $debit->getMontant();
 
             }
-           // }
+
         }
 
         return $this->render('finance/index.html.twig',[
             'caisse' => $caisse - $debitcaisse,
             'banque' => $banque - $debitbanque,
             'ecritures' => $ecritures,
+        ]);
+    }
+
+    /**
+     * @Route("/JournalBanque/{banque}", name="journal_banque")
+     */
+    public function journalbanque(EcritureRepository $repository, Banque $banque): Response
+    {
+        $ecritures = $repository->findAll();
+
+        $caisse = 0;
+        $bank = 0;
+        $debitbanque = 0;
+        $debitcaisse = 0;
+        $ecrit = [];
+        foreach($ecritures as $ecriture)
+        {
+            if($banque->getCompte() == $ecriture->getComptecredit() || $banque->getCompte() == $ecriture->getComptedebit()) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+
+                        $bank = $bank + $credit->getMontant();
+                } else {
+
+                    $debit = $ecriture->getDebit();
+
+                        $debitbanque = $debitbanque + $debit->getMontant();
+
+                }
+                $ecrit[] = $ecriture;
+            }
+
+        }
+
+        return $this->render('banque/journal_banque.html.twig',[
+            'caisse' => $caisse - $debitcaisse,
+            'banque' => $bank - $debitbanque,
+            'ecritures' => $ecrit,
         ]);
     }
 //

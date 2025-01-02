@@ -95,6 +95,12 @@ class Financement
     private $taux;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $compteinteret;
+
+
+    /**
      * Set motif
      *
      * @param string $motif
@@ -277,6 +283,18 @@ class Financement
     public function setTaux(float $taux): self
     {
         $this->taux = $taux;
+
+        return $this;
+    }
+
+    public function getCompteinteret(): ?int
+    {
+        return $this->compteinteret;
+    }
+
+    public function setCompteinteret(int $compteinteret): self
+    {
+        $this->compteinteret = $compteinteret;
 
         return $this;
     }
