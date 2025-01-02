@@ -23,7 +23,7 @@ class RemboursementType extends AbstractType
             ->add('financement', EntityType::class, [
                 'class' => Financement::class,
                 'choice_label' => 'motif',
-                'query_builder' => function(FinancementRepository $repository) { return $repository->financementEspece(); },
+                'query_builder' => function(FinancementRepository $repository) { return $repository->financementApport(); },
                 'placeholder' => 'Sélectionnez un financement', 
                 'required' => true, 
             ])

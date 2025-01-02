@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Complement\Solde;
 use App\Entity\Debit;
 use App\Entity\Ecriture;
+use App\Entity\Interet;
 use App\Entity\Remboursement;
 use App\Form\RemboursementType;
 use App\Form\RemboursementbancaireType;
@@ -63,9 +64,9 @@ class RemboursementController extends AbstractController
     }
 
     /**
-     * @Route("/financementCaisse", name="remboursement_espece", methods={"GET","POST"})
+     * @Route("/financementApport", name="remboursement_espece", methods={"GET","POST"})
      */
-    public function financementCaisse(Request $request, Solde $solde): Response
+    public function financementapport(Request $request, Solde $solde): Response
     {
         $remboursement = new Remboursement();
         $form = $this->createForm(RemboursementType::class, $remboursement);
@@ -140,9 +141,9 @@ class RemboursementController extends AbstractController
     }
 
     /**
-     * @Route("/financementBanque", name="remboursement_banque", methods={"GET","POST"})
+     * @Route("/financementPret", name="remboursement_banque", methods={"GET","POST"})
      */
-    public function financementBanque(Request $request, Solde $solde): Response
+    public function financementpret(Request $request, Solde $solde): Response
     {
         $remboursement = new Remboursement();
         $form = $this->createForm(RemboursementbancaireType::class, $remboursement);
@@ -154,10 +155,15 @@ class RemboursementController extends AbstractController
             $remboursement->setCompte($remboursement->getFinancement()->getCompte());
 
             $debit = new Debit();
+            $debitinteret = new Debit();
             $ecriture = new Ecriture();
+            $ecritureinteret = new Ecriture();
 
-            $montant = $solde->montantcaisse($entityManager, $remboursement->getFinancement()->getBanque()->getCompte());
-            if ($remboursement->getMontant() <= $montant) {
+            $montant = $solde->montantbanque($entityManager, $remboursement->getFinancement()->getBanque()->getCompte());
+            $totalinteret =  $remboursement->getMontant() * $remboursement->getFinancement()->getTaux() / 100;
+
+            if (($remboursement->getMontant() + $totalinteret) <= $montant) {
+
 
             $remboursement->setType('Banque');
 
@@ -165,6 +171,14 @@ class RemboursementController extends AbstractController
             $debit->setCompte($remboursement->getFinancement()->getBanque()->getCompte());
             $debit->setMontant($remboursement->getMontant());
             $debit->setRemboursement($remboursement);
+
+
+            $debitinteret->setType('Banque');
+            $debitinteret->setCompte($remboursement->getFinancement()->getBanque()->getCompte());
+            $debitinteret->setMontant($totalinteret);
+            $debitinteret->setRemboursement($remboursement);
+
+
 
             $ecriture->setType('Banque');
             $ecriture->setComptedebit($remboursement->getFinancement()->getBanque()->getCompte());
@@ -174,12 +188,19 @@ class RemboursementController extends AbstractController
             $ecriture->setSolde(-$remboursement->getMontant());
             $ecriture->setMontant($remboursement->getMontant());
 
+            $ecritureinteret->setType('Banque');
+            $ecritureinteret->setComptedebit($remboursement->getFinancement()->getBanque()->getCompte());
+            $ecritureinteret->setComptecredit($remboursement->getFinancement()->getCompteinteret());
+            $ecritureinteret->setDebit($debitinteret);
+            $ecritureinteret->setLibelle($remboursement->getLibele());
+            $ecritureinteret->setSolde(-$totalinteret);
+            $ecritureinteret->setMontant($totalinteret);
+
             $entityManager->persist($remboursement);
             $entityManager->persist($debit);
             $entityManager->persist($ecriture);
-            $entityManager->flush();
-
-            $entityManager->persist($remboursement);
+            $entityManager->persist($debitinteret);
+            $entityManager->persist($ecritureinteret);
             $entityManager->flush();
 
             return $this->redirectToRoute('remboursement_index', [], Response::HTTP_SEE_OTHER);

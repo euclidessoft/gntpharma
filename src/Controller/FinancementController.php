@@ -66,6 +66,7 @@ class FinancementController extends AbstractController
                 $ecriture->setComptedebit($financement->getCompte());
 
             }else{
+                $financement->setType('Banque');
                 $credit->setCompte($financement->getBanque()->getCompte());
                 $credit->setType('Banque');
 
@@ -111,9 +112,11 @@ class FinancementController extends AbstractController
             $credit = new Credit();
             $credit->setFinancement($financement);// ecriture comptable
             $credit->setMontant($financement->getMontant());
-            $financement->setCompte('162'. str_pad($financement->getCompte(), 2, '0', STR_PAD_LEFT));
+            $num = $financement->getCompte();
+            $financement->setCompte('162'. str_pad($num, 2, '0', STR_PAD_LEFT));
+            $financement->setCompteinteret('674'. str_pad($num, 2, '0', STR_PAD_LEFT));
             $financement->setApport(false);
-            $financement->setType('banque');
+            $financement->setType('Banque');
 
             $credit->setCompte($financement->getBanque()->getCompte());
             $credit->setType('Banque');
