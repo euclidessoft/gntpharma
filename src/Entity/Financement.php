@@ -24,18 +24,6 @@ class Financement
     {
         return $this->id;
     }
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="provenance", type="string", length=255)
-     * @Assert\Length(min = 3, minMessage="Longueur comprise Longueur comprise entre 3 et 30 caractères",max = 30, maxMessage="Longueur comprise Longueur comprise entre 3 et 30 caractères")
-     * @Assert\NotBlank(message = "Renseignez la provenance")
-     * @Assert\Regex(
-     * pattern= "/^[0-9a-zA-Z ]+$/",
-     * match = true,
-     * message = "Vérifiez les caractères saisis")
-     */
-    private $provenance;
 
     /**
      * @var string
@@ -105,30 +93,6 @@ class Financement
      * @ORM\Column(type="float")
      */
     private $taux;
-
-    /**
-     * Set provenance
-     *
-     * @param string $provenance
-     *
-     * @return Financement
-     */
-    public function setProvenance($provenance)
-    {
-        $this->provenance = $provenance;
-
-        return $this;
-    }
-
-    /**
-     * Get provenance
-     *
-     * @return string
-     */
-    public function getProvenance()
-    {
-        return $this->provenance;
-    }
 
     /**
      * Set motif
