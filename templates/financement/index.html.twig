@@ -16,7 +16,7 @@
             <tr>
                 <th>{{ 'Date'|trans }}</th>
                 <th>{{ 'Compte'|trans }}</th>
-                <th>{{ 'Provenance'|trans }}</th>
+                <th>{{ 'Compte Interêt'|trans }}</th>
                 <th>{{ 'Motif'|trans }}</th>
                 <th>{{ 'Montant'|trans }}</th>
                 <th>{{ 'Type'|trans }}</th>
@@ -30,11 +30,11 @@
             <tr>
                 <td data-label="Date">{{ financement.date ? financement.date|date('d/m/Y') }}</td>
                 <td data-label="Provenance">{{ financement.compte }}</td>
-                <td data-label="Provenance">{{ financement.provenance }}</td>
+                <td data-label="Provenance">{{ financement.compteinteret }}</td>
                 <td data-label="Motif">{{ financement.motif }}</td>
                 <td data-label="Montant">{{ financement.montant|number_format(0, '' , ' ') }}</td>
                 <td data-label="Type">{{ financement.Type }}</td>
-                <td data-label="Banque">{{ financement.banque ? financement.banque.nom:'' }}</td>
+                <td data-label="Banque">{{ financement.banque ? financement.banque.compte:'' }}</td>
                 <td data-label="Numero">{{ financement.numero }}</td>
                 <td data-label="actions">
                     <a title="{{'Voir'|trans}}" class="btn btn-success" id="{{ financement.id }}" onclick="load({{ financement.id }})" href="{{ path('financement_show', {'id': financement.id}) }}"><i class="fa fa-eye"></i></a>

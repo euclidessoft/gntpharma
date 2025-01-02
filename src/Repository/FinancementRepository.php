@@ -22,19 +22,23 @@ class FinancementRepository extends ServiceEntityRepository
     // /**
     //  * @return Financement[] Returns an array of Financement objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function financementApport()
     {
         return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+            ->Where('f.apport = :val')
+            ->setParameter('val', true)
         ;
     }
-    */
+
+    public function financementPret()
+    {
+        return $this->createQueryBuilder('f')
+            ->Where('f.apport = :val')
+            ->setParameter('val', false)
+        ;
+    }
+  
 
     /*
     public function findOneBySomeField($value): ?Financement

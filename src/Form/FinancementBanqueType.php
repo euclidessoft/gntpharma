@@ -4,29 +4,21 @@ namespace App\Form;
 
 use App\Entity\Banque;
 use App\Entity\Financement;
-use App\Entity\Remboursement;
 use App\Form\Type\VerserType;
-use App\Repository\FinancementRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RemboursementType extends AbstractType
+class FinancementBanqueType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('compte')
+            ->add('motif')
             ->add('montant')
-            ->add('libele')
-            ->add('type',VerserType::class,array('placeholder' => 'Type de Paiement'))
-            ->add('financement', EntityType::class, [
-                'class' => Financement::class,
-                'choice_label' => 'motif',
-                'query_builder' => function(FinancementRepository $repository) { return $repository->financementApport(); },
-                'placeholder' => 'Sélectionnez un financement', 
-                'required' => true, 
-            ])
+            ->add('taux')
             ->add('banque',EntityType::class,[
                 'class' => Banque::class,
                 'choice_label' => "nom",
@@ -40,7 +32,7 @@ class RemboursementType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Remboursement::class,
+            'data_class' => Financement::class,
         ]);
     }
 }

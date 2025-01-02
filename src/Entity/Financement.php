@@ -24,18 +24,6 @@ class Financement
     {
         return $this->id;
     }
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="provenance", type="string", length=255)
-     * @Assert\Length(min = 3, minMessage="Longueur comprise Longueur comprise entre 3 et 30 caractères",max = 30, maxMessage="Longueur comprise Longueur comprise entre 3 et 30 caractères")
-     * @Assert\NotBlank(message = "Renseignez la provenance")
-     * @Assert\Regex(
-     * pattern= "/^[0-9a-zA-Z ]+$/",
-     * match = true,
-     * message = "Vérifiez les caractères saisis")
-     */
-    private $provenance;
 
     /**
      * @var string
@@ -97,28 +85,20 @@ class Financement
     private $compte;
 
     /**
-     * Set provenance
-     *
-     * @param string $provenance
-     *
-     * @return Financement
+     * @ORM\Column(type="boolean")
      */
-    public function setProvenance($provenance)
-    {
-        $this->provenance = $provenance;
-
-        return $this;
-    }
+    private $apport;
 
     /**
-     * Get provenance
-     *
-     * @return string
+     * @ORM\Column(type="float")
      */
-    public function getProvenance()
-    {
-        return $this->provenance;
-    }
+    private $taux;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $compteinteret;
+
 
     /**
      * Set motif
@@ -175,6 +155,8 @@ class Financement
     {
         $this->date = new \Datetime();
         $this->remboursements = new ArrayCollection();
+        $this->apport = true;
+        $this->taux = 0;
     }
 
     /**
@@ -277,6 +259,42 @@ class Financement
     public function setCompte(?string $compte): self
     {
         $this->compte = $compte;
+
+        return $this;
+    }
+
+    public function getApport(): ?bool
+    {
+        return $this->apport;
+    }
+
+    public function setApport(bool $apport): self
+    {
+        $this->apport = $apport;
+
+        return $this;
+    }
+
+    public function getTaux(): ?float
+    {
+        return $this->taux;
+    }
+
+    public function setTaux(float $taux): self
+    {
+        $this->taux = $taux;
+
+        return $this;
+    }
+
+    public function getCompteinteret(): ?int
+    {
+        return $this->compteinteret;
+    }
+
+    public function setCompteinteret(int $compteinteret): self
+    {
+        $this->compteinteret = $compteinteret;
 
         return $this;
     }

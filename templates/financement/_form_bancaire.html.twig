@@ -3,7 +3,7 @@
 <div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
     <h4 class="mb-3">
         <i class="fa-brands fa-product-hunt mr-2"></i><i class="fa fa-plus mr-2"></i>
-        {{ 'Nouvel financement Apport'|trans }}
+        {{ 'Nouvel financement Prêt Bancaire'|trans }}
     </h4>
 
     {% for message in app.flashes('notice') %}
@@ -15,7 +15,6 @@
     </div>
     {% endfor %}
     <div class="row">
-
         <div class="col-12 mb-4">
             {{ form_row(form.compte, {'attr': {'placeholder': 'compte *'}, 'label': false}) }}
         </div>
@@ -29,23 +28,27 @@
         </div>
 
         <div class="col-12 mb-4">
-            {{ form_row(form.Type, { 'attr' : {'onchange' : 'typeversement()'}, 'label': false}) }}
+            {{ form_row(form.taux, {'attr': {'placeholder': 'taux interet *'}, 'label': false}) }}
+        </div>
+        <div class="col-12 mb-4">
+            {{ form_row(form.banque, {'attr': {'placeholder': 'taux interet *'}, 'label': false}) }}
+        </div>
+        <div class="col-12 mb-4">
+            {{ form_row(form.numero, {'attr': {'placeholder': 'Numéro transaction *'}, 'label': false}) }}
         </div>
     </div>
-    <div id="versement">
+    <!-- <div id="versement">
         <div class="form-group">
             {{ form_row(form.banque, {'label':false, 'attr' : {'placeholder':'Banque'}}) }}
         </div>
         <div class="form-group mt-4">
             {{ form_row(form.numero, {'label':false, 'attr' : {'placeholder':'Numéro'}}) }}
         </div>
-    </div>
+    </div> -->
     {{ form_rest(form) }}
 </div>
 
-
-{% block scripts %}
-<script>
+<!-- <script>
     function typeversement() {
         if ($('#financement_Type option:selected').val() == 'Cheque' || $('#financement_Type option:selected').val() == 'Virement') {
             $('#versement').show();
@@ -55,6 +58,4 @@
             $('#depense_numero').val();
         }
     }
-</script>
-
-{% endblock %}
+</script> -->

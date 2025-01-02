@@ -1,0 +1,55 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Banques"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block banque %}active{% endblock %}
+{% block all_banque %}active{% endblock %}
+{% block body %}
+<div class="col-lg-6 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Liste des transactions de la banque"|trans }}
+    </h3>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>{{('Date'|trans)}}</th>
+                <th>{{('N Compte'|trans)}}</th>
+                <th>{{('Libelé'|trans)}}</th>
+                <th>{{('Debit'|trans)}}</th>
+                <th>{{('Crédit'|trans)}}</th>
+                <th>{{('Solde'|trans)}}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ecriture in ecritures %}
+            <tr>
+                <td data-label="date">{{ ecriture.date|date('d/m/Y') }}</td>
+                <td data-label="N Compte">
+                    {{ ecriture.credit ? ecriture.comptedebit : '' }}
+                    {{ ecriture.debit ? ecriture.comptecredit : '' }}
+                </td>
+                <td data-label="Libelé">
+                    {{ ecriture.libelle }}
+                </td>
+                <td data-label="Débit">
+                    {{ ecriture.credit ? ecriture.credit.montant : '' }}
+                </td>
+                <td data-label="Crédit">
+                    {{ ecriture.debit ? ecriture.debit.montant : '' }}
+                </td>
+                <td data-label="Solde">
+                    {{ ecriture.debit ? ecriture.debit.montant : '' }}
+                </td>
+    
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucune transaction enregistrée</td>
+            </tr>
+        {% endfor %}
+            
+            <!--  -->
+        </tbody>
+    </table>
+
+{% endblock %}
