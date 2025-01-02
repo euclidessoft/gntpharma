@@ -1,20 +1,20 @@
 {% extends 'admin.html.twig' %}
 {% block title %} {{ "Créer un avoir"|trans }} - GNT Pharma {% endblock %}
 {% block finance %}active{% endblock %}
-{% block remboursement %}active{% endblock %}
+{% block financement %}active{% endblock %}
 {% block livraison_test %}active{% endblock %}
 
 {% block body %}
     <div class="container_paiement  mt-4 fond-7 text-center">
         <h3 class="mt-4 mb-5 text-bold">
             <i class="fa-solid fa-money-bill mr-2"></i>
-            {{ 'Créer un remboursement pour un'|trans }}
+            {{ 'Créer un financement pour un'|trans }}
         </h3>
         <div class="row">
             <div class="col-md-12">
                 <div class="row justify-content-center">
                     <div class="col-lg-4">
-                        <a href="{{ path('remboursement_espece') }}">
+                        <a href="{{ path('financement_aport') }}">
                             <div class="p-3 rounded border border-green avoir">
                                 <div class="text-green textavoir text-center py-3 rounded-top">
                                     <i class="fas fa-money-bill fa-3x"></i>
@@ -26,7 +26,7 @@
                         </a>
                     </div>
                     <div class="col-lg-4">
-                        <a href="{{ path('remboursement_banque') }}">
+                        <a href="{{ path('financement_pret') }}">
                             <div class="p-3 rounded border border-green avoir">
                                 <div class="text-green textavoir text-center py-3 rounded-top border-green">
                                     <i class="fas fa-truck-fast fa-3x"></i>
