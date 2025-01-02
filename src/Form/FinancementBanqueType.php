@@ -10,12 +10,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FinancementType extends AbstractType
+class FinancementBanqueType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('provenance')
             ->add('compte')
             ->add('motif')
             ->add('montant')
