@@ -346,15 +346,14 @@
                                 id="reapprovisionnement"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa-solid fa-hand-holding-dollar"></i>
-                                {{ 'Remboursement'|trans }}
+                                {{ 'Remboursements'|trans }}
                             </a>
                             <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
-
                                 <li class="dropdown-item">
-                                    <a class="nav-link {% block new_remboursement %}{% endblock %}"
-                                        href="{{ path('remboursement_new')}}">
+                                    <a class="nav-link {% block choix_remboursement %}{% endblock %}"
+                                        href="{{ path('remboursement_choix')}}">
                                         <i class="fas fa-money-bill"></i>
-                                        {{ 'Financement'|trans }}
+                                        {{ 'Financements'|trans }}
                                     </a>
                                 </li>
                                 <li class="dropdown-item">
@@ -491,14 +490,6 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
-                        <li class="dropdown-item">
-                            <a class="nav-link {% block vente %}{% endblock %}" href="#"
-                                id="reapprovisionnement" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-money-bill"></i>
-                                <i class="fas fa-arrow-left"></i>
-                                {{ 'Vente'|trans }}
-                            </a>
                         </li>
                         <li class="dropdown-item submenu">
                             <a class="nav-link dropdown-toggle {% block depense %}{% endblock %}" href="#"

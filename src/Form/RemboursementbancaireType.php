@@ -12,18 +12,17 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RemboursementType extends AbstractType
+class RemboursementbancaireType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('montant')
             ->add('libele')
-            ->add('type',VerserType::class,array('placeholder' => 'Type de Paiement'))
             ->add('financement', EntityType::class, [
                 'class' => Financement::class,
                 'choice_label' => 'motif',
-                'query_builder' => function(FinancementRepository $repository) { return $repository->financementEspece(); },
+                'query_builder' => function(FinancementRepository $repository) { return $repository->financementBancaire(); },
                 'placeholder' => 'Sélectionnez un financement', 
                 'required' => true, 
             ])
