@@ -7,6 +7,7 @@ use App\Entity\Debit;
 use App\Entity\Ecriture;
 use App\Entity\Remboursement;
 use App\Form\RemboursementType;
+use App\Form\RemboursementbancaireType;
 use App\Repository\AvoirRepository;
 use App\Repository\RemboursementRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -54,9 +55,17 @@ class RemboursementController extends AbstractController
     }
 
     /**
-     * @Route("/financement", name="remboursement_new", methods={"GET","POST"})
+     * @Route("/Choix_financement", name="remboursement_choix", methods={"GET","POST"})
      */
-    public function financement(Request $request, Solde $solde): Response
+    public function financementChoix(Request $request): Response
+    {
+        return $this->render('remboursement/choix_remboursement.html.twig');
+    }
+
+    /**
+     * @Route("/financementCaisse", name="remboursement_espece", methods={"GET","POST"})
+     */
+    public function financementCaisse(Request $request, Solde $solde): Response
     {
         $remboursement = new Remboursement();
         $form = $this->createForm(RemboursementType::class, $remboursement);
@@ -64,24 +73,45 @@ class RemboursementController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $montant = $solde->montantcaisse($entityManager,54);
-            if($remboursement->getMontant() <= $montant) {
-                $remboursement->setCompte(52);
-                $remboursement->setType('Banque');
-                $debit = new Debit();
-                $debit->setRemboursement($remboursement);
-                $debit->setType('Banque');
-                $debit->setCompte(54);
-                $debit->setMontant($remboursement->getMontant());
+            if($remboursement->getType() == 'Espece'){
+                $montant = $solde->montantcaisse($entityManager,54);
+                if($remboursement->getMontant() <= $montant) {
+                    $remboursement->setCompte($remboursement->getFinancement()->getCompte());
+                    $remboursement->setType('Espece');
+                    $debit = new Debit();
+                    $debit->setRemboursement($remboursement);
+                    $debit->setType('Espece');
+                    $debit->setCompte('54');
+                    $debit->setMontant($remboursement->getMontant());
 
-                $debitecriture = new Ecriture();
-                $debitecriture->setDebit($debit);
-                $debitecriture->setType('Banque');
-                $debitecriture->setLibelle($remboursement->getLibele());
-                $debitecriture->setSolde(-$remboursement->getMontant());
-                $debitecriture->setMontant($remboursement->getMontant());
-                $debitecriture->setComptedebit('52');
-                $debitecriture->setComptecredit('40');
+                    $debitecriture = new Ecriture();
+                    $debitecriture->setDebit($debit);
+                    $debitecriture->setType('Espece');
+                    $debitecriture->setLibelle($remboursement->getLibele());
+                    $debitecriture->setSolde(-$remboursement->getMontant());
+                    $debitecriture->setMontant($remboursement->getMontant());
+                    $debitecriture->setComptedebit('54');
+                    $debitecriture->setComptecredit($remboursement->getFinancement()->getCompte());
+
+
+                }else{
+                    $remboursement->setCompte($remboursement->getFinancement()->getCompte());
+                    $remboursement->setType('Banque');
+                    $debit = new Debit();
+                    $debit->setRemboursement($remboursement);
+                    $debit->setType('Banque');
+                    $debit->setCompte($remboursement->getBanque()->getCompte());
+                    $debit->setMontant($remboursement->getMontant());
+
+                    $debitecriture = new Ecriture();
+                    $debitecriture->setDebit($debit);
+                    $debitecriture->setType('Banque');
+                    $debitecriture->setLibelle($remboursement->getLibele());
+                    $debitecriture->setSolde(-$remboursement->getMontant());
+                    $debitecriture->setMontant($remboursement->getMontant());
+                    $debitecriture->setComptedebit($remboursement->getBanque()->getCompte());
+                    $debitecriture->setComptecredit($remboursement->getFinancement()->getCompte());
+                }
 
 
                 $entityManager->persist($remboursement);
@@ -98,7 +128,58 @@ class RemboursementController extends AbstractController
             }
         }
 
-        return $this->render('remboursement/financement.html.twig', [
+        return $this->render('remboursement/financement_espece.html.twig', [
+            'remboursement' => $remboursement,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/financementBanque", name="remboursement_banque", methods={"GET","POST"})
+     */
+    public function financementBanque(Request $request, Solde $solde): Response
+    {
+        $remboursement = new Remboursement();
+        $form = $this->createForm(RemboursementbancaireType::class, $remboursement);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $montant = $solde->montantcaisse($entityManager,54);
+            if($remboursement->getMontant() <= $montant) {
+                $remboursement->setCompte($remboursement->getBanque()->getCompte());
+                $remboursement->setType('Banque');
+                $debit = new Debit();
+                $debit->setRemboursement($remboursement);
+                $debit->setType('Banque');
+                $debit->setCompte($remboursement->getBanque()->getCompte());
+                $debit->setMontant($remboursement->getMontant());
+
+                $debitecriture = new Ecriture();
+                $debitecriture->setDebit($debit);
+                $debitecriture->setType('Banque');
+                $debitecriture->setLibelle($remboursement->getLibele());
+                $debitecriture->setSolde(-$remboursement->getMontant());
+                $debitecriture->setMontant($remboursement->getMontant());
+                $debitecriture->setComptedebit($remboursement->getBanque()->getCompte());
+                $debitecriture->setComptecredit($remboursement->getFinancement()->getCompte());
+
+
+                $entityManager->persist($remboursement);
+                $entityManager->persist($debit);
+                $entityManager->persist($debitecriture);
+                $entityManager->flush();
+
+                $entityManager->persist($remboursement);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('remboursement_index', [], Response::HTTP_SEE_OTHER);
+            }else{
+
+            }
+        }
+
+        return $this->render('remboursement/financement_bancaire.html.twig', [
             'remboursement' => $remboursement,
             'form' => $form->createView(),
         ]);

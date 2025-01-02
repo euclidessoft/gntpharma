@@ -1,8 +1,8 @@
 {{ form_start(form, {'attr' : { 'id' : 'form'}}) }}
 
 <div class="col-lg-8 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
-    <h4 class="mb-3">
-        <i class="fa-brands fa-product-hunt mr-2"></i><i class="fa fa-plus mr-2"></i>
+    <h4 class="mb-5">
+        <i class="fa-brands fa-product-hunt"></i><i class="fa fa-plus mr-2"></i>
         {{ 'Nouveau Produit'|trans }}
     </h4>
     {% for message in app.flashes('notice') %}
@@ -13,9 +13,9 @@
             {{ message|trans }}
         </div>
     {% endfor %}
-    {#<h6 class="mt-4 mb-3 text-danger">
+    <h6 class="mt-4 mb-3 text-danger">
         {{ 'Les champs marqués par * sont obligatoires'|trans }}
-    </h6>#}
+    </h6>
     <div class="row">
 
         <div class="col-md-6 mb-4">
@@ -37,15 +37,15 @@
             {{ form_row(form.fabriquant, {'attr':{'placeholder':'Fabriquant *'}, 'label':false}) }}
         </div>
         <div class="col-md-6 mb-4">
-            {{ form_row(form.telephone, {'attr':{'placeholder':'Téléphone *'}, 'label':false}) }}
+            {{ form_row(form.telephone, {'attr':{'placeholder':'Téléphone'}, 'label':false}) }}
         </div>
         <div class="col-md-6 mb-4">
-            {{ form_row(form.description, {'attr':{'placeholder':'description *'}, 'label':false}) }}
+            {{ form_row(form.description, {'attr':{'placeholder':'description'}, 'label':false}) }}
         </div>
         <div class="col-md-12 mb-4">
-            {{ form_row(form.adresse, {'attr':{'placeholder':'Adresse *'}, 'label':false}) }}
+            {{ form_row(form.adresse, {'attr':{'placeholder':'Adresse'}, 'label':false}) }}
         </div>
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4 mb-4 text-bold">
             {{ form_row(form.tva, {'label':'Soumis à la TVA'}) }}
         </div>
 

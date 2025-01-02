@@ -221,8 +221,8 @@ veuillez renseigner le montant: please enter the amount
 Voulez-vous vraiment creer cet avoir: Do you really want to create this asset
 La requête n'a pas abouti: The request was unsuccessful
 Selectionnez au moins un produit: Select at least one product
-Création Avoir: Creation Have
-Numéro Commande: n# order
+Création Avoir: Creation asset
+Numéro Commande: N# order
 Date Commande: Order date
 Date Paiement: Payment date
 Choisir: Choose
@@ -307,7 +307,7 @@ Nouvelle Promotion: New promotion
 vérifier la quantité saisie: check the quantity entered
 Etes vous sûr de vouloir supprimer?: Are you sure you want to delete
 Publique: Public
-Nouvel Arrivage: New Arrival
+Nouvel arrivage: New Arrival
 indisponible: unavailable
 Aucun produit: No products
 Liste Produits: Product List

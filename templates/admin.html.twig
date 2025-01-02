@@ -66,7 +66,7 @@
                         <li class="dropdown-item">
                             <a class="nav-link {% block new_produit %}{% endblock %}"
                                 href="{{ path('produit_new') }}">
-                                <i class="fa fa-plus mr-2"></i>
+                                <i class="fa fa-plus"></i>
                                 {{ 'Nouveau produit'|trans }}
                             </a>
                         </li>
@@ -74,7 +74,7 @@
                         <li class="dropdown-item">
                             <a class="nav-link {% block all_produits %}{% endblock %}"
                                 href="{{ path('produit_index') }}">
-                                <i class="fas fa-list mr-2"></i>
+                                <i class="fas fa-list"></i>
                                 {{ 'Tous les produits'|trans }}
                             </a>
                         </li>
@@ -82,7 +82,7 @@
                         <li class="dropdown-item">
                             <a class="nav-link {% block arrivage %}{% endblock %}"
                                 href="{{ path('produit_arrivage_admin') }}">
-                                <i class="fas fa-plane-arrival mr-2"></i>
+                                <i class="fas fa-plane-arrival"></i>
                                 {{ 'Arrivage'|trans }}
                             </a>
                         </li>
@@ -95,7 +95,7 @@
                         <li class="dropdown-item">
                             <a class="nav-link {% block ventes %}{% endblock %}"
                                 href="{{ path('produit_vente_admin') }}">
-                                <i class="fas fa-money-bill-trend-up mr-1"></i>
+                                <i class="fas fa-money-bill-trend-up"></i>
                                 {{ 'Meilleures ventes'|trans }}
                             </a>
                         </li>
@@ -676,7 +676,7 @@
                             <div class="dropdown">
                                 <a href="#" class="" data-toggle="dropdown">
                                     {{ app.user.username }}
-                                    <img src="{{ asset('images/team_1.avif') }}" class="user-image"
+                                    <img src="{{ asset('images/avatar-homme.avif') }}" class="user-image"
                                         alt="User Image">
                                 </a>
                                 <div class="dropdown-menu">
