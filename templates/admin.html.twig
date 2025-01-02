@@ -346,14 +346,14 @@
                                 id="reapprovisionnement"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa-solid fa-hand-holding-dollar"></i>
-                                {{ 'Remboursement'|trans }}
+                                {{ 'Remboursements'|trans }}
                             </a>
                             <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
                                 <li class="dropdown-item">
-                                    <a class="nav-link {% block livraison_test %}{% endblock %}"
-                                        href="{{ path('livraison_test')}}">
+                                    <a class="nav-link {% block choix_remboursement %}{% endblock %}"
+                                        href="{{ path('remboursement_choix')}}">
                                         <i class="fas fa-money-bill"></i>
-                                        {{ 'Financement'|trans }}
+                                        {{ 'Financements'|trans }}
                                     </a>
                                 </li>
                                 <li class="dropdown-item">
