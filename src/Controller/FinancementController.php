@@ -109,16 +109,18 @@ class FinancementController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
             $credit = new Credit();
-            $ecriture = new Ecriture();
             $credit->setFinancement($financement);// ecriture comptable
             $credit->setMontant($financement->getMontant());
             $financement->setCompte('162'. str_pad($financement->getCompte(), 2, '0', STR_PAD_LEFT));
             $financement->setApport(false);
+            $financement->setType('banque');
 
             $credit->setCompte($financement->getBanque()->getCompte());
             $credit->setType('Banque');
 
 
+
+            $ecriture = new Ecriture();
             $ecriture->setCredit($credit);
             $ecriture->setType('Banque');
             $ecriture->setComptecredit($financement->getBanque()->getCompte());
