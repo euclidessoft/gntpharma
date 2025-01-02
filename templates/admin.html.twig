@@ -599,6 +599,12 @@
                             </a>
                         </li>
                         <li class="dropdown-item">
+                            <a class="nav-link {% block pdf_comptable %}{% endblock %}" href="#" target="_blank">
+                                <i class="fas fa-book"></i>
+                                {{ 'Plan Comptable'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
                             <a class="nav-link {% block suggestiongit %}{% endblock %}" href="{{ path('suggestion_index') }}">
                                 <i class="fas fa-comments"></i>
                                 {{ 'Suggestions'|trans }}
