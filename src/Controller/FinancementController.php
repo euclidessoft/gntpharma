@@ -41,17 +41,32 @@ class FinancementController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
             $credit = new Credit();
-            $credit->setFinancement($financement);// ecriture comptable
-            $credit->setType($financement->getType());
-            $credit->setMontant($financement->getMontant());
-            $credit->setCompte(54);
-            $financement->getType() == 'Espece' ? $credit->setType('Espece') : $credit->setType('Banque');
-
             $ecriture = new Ecriture();
-            $ecriture->setCredit($credit);
-            $financement->getType() == 'Espece' ? $ecriture->setType('Espece') : $ecriture->setType('Banque');
-            $ecriture->setComptecredit(54);
-            $ecriture->setComptedebit('aucun');
+            $credit->setFinancement($financement);// ecriture comptable
+            $credit->setMontant($financement->getMontant());
+            $financement->setCompte('162'. $financement->getCompte());
+            if($financement->getType() == 'Espece'){
+                $credit->setCompte(54);
+                $credit->setType('Espece');
+
+
+                $ecriture->setCredit($credit);
+                $ecriture->setType('Espece');
+                $ecriture->setComptecredit(54);
+                $ecriture->setComptedebit($financement->getCompte());
+
+            }else{
+                $credit->setCompte($financement->getBanque()->getCompte());
+                $credit->setType('Banque');
+
+
+                $ecriture->setCredit($credit);
+                $ecriture->setType('Banque');
+                $ecriture->setComptecredit($financement->getBanque()->getCompte());
+                $ecriture->setComptedebit($financement->getCompte());
+            }
+
+
             $ecriture->setMontant($financement->getMontant());
             $ecriture->setLibelle($financement->getMotif());
             $ecriture->setSolde($financement->getMontant());

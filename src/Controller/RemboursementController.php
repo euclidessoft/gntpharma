@@ -66,12 +66,12 @@ class RemboursementController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $montant = $solde->montantcaisse($entityManager,54);
             if($remboursement->getMontant() <= $montant) {
-                $remboursement->setCompte(52);
+                $remboursement->setCompte($remboursement->getBanque()->getCompte());
                 $remboursement->setType('Banque');
                 $debit = new Debit();
                 $debit->setRemboursement($remboursement);
                 $debit->setType('Banque');
-                $debit->setCompte(54);
+                $debit->setCompte($remboursement->getBanque()->getCompte());
                 $debit->setMontant($remboursement->getMontant());
 
                 $debitecriture = new Ecriture();
@@ -80,8 +80,8 @@ class RemboursementController extends AbstractController
                 $debitecriture->setLibelle($remboursement->getLibele());
                 $debitecriture->setSolde(-$remboursement->getMontant());
                 $debitecriture->setMontant($remboursement->getMontant());
-                $debitecriture->setComptedebit('52');
-                $debitecriture->setComptecredit('40');
+                $debitecriture->setComptedebit($remboursement->getBanque()->getCompte());
+                $debitecriture->setComptecredit($remboursement->getFinancement()->getCompte());
 
 
                 $entityManager->persist($remboursement);
