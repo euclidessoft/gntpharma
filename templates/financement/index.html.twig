@@ -16,6 +16,7 @@
             <tr>
                 <th>{{ 'Date'|trans }}</th>
                 <th>{{ 'Compte'|trans }}</th>
+                <th>{{ 'Compte Interêt'|trans }}</th>
                 <th>{{ 'Motif'|trans }}</th>
                 <th>{{ 'Montant'|trans }}</th>
                 <th>{{ 'Type'|trans }}</th>
@@ -29,6 +30,7 @@
             <tr>
                 <td data-label="Date">{{ financement.date ? financement.date|date('d/m/Y') }}</td>
                 <td data-label="Provenance">{{ financement.compte }}</td>
+                <td data-label="Provenance">{{ financement.compteinteret }}</td>
                 <td data-label="Motif">{{ financement.motif }}</td>
                 <td data-label="Montant">{{ financement.montant|number_format(0, '' , ' ') }}</td>
                 <td data-label="Type">{{ financement.Type }}</td>
