@@ -1,54 +1,129 @@
 {{ form_start(form, {'attr' : { 'id' : 'form'}}) }}
+<h6 class="mt-4 mb-3 text-danger">
+    {{ 'Les champs marqués par * sont obligatoires'|trans }}
+</h6>
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="input-group">
+            {% if form_errors(form.reference) is not empty %}
+                {{ form_errors(form.reference) }}
+            {% else %}
+                <span class="valid-feedback d-block">
+                            <span>&nbsp; </span>
+                    </span>
+            {% endif %}
 
-<div class="col-lg-8 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
-    <h4 class="mb-5">
-        <i class="fa-brands fa-product-hunt"></i><i class="fa fa-plus mr-2"></i>
-        {{ 'Nouveau Produit'|trans }}
-    </h4>
-    {% for message in app.flashes('notice') %}
-        <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                &times;
-            </button>
-            {{ message|trans }}
+            {{ form_widget(form.reference, {'attr':{'placeholder':'Code produit *'}, 'label':false}) }}
         </div>
-    {% endfor %}
-    <h6 class="mt-4 mb-3 text-danger">
-        {{ 'Les champs marqués par * sont obligatoires'|trans }}
-    </h6>
-    <div class="row">
-
-        <div class="col-md-6 mb-4">
-            {{ form_row(form.reference, {'attr':{'placeholder':'Code produit *'}, 'label':false}) }}
-        </div>
-        <div class="col-md-6 mb-4">
-            {{ form_row(form.desigantion, {'attr':{'placeholder':'Désignation *'}, 'label':false}) }}
-        </div>
-        <div class="col-md-6 mb-4">
-            {{ form_row(form.prix, {'attr':{'placeholder':'Prix Cession *'}, 'label':false}) }}
-        </div>
-        <div class="col-md-6 mb-4">
-            {{ form_row(form.prixpublic, {'attr':{'placeholder':'Prix Public *'}, 'label':false}) }}
-        </div>
-        <div class="col-md-6 mb-4">
-            {{ form_row(form.mincommande, {'attr':{'placeholder':'Commande minimum *'}, 'label':false}) }}
-        </div>
-        <div class="col-md-6 mb-4">
-            {{ form_row(form.fabriquant, {'attr':{'placeholder':'Fabriquant *'}, 'label':false}) }}
-        </div>
-        <div class="col-md-6 mb-4">
-            {{ form_row(form.telephone, {'attr':{'placeholder':'Téléphone'}, 'label':false}) }}
-        </div>
-        <div class="col-md-6 mb-4">
-            {{ form_row(form.description, {'attr':{'placeholder':'description'}, 'label':false}) }}
-        </div>
-        <div class="col-md-12 mb-4">
-            {{ form_row(form.adresse, {'attr':{'placeholder':'Adresse'}, 'label':false}) }}
-        </div>
-        <div class="col-md-4 mb-4 text-bold">
-            {{ form_row(form.tva, {'label':'Soumis à la TVA'}) }}
-        </div>
-
-        {{ form_rest(form) }}
     </div>
+    <div class="col-md-6 mb-4">
+        <div class="input-group">
+            {% if form_errors(form.desigantion) is not empty %}
+                {{ form_errors(form.desigantion) }}
+            {% else %}
+                <span class="valid-feedback d-block">
+                            <span>&nbsp; </span>
+                    </span>
+            {% endif %}
+
+            {{ form_widget(form.desigantion, {'attr':{'placeholder':'Désignation *'}, 'label':false}) }}
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="input-group">
+            {% if form_errors(form.prix) is not empty %}
+                {{ form_errors(form.prix) }}
+            {% else %}
+                <span class="valid-feedback d-block">
+                            <span>&nbsp; </span>
+                    </span>
+            {% endif %}
+
+            {{ form_widget(form.prix, {'attr':{'placeholder':'Prix Cession *'}, 'label':false}) }}
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="input-group">
+            {% if form_errors(form.prixpublic) is not empty %}
+                {{ form_errors(form.prixpublic) }}
+            {% else %}
+                <span class="valid-feedback d-block">
+                            <span>&nbsp; </span>
+                    </span>
+            {% endif %}
+
+            {{ form_widget(form.prixpublic, {'attr':{'placeholder':'Prix Public *'}, 'label':false}) }}
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="input-group">
+            {% if form_errors(form.mincommande) is not empty %}
+                {{ form_errors(form.mincommande) }}
+            {% else %}
+                <span class="valid-feedback d-block">
+                            <span>&nbsp; </span>
+                    </span>
+
+            {% endif %}
+
+            {{ form_widget(form.mincommande, {'attr':{'placeholder':'Commande minimum *'}, 'label':false}) }}
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="input-group">
+            {% if form_errors(form.fabriquant) is not empty %}
+                {{ form_errors(form.fabriquant) }}
+            {% else %}
+                <span class="valid-feedback d-block">
+                            <span>&nbsp; </span>
+                    </span>
+            {% endif %}
+
+            {{ form_widget(form.fabriquant, {'attr':{'placeholder':'Fabriquant *'}, 'label':false}) }}
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="input-group">
+            {% if form_errors(form.telephone) is not empty %}
+                {{ form_errors(form.telephone) }}
+            {% else %}
+                <span class="valid-feedback d-block">
+                            <span>&nbsp; </span>
+                    </span>
+            {% endif %}
+
+            {{ form_widget(form.telephone, {'attr':{'placeholder':'Téléphone'}, 'label':false}) }}
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="input-group">
+            {% if form_errors(form.description) is not empty %}
+                {{ form_errors(form.description) }}
+            {% else %}
+                <span class="valid-feedback d-block">
+                            <span>&nbsp; </span>
+                    </span>
+            {% endif %}
+
+            {{ form_widget(form.description, {'attr':{'placeholder':'description'}, 'label':false}) }}
+        </div>
+    </div>
+    <div class="col-md-12 mb-4">
+        <div class="input-group">
+            {% if form_errors(form.adresse) is not empty %}
+                {{ form_errors(form.adresse) }}
+            {% else %}
+                <span class="valid-feedback d-block">
+                            <span>&nbsp; </span>
+                    </span>
+            {% endif %}
+
+            {{ form_widget(form.adresse, {'attr':{'placeholder':'Adresse'}, 'label':false}) }}
+        </div>
+    </div>
+    <div class="col-md-4 text-bold">
+        {{ form_row(form.tva, {'label':'Soumis à la TVA'}) }}
+    </div>
+
+    {{ form_rest(form) }}
 </div>
