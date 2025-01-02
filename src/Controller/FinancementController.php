@@ -6,6 +6,7 @@ use App\Entity\Credit;
 use App\Entity\Ecriture;
 use App\Entity\Financement;
 use App\Form\FinancementType;
+use App\Form\FinancementBanqueType;
 use App\Repository\FinancementRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,9 +29,17 @@ class FinancementController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="financement_new", methods={"GET","POST"})
+     * @Route("/Choix_Financement", name="financement_choix", methods={"GET"})
      */
-    public function new(Request $request): Response
+    public function choix(): Response
+    {
+        return $this->render('financement/choix_financement.html.twig');
+    }
+
+    /**
+     * @Route("/new", name="financement_apport", methods={"GET","POST"})
+     */
+    public function apport(Request $request): Response
     {
         $financement = new Financement();
 
@@ -44,7 +53,8 @@ class FinancementController extends AbstractController
             $ecriture = new Ecriture();
             $credit->setFinancement($financement);// ecriture comptable
             $credit->setMontant($financement->getMontant());
-            $financement->setCompte('162'. $financement->getCompte());
+
+            $financement->setCompte('1651'. str_pad($financement->getCompte(), 2, '0', STR_PAD_LEFT));
             if($financement->getType() == 'Espece'){
                 $credit->setCompte(54);
                 $credit->setType('Espece');
@@ -80,6 +90,55 @@ class FinancementController extends AbstractController
         }
 
         return $this->render('financement/new.html.twig', [
+            'financement' => $financement,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/Pret", name="financement_pret", methods={"GET","POST"})
+     */
+    public function pret(Request $request): Response
+    {
+        $financement = new Financement();
+
+        $form = $this->createForm(FinancementBanqueType::class, $financement);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $credit = new Credit();
+            $ecriture = new Ecriture();
+            $credit->setFinancement($financement);// ecriture comptable
+            $credit->setMontant($financement->getMontant());
+            $financement->setCompte('162'. str_pad($financement->getCompte(), 2, '0', STR_PAD_LEFT));
+            $financement->setApport(false);
+
+            $credit->setCompte($financement->getBanque()->getCompte());
+            $credit->setType('Banque');
+
+
+            $ecriture->setCredit($credit);
+            $ecriture->setType('Banque');
+            $ecriture->setComptecredit($financement->getBanque()->getCompte());
+            $ecriture->setComptedebit($financement->getCompte());
+
+
+
+            $ecriture->setMontant($financement->getMontant());
+            $ecriture->setLibelle($financement->getMotif());
+            $ecriture->setSolde($financement->getMontant());
+
+            $entityManager->persist($financement);
+            $entityManager->persist($credit);
+            $entityManager->persist($ecriture);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('financement_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('financement/financement_bancaire.html.twig', [
             'financement' => $financement,
             'form' => $form->createView(),
         ]);
