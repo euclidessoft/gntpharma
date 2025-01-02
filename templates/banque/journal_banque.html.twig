@@ -1,0 +1,46 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Banques"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block banque %}active{% endblock %}
+{% block all_banque %}active{% endblock %}
+{% block body %}
+<div class="col-lg-6 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Liste des transactions de la banque"|trans }}
+    </h3>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>{{('Date'|trans)}}</th>
+                <th>{{('N Compte'|trans)}}</th>
+                <th>{{('Libelé'|trans)}}</th>
+                <th>{{('Debit'|trans)}}</th>
+                <th>{{('Crédit'|trans)}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td data-label="date">01/01/2025</td>
+                <td data-label="N Compte">5212</td>
+                <td data-label="Libelé">transaction</td>
+                <td data-label="Débit">5000</td>
+                <td data-label="Crédit"></td>
+    
+            </tr>
+            <tr>
+                <td data-label="date">02/01/2025</td>
+                <td data-label="N Compte">5212</td>
+                <td data-label="Libelé">transaction</td>
+                <td data-label="Débit"></td>
+                <td data-label="Crédit">15000</td>
+    
+            </tr>
+            
+            <!-- <tr>
+                <td colspan="5">Aucune transaction enregistrée</td>
+            </tr> -->
+        </tbody>
+    </table>
+
+{% endblock %}
