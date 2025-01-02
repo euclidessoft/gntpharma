@@ -97,6 +97,16 @@ class Financement
     private $compte;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $apport;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $taux;
+
+    /**
      * Set provenance
      *
      * @param string $provenance
@@ -175,6 +185,8 @@ class Financement
     {
         $this->date = new \Datetime();
         $this->remboursements = new ArrayCollection();
+        $this->apport = true;
+        $this->taux = 0;
     }
 
     /**
@@ -277,6 +289,30 @@ class Financement
     public function setCompte(?string $compte): self
     {
         $this->compte = $compte;
+
+        return $this;
+    }
+
+    public function getApport(): ?bool
+    {
+        return $this->apport;
+    }
+
+    public function setApport(bool $apport): self
+    {
+        $this->apport = $apport;
+
+        return $this;
+    }
+
+    public function getTaux(): ?float
+    {
+        return $this->taux;
+    }
+
+    public function setTaux(float $taux): self
+    {
+        $this->taux = $taux;
 
         return $this;
     }
