@@ -1,0 +1,36 @@
+{% extends 'admin.html.twig' %}
+
+{% block body %}
+<div class="container-fluid mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-shopping-cart mr-2"></i>
+        {{ "Liste de toutes les commandes"|trans }}
+    </h3>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100">
+        <thead>
+            <tr>
+                <th>{{ 'N commande'|trans }}</th>
+                <th>{{ 'Date '|trans }}</th>
+                <th>{{ 'Montant'|trans }}</th>
+                <th>{{ 'Paiement'|trans }}</th>
+                <th>{{ 'Livraison'|trans }}</th>
+                <th>{{ 'Date de Livraison'|trans }}</th>
+                <th>{{ 'Passér par'|trans }}</th>
+                <th>{{ 'actions'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>001</td>
+                <td>01/01/2025</td>
+                <td>50000</td>
+                <td>Non payé</td>
+                <td>Non livré</td>
+                <td>03/01/2025</td>
+                <td>Vous meme/admin</td>
+                <td><a href="#" class="btn btn-success"><i class="fas fa-list"></i>Details</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

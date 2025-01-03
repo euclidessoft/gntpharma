@@ -1,0 +1,40 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block compte %}active{% endblock %}
+{% block body %}
+<div class="container mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Listes de tous les comptes"|trans }}
+    </h3>
+
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>{{ 'Numéro'|trans }}</th>
+                <th>{{ 'Classe Interêt'|trans }}</th>
+                <th>{{ 'Intitulé'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td data-label="Numéro">001</td>
+                <td data-label="Classe Interêt">Classe_6</td>
+                <td data-label="Intitulé">Compte Intérêt 54321</td>
+            </tr>
+            <tr>
+                <td data-label="Numéro">001</td>
+                <td data-label="Classe Interêt">Classe_6</td>
+                <td data-label="Intitulé">Compte Intérêt 54321</td>
+            </tr>
+            <tr>
+                <td data-label="Numéro">001</td>
+                <td data-label="Classe Interêt">Classe_6</td>
+                <td data-label="Intitulé">Compte Intérêt 54321</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

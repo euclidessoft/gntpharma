@@ -52,7 +52,8 @@ class LivrerController extends AbstractController
         $response->headers->set('content-type', 'application/json');
         $re = json_encode($retour);
         $response->setContent($re);
-        return $response;
+        // return $response;
+        return $this->render('finance/brouyard.html.twig');
 
     }
 
