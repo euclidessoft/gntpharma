@@ -47,4 +47,12 @@ class EcritureRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function ouverture()
+    {
+        $query = $this->createQueryBuilder('a')
+            ->Where('a.date < :genre')
+            ->setParameter('genre', date('Y-m-d'))
+            ->getQuery();
+        return $query->getResult();
+    }
 }

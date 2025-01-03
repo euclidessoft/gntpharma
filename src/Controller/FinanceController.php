@@ -370,139 +370,68 @@ class FinanceController extends AbstractController
 //        else return $this->redirect($this->generateUrl('security_login'));
 //    }
 //
-//    public function brouyard(Request $request)
-//    {
-//        if($this->get('security.authorization_checker')->isGranted('ROLE_CHEF'))
-//        {
-//            $em = $this->getDoctrine()->getManager();
-//            $session = $em->getrepository(Session::class)->findOneBy(array('agence' => $this->getUser()->getAgence()->getId(), 'current' => true));
-//            if(!empty($session))
-//            {
-//                $credits = $em->getRepository(Credit::class)->brouyard($session->getId());
-//                $creditouverture = $em->getRepository(Credit::class)->ouverture($session->getId());
-//
-//
-//                $ouverturecaisse = 0;
-//                $ouverturebanque = 0;
-//                $ouverturedebitbanque = 0;
-//                $ouverturedebitcaisse = 0;
-//                $ouverturedebits = 0;
-//                $ouverturetransferer = 0;
-//                foreach($creditouverture as $credit)
-//                {
-//                    if ($credit->getVersement() != null) {
-//
-//                        if($credit->getVersement()->getType() == 'Espece')
-//                        {
-//                            $ouverturecaisse = $ouverturecaisse + $credit->getVersement()->getMontant();
-//                        }
-//                        else $ouverturebanque = $ouverturebanque +$credit->getMontant();
-//                    }
-//                    else if($credit->getGain() != null)
-//                    {
-//                        if($credit->getGain()->getType() == 'Espece')
-//                        {
-//                            $ouverturecaisse = $ouverturecaisse + $credit->getGain()->getMontant();
-//                        }
-//                        else $ouverturebanque = $ouverturebanque +$credit->getGain()->getMontant();
-//
-//                    }
-//                    else
-//                    {//partie gestion versementagence
-//                        if($credit->getVersementAgence()->getType() == 'Espece')
-//                        {
-//                            $ouverturecaisse = $ouverturecaisse + $credit->getVersementAgence()->getMontant();
-//                        }
-//                        else $ouverturebanque = $ouverturebanque +$credit->getVersementAgence()->getMontant();
-//                    }
-//                }
-//
-//                $caisse = array();
-//                $gain = array();
-//                $banque = array();
-//                $debitbanque = array();
-//                $debitcaisse = array();
-//                $debits = array();
-//                $transferer = array();
-//
-//                foreach($credits as $credit)
-//                {
-//                    if ($credit->getVersement() != null) {
-//
-//                        if($credit->getVersement()->getType() == 'Espece')
-//                        {
-//                            $caisse[] = $credit;
-//                        }
-//                        else $banque[] = $credit;
-//                    }
-//                    else if($credit->getGain() != null)
-//                    {
-//                        if($credit->getGain()->getType() == 'Espece')
-//                        {
-//                            $gain[] = $credit;
-//                        }
-//                        else $banque[] = $credit;
-//
-//                    }
-//                    else
-//                    {//partie gestion versementagence
-//                        if($credit->getVersementAgence()->getType() == 'Espece')
-//                        {
-//                            $caisse[] = $credit;
-//                        }
-//                        else $banque[] = $credit;
-//                    }
-//                }
-//                $deb = $em->getRepository(Debit::class)->brouyard($session->getId());
-//                $debitouverture = $em->getRepository(Debit::class)->ouverture($session->getId());
-//                foreach($debitouverture as $debit)
-//                {
-//
-//                    if($debit->getDepense()->getTransfert())
-//                    {
-//                        $ouverturetransferer = $ouverturetransferer + $debit->getDepense()->getMontant();//liste des fonds trnsferes
-//                    }
-//                    else
-//                    {
-//                        if($debit->getDepense()->getType() == 'Espece')
-//                        {
-//                            $ouverturedebitcaisse = $ouverturedebitcaisse + $debit->getDepense()->getMontant();
-//                        }
-//                    }
-//                }
-//                foreach($deb as $debit)
-//                {
-//
-//                    if($debit->getDepense()->getTransfert())
-//                    {
-//                        $transferer[] =$debit;//liste des fonds trnsferes
-//                    }
-//                    else
-//                    {
-//                        if($debit->getDepense()->getType() == 'Espece')
-//                        {
-//                            $debitcaisse[] = $debit;
-//                        }
-//                        else $debitbanque[] = $debit;
-//                    }
-//                }
-//                $soldeouverturecaisse = $ouverturecaisse - $ouverturedebitcaisse - $ouverturetransferer;
-//
-//                $response = $this->render('Finance/brouyard.html.twig', array('ouverture' => $soldeouverturecaisse,'caisse' => $caisse,'transferer' => $transferer,'gain' => $gain, 'debitcaisse' => $debitcaisse, 'session' => $session->getDesignation()));
-//                $response->setSharedMaxAge(0);
-//                $response->headers->addCacheControlDirective('no-cache', true);
-//                $response->headers->addCacheControlDirective('no-store', true);
-//                $response->headers->addCacheControlDirective('must-revalidate', true);
-//                $response->setCache([
-//                    'max_age' => 0,
-//                    'private' => true,
-//                ]);
-//                return $response;
-//            }
-//            else return $this->redirectToRoute('Mecque_SessionStart');
-//        }
-//        else return $this->redirect($this->generateUrl('security_login'));
-//    }
+    /**
+     * @Route("/Brouillard", name="brouyard")
+     */
+    public function brouyard(EcritureRepository $repository): Response
+    {
+        $ecritures = $repository->findAll();
+        $ouverture = $repository->ouverture();
+        $caisse = 0;
+        $caisseouv = 0;
+        $banque = 0;
+        $banqueouv = 0;
+        $debitbanque = 0;
+        $debitbanqueouv = 0;
+        $debitcaisse = 0;
+        $debitcaisseouv = 0;
+        foreach($ecritures as $ecriture)
+        {
+            $credit= null;
+            $debit= null;
+            if($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $credit->getType() == 'Espece' ?
+                    $caisse = $caisse + $credit->getMontant() :
+                    $banque = $banque + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debit->getType() == 'Espece' ?
+                    $debitcaisse = $debitcaisse + $debit->getMontant() :
+                    $debitbanque = $debitbanque + $debit->getMontant();
+
+            }
+
+        }
+
+        foreach($ouverture as $ecriture)
+        {
+            $credit= null;
+            $debit= null;
+            if($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $credit->getType() == 'Espece' ?
+                    $caisseouv = $caisseouv + $credit->getMontant() :
+                    $banqueouv = $banqueouv + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debit->getType() == 'Espece' ?
+                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
+                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+            }
+
+        }
+
+        return $this->render('finance/brouyard.html.twig',[
+            'caisse' => $caisse - $debitcaisse - $caisseouv - $debitcaisseouv,
+            'banque' => $banque - $debitbanque - $banqueouv- $debitbanqueouv,
+            'ecritures' => $ecritures,
+            'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv- $debitbanqueouv)
+        ]);
+    }
 //
 //    /**
 //     * @Route("/LienDaysBrouyard", name="finance_days_brouyard_lien")
