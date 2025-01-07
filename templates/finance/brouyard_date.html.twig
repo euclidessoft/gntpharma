@@ -8,6 +8,14 @@
                 <h5 class="text-success text-bold">
                     <i class="fa fa-money-bill"></i>
                     <i class="fa fa-angle-double-right"></i>
+                    <i class="fa-regular fa-calendar-days"></i>
+                    {{ 'Rapport à la date du :'|trans }}{{day|date('d/m/Y') }}
+                </h5>
+            </div>
+            <div class="card-header bg-success-light bb-success">
+                <h5 class="text-success text-bold">
+                    <i class="fa fa-money-bill"></i>
+                    <i class="fa fa-angle-double-right"></i>
                     <i class="fa fa-university"></i>
                     {{ 'Solde douverture :'|trans }}{{ouverture|number_format(0, '', ' ') }}
 
@@ -76,7 +84,7 @@
                             </tr>
                     {% else %}
                         <tr>
-                            <td data-label="colspan" colspan="7">
+                            <td data-label="colspan" colspan="8">
                                 {{ 'Aucune transaction '|trans }}
                             </td>
                         </tr>
