@@ -9,7 +9,7 @@
                     <i class="fa fa-money-bill"></i>
                     <i class="fa fa-angle-double-right"></i>
                     <i class="fa-regular fa-calendar-days"></i>
-                    {{ 'Rapport journalier'|trans }}
+                    {{ 'Rapport journalier caisse'|trans }}
                 </h5>
             </div>
             <div class="card-header bg-success-light bb-success">
@@ -96,7 +96,7 @@
                 <h4 class="text-success text-bold">
                     {{ 'Solde'|trans }} :
                     <span class="text-nowrap">
-                    {{ (banque+caisse)|number_format(0, '', ' ') }} F CFA
+                    {{ (caisse)|number_format(0, '', ' ') }} F CFA
                 </span>
                 </h4>
             </div>
