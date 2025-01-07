@@ -346,10 +346,11 @@
             //situation journaliere caisse
             function daycaisse() {
                 var date1 = new Date($('#day').val());
+                alert($('#day').val())
                 if (date1 < new Date()) {
                     $.ajax({
                         type: "POST",
-                        {#url: "{{ path('finance_day_brouyard_lien') }}",#}
+                        url: "{{ path('finance_day_brouyard_lien') }}",
                         data: "date1=" + $('#day').val(),
                         success: function (data) {
                             window.open(data['ok'], '_self');
@@ -360,7 +361,8 @@
                         }
                     });
                 } else {
-                    alert("{{ 'Vérifiez la date saisie'|trans }}");
+                    $('#day').val('');
+                    alert("{{ 'Choisis une date anterieur à la date du jour'|trans }}");
                 }
 
             }
@@ -394,7 +396,7 @@
                 if (date1 < date2 && date2 < new Date()) {
                     $.ajax({
                         type: "POST",
-                        {#url: "{{ path('finance_days_brouyard_lien') }}",#}
+                        url: "{{ path('finance_days_brouyard_lien') }}",
                         data: "date1=" + $('#date1').val() + "&date2=" + $('#date2').val(),
                         success: function (data) {
                             window.open(data['ok'], '_self');
