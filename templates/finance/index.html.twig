@@ -165,7 +165,7 @@
                                                                 &emsp;
                                                             </button>
                                                             <button type="button" class="btn btn-shadow btn-success-light"
-                                                                    onclick="daybanque()">
+                                                                    onclick="day()">
                                                                 &emsp;
                                                                 <!-- <i class="fa fa-university fa-lg"></i> -->
                                                                 <i class="fa-solid fa-square-poll-vertical fa-lg"></i>
@@ -257,7 +257,7 @@
                                                                 &emsp;
                                                             </button>
                                                             <button type="button" class="btn btn-shadow btn-success-light"
-                                                                    onclick="daysbanque()">
+                                                                    onclick="days()">
                                                                 &emsp;
                                                                 <!-- <i class="fa fa-university fa-lg"></i> -->
                                                                 <i class="fa-solid fa-square-poll-vertical fa-lg"></i>
@@ -291,8 +291,7 @@
                     <tr>
                         <th class="text-center"> {{ 'n'|trans }}</th>
                         <th class="text-center"> {{ 'Date'|trans }}</th>
-                        <th>{{ 'Compte'|trans }} <br>{{ 'Débité'|trans }}</th>
-                        <th>{{ 'Compte'|trans }} <br>{{ 'Crédité'|trans }}</th>
+                        <th>{{ 'Compte'|trans }}</th>
                         <th>{{ 'Reference'|trans }}</th>
                         <th>{{ 'Libelé'|trans }}</th>
                         <th class="text-center">{{ 'Debit'|trans }}</th>
@@ -304,24 +303,22 @@
                     {% set montant2 = 0 %}
                     {% set i =1 %}
                         {% for ecriture in ecritures %}
+                            {% set first = 0 %}
 
                             <tr>
                                 <td data-label="{{ 'Date'|trans }}" class="text-center">
-                                    {{ i }} {% set i = i + 1 %}
+                                   {% if first == 0 %} {{ i }} {% set i = i + 1 %} {% endif %}
                                 </td>
                                 <td data-label="{{ 'Date'|trans }}" class="text-center">
-                                    {{ ecriture.date|date('d/m/Y') }}
+                                    {% if first == 0 %}
+                                        {{ ecriture.date|date('d/m/Y') }}
+                                        {% set first = 1 %}
+                                    {% endif %}
                                 </td>
-                                <td data-label="{{ 'debit'|trans }}" class="credit">
+                                <td data-label="{{ 'compte'|trans }}" class="credit">
 
                                     {{ ecriture.debit ? ecriture.comptecredit : '' }}
                                     {{ ecriture.credit ? ecriture.comptecredit : '' }}
-
-                                </td>
-                                <td data-label="{{ 'credit'|trans }}" class="debit">
-
-                                        {{ ecriture.credit ? ecriture.comptedebit : '' }}
-                                        {{ ecriture.debit ? ecriture.comptedebit : '' }}
 
                                 </td>
                                 <td data-label="{{ 'reference'|trans }}">
@@ -333,7 +330,7 @@
 
                                 </td>
                                 <td data-label="{{ 'credit'|trans }}"  class="text-right">
-                                    {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
+{#                                                                        {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                     {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}
                                 </td>
                                 <td data-label="{{ 'debit'|trans }}"  class="text-right">
@@ -343,7 +340,45 @@
                                 </td>
 {#                                <td data-label="{{ 'solde'|trans }}"  class="text-center">#}
 
+
+{#                                {% set montant2 = montant2 + debit.depense.montant %}#}
+                            </tr>
+                            <tr>
+                                <td data-label="{{ 'Date'|trans }}" class="text-center">
+                                   {% if first == 0 %} {{ i }} {% set i = i + 1 %} {% endif %}
                                 </td>
+                                <td data-label="{{ 'Date'|trans }}" class="text-center">
+                                    {% if first == 0 %}
+                                        {{ ecriture.date|date('d/m/Y') }}
+                                        {% set first = 1 %}
+                                    {% endif %}
+                                </td>
+                                <td data-label="{{ 'debit'|trans }}" class="credit">
+
+                                    {{ ecriture.debit ? ecriture.comptedebit : '' }}
+                                    {{ ecriture.credit ? ecriture.comptedebit : '' }}
+
+                                </td>
+                                <td data-label="{{ 'reference'|trans }}">
+
+                                </td>
+                                <td data-label="{{ 'Libelé'|trans }}">
+                                    {{ ecriture.debit ? ecriture.libelle : '' }}
+                                    {{ ecriture.credit ? ecriture.libelle : '' }}
+
+                                </td>
+                                <td data-label="{{ 'credit'|trans }}"  class="text-right">
+                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}
+{#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
+                                </td>
+                                <td data-label="{{ 'debit'|trans }}"  class="text-right">
+{#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
+                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}
+
+                                </td>
+{#                                <td data-label="{{ 'solde'|trans }}"  class="text-center">#}
+
+
 {#                                {% set montant2 = montant2 + debit.depense.montant %}#}
                             </tr>
                     {% else %}
@@ -370,13 +405,34 @@
     {% block script %}
         <script>
             //situation journaliere caisse
-            function daycaisse() {
+            function day() {
                 var date1 = new Date($('#day').val());
-                alert($('#day').val())
                 if (date1 < new Date()) {
                     $.ajax({
                         type: "POST",
                         url: "{{ path('finance_day_brouyard_lien') }}",
+                        data: "date1=" + $('#day').val(),
+                        success: function (data) {
+                            window.open(data['ok'], '_self');
+                            // window.location.reload();
+                        },
+                        error: function () {
+                            alert("{{ 'La requête n a pas abouti'|trans }}");
+                        }
+                    });
+                } else {
+                    $('#day').val('');
+                    alert("{{ 'Choisis une date anterieur à la date du jour'|trans }}");
+                }
+
+            }
+
+            function daycaisse() {
+                var date1 = new Date($('#day').val());
+                if (date1 < new Date()) {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('finance_day_brouyard_lien_caisse') }}",
                         data: "date1=" + $('#day').val(),
                         success: function (data) {
                             window.open(data['ok'], '_self');
@@ -399,7 +455,7 @@
                 if (date1 < new Date()) {
                     $.ajax({
                         type: "POST",
-                        {#url: "{{ path('finance_day_brouyardbanque_lien') }}",#}
+                        url: "{{ path('finance_day_brouyard_lien_banque') }}",
                         data: "date1=" + $('#day').val(),
                         success: function (data) {
                             window.open(data['ok'], '_self');
@@ -416,13 +472,35 @@
             }
 
             //situation intervalle caisse
-            function dayscaisse() {
+            function days() {
                 var date1 = new Date($('#date1').val());
                 var date2 = new Date($('#date2').val());
                 if (date1 < date2 && date2 < new Date()) {
                     $.ajax({
                         type: "POST",
                         url: "{{ path('finance_days_brouyard_lien') }}",
+                        data: "date1=" + $('#date1').val() + "&date2=" + $('#date2').val(),
+                        success: function (data) {
+                            window.open(data['ok'], '_self');
+                            // window.location.reload();
+                        },
+                        error: function () {
+                            alert("{{ 'La requête n a pas abouti'|trans }}");
+                        }
+                    });
+
+                } else {
+                    alert("{{ 'Vérifiez les dates saisies'|trans }}");
+                }
+
+            }
+            function dayscaisse() {
+                var date1 = new Date($('#date1').val());
+                var date2 = new Date($('#date2').val());
+                if (date1 < date2 && date2 < new Date()) {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('finance_days_brouyard_lien_caisse') }}",
                         data: "date1=" + $('#date1').val() + "&date2=" + $('#date2').val(),
                         success: function (data) {
                             window.open(data['ok'], '_self');
@@ -446,7 +524,7 @@
                 if (date1 < date2 && date2 < new Date()) {
                     $.ajax({
                         type: "POST",
-                        {#url: "{{ path('finance_days_brouyardbanque_lien') }}",#}
+                        url: "{{ path('finance_days_brouyard_lien_banque') }}",
                         data: "date1=" + $('#date1').val() + "&date2=" + $('#date2').val(),
                         success: function (data) {
                             window.open(data['ok'], '_self');

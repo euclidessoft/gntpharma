@@ -39,6 +39,16 @@ class EcritureRepository extends ServiceEntityRepository
             ->getQuery();
         return $query->getResult();
     }
+    public function ouverturebanque()
+    {
+        $query = $this->createQueryBuilder('a')
+            ->Where('a.date < :genre')
+            ->setParameter('genre', date('Y-m-d'))
+            ->andWhere('a.type = :caisse')
+            ->setParameter('caisse', "Banque")
+            ->getQuery();
+        return $query->getResult();
+    }
     public function brouyard()
     {
         $query = $this->createQueryBuilder('a')
@@ -76,11 +86,54 @@ class EcritureRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function daybrouyardcaisse($date)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->Where('a.date = :genre')
+            ->setParameter('genre', $date)
+            ->andWhere('a.type = :caisse')
+            ->setParameter('caisse', "Espece")
+            ->getQuery();
+        return $query->getResult();
+    }
+
+    public function daybrouyardbanque($date)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->Where('a.date = :genre')
+            ->setParameter('genre', $date)
+            ->andWhere('a.type = :banque')
+            ->setParameter('banque', "Banque")
+            ->getQuery();
+        return $query->getResult();
+    }
+
     public function ouvertureplace($datedebut)
     {
         $query = $this->createQueryBuilder('a')
             ->Where('a.date < :genre')
             ->setParameter('genre', $datedebut)
+            ->getQuery();
+        return $query->getResult();
+    }
+    public function ouvertureplacecaisse($datedebut)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->Where('a.date < :genre')
+            ->setParameter('genre', $datedebut)
+            ->andWhere('a.type = :caisse')
+            ->setParameter('caisse', "Espece")
+            ->getQuery();
+        return $query->getResult();
+    }
+
+    public function ouvertureplacebanque($datedebut)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->Where('a.date < :genre')
+            ->setParameter('genre', $datedebut)
+            ->andWhere('a.type = :caisse')
+            ->setParameter('caisse', "Banque")
             ->getQuery();
         return $query->getResult();
     }
@@ -91,6 +144,30 @@ class EcritureRepository extends ServiceEntityRepository
             ->Where('a.date BETWEEN :debut AND :fin')
             ->setParameter('debut', $date)
             ->setParameter('fin', $date1)
+            ->getQuery();
+        return $query->getResult();
+    }
+
+    public function plagecaisse($date, $date1)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->Where('a.date BETWEEN :debut AND :fin')
+            ->setParameter('debut', $date)
+            ->setParameter('fin', $date1)
+            ->andWhere('a.type = :caisse')
+            ->setParameter('caisse', "Espece")
+            ->getQuery();
+        return $query->getResult();
+    }
+
+    public function plagebanque($date, $date1)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->Where('a.date BETWEEN :debut AND :fin')
+            ->setParameter('debut', $date)
+            ->setParameter('fin', $date1)
+            ->andWhere('a.type = :caisse')
+            ->setParameter('caisse', "Banque")
             ->getQuery();
         return $query->getResult();
     }
