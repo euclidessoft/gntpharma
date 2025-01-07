@@ -13,18 +13,18 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>{{('N Compte'|trans)}}</th>
+                <th>{{('Nº Compte'|trans)}}</th>
                 <th>{{('Nom'|trans)}}</th>
-                <th>{{('actions'|trans)}}</th>
+                <th>{{('Actions'|trans)}}</th>
             </tr>
         </thead>
         <tbody>
         {% for banque in banques %}
             <tr>
-                <td data-label="nom"><a href="{{ path('finance_journal_banque', { banque : banque.id })}}">{{ banque.compte }}</a></td>
-                <td data-label="nom"><a href="{{ path('finance_journal_banque', { banque : banque.id })}}">{{ banque.nom }}</a></td>
-                <td data-label="actions">
-                    <!-- <a href="{{ path('banque_show', {'id': banque.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a> -->
+                <td data-label="{{('Nº Compte'|trans)}}">{{ banque.compte }}</td>
+                <td data-label="{{('Nom'|trans)}}">{{ banque.nom }}</td>
+                <td data-label="{{('Actions'|trans)}}">
+                    <a href="{{ path('finance_journal_banque', { banque : banque.id })}}" class="btn btn-success"><i class="fas fa-eye"></i></a>
                     <a href="{{ path('banque_edit', {'id': banque.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
                     {{ include('banque/_delete_form.html.twig') }}
                 </td>

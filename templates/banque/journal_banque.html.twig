@@ -4,7 +4,7 @@
 {% block banque %}active{% endblock %}
 {% block all_banque %}active{% endblock %}
 {% block body %}
-<div class="col-lg-6 mt-4 fond-7">
+<div class="col-lg-8 mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fa fa-money-bill mr-2"></i>
         {{ "Liste des transactions de la banque"|trans }}
@@ -13,7 +13,7 @@
         <thead>
             <tr>
                 <th>{{('Date'|trans)}}</th>
-                <th>{{('N Compte'|trans)}}</th>
+                <th>{{('Nº Compte'|trans)}}</th>
                 <th>{{('Libelé'|trans)}}</th>
                 <th>{{('Debit'|trans)}}</th>
                 <th>{{('Crédit'|trans)}}</th>
@@ -24,7 +24,7 @@
         {% for ecriture in ecritures %}
             <tr>
                 <td data-label="date">{{ ecriture.date|date('d/m/Y') }}</td>
-                <td data-label="N Compte">
+                <td data-label="Nº Compte">
                     {{ ecriture.credit ? ecriture.comptedebit : '' }}
                     {{ ecriture.debit ? ecriture.comptecredit : '' }}
                 </td>
@@ -44,12 +44,12 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">Aucune transaction enregistrée</td>
+                <td colspan="6">Aucune transaction enregistrée</td>
             </tr>
         {% endfor %}
             
             <!--  -->
         </tbody>
     </table>
-
+</div>
 {% endblock %}
