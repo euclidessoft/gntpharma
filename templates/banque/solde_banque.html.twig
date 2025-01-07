@@ -1,0 +1,41 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Solde banques"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block banque %}active{% endblock %}
+{% block all_banque %}active{% endblock %}
+{% block body %}
+<div class="col-lg-6 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Solde des banques"|trans }}
+    </h3>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+        <tr>
+            <th>{{('Nº Compte'|trans)}}</th>
+            <th>{{('Nom'|trans)}}</th>
+            <th>{{('Solde'|trans)}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for banque in banques %}
+            <tr>
+                <td data-label="{{('Nº Compte'|trans)}}">
+                    {{ banque.compte }}
+                </td>
+                <td data-label="{{('Nom'|trans)}}">
+                    {{ banque.nom }}
+                </td>
+                <td data-label="{{('Solde'|trans)}}">
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucune transaction enregistrée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% endblock %}

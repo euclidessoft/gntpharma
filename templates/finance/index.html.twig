@@ -35,7 +35,12 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="alert alert-success shadow-black radius-10 mt-4 p-4 text-green">
-                        <span class="text-bold">{{ 'Avoirs en banque'|trans }}</span> :
+                        <span class="text-bold">{{ 'Avoirs en banque :'|trans }}</span>
+                        <span class="float-right">
+                            <a href="{{ path('banque_index') }}" class="text-green">
+                                {{ 'Détails >>'|trans }}
+                            </a>
+                        </span>
                         <h3 class="text-nowrap text-bold text-center mt-3">
                             {{ banque|number_format(0, '', ' ') }} F CFA
                         </h3>
@@ -79,24 +84,24 @@
                             <div class="col-12 mt-5 mb-4">
                                 <div class="centrer">
                                     <div class="row">
-                                            <a href="{{ path('finance_brouyard') }}"{# target="_blank"#}>
-                                                <button type="button"
-                                                        class="btn btn-shadow btn-normal btn-green mr-3" {#onclick="window.location.reload();"#}>
-                                                    &emsp;
-                                                    <i class="fa fa-cash-register fa-lg"></i>
-                                                    {{ 'Caisse'|trans }}
-                                                    &emsp;
-                                                </button>
-                                            </a>
-                                            <a href="#"{# target="_blank"#}>
-                                                <button type="button"
-                                                        class="btn btn-shadow btn-normal btn-primary"{# onclick="window.location.reload();"#}>
-                                                    &emsp;
-                                                    <i class="fa fa-university fa-lg"></i>
-                                                    {{ 'Banque'|trans }}
-                                                    &emsp;
-                                                </button>
-                                            </a>
+                                        <a href="{{ path('finance_brouyard') }}"{# target="_blank"#}>
+                                            <button type="button"
+                                                    class="btn btn-shadow btn-normal btn-green mr-3" {#onclick="window.location.reload();"#}>
+                                                &emsp;
+                                                <i class="fa fa-cash-register fa-lg"></i>
+                                                {{ 'Caisse'|trans }}
+                                                &emsp;
+                                            </button>
+                                        </a>
+                                        <a href="#"{# target="_blank"#}>
+                                            <button type="button"
+                                                    class="btn btn-shadow btn-normal btn-primary"{# onclick="window.location.reload();"#}>
+                                                &emsp;
+                                                <i class="fa fa-university fa-lg"></i>
+                                                {{ 'Banque'|trans }}
+                                                &emsp;
+                                            </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -141,20 +146,20 @@
                                             <div class="col-12 mt-5 mb-4">
                                                 <div class="centrer">
                                                     <div class="row">
-                                                            <button type="button" class="btn btn-shadow btn-green mr-3"
-                                                                    onclick="daycaisse()">
-                                                                &emsp;
-                                                                <i class="fa fa-cash-register fa-lg"></i>
-                                                                {{ 'Caisse'|trans }}
-                                                                &emsp;
-                                                            </button>
-                                                            <button type="button" class="btn btn-shadow btn-primary"
-                                                                    onclick="daybanque()">
-                                                                &emsp;
-                                                                <i class="fa fa-university fa-lg"></i>
-                                                                {{ 'Banque'|trans }}
-                                                                &emsp;
-                                                            </button>
+                                                        <button type="button" class="btn btn-shadow btn-green mr-3"
+                                                                onclick="daycaisse()">
+                                                            &emsp;
+                                                            <i class="fa fa-cash-register fa-lg"></i>
+                                                            {{ 'Caisse'|trans }}
+                                                            &emsp;
+                                                        </button>
+                                                        <button type="button" class="btn btn-shadow btn-primary"
+                                                                onclick="daybanque()">
+                                                            &emsp;
+                                                            <i class="fa fa-university fa-lg"></i>
+                                                            {{ 'Banque'|trans }}
+                                                            &emsp;
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -224,20 +229,20 @@
                                             <div class="col-12 mt-5 mb-4">
                                                 <div class="centrer">
                                                     <div class="row">
-                                                            <button type="button" class="btn btn-shadow btn-green mr-3"
-                                                                    onclick="dayscaisse()">
-                                                                &emsp;
-                                                                <i class="fa fa-cash-register fa-lg"></i>
-                                                                {{ 'Caisse'|trans }}
-                                                                &emsp;
-                                                            </button>
-                                                            <button type="button" class="btn btn-shadow btn-primary"
-                                                                    onclick="daysbanque()">
-                                                                &emsp;
-                                                                <i class="fa fa-university fa-lg"></i>
-                                                                {{ 'Banque'|trans }}
-                                                                &emsp;
-                                                            </button>
+                                                        <button type="button" class="btn btn-shadow btn-green mr-3"
+                                                                onclick="dayscaisse()">
+                                                            &emsp;
+                                                            <i class="fa fa-cash-register fa-lg"></i>
+                                                            {{ 'Caisse'|trans }}
+                                                            &emsp;
+                                                        </button>
+                                                        <button type="button" class="btn btn-shadow btn-primary"
+                                                                onclick="daysbanque()">
+                                                            &emsp;
+                                                            <i class="fa fa-university fa-lg"></i>
+                                                            {{ 'Banque'|trans }}
+                                                            &emsp;
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -271,55 +276,55 @@
                         <th>{{ 'Libelé'|trans }}</th>
                         <th class="text-center">{{ 'Debit'|trans }}</th>
                         <th class="text-center">{{ 'Crédit'|trans }}</th>
-{#                        <th class="text-center">{{ 'Solde'|trans }}</th> #}
+                        {#                        <th class="text-center">{{ 'Solde'|trans }}</th> #}
                     </tr>
                     </thead>
                     <tbody>
                     {% set montant2 = 0 %}
                     {% set i =1 %}
-                        {% for ecriture in ecritures %}
+                    {% for ecriture in ecritures %}
 
-                            <tr>
-                                <td data-label="{{ 'Date'|trans }}" class="text-center">
-                                    {{ i }} {% set i = i + 1 %}
-                                </td>
-                                <td data-label="{{ 'Date'|trans }}" class="text-center">
-                                    {{ ecriture.date|date('d/m/Y') }}
-                                </td>
-                                <td data-label="{{ 'debit'|trans }}" class="credit">
+                        <tr>
+                            <td data-label="{{ 'Date'|trans }}" class="text-center">
+                                {{ i }} {% set i = i + 1 %}
+                            </td>
+                            <td data-label="{{ 'Date'|trans }}" class="text-center">
+                                {{ ecriture.date|date('d/m/Y') }}
+                            </td>
+                            <td data-label="{{ 'debit'|trans }}" class="credit">
 
-                                    {{ ecriture.debit ? ecriture.comptecredit : '' }}
-                                    {{ ecriture.credit ? ecriture.comptecredit : '' }}
+                                {{ ecriture.debit ? ecriture.comptecredit : '' }}
+                                {{ ecriture.credit ? ecriture.comptecredit : '' }}
 
-                                </td>
-                                <td data-label="{{ 'credit'|trans }}" class="debit">
+                            </td>
+                            <td data-label="{{ 'credit'|trans }}" class="debit">
 
-                                        {{ ecriture.credit ? ecriture.comptedebit : '' }}
-                                        {{ ecriture.debit ? ecriture.comptedebit : '' }}
+                                {{ ecriture.credit ? ecriture.comptedebit : '' }}
+                                {{ ecriture.debit ? ecriture.comptedebit : '' }}
 
-                                </td>
-                                <td data-label="{{ 'reference'|trans }}">
+                            </td>
+                            <td data-label="{{ 'reference'|trans }}">
 
-                                </td>
-                                <td data-label="{{ 'Libelé'|trans }}">
-                                    {{ ecriture.debit ? ecriture.libelle : '' }}
-                                    {{ ecriture.credit ? ecriture.libelle : '' }}
+                            </td>
+                            <td data-label="{{ 'Libelé'|trans }}">
+                                {{ ecriture.debit ? ecriture.libelle : '' }}
+                                {{ ecriture.credit ? ecriture.libelle : '' }}
 
-                                </td>
-                                <td data-label="{{ 'credit'|trans }}"  class="text-right">
-                                    {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
-                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}
-                                </td>
-                                <td data-label="{{ 'debit'|trans }}"  class="text-right">
-                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}
-{#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
+                            </td>
+                            <td data-label="{{ 'credit'|trans }}" class="text-right">
+                                {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
+                                {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}
+                            </td>
+                            <td data-label="{{ 'debit'|trans }}" class="text-right">
+                                {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}
+                                {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
 
-                                </td>
-{#                                <td data-label="{{ 'solde'|trans }}"  class="text-center">#}
+                            </td>
+                            {#                                <td data-label="{{ 'solde'|trans }}"  class="text-center">#}
 
-                                </td>
-{#                                {% set montant2 = montant2 + debit.depense.montant %}#}
-                            </tr>
+                            </td>
+                            {#                                {% set montant2 = montant2 + debit.depense.montant %}#}
+                        </tr>
                     {% else %}
                         <tr>
                             <td data-label="colspan" colspan="4">
