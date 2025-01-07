@@ -1,0 +1,105 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block journal %}active{% endblock %}
+{% block body %}
+<div class="card border-green shadow-black mt-5 mb-3 fond-5">
+            <div class="card-header bg-success-light bb-success">
+                <h5 class="text-success text-bold">
+                    <i class="fa fa-money-bill"></i>
+                    <i class="fa fa-angle-double-right"></i>
+                    <i class="fa-regular fa-calendar-days"></i>
+                    {{ 'Rapport journalier banque'|trans }}
+                </h5>
+            </div>
+            <div class="card-header bg-success-light bb-success">
+                <h5 class="text-success text-bold">
+                    <i class="fa fa-money-bill"></i>
+                    <i class="fa fa-angle-double-right"></i>
+                    <i class="fa fa-university"></i>
+                    {{ 'Solde douverture :'|trans }}{{ouverture|number_format(0, '', ' ') }}
+
+                </h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-success-light table-bordered table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th class="text-center"> {{ 'n'|trans }}</th>
+                        <th class="text-center"> {{ 'Date'|trans }}</th>
+                        <th>{{ 'Compte'|trans }} <br>{{ 'Débité'|trans }}</th>
+                        <th>{{ 'Compte'|trans }} <br>{{ 'Crédité'|trans }}</th>
+                        <th>{{ 'Reference'|trans }}</th>
+                        <th>{{ 'Libelé'|trans }}</th>
+                        <th class="text-center">{{ 'Debit'|trans }}</th>
+                        <th class="text-center">{{ 'Crédit'|trans }}</th>
+{#                        <th class="text-center">{{ 'Solde'|trans }}</th> #}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set montant2 = 0 %}
+                    {% set i =1 %}
+                        {% for ecriture in ecritures %}
+
+                            <tr>
+                                <td data-label="{{ 'Date'|trans }}" class="text-center">
+                                    {{ i }} {% set i = i + 1 %}
+                                </td>
+                                <td data-label="{{ 'Date'|trans }}" class="text-center">
+                                    {{ ecriture.date|date('d/m/Y') }}
+                                </td>
+                                <td data-label="{{ 'debit'|trans }}" class="credit">
+
+                                    {{ ecriture.debit ? ecriture.comptecredit : '' }}
+                                    {{ ecriture.credit ? ecriture.comptecredit : '' }}
+
+                                </td>
+                                <td data-label="{{ 'credit'|trans }}" class="debit">
+
+                                        {{ ecriture.credit ? ecriture.comptedebit : '' }}
+                                        {{ ecriture.debit ? ecriture.comptedebit : '' }}
+
+                                </td>
+                                <td data-label="{{ 'reference'|trans }}">
+
+                                </td>
+                                <td data-label="{{ 'Libelé'|trans }}">
+                                    {{ ecriture.debit ? ecriture.libelle : '' }}
+                                    {{ ecriture.credit ? ecriture.libelle : '' }}
+
+                                </td>
+                                <td data-label="{{ 'credit'|trans }}"  class="text-right">
+                                    {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
+                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}
+                                </td>
+                                <td data-label="{{ 'debit'|trans }}"  class="text-right">
+                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}
+{#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
+
+                                </td>
+{#                                <td data-label="{{ 'solde'|trans }}"  class="text-center">#}
+
+                                </td>
+{#                                {% set montant2 = montant2 + debit.depense.montant %}#}
+                            </tr>
+                    {% else %}
+                        <tr>
+                            <td data-label="colspan" colspan="8">
+                                {{ 'Aucune transaction '|trans }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+             <div class="card-footer bg-success-light bt-success">
+                <h4 class="text-success text-bold">
+                    {{ 'Solde'|trans }} :
+                    <span class="text-nowrap">
+                    {{ (banque)|number_format(0, '', ' ') }} F CFA
+                </span>
+                </h4>
+            </div>
+        </div>
+    </div>
+{% endblock %}

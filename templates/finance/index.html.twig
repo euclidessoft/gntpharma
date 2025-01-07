@@ -58,14 +58,14 @@
             </h4>
             <button data-toggle="modal" data-target="#situation" class="btn btn-shadow btn-green mt-4">
                 <i class="fa fa-money-bill-wave"></i>
-                {{ 'Situation du jour'|trans }}
+                {{ 'Rapport du jour'|trans }}
             </button>
             <div class="modal fade mt-5" id="situation" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content radius-10">
                         <div class="modal-header bb-green">
                             <h5 class="mt-3 text-center text-bold">
-                                {{ 'Situation journalière'|trans }}
+                                {{ 'Rapport journalière'|trans }}
                             </h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -74,12 +74,12 @@
 
                         <div class="modal-body">
                             <h4 class="text-center text-bold text-dark mt-4">
-                                {{ 'Quelle situation voulez-vous ?'|trans }}
+                                {{ 'Quelle rapport voulez-vous ?'|trans }}
                             </h4>
                             <div class="col-12 mt-5 mb-4">
                                 <div class="centrer">
                                     <div class="row">
-                                            <a href="{{ path('finance_brouyard') }}"{# target="_blank"#}>
+                                            <a href="{{ path('finance_brouyard_caisse') }}"{# target="_blank"#}>
                                                 <button type="button"
                                                         class="btn btn-shadow btn-normal btn-green mr-3" {#onclick="window.location.reload();"#}>
                                                     &emsp;
@@ -90,10 +90,20 @@
                                             </a>
                                             <a href="#"{# target="_blank"#}>
                                                 <button type="button"
-                                                        class="btn btn-shadow btn-normal btn-primary"{# onclick="window.location.reload();"#}>
+                                                        class="btn btn-shadow btn-normal btn-primary mr-3"{# onclick="window.location.reload();"#}>
                                                     &emsp;
                                                     <i class="fa fa-university fa-lg"></i>
                                                     {{ 'Banque'|trans }}
+                                                    &emsp;
+                                                </button>
+                                            </a>
+                                            <a href="{{ path('finance_brouyard') }}"{# target="_blank"#}>
+                                                <button type="button"
+                                                        class="btn btn-shadow btn-normal btn-success-light"{# onclick="window.location.reload();"#}>
+                                                    &emsp;
+                                                    <!-- <i class="fa fa-university fa-lg"></i> -->
+                                                    <i class="fa-solid fa-square-poll-vertical fa-lg"></i>
+                                                    {{ 'Tous'|trans }}
                                                     &emsp;
                                                 </button>
                                             </a>
@@ -109,7 +119,7 @@
                     <div class="card border-green shadow-black mt-4">
                         <div class="card-header bg-success-light text-green bb-green">
                             <h6 class="mb-n1">
-                                {{ 'Situation à une autre date'|trans }}
+                                {{ 'Rapport à une autre date'|trans }}
                             </h6>
                         </div>
                         <div class="card-body">
@@ -127,7 +137,7 @@
                                     <div class="modal-content radius-10">
                                         <div class="modal-header bb-green">
                                             <h5 class="mt-3 text-center text-bold">
-                                                {{ 'Situation à une autre date'|trans }}
+                                                {{ 'Rapport à une autre date'|trans }}
                                             </h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
@@ -136,7 +146,7 @@
 
                                         <div class="modal-body">
                                             <h4 class="text-center text-bold text-dark mt-4">
-                                                {{ 'Quelle situation voulez-vous ?'|trans }}
+                                                {{ 'Quelle rapport voulez-vous ?'|trans }}
                                             </h4>
                                             <div class="col-12 mt-5 mb-4">
                                                 <div class="centrer">
@@ -148,11 +158,19 @@
                                                                 {{ 'Caisse'|trans }}
                                                                 &emsp;
                                                             </button>
-                                                            <button type="button" class="btn btn-shadow btn-primary"
+                                                            <button type="button" class="btn btn-shadow btn-primary mr-3"
                                                                     onclick="daybanque()">
                                                                 &emsp;
                                                                 <i class="fa fa-university fa-lg"></i>
                                                                 {{ 'Banque'|trans }}
+                                                                &emsp;
+                                                            </button>
+                                                            <button type="button" class="btn btn-shadow btn-success-light"
+                                                                    onclick="daybanque()">
+                                                                &emsp;
+                                                                <!-- <i class="fa fa-university fa-lg"></i> -->
+                                                                <i class="fa-solid fa-square-poll-vertical fa-lg"></i>
+                                                                {{ 'Tous'|trans }}
                                                                 &emsp;
                                                             </button>
                                                     </div>
@@ -169,7 +187,7 @@
                     <div class="card border-green shadow-black mt-4">
                         <div class="card-header bg-success-light text-green bb-green">
                             <h6 class="mb-n1">
-                                {{ 'Situation dans un intervalle de dates'|trans }}
+                                {{ 'Rapport dans un intervalle de dates'|trans }}
                             </h6>
                         </div>
                         <div class="card-body">
@@ -211,7 +229,7 @@
                                     <div class="modal-content radius-10">
                                         <div class="modal-header bb-green">
                                             <h5 class="mt-3 text-center text-bold">
-                                                {{ 'Situation dans un intervalle de dates'|trans }}
+                                                {{ 'Rapport dans un intervalle de dates'|trans }}
                                             </h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
@@ -219,7 +237,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <h4 class="text-center text-bold text-dark mt-4">
-                                                {{ 'Quelle situation voulez-vous ?'|trans }}
+                                                {{ 'Quelle rapport voulez-vous ?'|trans }}
                                             </h4>
                                             <div class="col-12 mt-5 mb-4">
                                                 <div class="centrer">
@@ -231,11 +249,19 @@
                                                                 {{ 'Caisse'|trans }}
                                                                 &emsp;
                                                             </button>
-                                                            <button type="button" class="btn btn-shadow btn-primary"
+                                                            <button type="button" class="btn btn-shadow btn-primary mr-3"
                                                                     onclick="daysbanque()">
                                                                 &emsp;
                                                                 <i class="fa fa-university fa-lg"></i>
                                                                 {{ 'Banque'|trans }}
+                                                                &emsp;
+                                                            </button>
+                                                            <button type="button" class="btn btn-shadow btn-success-light"
+                                                                    onclick="daysbanque()">
+                                                                &emsp;
+                                                                <!-- <i class="fa fa-university fa-lg"></i> -->
+                                                                <i class="fa-solid fa-square-poll-vertical fa-lg"></i>
+                                                                {{ 'Tous'|trans }}
                                                                 &emsp;
                                                             </button>
                                                     </div>
