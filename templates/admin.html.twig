@@ -333,6 +333,40 @@
                             </a>
                         </li>
 
+                        <li class="dropdown-item submenu">
+                            <a class="nav-link dropdown-toggle {% block rapport %}{% endblock %}" href="#"
+                                id="reapprovisionnement"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa-solid fa-chart-line"></i>
+                                {{ 'Rapport'|trans }}
+                            </a>
+                            <ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block rapport_journaliere %}{% endblock %}"
+                                        href="{{ path('finance_brouyard') }}">
+                                        <i class="fa-solid fa-chart-line"></i>
+                                        {{ 'Journalièr'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block rapport_date %}{% endblock %}"
+                                        href="{{ path('remboursement_avoir_index') }}">
+                                        <i class="fa-solid fa-chart-line"></i>
+                                        <i class="fas fa-arrow-right"></i>
+                                        {{ 'A une date'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block rapport_interval %}{% endblock %}"
+                                        href="{{ path('remboursement_index')}}">
+                                        <i class="fa-solid fa-chart-line"></i>
+                                        <i class="fas fa-list"></i>
+                                        {{ 'Dans un interval'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                         <li class="dropdown-item ">
                             <a class="nav-link {% block compte %}{% endblock %}"
                                 href="#">
