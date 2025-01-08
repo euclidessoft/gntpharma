@@ -79,8 +79,6 @@
                 <i class="fa fa-money-bill"></i>
                 {{ 'Rembourser'|trans }}
             </button>
-
-
             <div class="modal fade" id="modal" tabindex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog text-center">
@@ -132,8 +130,9 @@
             </div>
         </div>
 </div>
+    {{ include('javascript.html.twig') }}
+
 {% endblock %}
-{{ include('javascript.html.twig') }}
 {% block scripts %}
     <script>
         function number() {
@@ -163,7 +162,6 @@
                 $('#paiement_form_numero').val();
             }
         }
-
 
     </script>
 
