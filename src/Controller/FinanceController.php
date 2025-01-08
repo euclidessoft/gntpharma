@@ -92,9 +92,9 @@ class FinanceController extends AbstractController
     }
 
     /**
-     * @Route("/JournalCompte/{banque}", name="journal_compte")
+     * @Route("/JournalCompte/{compte}", name="journal_compte")
      */
-    public function journalCompte(EcritureRepository $repository, Banque $banque): Response
+    public function journalCompte(EcritureRepository $repository, $compte): Response
     {
         $ecritures = $repository->findAll();
 
@@ -105,7 +105,7 @@ class FinanceController extends AbstractController
         $ecrit = [];
         foreach($ecritures as $ecriture)
         {
-            if($banque->getCompte() == $ecriture->getComptecredit() || $banque->getCompte() == $ecriture->getComptedebit()) {
+            if($compte == $ecriture->getComptecredit() || $compte == $ecriture->getComptedebit()) {
                 $credit = null;
                 $debit = null;
                 if ($ecriture->getCredit() != null) {
@@ -124,10 +124,11 @@ class FinanceController extends AbstractController
 
         }
 
-        return $this->render('banque/journal_banque.html.twig',[
+        return $this->render('finance/journal_compte.html.twig',[
             'caisse' => $caisse - $debitcaisse,
             'banque' => $bank - $debitbanque,
             'ecritures' => $ecrit,
+            'compte' => $compte,
         ]);
     }
 
