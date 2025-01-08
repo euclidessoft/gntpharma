@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Complement\Solde;
+use App\Entity\Avoir;
 use App\Entity\Debit;
 use App\Entity\Ecriture;
 use App\Entity\Interet;
@@ -10,6 +11,7 @@ use App\Entity\Remboursement;
 use App\Form\RemboursementType;
 use App\Form\RemboursementbancaireType;
 use App\Repository\AvoirRepository;
+use App\Repository\AvoirResteRepository;
 use App\Repository\RemboursementRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -216,53 +218,13 @@ class RemboursementController extends AbstractController
     }
 
     /**
-     * @Route("/avoir", name="remboursement_avoir", methods={"GET","POST"})
+     * @Route("/avoir/{avoir}", name="remboursement_avoir", methods={"GET","POST"})
      */
-    public function avoir(Request $request, Solde $solde): Response
+    public function avoir(Avoir $avoir, AvoirResteRepository $avoirResteRepository, SessionInterface $session,Request $request, Solde $solde): Response
     {
-        $remboursement = new Remboursement();
-        $form = $this->createForm(RemboursementType::class, $remboursement);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $montant = $solde->montantcaisse($entityManager,54);
-            if($remboursement->getMontant() <= $montant) {
-                $remboursement->setCompte(52);
-                $remboursement->setType('Banque');
-                $debit = new Debit();
-                $debit->setRemboursement($remboursement);
-                $debit->setType('Banque');
-                $debit->setCompte(54);
-                $debit->setMontant($remboursement->getMontant());
-
-                $debitecriture = new Ecriture();
-                $debitecriture->setDebit($debit);
-                $debitecriture->setType('Banque');
-                $debitecriture->setLibelle($remboursement->getLibele());
-                $debitecriture->setSolde(-$remboursement->getMontant());
-                $debitecriture->setMontant($remboursement->getMontant());
-                $debitecriture->setComptedebit('52');
-                $debitecriture->setComptecredit('40');
-
-
-                $entityManager->persist($remboursement);
-                $entityManager->persist($debit);
-                $entityManager->persist($debitecriture);
-                $entityManager->flush();
-
-                $entityManager->persist($remboursement);
-                $entityManager->flush();
-
-                return $this->redirectToRoute('remboursement_index', [], Response::HTTP_SEE_OTHER);
-            }else{
-
-            }
-        }
-
         return $this->render('remboursement/avoir.html.twig', [
-            'remboursement' => $remboursement,
-            'form' => $form->createView(),
+            'avoir' => $avoir,
+            'details' => $avoirResteRepository->findBy(['avoir' => $avoir]),
         ]);
     }
 

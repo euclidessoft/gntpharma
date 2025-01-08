@@ -1,47 +1,79 @@
 {% extends 'admin.html.twig' %}
-{% block title %} {{ "Voir les avoir"|trans }} - GNT Pharma {% endblock %}
+{% block title %} {{ "Avoir"|trans }} - GNT Pharma {% endblock %}
 {% block officine %}active{% endblock %}
 {% block avoir %}active{% endblock %}
 
 {% block body %}
-<div class="container mt-4 fond-7">
-    <h3 class="mt-4 mb-5 text-bold">
-        <i class="fa fa-money-bill mr-2"></i>
-        {{ "Listes des avoirs"|trans }}
-    </h3>
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-money-bill mr-2"></i>
+            {{ "Avoir"|trans }}
+        </h3>
+        <div class="row justify-content-end">
+            <div class="col-lg-5">
+                <table class="table table-success-light table-bordered">
+                    <tbody>
 
-
-    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
-        <thead>
+                    <tr>
+                        <th>{{ 'Numero commande'|trans }}</th>
+                        <th>{{ 'Date'|trans }}</th>
+                        <th>{{ 'Montant'|trans }}</th>
+                    </tr>
+                    <tr>
+                        <td>{{ avoir.commande.id }}</td>
+                        <td>{{ avoir.date ? avoir.date|date('d/m/Y') : '' }}</td>
+                        <td>{{ avoir.Montant|number_format(0, '' , ' ') }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <table class="table table-success-light table-bordered table-hover table-striped w-100">
+            <thead>
             <tr>
-                <th>{{ 'Client'|trans }}</th>
-                <th>{{ 'Date'|trans }}</th>
-                <th>{{ 'Créer par'|trans }}</th>
-                <th>{{ 'Montant'|trans }}</th>
-                <th>{{ 'Actions'|trans }}</th>
+                <th>{{ 'référence'|trans }}</th>
+                <th>{{ 'désignation'|trans }}</th>
+                <th>{{ 'prix cession'|trans }}</th>
+                <th>{{ 'Quantité Commande'|trans }}</th>
+                <th>{{'Reste à livrer'|trans}}</th>
+                <th>{{'Montant avoir'|trans}}</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for avoir in avoirs %}
+            </thead>
+            <tbody>
+            {% set total = 0 %}
+            {% for commande in details %}
+                <tr>
+                    <td>{{ commande.produit.reference }}</td>
+                    <td>{{ commande.produit.desigantion }}</td>
+                    <td>{{ commande.produit.prix|number_format(0, '' , ' ') }}</td>
+                    <td>
+                        {{ commande.quantite }}
+                    </td>
+
+                    <td class="text-center">{{ commande.quantite - commande.quantitelivre }}</td>
+                    <td>
+                        {{ (commande.produit.prix * (commande.quantite - commande.quantitelivre))|number_format(0, '' , ' ') }}
+                        {% set total = total + (commande.produit.prix * (commande.quantite - commande.quantitelivre)) %}
+                    </td>
+                </tr>
+            {% else %}
+            {% endfor %}
             <tr>
-                <td>{{ avoir.client.nom }}</td>
-                <td>{{ avoir.date ? avoir.date|date('d/m/Y') : '' }}</td>
-                <td>{{ avoir.admin.nom }}</td>
-                <td>{{ avoir.Montant|number_format(0, '' , ' ') }}</td>
-                <td>
-                    <a id="{{ avoir.id }}" onclick="load({{ avoir.id }})" class="btn btn-success" href="{{ path('avoir_show', {'id': avoir.id}) }}"><i class="fa fa-list"></i>
-                        {{ 'Afficher'|trans }}
-                    </a>
+                <td colspan="5" class="text-right text-bold">
+                    {{ 'Total Avoir'|trans }}
                 </td>
+                <td class="text-bold">{{ total|number_format(0, '' , ' ') }}</td>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-{#    <a href="{{ path('avoir_new') }}" class="btn btn-success mb-3">Create new</a>#}
-</div>
+        </table>
+    </div>
+    <div class="container mt-4 mb-5 pt-3 pb-3 fond-7">
+        <div class="centrer">
+            <div class="row">
+                <a id="{{ avoir.id }}" onclick="load({{ avoir.id }})" href="{{path('avoir_show_print', {'id': avoir.id})}}" class="btn btn-success float-end">
+                    <i class="fa fa-print"></i>
+                    {{ "Rembourser"|trans }}
+                </a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
