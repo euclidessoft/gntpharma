@@ -35,7 +35,12 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="alert alert-success shadow-black radius-10 mt-4 p-4 text-green">
-                        <span class="text-bold">{{ 'Avoirs en banque'|trans }}</span> :
+                        <span class="text-bold">{{ 'Avoirs en banque :'|trans }}</span>
+                        <span class="float-right">
+                            <a href="{{ path('banque_index') }}" class="text-green">
+                                {{ 'Détails >>'|trans }}
+                            </a>
+                        </span>
                         <h3 class="text-nowrap text-bold text-center mt-3">
                             {{ banque|number_format(0, '', ' ') }} F CFA
                         </h3>
@@ -53,11 +58,11 @@
         </div>
         <div class="col-lg-12 fond-5 mt-5">
             <h4 class="mt-4">
-                <i class="fa fa-money-bill-wave"></i>
-                {{ 'Situations'|trans }}
+                <i class="fa-solid fa-chart-simple"></i>
+                {{ 'Rapports'|trans }}
             </h4>
             <button data-toggle="modal" data-target="#situation" class="btn btn-shadow btn-green mt-4">
-                <i class="fa fa-money-bill-wave"></i>
+                <i class="fa-solid fa-chart-simple"></i>
                 {{ 'Rapport du jour'|trans }}
             </button>
             <div class="modal fade mt-5" id="situation" role="dialog">
@@ -119,6 +124,7 @@
                     <div class="card border-green shadow-black mt-4">
                         <div class="card-header bg-success-light text-green bb-green">
                             <h6 class="mb-n1">
+                                <i class="fa-solid fa-magnifying-glass-chart"></i>
                                 {{ 'Rapport à une autre date'|trans }}
                             </h6>
                         </div>
@@ -186,6 +192,7 @@
                     <div class="card border-green shadow-black mt-4">
                         <div class="card-header bg-success-light text-green bb-green">
                             <h6 class="mb-n1">
+                                <i class="fa-solid fa-magnifying-glass-chart"></i>
                                 {{ 'Rapport dans un intervalle de dates'|trans }}
                             </h6>
                         </div>
@@ -279,9 +286,7 @@
         <div class="card border-green shadow-black mt-5 mb-3 fond-5">
             <div class="card-header bg-success-light bb-success">
                 <h5 class="text-success text-bold">
-                    <i class="fa fa-money-bill"></i>
-                    <i class="fa fa-angle-double-right"></i>
-                    <i class="fa fa-university"></i>
+                    <i class="fa fa-money-bill-transfer"></i>
                     {{ 'Journal Comptable'|trans }}
                 </h5>
             </div>
@@ -289,12 +294,12 @@
                 <table class="table table-success-light table-bordered table-hover table-striped">
                     <thead>
                     <tr>
-                        <th class="text-center"> {{ 'n'|trans }}</th>
+                        <th class="text-center"> {{ 'Nº'|trans }}</th>
                         <th class="text-center"> {{ 'Date'|trans }}</th>
                         <th>{{ 'Compte'|trans }}</th>
-                        <th>{{ 'Reference'|trans }}</th>
-                        <th>{{ 'Libelé'|trans }}</th>
-                        <th class="text-center">{{ 'Debit'|trans }}</th>
+                        <th>{{ 'Référence'|trans }}</th>
+                        <th>{{ 'Libellé'|trans }}</th>
+                        <th class="text-center">{{ 'Débit'|trans }}</th>
                         <th class="text-center">{{ 'Crédit'|trans }}</th>
                         {#                        <th class="text-center">{{ 'Solde'|trans }}</th> #}
                     </tr>
@@ -320,25 +325,25 @@
                                             {% set first = 1 %}
                                         {% endif %}
                                     </td>
-                                    <td data-label="{{ 'compte'|trans }}" class="credit">
+                                    <td data-label="{{ 'Compte'|trans }}" class="credit">
 
                                         {#                                    {{ ecriture.debit ? ecriture.comptecredit : '' }}#}
                                         {{ ecriture.credit ? ecriture.comptedebit : '' }}
 
                                     </td>
-                                    <td data-label="{{ 'reference'|trans }}">
+                                    <td data-label="{{ 'Référence'|trans }}">
 
                                     </td>
-                                    <td data-label="{{ 'Libelé'|trans }}">
+                                    <td data-label="{{ 'Libellé'|trans }}">
                                         {#                                    {{ ecriture.debit ? ecriture.libelle : '' }}#}
                                         {{ ecriture.credit ? ecriture.libelle : '' }}
 
                                     </td>
-                                    <td data-label="{{ 'credit'|trans }}" class="text-right">
+                                    <td data-label="{{ 'Crédit'|trans }}" class="text-right">
                                         {#                                                                        {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                         {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                     </td>
-                                    <td data-label="{{ 'debit'|trans }}" class="text-right">
+                                    <td data-label="{{ 'Débit'|trans }}" class="text-right">
                                         {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                         {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}
 
@@ -358,25 +363,25 @@
                                             {% set first = 1 %}
                                         {% endif %}
                                     </td>
-                                    <td data-label="{{ 'debit'|trans }}" class="credit">
+                                    <td data-label="{{ 'Débit'|trans }}">
 
                                         {#                                    {{ ecriture.debit ? ecriture.comptedebit : '' }}#}
                                         {{ ecriture.credit ? ecriture.comptecredit : '' }}
 
                                     </td>
-                                    <td data-label="{{ 'reference'|trans }}">
+                                    <td data-label="{{ 'Référence'|trans }}">
 
                                     </td>
-                                    <td data-label="{{ 'Libelé'|trans }}">
+                                    <td data-label="{{ 'Libellé'|trans }}">
 {#                                        {{ ecriture.debit ? ecriture.libelle : '' }}#}
 {#                                        {{ ecriture.credit ? ecriture.libelle : '' }}#}
 
                                     </td>
-                                    <td data-label="{{ 'credit'|trans }}" class="text-right">
+                                    <td data-label="{{ 'Crédit'|trans }}" class="text-right">
                                         {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                         {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}
                                     </td>
-                                    <td data-label="{{ 'debit'|trans }}" class="text-right">
+                                    <td data-label="{{ 'Débit'|trans }}" class="text-right">
                                         {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                         {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
 
@@ -400,25 +405,25 @@
                                             {% set first = 1 %}
                                         {% endif %}
                                     </td>
-                                    <td data-label="{{ 'compte'|trans }}" class="credit">
+                                    <td data-label="{{ 'Compte'|trans }}" class="credit">
 
                                         {{ ecriture.debit ? ecriture.comptedebit : '' }}
                                         {#                                    {{ ecriture.credit ? ecriture.comptedebit : '' }}#}
 
                                     </td>
-                                    <td data-label="{{ 'reference'|trans }}">
+                                    <td data-label="{{ 'Référence'|trans }}">
 
                                     </td>
-                                    <td data-label="{{ 'Libelé'|trans }}">
+                                    <td data-label="{{ 'Libellé'|trans }}">
                                         {{ ecriture.debit ? ecriture.libelle : '' }}
                                         {#                                    {{ ecriture.credit ? ecriture.libelle : '' }}#}
 
                                     </td>
-                                    <td data-label="{{ 'credit'|trans }}" class="text-right">
+                                    <td data-label="{{ 'Crédit'|trans }}" class="text-right">
                                         {#                                                                        {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                         {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                     </td>
-                                    <td data-label="{{ 'debit'|trans }}" class="text-right">
+                                    <td data-label="{{ 'Débit'|trans }}" class="text-right">
                                         {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}
                                         {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
 
@@ -438,25 +443,25 @@
                                             {% set first = 1 %}
                                         {% endif %}
                                     </td>
-                                    <td data-label="{{ 'debit'|trans }}" class="credit">
+                                    <td data-label="{{ 'Débit'|trans }}" class="credit">
 
                                         {{ ecriture.debit ? ecriture.comptecredit : '' }}
                                         {#                                    {{ ecriture.credit ? ecriture.comptecredit : '' }}#}
 
                                     </td>
-                                    <td data-label="{{ 'reference'|trans }}">
+                                    <td data-label="{{ 'Référence'|trans }}">
 
                                     </td>
-                                    <td data-label="{{ 'Libelé'|trans }}">
+                                    <td data-label="{{ 'Libellé'|trans }}">
 {#                                        {{ ecriture.debit ? ecriture.libelle : '' }}#}
                                         {#                                    {{ ecriture.credit ? ecriture.libelle : '' }}#}
 
                                     </td>
-                                    <td data-label="{{ 'credit'|trans }}" class="text-right">
+                                    <td data-label="{{ 'Crédit'|trans }}" class="text-right">
                                         {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}
                                         {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                     </td>
-                                    <td data-label="{{ 'debit'|trans }}" class="text-right">
+                                    <td data-label="{{ 'Débit'|trans }}" class="text-right">
                                         {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                         {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
 
@@ -472,7 +477,7 @@
                         {% endif %}
                     {% else %}
                         <tr>
-                            <td data-label="colspan" colspan="8">
+                            <td data-label="colspan" colspan="7">
                                 {{ 'Aucun transfert de fonds'|trans }}
                             </td>
                         </tr>
@@ -481,14 +486,14 @@
                     </tbody>
                 </table>
             </div>
-            <!-- <div class="card-footer bg-success-light bt-success">
+            {#<div class="card-footer bg-success-light bt-success">
                 <h4 class="text-success text-bold">
                     {{ 'Total transfert'|trans }} :
                     <span class="text-nowrap">
-{#                    {{ montant2|number_format(0, '', ' ') }} F CFA#}
+                    {{ montant2|number_format(0, '', ' ') }} F CFA
                 </span>
                 </h4>
-            </div> -->
+            </div>#}
         </div>
     </div>
 
