@@ -321,10 +321,10 @@
                                         {% endif %}
                                     </td>
                                     <td data-label="{{ 'compte'|trans }}" class="credit">
-
+                                        <a href="{{ path('finance_journal_compte',{ 'compte': ecriture.comptedebit  }) }}">
                                         {#                                    {{ ecriture.debit ? ecriture.comptecredit : '' }}#}
                                         {{ ecriture.credit ? ecriture.comptedebit : '' }}
-
+                                        </a>
                                     </td>
                                     <td data-label="{{ 'reference'|trans }}">
 
@@ -359,10 +359,11 @@
                                         {% endif %}
                                     </td>
                                     <td data-label="{{ 'debit'|trans }}" class="credit">
+                                        <a href="{{ path('finance_journal_compte',{ 'compte': ecriture.comptecredit  }) }}">
 
                                         {#                                    {{ ecriture.debit ? ecriture.comptedebit : '' }}#}
                                         {{ ecriture.credit ? ecriture.comptecredit : '' }}
-
+                                        </a>
                                     </td>
                                     <td data-label="{{ 'reference'|trans }}">
 
@@ -400,10 +401,12 @@
                                             {% set first = 1 %}
                                         {% endif %}
                                     </td>
-                                    <td data-label="{{ 'compte'|trans }}" class="credit">
 
+                                    <td data-label="{{ 'compte'|trans }}" class="credit">
+                                        <a href="{{ path('finance_journal_compte',{ 'compte': ecriture.comptedebit  }) }}">
                                         {{ ecriture.debit ? ecriture.comptedebit : '' }}
                                         {#                                    {{ ecriture.credit ? ecriture.comptedebit : '' }}#}
+                                        </a>
 
                                     </td>
                                     <td data-label="{{ 'reference'|trans }}">
@@ -439,10 +442,11 @@
                                         {% endif %}
                                     </td>
                                     <td data-label="{{ 'debit'|trans }}" class="credit">
+                                        <a href="{{ path('finance_journal_compte',{ 'compte': ecriture.comptecredit  }) }}">
 
                                         {{ ecriture.debit ? ecriture.comptecredit : '' }}
                                         {#                                    {{ ecriture.credit ? ecriture.comptecredit : '' }}#}
-
+                                        </a>
                                     </td>
                                     <td data-label="{{ 'reference'|trans }}">
 
