@@ -40,11 +40,6 @@ class Paiement
     private $type;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $banque;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $numero;
@@ -53,6 +48,11 @@ class Paiement
      * @ORM\Column(type="integer")
      */
     private $montant;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Banque::class, inversedBy="paiements")
+     */
+    private $banque;
     /**
      * Constructor
      */
@@ -74,18 +74,6 @@ class Paiement
     public function setType(string $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getBanque(): ?string
-    {
-        return $this->banque;
-    }
-
-    public function setBanque(string $banque): self
-    {
-        $this->banque = $banque;
 
         return $this;
     }
@@ -151,6 +139,18 @@ class Paiement
     public function setCommande(?Commande $commande): self
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getBanque(): ?Banque
+    {
+        return $this->banque;
+    }
+
+    public function setBanque(?Banque $banque): self
+    {
+        $this->banque = $banque;
 
         return $this;
     }

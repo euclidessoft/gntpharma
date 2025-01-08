@@ -65,6 +65,16 @@ class Banque
      */
     private $depenses;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Paiement::class, mappedBy="banque")
+     */
+    private $paiements;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Versement::class, mappedBy="banque")
+     */
+    private $versements;
+
     public function __construct()
     {
         $this->achats = new ArrayCollection();
@@ -72,6 +82,8 @@ class Banque
         $this->remboursements = new ArrayCollection();
         $this->financements = new ArrayCollection();
         $this->depenses = new ArrayCollection();
+        $this->paiements = new ArrayCollection();
+        $this->versements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -248,6 +260,66 @@ class Banque
             // set the owning side to null (unless already changed)
             if ($depense->getBanque() === $this) {
                 $depense->setBanque(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Paiement[]
+     */
+    public function getPaiements(): Collection
+    {
+        return $this->paiements;
+    }
+
+    public function addPaiement(Paiement $paiement): self
+    {
+        if (!$this->paiements->contains($paiement)) {
+            $this->paiements[] = $paiement;
+            $paiement->setBanque($this);
+        }
+
+        return $this;
+    }
+
+    public function removePaiement(Paiement $paiement): self
+    {
+        if ($this->paiements->removeElement($paiement)) {
+            // set the owning side to null (unless already changed)
+            if ($paiement->getBanque() === $this) {
+                $paiement->setBanque(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Versement[]
+     */
+    public function getVersements(): Collection
+    {
+        return $this->versements;
+    }
+
+    public function addVersement(Versement $versement): self
+    {
+        if (!$this->versements->contains($versement)) {
+            $this->versements[] = $versement;
+            $versement->setBanque($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVersement(Versement $versement): self
+    {
+        if ($this->versements->removeElement($versement)) {
+            // set the owning side to null (unless already changed)
+            if ($versement->getBanque() === $this) {
+                $versement->setBanque(null);
             }
         }
 

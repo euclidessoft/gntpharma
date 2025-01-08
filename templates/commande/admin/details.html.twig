@@ -39,7 +39,7 @@
                                 Espece
                             {% else %}
                                 {{ commande.paiement ? commande.paiement.type : '' }} :
-                                {{ commande.paiement ? commande.paiement.banque : '' }} <br>
+                                {{ commande.paiement.banque ? commande.paiement.banque.nom : '' }} <br>
                                 N°: {{ commande.paiement ? commande.paiement.numero : '' }}
                             {% endif %}
                         </td>
