@@ -66,14 +66,109 @@
             </tr>
         </table>
     </div>
-    <div class="container mt-4 mb-5 pt-3 pb-3 fond-7">
-        <div class="centrer">
-            <div class="row">
-                <a id="{{ avoir.id }}" onclick="load({{ avoir.id }})" href="{{path('avoir_show_print', {'id': avoir.id})}}" class="btn btn-success float-end">
-                    <i class="fa fa-print"></i>
-                    {{ "Rembourser"|trans }}
-                </a>
+
+
+<div class="container mt-4 mb-5 py-3 fond-7">
+    <div class="centrer">
+        <div class="row">
+
+            <button type="button"
+                    class="btn btn-success"
+                    data-toggle="modal" data-target="#modal"
+                    id="btn">
+                <i class="fa fa-money-bill"></i>
+                {{ 'Rembourser'|trans }}
+            </button>
+
+
+            <div class="modal fade" id="modal" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog text-center">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                {{ 'Remboursement'|trans }}
+                            </h1>
+                            <button type="button" class="close" data-dismiss="modal"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body px-5">
+
+                            {# traitement paiement #}
+                            {{ form_start(form, {'attr':{'id': 'form'}}) }}
+                            <div class="form-group mt-4">
+                                {{ form_row(form.type, {'label':false, 'attr' : {'onchange' : 'typeversement()'}}) }}
+                            </div>
+                            <div id="versement">
+                                <div class="form-group mt-4">
+                                    {{ form_row(form.banque, {'label':false, 'attr' : {'placeholder':'Banque'}}) }}
+                                </div>
+                                <div class="form-group mt-4">
+                                    {{ form_row(form.numero, {'label':false, 'attr' : {'placeholder':'Numéro'}}) }}
+                                </div>
+                            </div>
+                            {{ form_rest(form) }}
+
+                            {# fin paiement#}
+                        </div>
+                        <div class="modal-footer px-5 py-4">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    id="annuler"><i class="fa fa-undo"></i>
+                                {{ 'Annuler'|trans }}
+                            </button>
+                            <button type="button" class="btn btn-success ms-3"
+                                    id="ajouter"
+                                    onclick="number()"><i
+                                        class="fa fa-money-bill"></i>
+                                {{ 'Payer'|trans}}
+                            </button>
+                        </div>
+                        {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+</div>
+{% endblock %}
+
+{{ include('javascript.html.twig') }}
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function number() {
+            var reg = new RegExp("^[0-9]{3,9}$");
+            if (reg.test($('#paiement_form_montant').val())) {
+                if ($('#paiement_form_type option:selected').val() == 'Cheque' || $('#paiement_form_type option:selected').val() == 'Virement') {
+                    if ($('#paiement_form_montant').val() != '' && $('#paiement_form_type').val() != '') {
+                        $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                        $('#form').submit();
+                    } else alert('{{ 'Veuillez renseigner tous les champs'|trans }}');
+                } else {
+                    if ($('#paiement_form_montant').val() != '' && $('#paiement_form_type').val() != '') {
+                        $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                        $('#form').submit();
+                    } else alert('{{ 'Veuillez renseigner tous les champs'|trans }}');
+                }
+            } else alert("{{ 'Nombre compris entre 3 et 9 chiffres'|trans }}");
+
+        }
+
+        function typeversement() {
+            if ($('#paiement_form_type option:selected').val() == 'Cheque' || $('#paiement_form_type option:selected').val() == 'Virement') {
+                $('#versement').show();
+                $('#paiement_form_numero').val();
+            } else {
+                $('#versement').hide();
+                $('#paiement_form_numero').val();
+            }
+        }
+
+
+    </script>
+
 {% endblock %}
