@@ -85,8 +85,9 @@ class FinanceController extends AbstractController
         }
 
         return $this->render('banque/journal_banque.html.twig',[
-            'caisse' => $caisse - $debitcaisse,
-            'banque' => $bank - $debitbanque,
+            'soldecaisse' => $caisse - $debitcaisse,
+            'soldebanque' => $bank - $debitbanque,
+            'banque' => $banque,
             'ecritures' => $ecrit,
         ]);
     }
