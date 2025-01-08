@@ -136,30 +136,25 @@
 {% block scripts %}
     <script>
         function number() {
-            var reg = new RegExp("^[0-9]{3,9}$");
-            if (reg.test($('#paiement_form_montant').val())) {
-                if ($('#paiement_form_type option:selected').val() == 'Cheque' || $('#paiement_form_type option:selected').val() == 'Virement') {
-                    if ($('#paiement_form_montant').val() != '' && $('#paiement_form_type').val() != '') {
-                        $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
-                        $('#form').submit();
-                    } else alert('{{ 'Veuillez renseigner tous les champs'|trans }}');
-                } else {
-                    if ($('#paiement_form_montant').val() != '' && $('#paiement_form_type').val() != '') {
-                        $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
-                        $('#form').submit();
-                    } else alert('{{ 'Veuillez renseigner tous les champs'|trans }}');
-                }
-            } else alert("{{ 'Nombre compris entre 3 et 9 chiffres'|trans }}");
 
+            if ($('#remboursement_type option:selected').val() != '') {
+
+
+                $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                $('#form').submit();
+
+            }else{
+                alert("{{ 'choisis le type de reglement'|trans}}");
+            }
         }
 
         function typeversement() {
-            if ($('#paiement_form_type option:selected').val() == 'Cheque' || $('#paiement_form_type option:selected').val() == 'Virement') {
+            if ($('#remboursement_type option:selected').val() == 'Cheque' || $('#remboursement_type option:selected').val() == 'Virement') {
                 $('#versement').show();
-                $('#paiement_form_numero').val();
+                $('#remboursement_numero').val();
             } else {
                 $('#versement').hide();
-                $('#paiement_form_numero').val();
+                $('#remboursement_numero').val();
             }
         }
 
