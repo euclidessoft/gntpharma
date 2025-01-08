@@ -70,6 +70,11 @@ class Avoir
     private $retour;
 
     /**
+     * @ORM\OneToOne(targetEntity=Remboursement::class, mappedBy="avoir", cascade={"persist", "remove"})
+     */
+    private $remboursement;
+
+    /**
      * Constructor
      */
     public function __construct(User $client, User $admin, Commande $commande)
@@ -191,6 +196,28 @@ class Avoir
     public function setRetour(?Retour $retour): self
     {
         $this->retour = $retour;
+
+        return $this;
+    }
+
+    public function getRemboursement(): ?Remboursement
+    {
+        return $this->remboursement;
+    }
+
+    public function setRemboursement(?Remboursement $remboursement): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($remboursement === null && $this->remboursement !== null) {
+            $this->remboursement->setAvoir(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($remboursement !== null && $remboursement->getAvoir() !== $this) {
+            $remboursement->setAvoir($this);
+        }
+
+        $this->remboursement = $remboursement;
 
         return $this;
     }

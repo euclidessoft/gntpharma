@@ -58,6 +58,11 @@ class Remboursement
      */
     private $banque;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Avoir::class, inversedBy="remboursement", cascade={"persist", "remove"})
+     */
+    private $avoir;
+
         /**
      * Constructor
      */
@@ -163,6 +168,18 @@ class Remboursement
     public function setBanque(?Banque $banque): self
     {
         $this->banque = $banque;
+
+        return $this;
+    }
+
+    public function getAvoir(): ?Avoir
+    {
+        return $this->avoir;
+    }
+
+    public function setAvoir(?Avoir $avoir): self
+    {
+        $this->avoir = $avoir;
 
         return $this;
     }

@@ -220,11 +220,83 @@ class RemboursementController extends AbstractController
     /**
      * @Route("/avoir/{avoir}", name="remboursement_avoir", methods={"GET","POST"})
      */
-    public function avoir(Avoir $avoir, AvoirResteRepository $avoirResteRepository, SessionInterface $session,Request $request, Solde $solde): Response
+    public function avoir(Avoir $avoir, AvoirResteRepository $avoirResteRepository,Request $request, Solde $solde): Response
     {
+        $remboursement = new Remboursement();
+        $form = $this->createForm(RemboursementType::class, $remboursement);
+        $form->remove('montant');
+        $form->remove('libele');
+        $form->remove('financement');
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $remboursement->setCompte($avoir->getClient()->getCompte());
+            $remboursement->setMontant($avoir->getMontant());
+            $remboursement->setLibele('Remboursement avoir');
+
+            $debit = new Debit();
+            $ecriture = new Ecriture();
+            $debit->setRemboursement($remboursement);
+            $montant = 0;
+
+            if($remboursement->getType() == 'Espece') {
+                $montant = $solde->montantcaisse($entityManager, 54);
+
+                $remboursement->setType('Espece');
+
+                $debit->setType('Espece');
+                $debit->setCompte('54');
+
+                $ecriture->setType('Espece');
+                $ecriture->setComptedebit('54');
+                $ecriture->setComptecredit($avoir->getClient()->getCompte());
+
+
+
+            }else{
+                $montant = $solde->montantcaisse($entityManager, $remboursement->getBanque()->getCompte());
+
+                $remboursement->setType('Banque');
+
+                $debit->setType('Banque');
+                $debit->setCompte($remboursement->getBanque()->getCompte());
+
+                $ecriture->setType('Banque');
+                $ecriture->setComptedebit($remboursement->getBanque()->getCompte());
+                $ecriture->setComptecredit($avoir->getClient()->getCompte());
+
+            }
+
+
+
+            if ($remboursement->getMontant() <= $montant) {
+                $avoir->setRebourser(true);
+                $debit->setMontant($remboursement->getMontant());
+                $ecriture->setDebit($debit);
+                $ecriture->setLibelle($remboursement->getLibele());
+                $ecriture->setSolde(-$remboursement->getMontant());
+                $ecriture->setMontant($remboursement->getMontant());
+
+                $entityManager->persist($avoir);
+                $entityManager->persist($remboursement);
+                $entityManager->persist($debit);
+                $entityManager->persist($ecriture);
+                $entityManager->flush();
+
+                $entityManager->persist($remboursement);
+                $entityManager->flush();
+                return $this->redirectToRoute('remboursement_index', [], Response::HTTP_SEE_OTHER);
+            }else{
+                $this->addFlash('notice', 'Montant non disponible');
+            }
+        }
+
         return $this->render('remboursement/avoir.html.twig', [
             'avoir' => $avoir,
             'details' => $avoirResteRepository->findBy(['avoir' => $avoir]),
+            'remboursement' => $remboursement,
+            'form' => $form->createView(),
         ]);
     }
 
