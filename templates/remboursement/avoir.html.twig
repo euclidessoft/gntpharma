@@ -122,7 +122,7 @@
                                     id="ajouter"
                                     onclick="number()"><i
                                         class="fa fa-money-bill"></i>
-                                {{ 'Payer'|trans}}
+                                {{ 'Rembourser'|trans}}
                             </button>
                         </div>
                         {{ form_end(form) }}
@@ -133,7 +133,7 @@
         </div>
 </div>
 {% endblock %}
-
+{{ include('javascript.html.twig') }}
 {% block scripts %}
     <script>
         function number() {
