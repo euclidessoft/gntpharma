@@ -136,7 +136,9 @@
 {% block scripts %}
     <script>
         function number() {
+
             if ($('#remboursement_type option:selected').val() != '') {
+
 
                 $('#ajouter').html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
                 $('#form').submit();
