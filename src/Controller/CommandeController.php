@@ -993,10 +993,10 @@ class CommandeController extends AbstractController
                         $ecriture->setComptecredit(54);
                     }else{
                         $credit->setType('Banque');
-                        $credit->setCompte(52);
+                        $credit->setCompte($paiement->getBanque()->getCompte());
 
                         $ecriture->setType('Banque');
-                        $ecriture->setComptecredit(52);
+                        $ecriture->setComptecredit($paiement->getBanque()->getCompte());
 
 
                     }
@@ -1085,21 +1085,6 @@ class CommandeController extends AbstractController
     public function paiementcredit(Request $request, SessionInterface $session, CommandeProduitRepository $repository, Commande $commande)
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
-//            if ($commande->getSuivi()) {
-//                $this->addFlash('notice', 'Paiement déjà effectué');
-//
-//                $response = $this->redirectToRoute('commande_panier_history', [], Response::HTTP_SEE_OTHER);
-//                $response->setSharedMaxAge(0);
-//                $response->headers->addCacheControlDirective('no-cache', true);
-//                $response->headers->addCacheControlDirective('no-store', true);
-//                $response->headers->addCacheControlDirective('must-revalidate', true);
-//                $response->setCache([
-//                    'max_age' => 0,
-//                    'private' => true,
-//                ]);
-//                return $response;
-//
-//            }
 
             $versement = new Versement();
             $credit = new Credit();
@@ -1129,10 +1114,10 @@ class CommandeController extends AbstractController
                         $ecriture->setComptecredit(54);
                     }else{
                         $credit->setType('Banque');
-                        $credit->setCompte(52);
+                        $credit->setCompte($versement->getBanque()->getCompte());
 
                         $ecriture->setType('Banque');
-                        $ecriture->setComptecredit(52);
+                        $ecriture->setComptecredit($versement->getBanque()->getCompte());
 
 
                     }
