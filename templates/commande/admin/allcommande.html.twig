@@ -8,7 +8,7 @@
         <i class="fa fa-shopping-cart mr-2"></i>
         {{ "Liste de toutes les commandes"|trans }}
     </h3>
-    <table class="table table-success-light table-bordered table-hover table-striped w-100">
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
                 <th>{{ 'N commande'|trans }}</th>
@@ -56,7 +56,7 @@
                     {{ commandes.admin ? commandes.admin.prenom ~ ' ' ~commandes.admin.nom : 'Lui-meme'}}
                 </td>
                 <td data-label="{{'Action'|trans}}">
-                    <a href="{{ path('commande_panier_Detail', {'commande' : commandes.id}) }}" class="btn btn-success"><i class="fas fa-list"></i>Details</a>
+                    <a id="{{ commandes.id }}" onclick="load({{ commandes.id }})"  href="{{ path('commande_panier_Detail', {'commande' : commandes.id}) }}" class="btn btn-success"><i class="fas fa-list"></i>Details</a>
                 </td>
             </tr>
             {% else %}
