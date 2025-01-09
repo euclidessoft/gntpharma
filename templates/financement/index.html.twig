@@ -38,7 +38,7 @@
                 <td data-label="Numero">{{ financement.numero }}</td>
                 <td data-label="actions">
                     <a title="{{'Voir'|trans}}" class="btn btn-success" id="{{ financement.id }}" onclick="load({{ financement.id }})" href="{{ path('financement_show', {'id': financement.id}) }}"><i class="fa fa-eye"></i></a>
-                    <a title="{{'Modifier'|trans}}" class="btn btn-success-light" href="{{ path('financement_edit', {'id': financement.id}) }}"><i class="fa fa-edit"></i></a>
+                    <!-- <a title="{{'Modifier'|trans}}" class="btn btn-success-light" href="{{ path('financement_edit', {'id': financement.id}) }}"><i class="fa fa-edit"></i></a> -->
                     {{ include('financement/_delete_form.html.twig') }}
                 </td>
             </tr>

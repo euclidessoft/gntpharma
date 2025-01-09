@@ -1,55 +1,60 @@
 {% extends 'admin.html.twig' %}
-
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block financement %}active{% endblock %}
+{% block financement_index %}active{% endblock %}
 {% block body %}
-<div class="col-lg-6 mt-4 pb-4 fond-7">
-    <h3 class="mt-4 mb-5 text-bold">
-        <i class="fa-brands fa-product-hunt mr-2"></i>
-        {{ "Détails financement"|trans }}
-    </h3>
-
-    <table class="table table-success-light table-bordered text-center table-hover table-striped w-100">
+<div class="container mt-4 fond-7">
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <tbody>
             <tr>
-                <th>Provenance</th>
-                <td>{{ financement.provenance }}</td>
-            </tr>
-            <tr>
-                <th>Motif</th>
-                <td>{{ financement.motif }}</td>
-            </tr>
-            <tr>
-                <th>Montant</th>
-                <td>{{ financement.montant }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ financement.date ? financement.date|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ financement.Type }}</td>
-            </tr>
-            <tr>
-                <th>Banque</th>
-                <td>{{ financement.banque }}</td>
-            </tr>
-            <tr>
-                <th>Numero</th>
-                <td>{{ financement.numero }}</td>
+                <td data-label="Date">{{ financement.date ? financement.date|date('d/m/Y') }}</td>
+                <td data-label="Provenance">{{ financement.compte }}</td>
+                <td data-label="Provenance">{{ financement.compteinteret }}</td>
+                <td data-label="Motif">{{ financement.motif }}</td>
+                <td data-label="Montant">{{ financement.montant|number_format(0, '' , ' ') }}</td>
+                <td data-label="Type">{{ financement.Type }}</td>
+                <td data-label="Banque">{{ financement.banque ? financement.banque.compte:'' }}</td>
+                <td data-label="Numero">{{ financement.numero }}</td>
             </tr>
         </tbody>
     </table>
+</div>
 
-    <div class="col-md-4 offset-md-3 mt-4 py-3 fond-7">
-        <div class="centrer">
-{#            <a class="btn btn-success mr-3" href="{{ path('financement_edit', {'id': financement.id}) }}">#}
-{#                <i class="fa fa-edit"></i> Modifier</a>#}
-            <a id="{{ financement.id }}" onclick="load({{ financement.id }})" class="btn btn-success-light text-green" href="{{ path('financement_index') }}">
-                <i class="fa fa-undo"></i>
-                {{ 'Retour'|trans }}
-            </a>
-        </div>
-    </div>
+<div class="container mt-4 fond-7">
+    <h3 class="mt-4 mb-3 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Listes des Remboursements"|trans }}
+    </h3>
+    <a href="{{ path('financement_index') }}" class="btn btn-success mb-4"><i class="fas fa-arrow-left mr-2"></i>Retour</a>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100 text-center" id="liste">
+        <thead>
+            <tr>
+                <th class="text-left">Date</th>
+                <th>Compte</th>
+                <th>Montant</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set somme = 0 %}
+        {% for remboursement in financement.remboursements %}
+            <tr>
+                <td class="text-left">{{ remboursement.date ? remboursement.date|date('Y-m-d H:i:s') : '' }}</td> 
+                <td>{{ remboursement.compte }}</td>
+                <td>{{ remboursement.montant|number_format(0, '' , ' ')}}</td>
+                {% set somme = somme + remboursement.montant %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="2" class="text-right text-bold">Total :</td>
+            <td class="text-bold"> {{somme|number_format(0, '' , ' ')}}</td>
+        </tr>
+        </tbody>
+    </table>
 
 </div>
-{% endblock %}
+    {% endblock %}
