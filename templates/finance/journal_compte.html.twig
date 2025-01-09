@@ -20,14 +20,36 @@
                 <th>{{ 'Libellé'|trans }}</th>
                 <th class="text-center">{{ 'Débit'|trans }}</th>
                 <th class="text-center">{{ 'Crédit'|trans }}</th>
-                {#                        <th class="text-center">{{ 'Solde'|trans }}</th> #}
+                                        <th class="text-center">{{ 'Solde'|trans }}</th>
             </tr>
             </thead>
             <tbody>
-            {% set montant2 = 0 %}
+            {% set debit = 0 %}
+            {% set credit = 0 %}
+            {% set solde = 0 %}
             {% set i =1 %}
             {% set transfert = 0 %}
             {% for ecriture in ecritures %}
+                {#                calcule solde#}
+                {% if ecriture.credit is not null %}
+
+                    {% if ecriture.comptecredit == compte and ecriture.credit.transfert is null %}
+                        {% set solde = solde + ecriture.montant %}
+                        {% set credit = credit + ecriture.montant %}
+                    {% else %}
+                        {% set solde = solde - ecriture.montant %}
+                        {% set debit = debit + ecriture.montant %}
+                    {% endif %}
+                {% else %}
+                    {% if ecriture.comptecredit == compte and ecriture.debit.transfert is not null %}
+                        {% set solde = solde + ecriture.montant %}
+                        {% set credit = credit + ecriture.montant %}
+                    {% else %}
+                        {% set solde = solde - ecriture.montant %}
+                        {% set debit = debit + ecriture.montant %}
+                    {% endif %}
+                {% endif %}
+                {#                fin calcule#}
                 {% set first = 0 %}
                 {% if transfert == 0 %}
                     {% if ecriture.credit is not null %}
@@ -70,10 +92,11 @@
                                     {{ ecriture.montant|number_format(0, '', ' ') }}
                                 {% endif %}
                             </td>
-                            {#                                <td data-label="{{ 'solde'|trans }}"  class="text-center">#}
+                            <td data-label="{{ 'solde'|trans }}" class="text-center">
 
 
-                            {#                                {% set montant2 = montant2 + debit.depense.montant %}#}
+                                {{ solde|number_format(0, '', ' ') }}
+                            </td>
                         </tr>
                     {% else %}
                         {% if ecriture.debit.transfert is not null %}
@@ -119,10 +142,11 @@
                                 {% endif %}
 
                             </td>
-                            {#                                <td data-label="{{ 'solde'|trans }}"  class="text-center">#}
+                            <td data-label="{{ 'solde'|trans }}" class="text-center">
 
 
-                            {#                                {% set montant2 = montant2 + debit.depense.montant %}#}
+                                {{ solde|number_format(0, '', ' ') }}
+                            </td>
                         </tr>
                     {% endif %}
                 {% else %}
@@ -136,6 +160,20 @@
                 </tr>
 
             {% endfor %}
+            <tr>
+                <td data-label="colspan" colspan="5">
+                    {{ 'Total'|trans }}
+                </td>
+                <td class="text-center text-bold">
+                    {{ debit|number_format(0, '', ' ') }}
+                </td>
+                <td class="text-center text-bold">
+                    {{ credit|number_format(0, '', ' ') }}
+                </td>
+                <td>
+
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
