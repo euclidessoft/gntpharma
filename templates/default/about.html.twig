@@ -1,0 +1,65 @@
+<div class="modal fade about" id="about" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content radius-10">
+            <div class="float-right mr-4 mt-4">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <img src="{{ asset('images/gntpharma.jpeg') }}" alt="Logo"
+                             class="img-fluid mt-n4 mb-4 align-center">
+                    </div>
+                    <div class="col-lg-6">
+                        <h3 class="text-center text-bold">
+                            GNT PHARMA v{{ include('version.html.twig') }}
+                        </h3>
+                        <p class="text-center mt-3">
+                            Copyright &copy; 2023-{{ 'now'|date('Y') }}
+                            <b>
+                                <a href="http://euclideservices.com" target="_blank">EUCLIDES</a>
+                            </b>
+                            <br>
+                            {{ 'Tous droits réservés'|trans }}
+                        </p>
+                        <p class="text-center mt-n2">
+                            {{ 'Protégée par'|trans }} :
+                            <br>
+                            - {{ 'La loi sur les droits d\'auteurs'|trans }}
+                            <br>
+                            - {{ 'La loi sur la propriété intellectuelle'|trans }}
+                        </p>
+                        <span class="row mt-n2">
+                            <span class="col-5 text-right">Contact :</span>
+                            <span class="col-7 ml-n4">
+                                <a class="text-green" href="tel:+221754443384"{# target="_blank"#}>
+                                    (+221) 75 444 33 84
+                                </a>
+                            </span>
+                            <span class="col-5 text-right"></span>
+                            <span class="col-7 ml-n4">
+                                <a class="text-green" href="tel:+221775423500"{# target="_blank"#}>
+                                    (+221) 77 542 35 00
+                                </a>
+                            </span>
+                            <span class="col-5 text-right"></span>
+                            <span class="col-7 ml-n4">
+                                <a class="text-green" href="tel:+221777333434"{# target="_blank"#}>
+                                    (+221) 77 733 34 34
+                                </a>
+                            </span>
+                            <span class="col-12 text-center">
+                                Email :
+                                <a class="text-green" href="mailto:hajjalbayt@euclideservices.com" target="_blank">
+                                    infos@euclideservices.com
+                                </a>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

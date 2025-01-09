@@ -1,36 +1,29 @@
 {% extends 'admin.html.twig' %}
-{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% block title %} {{ "Rapport journalier banque"|trans }} - GNT Pharma {% endblock %}
 {% block finance %}active{% endblock %}
 {% block journal %}active{% endblock %}
 {% block body %}
-<div class="card border-green shadow-black mt-5 mb-3 fond-5">
+    <div class="container">
+        <div class="card border-green shadow-black mt-5 mb-3 fond-5">
             <div class="card-header bg-success-light bb-success">
                 <h5 class="text-success text-bold">
-                    <i class="fa fa-money-bill"></i>
-                    <i class="fa fa-angle-double-right"></i>
-                    <i class="fa-regular fa-calendar-days"></i>
+                    <i class="fa-solid fa-chart-simple"></i>
                     {{ 'Rapport journalier banque'|trans }}
                 </h5>
             </div>
-            <div class="card-header bg-success-light bb-success">
-                <h5 class="text-success text-bold">
-                    <i class="fa fa-money-bill"></i>
-                    <i class="fa fa-angle-double-right"></i>
-                    <i class="fa fa-university"></i>
-                    {{ 'Solde douverture :'|trans }}{{ouverture|number_format(0, '', ' ') }}
-
-                </h5>
-            </div>
             <div class="card-body">
-                <table class="table table-success-light table-bordered table-hover table-striped">
+                <h4 class="text-success text-bold mb-4">
+                    {{ 'Solde d\'ouverture : '|trans }} {{ouverture|number_format(0, '', ' ') }}
+                </h4>
+            <table class="table table-success-light table-bordered table-hover table-striped">
                     <thead>
                     <tr>
-                        <th class="text-center"> {{ 'n'|trans }}</th>
+                        <th class="text-center"> {{ 'Nº'|trans }}</th>
                         <th class="text-center"> {{ 'Date'|trans }}</th>
                         <th>{{ 'Compte'|trans }}</th>
-                        <th>{{ 'Reference'|trans }}</th>
-                        <th>{{ 'Libelé'|trans }}</th>
-                        <th class="text-center">{{ 'Debit'|trans }}</th>
+                        <th>{{ 'Référence'|trans }}</th>
+                        <th>{{ 'Libellé'|trans }}</th>
+                        <th class="text-center">{{ 'Débit'|trans }}</th>
                         <th class="text-center">{{ 'Crédit'|trans }}</th>
                         {#                        <th class="text-center">{{ 'Solde'|trans }}</th> #}
                     </tr>
@@ -217,7 +210,7 @@
                     </tbody>
                 </table>
             </div>
-             <div class="card-footer bg-success-light bt-success">
+            <div class="card-footer bg-success-light bt-success">
                 <h4 class="text-success text-bold">
                     {{ 'Solde'|trans }} :
                     <span class="text-nowrap">
