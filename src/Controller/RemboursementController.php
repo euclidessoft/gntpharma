@@ -112,9 +112,14 @@ class RemboursementController extends AbstractController
 
                 }
 
+            $somme = 0;
+            if($remboursement->getFinancement()->getRemboursements() != null){
+                foreach ($remboursement->getFinancement()->getRemboursements() as $rembours) {
+                    $somme = $somme + $rembours->getMontant();
+                }
+            }
 
-
-            if ($remboursement->getMontant() <= $montant) {
+            if ($remboursement->getMontant() <= $montant && $remboursement->getMontant() <= ($remboursement->getFinancement()->getMontant() - $somme)) {
                 $debit->setMontant($remboursement->getMontant());
                 $ecriture->setDebit($debit);
                 $ecriture->setLibelle($remboursement->getLibele());
@@ -131,7 +136,7 @@ class RemboursementController extends AbstractController
 
                 return $this->redirectToRoute('remboursement_index', [], Response::HTTP_SEE_OTHER);
             }else{
-                $this->addFlash('notice', 'Montant non disponible');
+                $this->addFlash('notice', 'Montant non disponible ou supérieur au montant restant');
             }
 
         }
@@ -164,7 +169,14 @@ class RemboursementController extends AbstractController
             $montant = $solde->montantbanque($entityManager, $remboursement->getFinancement()->getBanque()->getCompte());
             $totalinteret =  $remboursement->getMontant() * $remboursement->getFinancement()->getTaux() / 100;
 
-            if (($remboursement->getMontant() + $totalinteret) <= $montant) {
+            $somme = 0;
+            if($remboursement->getFinancement()->getRemboursements() != null){
+                foreach ($remboursement->getFinancement()->getRemboursements() as $rembours) {
+                    $somme = $somme + $rembours->getMontant();
+                    }
+            }
+
+            if (($remboursement->getMontant() + $totalinteret) <= $montant && $remboursement->getMontant() <= ($remboursement->getFinancement()->getMontant() - $somme)) {
 
 
             $remboursement->setType('Banque');
@@ -207,7 +219,7 @@ class RemboursementController extends AbstractController
 
             return $this->redirectToRoute('remboursement_index', [], Response::HTTP_SEE_OTHER);
         }else{
-            $this->addFlash('notice', 'Montant non disponible');
+            $this->addFlash('notice', 'Montant non disponible ou supérieur au montant restant');
         }
         }
 
@@ -272,6 +284,7 @@ class RemboursementController extends AbstractController
 
             if ($remboursement->getMontant() <= $montant) {
                 $avoir->setRebourser(true);
+                $remboursement->setAvoir($avoir);
                 $debit->setMontant($remboursement->getMontant());
                 $ecriture->setDebit($debit);
                 $ecriture->setLibelle($remboursement->getLibele());

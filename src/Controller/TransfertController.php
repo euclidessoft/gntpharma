@@ -53,7 +53,7 @@ class TransfertController extends AbstractController
             $debitecriture = new Ecriture();
             $debitecriture->setDebit($debit);
             $debitecriture->setType('Espece');
-            $debitecriture->setLibelle('Transfert depuis');
+            $debitecriture->setLibelle('Transfert de fonds');
             $debitecriture->setSolde(-$transfert->getMontant());
             $debitecriture->setMontant($transfert->getMontant());
             $debitecriture->setComptedebit('54');
@@ -69,7 +69,7 @@ class TransfertController extends AbstractController
             $creditecriture = new Ecriture();
             $creditecriture->setCredit($credit);
             $creditecriture->setType('Banque');
-            $creditecriture->setLibelle('Transfert vers');
+            $creditecriture->setLibelle('Transfert de fonds');
             $creditecriture->setSolde($transfert->getMontant());
             $creditecriture->setMontant($transfert->getMontant());
             $creditecriture->setComptedebit('54');
@@ -120,7 +120,7 @@ class TransfertController extends AbstractController
             $debitecriture = new Ecriture();
             $debitecriture->setDebit($debit);
             $debitecriture->setType('Banque');
-            $debitecriture->setLibelle('Transfert depuis');
+            $debitecriture->setLibelle('Transfert de fonds');
             $debitecriture->setSolde(-$transfert->getMontant());
             $debitecriture->setMontant($transfert->getMontant());
             $debitecriture->setComptedebit($transfert->getBanque()->getCompte());
@@ -135,7 +135,7 @@ class TransfertController extends AbstractController
             $creditecriture = new Ecriture();
             $creditecriture->setCredit($credit);
             $creditecriture->setType('Espece');
-            $creditecriture->setLibelle('Transfert vers');
+            $creditecriture->setLibelle('Transfert de fonds');
             $creditecriture->setSolde($transfert->getMontant());
             $creditecriture->setMontant($transfert->getMontant());
             $creditecriture->setComptedebit($transfert->getBanque()->getCompte());
