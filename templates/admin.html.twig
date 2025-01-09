@@ -303,6 +303,14 @@
                                 {{ 'Commandes Extranet'|trans }}
                             </a>
                         </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block allcommande %}{% endblock %}"
+                                href="{{ path('commande_panier_all_commande') }}">
+                                <i class="fas fa-list"></i>
+                                <i class="fas fa-shopping-cart mr-2"></i>
+                                {{ 'Tous les Commandes'|trans }}
+                            </a>
+                        </li>
                         {#<li class="dropdown-item">
                                 <a class="nav-link" href="#">
                                     <i class="fas fa-list mr-2"></i>
