@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Complement\Solde;
 use App\Entity\Banque;
 use App\Entity\Ecriture;
 use App\Repository\EcritureRepository;
@@ -54,7 +55,7 @@ class FinanceController extends AbstractController
     /**
      * @Route("/JournalBanque/{banque}", name="journal_banque")
      */
-    public function journalbanque(EcritureRepository $repository, Banque $banque): Response
+    public function journalbanque(EcritureRepository $repository, Banque $banque, Solde $solde): Response
     {
         $ecritures = $repository->findAll();
 
@@ -89,6 +90,7 @@ class FinanceController extends AbstractController
             'soldebanque' => $bank - $debitbanque,
             'banque' => $banque,
             'ecritures' => $ecrit,
+            'solde' => $solde->montantbanque($this->getDoctrine()->getManager(), $banque->getCompte()),
         ]);
     }
 
@@ -197,6 +199,69 @@ class FinanceController extends AbstractController
     }
 
     /**
+     * @Route("/Brouillard_print", name="brouyard_print")
+     */
+    public function brouyard_print(EcritureRepository $repository): Response
+    {
+        $ecritures = $repository->brouyard();
+        $ouverture = $repository->ouverture();
+        $caisse = 0;
+        $caisseouv = 0;
+        $banque = 0;
+        $banqueouv = 0;
+        $debitbanque = 0;
+        $debitbanqueouv = 0;
+        $debitcaisse = 0;
+        $debitcaisseouv = 0;
+        foreach($ecritures as $ecriture)
+        {
+            $credit= null;
+            $debit= null;
+            if($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $credit->getType() == 'Espece' ?
+                    $caisse = $caisse + $credit->getMontant() :
+                    $banque = $banque + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debit->getType() == 'Espece' ?
+                    $debitcaisse = $debitcaisse + $debit->getMontant() :
+                    $debitbanque = $debitbanque + $debit->getMontant();
+
+            }
+
+        }
+
+        foreach($ouverture as $ecriture)
+        {
+            $credit= null;
+            $debit= null;
+            if($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $credit->getType() == 'Espece' ?
+                    $caisseouv = $caisseouv + $credit->getMontant() :
+                    $banqueouv = $banqueouv + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debit->getType() == 'Espece' ?
+                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
+                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+            }
+
+        }
+
+        return $this->render('finance/brouyard_print.html.twig',[
+            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+            'banque' => $banque - $debitbanque + $banqueouv- $debitbanqueouv,
+            'ecritures' => $ecritures,
+            'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv- $debitbanqueouv)
+        ]);
+    }
+
+    /**
      * @Route("/BrouillardCaisse", name="brouyard_caisse")
      */
     public function brouyardCaisse(EcritureRepository $repository): Response
@@ -240,6 +305,55 @@ class FinanceController extends AbstractController
         }
 
         return $this->render('finance/brouyard_caisse.html.twig',[
+            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+            'ecritures' => $ecritures,
+            'ouverture' => $caisseouv - $debitcaisseouv,
+        ]);
+    }
+    /**
+     * @Route("/BrouillardCaisse_print", name="brouyard_caisse_print")
+     */
+    public function brouyardCaisse_print(EcritureRepository $repository): Response
+    {
+        $ecritures = $repository->brouyardcaisse();
+        $ouverture = $repository->ouverturecaisse();
+        $caisse = 0;
+        $caisseouv = 0;
+        $debitcaisse = 0;
+        $debitcaisseouv = 0;
+        foreach($ecritures as $ecriture)
+        {
+            $credit= null;
+            $debit= null;
+            if($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $caisse = $caisse + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debitcaisse = $debitcaisse + $debit->getMontant();
+
+            }
+
+        }
+
+        foreach($ouverture as $ecriture)
+        {
+            $credit= null;
+            $debit= null;
+            if($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $caisseouv = $caisseouv + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+
+            }
+
+        }
+
+        return $this->render('finance/brouyard_caisse_print.html.twig',[
             'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
             'ecritures' => $ecritures,
             'ouverture' => $caisseouv - $debitcaisseouv,
@@ -297,6 +411,57 @@ class FinanceController extends AbstractController
             'ouverture' => $banqueouv- $debitbanqueouv,
         ]);
     }
+    /**
+     * @Route("/BrouillardBanque_print", name="brouyard_banque_print")
+     */
+    public function brouyardBanque_print(EcritureRepository $repository): Response
+    {
+        $ecritures = $repository->brouyardbanque();
+        $ouverture = $repository->ouverturebanque();
+        $banque = 0;
+        $banqueouv = 0;
+        $debitbanque = 0;
+        $debitbanqueouv = 0;
+        foreach($ecritures as $ecriture)
+        {
+            $credit= null;
+            $debit= null;
+            if($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                    $banque = $banque + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                    $debitbanque = $debitbanque + $debit->getMontant();
+
+            }
+
+        }
+
+        foreach($ouverture as $ecriture)
+        {
+            $credit= null;
+            $debit= null;
+            if($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+
+                    $banqueouv = $banqueouv + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+
+                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+            }
+
+        }
+
+        return $this->render('finance/brouyard_banque_print.html.twig',[
+            'banque' => $banque - $debitbanque + $banqueouv- $debitbanqueouv,
+            'ecritures' => $ecritures,
+            'ouverture' => $banqueouv- $debitbanqueouv,
+        ]);
+    }
 
     /**
      * @Route("/LienDayBrouyard", name="day_brouyard_lien")
@@ -312,6 +477,15 @@ class FinanceController extends AbstractController
         $response->setContent($re);
         return $response;
 
+    }
+
+    /**
+     * @Route("/DayRepport/", name="rapport_date")
+     */
+    public function rapportdate()
+    {
+
+        return $this->render('finance/rapport_date.html.twig');
     }
 
     /**
@@ -369,6 +543,68 @@ class FinanceController extends AbstractController
         }
 
         return $this->render('finance/brouyard_date.html.twig', [
+            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+            'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+            'ecritures' => $ecritures,
+            'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv - $debitbanqueouv),
+            'day' => $jour,
+        ]);
+    }
+    /**
+     * @Route("/DayBrouyard_print/{jour}", name="day_brouyard_print")
+     */
+    public function daybrouyard_print(Request $request, $jour)
+    {
+        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+        $ecritures = $repository->daybrouyard($jour);
+        $ouverture = $repository->ouvertureplace($jour);
+        $caisse = 0;
+        $caisseouv = 0;
+        $banque = 0;
+        $banqueouv = 0;
+        $debitbanque = 0;
+        $debitbanqueouv = 0;
+        $debitcaisse = 0;
+        $debitcaisseouv = 0;
+        foreach ($ecritures as $ecriture) {
+            $credit = null;
+            $debit = null;
+            if ($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $credit->getType() == 'Espece' ?
+                    $caisse = $caisse + $credit->getMontant() :
+                    $banque = $banque + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debit->getType() == 'Espece' ?
+                    $debitcaisse = $debitcaisse + $debit->getMontant() :
+                    $debitbanque = $debitbanque + $debit->getMontant();
+
+            }
+
+        }
+
+        foreach ($ouverture as $ecriture) {
+            $credit = null;
+            $debit = null;
+            if ($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $credit->getType() == 'Espece' ?
+                    $caisseouv = $caisseouv + $credit->getMontant() :
+                    $banqueouv = $banqueouv + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debit->getType() == 'Espece' ?
+                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
+                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+            }
+
+        }
+
+        return $this->render('finance/brouyard_date_print.html.twig', [
             'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
             'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
             'ecritures' => $ecritures,
@@ -440,6 +676,59 @@ class FinanceController extends AbstractController
         }
 
         return $this->render('finance/brouyard_date_caisse.html.twig', [
+            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+            'ecritures' => $ecritures,
+            'ouverture' => $caisseouv - $debitcaisseouv,
+            'day' => $jour,
+        ]);
+    }
+    /**
+     * @Route("/DayBrouyardCaisse_print/{jour}", name="day_brouyard_caisse_print")
+     */
+    public function daybrouyardcaisse_print(Request $request, $jour)
+    {
+        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+        $ecritures = $repository->daybrouyardcaisse($jour);
+        $ouverture = $repository->ouvertureplacecaisse($jour);
+        $caisse = 0;
+        $caisseouv = 0;
+        $banque = 0;
+        $banqueouv = 0;
+        $debitbanque = 0;
+        $debitbanqueouv = 0;
+        $debitcaisse = 0;
+        $debitcaisseouv = 0;
+        foreach ($ecritures as $ecriture) {
+            $credit = null;
+            $debit = null;
+            if ($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+               $caisse = $caisse + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+               $debitcaisse = $debitcaisse + $debit->getMontant();
+
+            }
+
+        }
+
+        foreach ($ouverture as $ecriture) {
+            $credit = null;
+            $debit = null;
+            if ($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $caisseouv = $caisseouv + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+
+            }
+
+        }
+
+        return $this->render('finance/brouyard_date_caisse_print.html.twig', [
             'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
             'ecritures' => $ecritures,
             'ouverture' => $caisseouv - $debitcaisseouv,
@@ -518,6 +807,69 @@ class FinanceController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/DayBrouyardBanque_print/{jour}", name="day_brouyard_banque_print")
+     */
+    public function daybrouyardbanque_print(Request $request, $jour)
+    {
+        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+        $ecritures = $repository->daybrouyardbanque($jour);
+        $ouverture = $repository->ouvertureplacebanque($jour);
+        $caisse = 0;
+        $caisseouv = 0;
+        $banque = 0;
+        $banqueouv = 0;
+        $debitbanque = 0;
+        $debitbanqueouv = 0;
+        $debitcaisse = 0;
+        $debitcaisseouv = 0;
+        foreach ($ecritures as $ecriture) {
+            $credit = null;
+            $debit = null;
+            if ($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $banque = $banque + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debitbanque = $debitbanque + $debit->getMontant();
+
+            }
+
+        }
+
+        foreach ($ouverture as $ecriture) {
+            $credit = null;
+            $debit = null;
+            if ($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $banqueouv = $banqueouv + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+            }
+
+        }
+
+        return $this->render('finance/brouyard_date_banque_print.html.twig', [
+            'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+            'ecritures' => $ecritures,
+            'ouverture' => $banqueouv - $debitbanqueouv,
+            'day' => $jour,
+        ]);
+    }
+
+
+    /**
+     * @Route("/IntervalRepport/", name="rapport_interval")
+     */
+    public function rapportinterval()
+    {
+
+        return $this->render('finance/rapport_interval.html.twig');
+    }
 
     /**
      * @Route("/LienDaysBrouyard", name="days_brouyard_lien")
@@ -601,6 +953,70 @@ class FinanceController extends AbstractController
             'day2' => $date2,
         ]);
     }
+    /**
+     * @Route("/DaysBrouyard_print/{date1}/{date2}", name="days_brouyard_print")
+     */
+    public function daysbrouyard_print(Request $request,$date1, $date2)
+    {
+
+        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+        $ecritures = $repository->plage($date1,$date2);
+        $ouverture = $repository->ouvertureplace($date1);
+        $caisse = 0;
+        $caisseouv = 0;
+        $banque = 0;
+        $banqueouv = 0;
+        $debitbanque = 0;
+        $debitbanqueouv = 0;
+        $debitcaisse = 0;
+        $debitcaisseouv = 0;
+        foreach ($ecritures as $ecriture) {
+            $credit = null;
+            $debit = null;
+            if ($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $credit->getType() == 'Espece' ?
+                    $caisse = $caisse + $credit->getMontant() :
+                    $banque = $banque + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debit->getType() == 'Espece' ?
+                    $debitcaisse = $debitcaisse + $debit->getMontant() :
+                    $debitbanque = $debitbanque + $debit->getMontant();
+
+            }
+
+        }
+
+        foreach ($ouverture as $ecriture) {
+            $credit = null;
+            $debit = null;
+            if ($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $credit->getType() == 'Espece' ?
+                    $caisseouv = $caisseouv + $credit->getMontant() :
+                    $banqueouv = $banqueouv + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debit->getType() == 'Espece' ?
+                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
+                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+            }
+
+        }
+
+        return $this->render('finance/brouyard_interval_print.html.twig', [
+            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+            'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+            'ecritures' => $ecritures,
+            'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv - $debitbanqueouv),
+            'day1' => $date1,
+            'day2' => $date2,
+        ]);
+    }
 
     /**
      * @Route("/LienDaysBrouyardCaisse", name="days_brouyard_lien_caisse")
@@ -664,6 +1080,58 @@ class FinanceController extends AbstractController
         }
 
         return $this->render('finance/brouyard_interval_caisse.html.twig', [
+            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+            'ecritures' => $ecritures,
+            'ouverture' => $caisseouv - $debitcaisseouv,
+            'day1' => $date1,
+            'day2' => $date2,
+        ]);
+    }
+
+    /**
+     * @Route("/DaysBrouyardCaisse_print/{date1}/{date2}", name="days_brouyard_caisse_print")
+     */
+    public function daysbrouyardcaisse_print(Request $request,$date1, $date2)
+    {
+
+        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+        $ecritures = $repository->plagecaisse($date1,$date2);
+        $ouverture = $repository->ouvertureplacecaisse($date1);
+        $caisse = 0;
+        $caisseouv = 0;
+        $debitcaisse = 0;
+        $debitcaisseouv = 0;
+        foreach ($ecritures as $ecriture) {
+            $credit = null;
+            $debit = null;
+            if ($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $caisse = $caisse + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debitcaisse = $debitcaisse + $debit->getMontant();
+
+            }
+
+        }
+
+        foreach ($ouverture as $ecriture) {
+            $credit = null;
+            $debit = null;
+            if ($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+               $caisseouv = $caisseouv + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+
+            }
+
+        }
+
+        return $this->render('finance/brouyard_interval_caisse_print.html.twig', [
             'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
             'ecritures' => $ecritures,
             'ouverture' => $caisseouv - $debitcaisseouv,
@@ -739,6 +1207,62 @@ class FinanceController extends AbstractController
         }
 
         return $this->render('finance/brouyard_interval_banque.html.twig', [
+            'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+            'ecritures' => $ecritures,
+            'ouverture' => $banqueouv - $debitbanqueouv,
+            'day1' => $date1,
+            'day2' => $date2,
+        ]);
+    }
+
+    /**
+     * @Route("/DaysBrouyardBanque_print/{date1}/{date2}", name="days_brouyard_banque_print")
+     */
+    public function daysbrouyardbanque_print(Request $request,$date1, $date2)
+    {
+
+        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+        $ecritures = $repository->plagebanque($date1,$date2);
+        $ouverture = $repository->ouvertureplacebanque($date1);
+        $caisse = 0;
+        $caisseouv = 0;
+        $banque = 0;
+        $banqueouv = 0;
+        $debitbanque = 0;
+        $debitbanqueouv = 0;
+        $debitcaisse = 0;
+        $debitcaisseouv = 0;
+        foreach ($ecritures as $ecriture) {
+            $credit = null;
+            $debit = null;
+            if ($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $banque = $banque + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debitbanque = $debitbanque + $debit->getMontant();
+
+            }
+
+        }
+
+        foreach ($ouverture as $ecriture) {
+            $credit = null;
+            $debit = null;
+            if ($ecriture->getCredit() != null) {
+                $credit = $ecriture->getCredit();
+                $banqueouv = $banqueouv + $credit->getMontant();
+            } else {
+
+                $debit = $ecriture->getDebit();
+                $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+            }
+
+        }
+
+        return $this->render('finance/brouyard_interval_banque_print.html.twig', [
             'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
             'ecritures' => $ecritures,
             'ouverture' => $banqueouv - $debitbanqueouv,

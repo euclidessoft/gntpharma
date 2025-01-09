@@ -1498,4 +1498,44 @@ class CommandeController extends AbstractController
          return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
     }
 
+     /**
+     * @Route("/HistoriqueAdminCommande/", name="all_commande")
+     */
+    public function allcommande(SessionInterface $session, CommandeRepository $repository)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            //$panier = $session->get("panier", []);
+            $commande = $repository->findAll();
+            $response = $this->render('commande/admin/allcommande.html.twig', [
+                'commande' => $commande,
+                //'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+
+
+        /* // On "fabrique" les données
+
+         return $this->render('produit/index.html.twig', compact("dataPanier", "total"));*/
+    }
+
 }

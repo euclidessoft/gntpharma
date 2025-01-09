@@ -278,37 +278,46 @@
                 </li>
                 {% if is_granted('ROLE_FINANCE') %}
                     <li class="nav-item dropright" title="{{ 'Commande'|trans }}">
-                        <a class="nav-link dropdown-toggle {% block commande %}{% endblock %}" href="#" id="commande"
-                           data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <div class="icone">
-                                <i class="fa fa-shopping-cart fa-lg"></i>
-                            </div>
-                            <div class="title">
-                                {{ 'Commande'|trans }}
-                            </div>
-                        </a>
-                        <ul class=" dropdown-menu" aria-labelledby="commande">
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block suivi %}{% endblock %}"
-                                   href="{{ path('commande_panier_suivi') }}">
-                                    <i class="fas fa-shopping-cart mr-2"></i>
-                                    {{ 'Suivi Commande'|trans }}
+                    <a class="nav-link dropdown-toggle {% block commande %}{% endblock %}" href="#" id="commande"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fa fa-shopping-cart fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Commande'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="commande">
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block suivi %}{% endblock %}"
+                                href="{{ path('commande_panier_suivi') }}">
+                                <i class="fas fa-shopping-cart mr-2"></i>
+                                {{ 'Suivi Commande'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block extranet %}{% endblock %}"
+                                href="{{ path('commande_panier_extranet') }}">
+                                <i class="fas fa-cart-arrow-down mr-2"></i>
+                                {{ 'Commandes Extranet'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block allcommande %}{% endblock %}"
+                                href="{{ path('commande_panier_all_commande') }}">
+                                <i class="fas fa-list"></i>
+                                <i class="fas fa-shopping-cart mr-2"></i>
+                                {{ 'Toutes les Commandes'|trans }}
+                            </a>
+                        </li>
+                        {#<li class="dropdown-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-list mr-2"></i>
+                                    {{ 'en preparation'|trans }}
                                 </a>
-                            </li>
-                            <li class="dropdown-item">
-                                <a class="nav-link {% block extranet %}{% endblock %}"
-                                   href="{{ path('commande_panier_extranet') }}">
-                                    <i class="fas fa-cart-arrow-down mr-2"></i>
-                                    {{ 'Commandes Extranet'|trans }}
-                                </a>
-                            </li>
-                            {#<li class="dropdown-item">
-                                    <a class="nav-link" href="#">
-                                        <i class="fas fa-list mr-2"></i>
-                                        {{ 'en preparation'|trans }}
-                                    </a>
-                                </li>#}
+                            </li>#}
+
                         </ul>
                     </li>
                 {% endif %}

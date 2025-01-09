@@ -1,35 +1,69 @@
 {% extends 'admin.html.twig' %}
-
+{% block title %} {{ "Commande"|trans }} - Toutes les commandes {% endblock %}
+{% block commande %}active{% endblock %}
+{% block allcommande %}active{% endblock %}
 {% block body %}
 <div class="container-fluid mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fa fa-shopping-cart mr-2"></i>
         {{ "Liste de toutes les commandes"|trans }}
     </h3>
-    <table class="table table-success-light table-bordered table-hover table-striped w-100">
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
                 <th>{{ 'N commande'|trans }}</th>
                 <th>{{ 'Date '|trans }}</th>
+                <th>{{ 'Client '|trans }}</th>
                 <th>{{ 'Montant'|trans }}</th>
                 <th>{{ 'Paiement'|trans }}</th>
                 <th>{{ 'Livraison'|trans }}</th>
                 <th>{{ 'Date de Livraison'|trans }}</th>
-                <th>{{ 'Passér par'|trans }}</th>
-                <th>{{ 'actions'|trans }}</th>
+                <th>{{ 'Passée par'|trans }}</th>
+                <th>{{ 'Actions'|trans }}</th>
             </tr>
         </thead>
         <tbody>
+            {% for commandes in commande %}
             <tr>
-                <td>001</td>
-                <td>01/01/2025</td>
-                <td>50000</td>
-                <td>Non payé</td>
-                <td>Non livré</td>
-                <td>03/01/2025</td>
-                <td>Vous meme/admin</td>
-                <td><a href="#" class="btn btn-success"><i class="fas fa-list"></i>Details</a></td>
+                <td data-label="{{'N commande'|trans}}">{{ commandes.id }}</td>
+                <td data-label="{{'Date'|trans}}">{{ commandes.date ? commandes.date|date('d/m/Y') : '' }}</td>
+                <td data-label="{{'Client'|trans}}">{{ commandes.user.nom }} {{ commandes.user.prenom }}</td>
+                <td data-label="{{'Montant'|trans}}">{{ commandes.montant|number_format(0, '' , ' ') }}</td>
+                <td data-label="{{'Paiement'|trans}}">
+                    {% if commandes.payer == 0 %}
+                        <span class="text-danger">Non payée</span>
+                    {% else %}
+                        <span class="text-success">Payée</span>
+                    {% endif %}
+                </td>
+                <td data-label="{{'Livraison'|trans}}">
+                    {% if commandes.livraison == 0 %}
+                      <span class="text-danger">non livrée</span>
+
+                    {% else %}
+                        
+                        {% if commandes.livrer == 0 %}
+                            <span class="text-secondary">En cours de livraison</span>
+                        {% else %}
+                            <span class="text-success">Livrée</span>
+                        {% endif%}
+
+                    {% endif%}
+
+                </td>
+                <td data-label="{{'Date de livraison'|trans}}" class="text-center">{{ commandes.dateefectlivraison ? commandes.dateefectlivraison|date('d/m/Y') : '-' }}</td>
+                <td data-label="{{'Passée par'|trans}}">
+                    {{ commandes.admin ? commandes.admin.prenom ~ ' ' ~commandes.admin.nom : 'Lui-meme'}}
+                </td>
+                <td data-label="{{'Action'|trans}}">
+                    <a id="{{ commandes.id }}" onclick="load({{ commandes.id }})"  href="{{ path('commande_panier_Detail', {'commande' : commandes.id}) }}" class="btn btn-success"><i class="fas fa-list"></i>Details</a>
+                </td>
             </tr>
+            {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
