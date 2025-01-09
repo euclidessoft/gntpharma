@@ -317,6 +317,15 @@ class FinanceController extends AbstractController
     }
 
     /**
+     * @Route("/DayRepport/", name="rapport_date")
+     */
+    public function rapportdate()
+    {
+
+        return $this->render('finance/rapport_date.html.twig');
+    }
+
+    /**
      * @Route("/DayBrouyard/{jour}", name="day_brouyard")
      */
     public function daybrouyard(Request $request, $jour)
@@ -520,6 +529,15 @@ class FinanceController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/IntervalRepport/", name="rapport_interval")
+     */
+    public function rapportinterval()
+    {
+
+        return $this->render('finance/rapport_interval.html.twig');
+    }
 
     /**
      * @Route("/LienDaysBrouyard", name="days_brouyard_lien")
