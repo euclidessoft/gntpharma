@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Complement\Solde;
 use App\Entity\Banque;
 use App\Entity\Ecriture;
 use App\Repository\EcritureRepository;
@@ -54,7 +55,7 @@ class FinanceController extends AbstractController
     /**
      * @Route("/JournalBanque/{banque}", name="journal_banque")
      */
-    public function journalbanque(EcritureRepository $repository, Banque $banque): Response
+    public function journalbanque(EcritureRepository $repository, Banque $banque, Solde $solde): Response
     {
         $ecritures = $repository->findAll();
 
@@ -89,6 +90,7 @@ class FinanceController extends AbstractController
             'soldebanque' => $bank - $debitbanque,
             'banque' => $banque,
             'ecritures' => $ecrit,
+            'solde' => $solde->montantbanque($this->getDoctrine()->getManager(), $banque->getCompte()),
         ]);
     }
 
