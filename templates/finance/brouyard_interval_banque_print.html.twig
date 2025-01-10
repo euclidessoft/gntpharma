@@ -72,8 +72,8 @@
             </div>
         </div>
         <h3 class="text-center text-bold text-uppercase my-5">
-            {{ 'Rapport banque à la date du : '|trans }} {{ day1|date('d/m/Y') }}
-            {{ 'au : '|trans }} {{ day2|date('d/m/Y') }}
+            {{ 'Rapport banque à la date du '|trans }} {{ day1|date('d/m/Y') }}
+            {{ 'au '|trans }} {{ day2|date('d/m/Y') }}
         </h3>
         <h4 class="text-success text-bold mb-4">
             {{ 'Solde d\'ouverture : '|trans }} {{ ouverture|number_format(0, '', ' ') }}
@@ -273,8 +273,10 @@
             </tbody>
         </table>
         <h4 class="text-success text-bold">
-            {{ 'Solde banque à la date du : '|trans }} {{ day|date('d/m/Y') }}
-            {{ 'au : '|trans }} {{ day2|date('d/m/Y') }}
+            {{ 'Solde banque à la date du '|trans }}
+            {{ day1|date('d/m/Y') }}
+            {{ 'au '|trans }}
+            {{ day2|date('d/m/Y') }} :
             <span class="text-nowrap">
                         {{ banque|number_format(0, '', ' ') }} F CFA
                 </span>
