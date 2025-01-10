@@ -20,7 +20,7 @@
                 <th>{{ 'Libellé'|trans }}</th>
                 <th class="text-center">{{ 'Débit'|trans }}</th>
                 <th class="text-center">{{ 'Crédit'|trans }}</th>
-                <th class="text-center">{{ 'Solde'|trans }}</th>
+                <!-- <th class="text-center">{{ 'Solde'|trans }}</th> -->
             </tr>
         </thead>
         <tbody>
@@ -92,11 +92,11 @@
                     {{ ecriture.montant|number_format(0, '', ' ') }}
                     {% endif %}
                 </td>
-                <td data-label="{{ 'solde'|trans }}" class="text-center">
+                <!-- <td data-label="{{ 'solde'|trans }}" class="text-center">
 
 
                     {{ solde|number_format(0, '', ' ') }}
-                </td>
+                </td> -->
             </tr>
             {% else %}
             {% if ecriture.debit.transfert is not null %}
@@ -142,11 +142,11 @@
                     {% endif %}
 
                 </td>
-                <td data-label="{{ 'solde'|trans }}" class="text-center">
+                <!-- <td data-label="{{ 'solde'|trans }}" class="text-center">
 
 
                     {{ solde|number_format(0, '', ' ') }}
-                </td>
+                </td> -->
             </tr>
             {% endif %}
             {% else %}
@@ -170,7 +170,7 @@
                 <td class="text-center text-bold">
                     {{ credit|number_format(0, '', ' ') }}
                 </td>
-                <td></td>
+                <!-- <td></td> -->
             </tr>
         </tbody>
     </table>
