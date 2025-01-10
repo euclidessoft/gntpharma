@@ -26,9 +26,9 @@
                 <th class="text-center"> {{ 'n'|trans }}</th>
                 <th class="text-center"> {{ 'Date'|trans }}</th>
                 <th>{{ 'Compte'|trans }}</th>
-                <th>{{ 'Reference'|trans }}</th>
-                <th>{{ 'Libelé'|trans }}</th>
-                <th class="text-center">{{ 'Debit'|trans }}</th>
+                <th>{{ 'Référence'|trans }}</th>
+                <th>{{ 'Libellé'|trans }}</th>
+                <th class="text-center">{{ 'Débit'|trans }}</th>
                 <th class="text-center">{{ 'Crédit'|trans }}</th>
                 <th class="text-center">{{ 'Solde'|trans }}</th>
             </tr>
@@ -74,7 +74,7 @@
                                     {% set first = 1 %}
                                 {% endif %}
                             </td>
-                            <td data-label="{{ 'compte'|trans }}" class="credit">
+                            <td data-label="{{ 'Compte'|trans }}" class="credit">
                                 {#                                    {{ ecriture.debit ? ecriture.comptecredit : '' }} #}
                                 {% if ecriture.comptedebit != banque.compte %}
                                     {{ ecriture.comptedebit }}
@@ -82,20 +82,20 @@
                                     {{ ecriture.comptecredit }}
                                 {% endif %}
                             </td>
-                            <td data-label="{{ 'reference'|trans }}">
+                            <td data-label="{{ 'Référence'|trans }}">
 
                             </td>
-                            <td data-label="{{ 'Libelé'|trans }}">
+                            <td data-label="{{ 'Libellé'|trans }}">
                                 {#                                    {{ ecriture.debit ? ecriture.libelle : '' }}#}
                                 {{ ecriture.credit ? ecriture.libelle : '' }}
 
                             </td>
-                            <td data-label="{{ 'credit'|trans }}">
+                            <td data-label="{{ 'Crédit'|trans }}">
                                 {% if ecriture.comptecredit != banque.compte %}
                                     {{ ecriture.montant|number_format(0, '', ' ') }}
                                 {% endif %}
                             </td>
-                            <td data-label="{{ 'debit'|trans }}">
+                            <td data-label="{{ 'Débit'|trans }}">
                                 {% if ecriture.comptedebit != banque.compte %}
                                     {{ ecriture.montant|number_format(0, '', ' ') }}
                                 {% endif %}
@@ -121,7 +121,7 @@
                                 {% endif %}
                             </td>
 
-                            <td data-label="{{ 'compte'|trans }}" class="credit">
+                            <td data-label="{{ 'Compte'|trans }}" class="credit">
                                 {% if ecriture.comptedebit != banque.compte %}
                                     {{ ecriture.comptedebit }}
                                 {% else %}
@@ -131,20 +131,20 @@
 
 
                             </td>
-                            <td data-label="{{ 'reference'|trans }}">
+                            <td data-label="{{ 'Référence'|trans }}">
 
                             </td>
-                            <td data-label="{{ 'Libelé'|trans }}">
+                            <td data-label="{{ 'Libellé'|trans }}">
                                 {{ ecriture.debit ? ecriture.libelle : '' }}
                                 {#                                    {{ ecriture.credit ? ecriture.libelle : '' }}#}
 
                             </td>
-                            <td data-label="{{ 'credit'|trans }}" class="text-center">
+                            <td data-label="{{ 'Crédit'|trans }}" class="text-center">
                                 {% if ecriture.comptecredit != banque.compte %}
                                     {{ ecriture.montant|number_format(0, '', ' ') }}
                                 {% endif %}
                             </td>
-                            <td data-label="{{ 'debit'|trans }}" class="text-center">
+                            <td data-label="{{ 'Débit'|trans }}" class="text-center">
                                 {% if ecriture.comptedebit != banque.compte %}
                                     {{ ecriture.montant|number_format(0, '', ' ') }}
                                 {% endif %}
@@ -169,7 +169,7 @@
 
             {% endfor %}
             <tr>
-                <td data-label="colspan" colspan="5">
+                <td data-label="colspan" colspan="5" class="text-bold text-right">
                     {{ 'Total'|trans }}
                 </td>
                 <td class="text-center text-bold">

@@ -4,14 +4,14 @@
 {% block banque %}active{% endblock %}
 {% block all_banque %}active{% endblock %}
 {% block body %}
-    <div class="col-lg-8 mt-4 fond-7">
-        <h3 class="mt-4 mb-5 text-bold">
-            <i class="fa fa-money-bill mr-2"></i>
-            {{ "Liste des transactions du compte"|trans }} {{ compte }}
-        </h3>
-        <a href="{{ path('finance_index') }}" class="btn btn-success mb-4"><i class="fas fa-arrow-left mr-2"></i>Retour</a>
-        <table class="table table-success-light table-bordered table-hover table-striped">
-            <thead>
+<div class="col-lg-8 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Liste des transactions du compte"|trans }} {{ compte }}
+    </h3>
+    <a href="{{ path('finance_index') }}" class="btn btn-success mb-4"><i class="fas fa-arrow-left mr-2"></i>Retour</a>
+    <table class="table table-success-light table-bordered table-hover table-striped">
+        <thead>
             <tr>
                 <th class="text-center"> {{ 'Nº'|trans }}</th>
                 <th class="text-center"> {{ 'Date'|trans }}</th>
@@ -20,148 +20,148 @@
                 <th>{{ 'Libellé'|trans }}</th>
                 <th class="text-center">{{ 'Débit'|trans }}</th>
                 <th class="text-center">{{ 'Crédit'|trans }}</th>
-                                        <th class="text-center">{{ 'Solde'|trans }}</th>
+                <th class="text-center">{{ 'Solde'|trans }}</th>
             </tr>
-            </thead>
-            <tbody>
+        </thead>
+        <tbody>
             {% set debit = 0 %}
             {% set credit = 0 %}
             {% set solde = 0 %}
             {% set i =1 %}
             {% set transfert = 0 %}
             {% for ecriture in ecritures %}
-                {#                calcule solde#}
-                {% if ecriture.credit is not null %}
+            {#                calcule solde#}
+            {% if ecriture.credit is not null %}
 
-                    {% if ecriture.comptecredit == compte and ecriture.credit.transfert is null %}
-                        {% set solde = solde + ecriture.montant %}
-                        {% set credit = credit + ecriture.montant %}
-                    {% else %}
-                        {% set solde = solde - ecriture.montant %}
-                        {% set debit = debit + ecriture.montant %}
-                    {% endif %}
-                {% else %}
-                    {% if ecriture.comptecredit == compte and ecriture.debit.transfert is not null %}
-                        {% set solde = solde + ecriture.montant %}
-                        {% set credit = credit + ecriture.montant %}
-                    {% else %}
-                        {% set solde = solde - ecriture.montant %}
-                        {% set debit = debit + ecriture.montant %}
-                    {% endif %}
-                {% endif %}
-                {#                fin calcule#}
-                {% set first = 0 %}
-                {% if transfert == 0 %}
-                    {% if ecriture.credit is not null %}
-                        {% if ecriture.credit.transfert is not null %}
-                            {% set transfert = 1 %}
-                        {% endif %}
-                        <tr>
-                            <td data-label="{{ 'Date'|trans }}" class="text-center">
-                                {% if first == 0 %} {{ i }} {% set i = i + 1 %} {% endif %}
-                            </td>
-                            <td data-label="{{ 'Date'|trans }}" class="text-center">
-                                {% if first == 0 %}
-                                    {{ ecriture.date|date('d/m/Y') }}
-                                    {% set first = 1 %}
-                                {% endif %}
-                            </td>
-                            <td data-label="{{ 'Compte'|trans }}" class="credit">
-                                {#                                    {{ ecriture.debit ? ecriture.comptecredit : '' }} #}
-                                {% if ecriture.comptedebit != compte %}
-                                    {{ ecriture.comptedebit }}
-                                {% else %}
-                                    {{ ecriture.comptecredit }}
-                                {% endif %}
-                            </td>
-                            <td data-label="{{ 'Référence'|trans }}">
-
-                            </td>
-                            <td data-label="{{ 'Libellé'|trans }}">
-                                {#                                    {{ ecriture.debit ? ecriture.libelle : '' }}#}
-                                {{ ecriture.credit ? ecriture.libelle : '' }}
-
-                            </td>
-                            <td data-label="{{ 'Crédit'|trans }}" class="text-right">
-                                {% if ecriture.comptecredit != compte %}
-                                    {{ ecriture.montant|number_format(0, '', ' ') }}
-                                {% endif %}
-                            </td>
-                            <td data-label="{{ 'Débit'|trans }}" class="text-right">
-                                {% if ecriture.comptedebit != compte %}
-                                    {{ ecriture.montant|number_format(0, '', ' ') }}
-                                {% endif %}
-                            </td>
-                            <td data-label="{{ 'solde'|trans }}" class="text-center">
-
-
-                                {{ solde|number_format(0, '', ' ') }}
-                            </td>
-                        </tr>
-                    {% else %}
-                        {% if ecriture.debit.transfert is not null %}
-                            {% set transfert = 1 %}
-                        {% endif %}
-                        <tr>
-                            <td data-label="{{ 'Date'|trans }}" class="text-center">
-                                {% if first == 0 %} {{ i }} {% set i = i + 1 %} {% endif %}
-                            </td>
-                            <td data-label="{{ 'Date'|trans }}" class="text-center">
-                                {% if first == 0 %}
-                                    {{ ecriture.date|date('d/m/Y') }}
-                                    {% set first = 1 %}
-                                {% endif %}
-                            </td>
-
-                            <td data-label="{{ 'Compte'|trans }}" class="credit">
-                                {% if ecriture.comptedebit != compte %}
-                                    {{ ecriture.comptedebit }}
-                                {% else %}
-                                    {{ ecriture.comptecredit }}
-                                {% endif %}
-                                {#                                    {{ ecriture.credit ? ecriture.comptedebit : '' }}#}
-
-
-                            </td>
-                            <td data-label="{{ 'Référence'|trans }}">
-
-                            </td>
-                            <td data-label="{{ 'Libellé'|trans }}">
-                                {{ ecriture.debit ? ecriture.libelle : '' }}
-                                {#                                    {{ ecriture.credit ? ecriture.libelle : '' }}#}
-
-                            </td>
-                            <td data-label="{{ 'Crédit'|trans }}" class="text-right">
-                                {% if ecriture.comptecredit != compte %}
-                                    {{ ecriture.montant|number_format(0, '', ' ') }}
-                                {% endif %}
-                            </td>
-                            <td data-label="{{ 'Débit'|trans }}" class="text-right">
-                                {% if ecriture.comptedebit != compte %}
-                                    {{ ecriture.montant|number_format(0, '', ' ') }}
-                                {% endif %}
-
-                            </td>
-                            <td data-label="{{ 'solde'|trans }}" class="text-center">
-
-
-                                {{ solde|number_format(0, '', ' ') }}
-                            </td>
-                        </tr>
-                    {% endif %}
-                {% else %}
-                    {% set transfert = 0 %}
-                {% endif %}
+            {% if ecriture.comptecredit == compte and ecriture.credit.transfert is null %}
+            {% set solde = solde + ecriture.montant %}
+            {% set credit = credit + ecriture.montant %}
             {% else %}
-                <tr>
-                    <td data-label="colspan" colspan="7">
-                        {{ 'Aucune transaction'|trans }}
-                    </td>
-                </tr>
+            {% set solde = solde - ecriture.montant %}
+            {% set debit = debit + ecriture.montant %}
+            {% endif %}
+            {% else %}
+            {% if ecriture.comptecredit == compte and ecriture.debit.transfert is not null %}
+            {% set solde = solde + ecriture.montant %}
+            {% set credit = credit + ecriture.montant %}
+            {% else %}
+            {% set solde = solde - ecriture.montant %}
+            {% set debit = debit + ecriture.montant %}
+            {% endif %}
+            {% endif %}
+            {#                fin calcule#}
+            {% set first = 0 %}
+            {% if transfert == 0 %}
+            {% if ecriture.credit is not null %}
+            {% if ecriture.credit.transfert is not null %}
+            {% set transfert = 1 %}
+            {% endif %}
+            <tr>
+                <td data-label="{{ 'Date'|trans }}" class="text-center">
+                    {% if first == 0 %} {{ i }} {% set i = i + 1 %} {% endif %}
+                </td>
+                <td data-label="{{ 'Date'|trans }}" class="text-center">
+                    {% if first == 0 %}
+                    {{ ecriture.date|date('d/m/Y') }}
+                    {% set first = 1 %}
+                    {% endif %}
+                </td>
+                <td data-label="{{ 'Compte'|trans }}" class="credit">
+                    {#                                    {{ ecriture.debit ? ecriture.comptecredit : '' }} #}
+                    {% if ecriture.comptedebit != compte %}
+                    {{ ecriture.comptedebit }}
+                    {% else %}
+                    {{ ecriture.comptecredit }}
+                    {% endif %}
+                </td>
+                <td data-label="{{ 'Référence'|trans }}">
+
+                </td>
+                <td data-label="{{ 'Libellé'|trans }}">
+                    {#                                    {{ ecriture.debit ? ecriture.libelle : '' }}#}
+                    {{ ecriture.credit ? ecriture.libelle : '' }}
+
+                </td>
+                <td data-label="{{ 'Crédit'|trans }}" class="text-right">
+                    {% if ecriture.comptecredit != compte %}
+                    {{ ecriture.montant|number_format(0, '', ' ') }}
+                    {% endif %}
+                </td>
+                <td data-label="{{ 'Débit'|trans }}" class="text-right">
+                    {% if ecriture.comptedebit != compte %}
+                    {{ ecriture.montant|number_format(0, '', ' ') }}
+                    {% endif %}
+                </td>
+                <td data-label="{{ 'solde'|trans }}" class="text-center">
+
+
+                    {{ solde|number_format(0, '', ' ') }}
+                </td>
+            </tr>
+            {% else %}
+            {% if ecriture.debit.transfert is not null %}
+            {% set transfert = 1 %}
+            {% endif %}
+            <tr>
+                <td data-label="{{ 'Date'|trans }}" class="text-center">
+                    {% if first == 0 %} {{ i }} {% set i = i + 1 %} {% endif %}
+                </td>
+                <td data-label="{{ 'Date'|trans }}" class="text-center">
+                    {% if first == 0 %}
+                    {{ ecriture.date|date('d/m/Y') }}
+                    {% set first = 1 %}
+                    {% endif %}
+                </td>
+
+                <td data-label="{{ 'Compte'|trans }}" class="credit">
+                    {% if ecriture.comptedebit != compte %}
+                    {{ ecriture.comptedebit }}
+                    {% else %}
+                    {{ ecriture.comptecredit }}
+                    {% endif %}
+                    {#                                    {{ ecriture.credit ? ecriture.comptedebit : '' }}#}
+
+
+                </td>
+                <td data-label="{{ 'Référence'|trans }}">
+
+                </td>
+                <td data-label="{{ 'Libellé'|trans }}">
+                    {{ ecriture.debit ? ecriture.libelle : '' }}
+                    {#                                    {{ ecriture.credit ? ecriture.libelle : '' }}#}
+
+                </td>
+                <td data-label="{{ 'Crédit'|trans }}" class="text-right">
+                    {% if ecriture.comptecredit != compte %}
+                    {{ ecriture.montant|number_format(0, '', ' ') }}
+                    {% endif %}
+                </td>
+                <td data-label="{{ 'Débit'|trans }}" class="text-right">
+                    {% if ecriture.comptedebit != compte %}
+                    {{ ecriture.montant|number_format(0, '', ' ') }}
+                    {% endif %}
+
+                </td>
+                <td data-label="{{ 'solde'|trans }}" class="text-center">
+
+
+                    {{ solde|number_format(0, '', ' ') }}
+                </td>
+            </tr>
+            {% endif %}
+            {% else %}
+            {% set transfert = 0 %}
+            {% endif %}
+            {% else %}
+            <tr>
+                <td data-label="colspan" colspan="7">
+                    {{ 'Aucune transaction'|trans }}
+                </td>
+            </tr>
 
             {% endfor %}
             <tr>
-                <td data-label="colspan" colspan="5">
+                <td data-label="colspan" colspan="5" class="text-bold text-right">
                     {{ 'Total'|trans }}
                 </td>
                 <td class="text-center text-bold">
@@ -170,11 +170,9 @@
                 <td class="text-center text-bold">
                     {{ credit|number_format(0, '', ' ') }}
                 </td>
-                <td>
-
-                </td>
+                <td></td>
             </tr>
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
+</div>
 {% endblock %}

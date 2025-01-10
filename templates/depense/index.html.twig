@@ -15,7 +15,7 @@
         <thead>
             <tr>
                 <th>{{ 'Compte'|trans }}</th>
-                <th>{{ 'Libelle'|trans }}</th>
+                <th>{{ 'Libellé'|trans }}</th>
                 <th>{{ 'Date'|trans }}</th>
                 <th>{{ 'Ligne'|trans }}</th>
                 <th>{{ 'Montant'|trans }}</th>
@@ -28,13 +28,13 @@
         {% for depense in depenses %}
             <tr>
                 <td data-label="Compte">{{ depense.compte }}</td>
-                <td data-label="Libelle">{{ depense.libelle }}</td>
-                <td data-label="Date">{{ depense.date ? depense.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td data-label="Ligne">{{ depense.categorie ?  depense.categorie.nom : ''}}</td>
-                <td data-label="Montant">{{ depense.montant|number_format(0, '' , ' ') }}</td>
-                <td data-label="Réglement">{{ depense.type }}</td>
-                <td data-label="Status">{{ depense.statut }}</td>
-                <td data-label="actions" class="text-nowrap">
+                <td data-label="{{ 'Libellé'|trans }}">{{ depense.libelle }}</td>
+                <td data-label="{{ 'Date'|trans }}">{{ depense.date ? depense.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td data-label="{{ 'Ligne'|trans }}">{{ depense.categorie ?  depense.categorie.nom : ''}}</td>
+                <td data-label="{{ 'Montant'|trans }}">{{ depense.montant|number_format(0, '' , ' ') }}</td>
+                <td data-label="{{ 'Réglement'|trans }}">{{ depense.type }}</td>
+                <td data-label="{{ 'Status'|trans }}">{{ depense.statut }}</td>
+                <td data-label="{{ 'actions'|trans }}" class="text-nowrap">
                     <a id="{{ depense.id }}" onclick="load({{ depense.id }})" href="{{ path('depense_show', {'id': depense.id}) }}" title="{{'Voir'|trans}}" class="btn btn-success">
                     <i class="fa fa-eye"></i>
                     </a>
