@@ -16,7 +16,7 @@
                 <table class="table table-success-light table-bordered table-hover table-striped">
                     <thead>
                     <tr>
-                        <th>{{ 'Numero Commande'|trans }}</th>
+                        <th>{{ 'N° Commande'|trans }}</th>
                         <th>{{ 'Date'|trans }}</th>
                         <th>{{ 'Client'|trans }}</th>
                         {% if commande.paiement %}
@@ -35,8 +35,8 @@
                     {% if commande.paiement %}
                         <td data-label="Date de Paiement">{{ commande.paiement ? paiement.date|date('d/m/Y') : '' }}</td>
                         <td data-label="Type">
-                            {% if commande.paiement.type == "Espèce" %}
-                                Espece
+                            {% if commande.paiement.type == "Espece" %}
+                                Espèce
                             {% else %}
                                 {{ commande.paiement ? commande.paiement.type : '' }} :
                                 {{ commande.paiement.banque ? commande.paiement.banque.nom : '' }} <br>
@@ -44,7 +44,7 @@
                             {% endif %}
                         </td>
                     {% else %}
-                        <td data-label="Credit">  Credit </td>
+                        <td data-label="Credit">Credit </td>
                     {% endif %}
 
                     </tbody>

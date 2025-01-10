@@ -36,8 +36,8 @@
             <tr>
                 <td>{{ avoir.client.nom }}</td>
                 <td>{{ avoir.date ? avoir.date|date('d/m/Y') : '' }}</td>
-                <td>{{ avoir.admin.nom }}</td>
                 <td>{{ avoir.Montant|number_format(0, '' , ' ') }}</td>
+                <td>{{ avoir.admin.prenom }} {{ avoir.admin.nom }}</td>
                 <td>
                     {{ avoir.reste?"Reste à livré":'' }}
                     {{ avoir.reclamation?"Reclamation":'' }}
