@@ -206,7 +206,7 @@ class RemboursementController extends AbstractController
             $ecritureinteret->setComptedebit($remboursement->getFinancement()->getBanque()->getCompte());
             $ecritureinteret->setComptecredit($remboursement->getFinancement()->getCompteinteret());
             $ecritureinteret->setDebit($debitinteret);
-            $ecritureinteret->setLibelle($remboursement->getLibele());
+            $ecritureinteret->setLibelle('interet'. $remboursement->getLibele());
             $ecritureinteret->setSolde(-$totalinteret);
             $ecritureinteret->setMontant($totalinteret);
 
