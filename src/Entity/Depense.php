@@ -53,7 +53,6 @@ class Depense
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message= "Champ obligatoire")
      */
     private $type;
 
