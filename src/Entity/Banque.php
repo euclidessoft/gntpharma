@@ -27,6 +27,7 @@ class Banque
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank(message= "Champ obligatoire")
      */
     private $nom;
 
