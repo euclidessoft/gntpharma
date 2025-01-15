@@ -19,7 +19,7 @@
                     <thead>
                     <tr>
                         <th>{{ 'Date'|trans }}</th>
-                        <th>{{ 'Numero Commande'|trans }}</th>
+                        <th>{{ 'N° Commande'|trans }}</th>
                         <th>{{ 'Status Commande'|trans }}</th>
                         {#            <th>Date de Livraison</th>#}
                     </tr>
@@ -27,7 +27,13 @@
                     <tbody>
                     <td>{{ commande.date|date('d/m/Y') }}</td>
                     <td>{{ commande.id }}</td>
-                    <td>Paye/Non paye</td>
+                    <td>
+                        {% if commande.payer == 0 %}
+                        <span class="text-danger">Non payée</span>
+                    {% else %}
+                        <span class="text-success">Payée</span>
+                    {% endif %}
+                    </td>
                     {#        <td> </td>#}
                     </tbody>
                 </table>

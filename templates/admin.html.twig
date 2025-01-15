@@ -317,7 +317,6 @@
                                     {{ 'en preparation'|trans }}
                                 </a>
                             </li>#}
-
                         </ul>
                     </li>
                 {% endif %}
@@ -359,14 +358,14 @@
                                     </li>
                                     <li class="dropdown-item">
                                         <a class="nav-link {% block rapport_date %}{% endblock %}"
-                                           href="#">
+                                           href="{{ path('finance_rapport_date') }}">
                                             <i class="fa-solid fa-magnifying-glass-chart"></i>
                                             {{ 'A une date'|trans }}
                                         </a>
                                     </li>
                                     <li class="dropdown-item">
                                         <a class="nav-link {% block rapport_interval %}{% endblock %}"
-                                           href="#">
+                                           href="{{ path('finance_rapport_interval') }}">
                                             <i class="fa-solid fa-magnifying-glass-chart"></i>
                                             {{ 'Dans un interval'|trans }}
                                         </a>

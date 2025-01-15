@@ -395,11 +395,18 @@
         "pageLength": 100,
         buttons: [{
             extend: 'excelHtml5',
-            text: '<i class="fa fa-file-excel fa-lg"></i> {{ "Exporter vers Excel"|trans }}',
+            text: '<i class="fa fa-file-excel"></i> {{ "Exporter vers Excel"|trans }}',
             attr: {
-                class: 'btn btn-shadow btn-green'
+                class: 'btn btn-shadow btn-green mx-3'
             },
-        }],
+        },
+            {
+                extend: 'pdfHtml5',
+                text: '<i class="fa fa-file-pdf"></i> {{ "Exporter vers PDF"|trans }}',
+                attr: {
+                    class: 'btn btn-shadow btn-danger'
+                },
+            }],
         language: {
             processing: "{{ 'Traitement en cours...'|trans }}",
             search: "{{ 'Rechercher'|trans }} :",
@@ -424,7 +431,7 @@
         }
 
     });
-    table.buttons().container().appendTo('#exportexcel');
+    table.buttons().container().appendTo('#exporter');
 
     //gestion des tableaux multiples
     function reponse() {

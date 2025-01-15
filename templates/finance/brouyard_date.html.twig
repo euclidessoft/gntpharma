@@ -4,6 +4,15 @@
 {% block journal %}active{% endblock %}
 {% block body %}
     <div class="container">
+        <div class="container mt-4 mb-5 fond-7 pt-3 pb-3">
+            <div class="centrer">
+                <a href="{{ path('finance_day_brouyard_print', {'jour': day|date('Y-m-d')}) }}" class="btn btn-success-light">
+                    <i class="fa fa-print"></i>
+                    {{ 'imprimer'|trans }}
+                </a>
+                <span id="exporter"></span>
+            </div>
+        </div>
         <div class="card border-green shadow-black mt-5 mb-3 fond-5">
             <div class="card-header bg-success-light bb-success">
                 <h5 class="text-success text-bold">
@@ -15,7 +24,7 @@
                 <h4 class="text-success text-bold mb-4">
                     {{ 'Solde d\'ouverture : '|trans }} {{ ouverture|number_format(0, '', ' ') }}
                 </h4>
-                <table class="table table-success-light table-bordered table-hover table-striped">
+                <table class="table table-success-light table-bordered table-hover table-striped" id="liste">
                     <thead>
                     <tr>
                         <th class="text-center"> {{ 'Nº'|trans }}</th>
@@ -212,7 +221,7 @@
             </div>
             <div class="card-footer bg-success-light bt-success">
                 <h4 class="text-success text-bold">
-                    {{ 'Solde à la date du : '|trans }} {{ day|date('d/m/Y') }}
+                    {{ 'Solde à la date du '|trans }} {{ day|date('d/m/Y') }} :
                     <span class="text-nowrap">
                         {{ (banque+caisse)|number_format(0, '', ' ') }} F CFA
                 </span>
