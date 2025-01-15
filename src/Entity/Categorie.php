@@ -41,7 +41,7 @@ class Categorie
     private $depenses;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $compte;
 
