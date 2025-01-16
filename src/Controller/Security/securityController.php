@@ -65,12 +65,12 @@ class securityController extends AbstractController
                 $url = $this->generateUrl('security_activation', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $message = (new \Swift_Message('Activation compte utilisateur'))
-                    ->setFrom('support@gnt-pharma.com')
+                    ->setFrom('support@gntpharma-cameroun.com')
                     ->setTo($user->getEmail())
                     ->setBody($this->renderView('security/security/mail/active.html.twig', ['url' => $url]), 'text/html');
                 //                    ->setBody("Cliquez su->setBody($this->renderView('security/security/mail/active.html.twig', [ 'url' => $url ]), 'text/html');r le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
                 //                $message = (new \Swift_Message('Activation compte utilisateur'))
-                //                 ->setFrom('support@gnt-pharma.com')
+                //                 ->setFrom('support@gntpharma-cameroun.com')
                 //                 ->setTo($user->getEmail())
                 //                 ->setBody($this->renderView('licence/facture.html.twig'), 'text/html');
 
@@ -313,7 +313,7 @@ class securityController extends AbstractController
             $url = $this->generateUrl('security_reset_password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
             $message = (new \Swift_Message('Réinitialisation mot de passe'))
-                ->setFrom('support@gnt-pharma.com')
+                ->setFrom('support@gntpharma-cameroun.com')
                 ->setTo($user->getEmail())
                 ->setBody($this->renderView('security/security/mail/forget.html.twig', ['url' => $url]), 'text/html');
             //                ->setBody("Cliquez sur le lien suivant pour réinitialiser votre mot de passe " . $url, 'text/html');
@@ -622,7 +622,7 @@ class securityController extends AbstractController
                 $url = $this->generateUrl('security_activation', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $message = (new \Swift_Message('Activation compte utilisateur'))
-                    ->setFrom('support@gnt-pharma.com')
+                    ->setFrom('support@gntpharma-cameroun.com')
                     ->setTo($user->getEmail())
                     ->setBody($this->renderView('security/security/mail/active.html.twig', ['url' => $url]), 'text/html');
                 //                    ->setBody("Cliquez sur le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
