@@ -14,6 +14,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="user")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="typeuser", type="string")
+ * @ORM\DiscriminatorMap({"user" = "User", "employe" = "Employe"})
  * @UniqueEntity(
  * fields ={"email"},
  * message = "Email deja utilise"

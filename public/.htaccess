@@ -34,6 +34,7 @@ DirectoryIndex index.php
 
     # If the requested filename exists, simply serve it.
     # We only want to let Apache serve files and not directories.
+
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule .? - [L]
 
@@ -49,4 +50,25 @@ DirectoryIndex index.php
         RedirectMatch 302 ^/$ /index.php/
         # RedirectTemp cannot be used instead
     </IfModule>
+</IfModule>
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Ne pas réécrire si le fichier ou le répertoire existe
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Redirige vers 'public/index.php' sans afficher 'public' dans l'URL
+    RewriteRule ^(.*)$ public/index.php [QSA,L]
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Ne pas réécrire si le fichier ou le répertoire existe
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Redirige vers 'public/index.php' sans afficher 'public' dans l'URL
+
 </IfModule>
