@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TransfertRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TransfertRepository::class)
@@ -19,16 +20,19 @@ class Transfert
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message= "Champ obligatoire")
      */
     private $montant;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message= "Champ obligatoire")
      */
     private $source;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message= "Champ obligatoire")
      */
     private $destination;
 
@@ -45,6 +49,7 @@ class Transfert
     /**
      * @ORM\ManyToOne(targetEntity=Banque::class, inversedBy="transferts")
      * @ORM\JoinColumn(nullable=true)
+     * @Assert\NotBlank(message= "Champ obligatoire")
      */
     private $banque;
 

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\DepenseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=DepenseRepository::class)
@@ -19,6 +20,7 @@ class Depense
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message= "Champ obligatoire")
      */
     private $libelle;
 
@@ -29,11 +31,13 @@ class Depense
 
     /**
      * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="depenses")
+     * @Assert\NotBlank(message= "Champ obligatoire")
      */
     private $categorie;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message= "Champ obligatoire")
      */
     private $montant;
 

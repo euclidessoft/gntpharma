@@ -6,6 +6,7 @@ use App\Repository\FournisseurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=FournisseurRepository::class)
@@ -21,31 +22,37 @@ class Fournisseur
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message = "Champ obligatoire")
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message = "Champ obligatoire")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message = "Champ obligatoire")
      */
     private $pays;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message = "Champ obligatoire")
      */
     private $telephone;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message = "Champ obligatoire")
      */
     private $designation;
 
     /**
      * @ORM\Column(type="string" , length=255)
+     * @Assert\NotBlank(message = "Champ obligatoire")
      */
     private $compte;
 
