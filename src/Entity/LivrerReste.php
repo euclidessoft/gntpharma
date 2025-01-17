@@ -18,7 +18,7 @@ class LivrerReste
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client")
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;
@@ -173,12 +173,12 @@ class LivrerReste
         return $this->id;
     }
 
-    public function getClient(): ?User
+    public function getClient(): ?Client
     {
         return $this->client;
     }
 
-    public function setClient(?User $client): self
+    public function setClient(?Client $client): self
     {
         $this->client = $client;
 

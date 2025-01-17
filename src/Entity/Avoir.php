@@ -12,13 +12,13 @@ class Avoir
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Employe")
      * @ORM\JoinColumn(nullable=false)
      */
     private $admin;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client")
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;
@@ -116,24 +116,24 @@ class Avoir
         return $this;
     }
 
-    public function getAdmin(): ?User
+    public function getAdmin(): ?Employe
     {
         return $this->admin;
     }
 
-    public function setAdmin(?User $admin): self
+    public function setAdmin(?Employe $admin): self
     {
         $this->admin = $admin;
 
         return $this;
     }
 
-    public function getClient(): ?User
+    public function getClient(): ?Client
     {
         return $this->client;
     }
 
-    public function setClient(?User $client): self
+    public function setClient(?Client $client): self
     {
         $this->client = $client;
 

@@ -18,19 +18,19 @@ class Commande
     private $versements;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Employe")
      * @ORM\JoinColumn(nullable=true)
      */
     private $admin;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Employe")
      * @ORM\JoinColumn(nullable=true)
      */
     private $livreur;
@@ -155,12 +155,12 @@ class Commande
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): ?Client
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?Client $user): self
     {
         $this->user = $user;
 
@@ -191,12 +191,12 @@ class Commande
         return $this;
     }
 
-    public function getLivreur(): ?User
+    public function getLivreur(): ?Employe
     {
         return $this->livreur;
     }
 
-    public function setLivreur(?User $livreur): self
+    public function setLivreur(?Employe $livreur): self
     {
         $this->livreur = $livreur;
 
@@ -317,12 +317,12 @@ class Commande
         return $this;
     }
 
-    public function getAdmin(): ?User
+    public function getAdmin(): ?Employe
     {
         return $this->admin;
     }
 
-    public function setAdmin(?User $admin): self
+    public function setAdmin(?Employe $admin): self
     {
         $this->admin = $admin;
 

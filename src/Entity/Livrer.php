@@ -19,7 +19,7 @@ class Livrer
     private $livraison;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Employe")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -31,7 +31,7 @@ class Livrer
     private $retour;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Employe")
      * @ORM\JoinColumn(nullable=false)
      */
     private $livreur;
@@ -104,12 +104,12 @@ class Livrer
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): ?Employe
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?Employe $user): self
     {
         $this->user = $user;
 
@@ -170,12 +170,12 @@ class Livrer
         return $this;
     }
 
-    public function getLivreur(): ?User
+    public function getLivreur(): ?Employe
     {
         return $this->livreur;
     }
 
-    public function setLivreur(?User $livreur): self
+    public function setLivreur(?Employe $livreur): self
     {
         $this->livreur = $livreur;
 

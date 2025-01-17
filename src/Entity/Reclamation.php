@@ -14,13 +14,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Reclamation
 {
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Employe")
      * @ORM\JoinColumn(nullable=true)
      */
     private $usercloture;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -239,24 +239,24 @@ class Reclamation
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): ?Client
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?Client $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getUsercloture(): ?User
+    public function getUsercloture(): ?Employe
     {
         return $this->usercloture;
     }
 
-    public function setUsercloture(?User $usercloture): self
+    public function setUsercloture(?Employe $usercloture): self
     {
         $this->usercloture = $usercloture;
 

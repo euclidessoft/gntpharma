@@ -37,7 +37,7 @@ class Transfert
     private $destination;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transferts")
+     * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="transferts")
      */
     private $user;
 
@@ -102,12 +102,12 @@ class Transfert
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): ?Employe
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?Employe $user): self
     {
         $this->user = $user;
 

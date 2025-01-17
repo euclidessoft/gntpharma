@@ -18,7 +18,7 @@ class Approvisionner
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Employe")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -54,12 +54,12 @@ class Approvisionner
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): ?Employe
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?Employe $user): self
     {
         $this->user = $user;
 
