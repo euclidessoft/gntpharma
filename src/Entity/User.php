@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="user")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="typeuser", type="string")
- * @ORM\DiscriminatorMap({"user" = "User", "employe" = "Employe"})
+ * @ORM\DiscriminatorMap({"client" = "Client", "employe" = "Employe"})
  * @UniqueEntity(
  * fields ={"email"},
  * message = "Email deja utilise"
@@ -122,10 +122,6 @@ class User implements UserInterface
      */
     private $livreur;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $compte;
 
     /**
      * @ORM\OneToMany(targetEntity=Transfert::class, mappedBy="user")
@@ -319,18 +315,6 @@ class User implements UserInterface
     public function setLivreur(bool $livreur): self
     {
         $this->livreur = $livreur;
-
-        return $this;
-    }
-
-    public function getCompte(): ?int
-    {
-        return $this->compte;
-    }
-
-    public function setCompte(?int $compte): self
-    {
-        $this->compte = $compte;
 
         return $this;
     }
