@@ -49,6 +49,11 @@ class Employe extends User implements UserInterface
      */
     private $departement;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $matricule;
+
 
     // Getters et setters
 
@@ -131,6 +136,18 @@ class Employe extends User implements UserInterface
     public function setDepartement(?Departement $departement): self
     {
         $this->departement = $departement;
+
+        return $this;
+    }
+
+    public function getMatricule(): ?string
+    {
+        return $this->matricule;
+    }
+
+    public function setMatricule(string $matricule): self
+    {
+        $this->matricule = $matricule;
 
         return $this;
     }

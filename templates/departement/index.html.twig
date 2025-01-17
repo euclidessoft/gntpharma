@@ -1,0 +1,38 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Lignes de depenses"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block depense %}active{% endblock %}
+{% block all_departements %}active{% endblock %}
+{% block body %}
+<div class="col-lg-6 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Liste des départements"|trans }}
+    </h3>
+    <a href="{{ path('departement_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouvel département</a>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>{{('Nom'|trans)}}</th>
+                <th>{{('actions'|trans)}}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for departement in departements %}
+            <tr>
+                <td data-label="Nom">{{ departement.nom }}</td>
+                <td data-label="Actions">
+                    <!-- <a href="{{ path('departement_show', {'id': departement.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a> -->
+                    <a href="{{ path('departement_edit', {'id': departement.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
+                    {{ include('departement/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4" class="text-center">Aucune ligne de dépenses</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
