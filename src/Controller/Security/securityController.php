@@ -4,6 +4,7 @@ namespace App\Controller\Security;
 
 use App\Entity\Album;
 use App\Entity\Candidature;
+use App\Entity\Employe;
 use App\Form\CandidatureType;
 use App\Repository\ImageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +18,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Form\UserType;
 use App\Form\changePasswordType;
+use App\Form\EmployeType;
 use App\Repository\UserRepository;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
@@ -35,10 +37,10 @@ class securityController extends AbstractController
      */
     public function new(Request $request, UserPasswordEncoderInterface $encoder, TokenGeneratorInterface $tokenGenerator, \Swift_Mailer $mail)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             $manager = $this->getDoctrine()->getManager();
-            $user = new User();
-            $form = $this->createForm(RegistrationType::class, $user);
+            $user = new Employe();
+            $form = $this->createForm(EmployeType::class, $user);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
@@ -58,8 +60,9 @@ class securityController extends AbstractController
                 $manager->flush();
 
                        //Creation compte client
-                       $compte = '411' . str_pad(count($user->getId()) + 1, 4, '0', STR_PAD_LEFT);
-                       $user->setCompte($compte);
+                    //    $compte = '411' . str_pad(count($user->getId()) + 1, 4, '0', STR_PAD_LEFT);
+                    //    $user->setCompte($compte);
+
                        $manager->persist($user);
                        $manager->flush();
                 $url = $this->generateUrl('security_activation', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);

@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use App\Entity\User;
+use App\Form\Type\SexeType;
 use App\Entity\Departement;
 use App\Entity\Employe;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -20,6 +22,7 @@ class EmployeType extends AbstractType
             ->add('matricule')
             ->add('prenom')
             ->add('nom')
+            ->add('nationalite')
             ->add('email')
             ->add('phone')
             ->add('adresse')
@@ -61,6 +64,12 @@ class EmployeType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('password', PasswordType::class, ['label' => 'Mot de password'])
+            ->add('fonction', ChoiceType::class, [
+                'choices' => User::jobs,
+                'placeholder' => 'types d\'utilisateur *',
+                'label' => false,
+                'required' => true
+            ])
         ;
     }
 
