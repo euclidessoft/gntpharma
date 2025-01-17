@@ -44,8 +44,8 @@ class securityController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $hashpass = $encoder->encodePassword($user, 'Passer2023');
-                //$hashpass = $encoder->encodePassword($user, $user->getPassword());
+//                $hashpass = $encoder->encodePassword($user, 'Passer2023');
+                $hashpass = $encoder->encodePassword($user, $user->getPassword());
                 
         
                 //$password = $user->getPassword();
@@ -571,7 +571,7 @@ class securityController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             $manager = $this->getDoctrine()->getManager();
-            $user = new User();
+            $user = new Employe();
             $form = $this->createForm(RegistrationType::class, $user);
             $form->handleRequest($request);
 
@@ -617,8 +617,8 @@ class securityController extends AbstractController
                 $manager->persist($user);
                 $manager->flush();
 
-                $compte = '411' . str_pad($user->getId(), 4, '0', STR_PAD_LEFT);
-                $user->setCompte($compte);
+//                $compte = '411' . str_pad($user->getId(), 4, '0', STR_PAD_LEFT);
+//                $user->setCompte($compte);
                 $manager->persist($user);
                 $manager->flush();
 
