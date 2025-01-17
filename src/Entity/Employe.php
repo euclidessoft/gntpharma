@@ -15,11 +15,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class Employe extends User implements UserInterface
 {
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $department;
-
-    /**
      * @ORM\Column(type="date")
      */
     private $hireDate;
@@ -44,19 +39,18 @@ class Employe extends User implements UserInterface
      */
     private $civilite;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nationalite;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Departement::class, inversedBy="employes")
+     */
+    private $departement;
+
 
     // Getters et setters
-
-    public function getDepartment(): ?string
-    {
-        return $this->department;
-    }
-
-    public function setDepartment(string $department): self
-    {
-        $this->department = $department;
-        return $this;
-    }
 
     public function getHireDate(): ?\DateTimeInterface
     {
@@ -113,6 +107,30 @@ class Employe extends User implements UserInterface
     public function setCivilite(string $civilite): self
     {
         $this->civilite = $civilite;
+
+        return $this;
+    }
+
+    public function getNationalite(): ?string
+    {
+        return $this->nationalite;
+    }
+
+    public function setNationalite(string $nationalite): self
+    {
+        $this->nationalite = $nationalite;
+
+        return $this;
+    }
+
+    public function getDepartement(): ?Departement
+    {
+        return $this->departement;
+    }
+
+    public function setDepartement(?Departement $departement): self
+    {
+        $this->departement = $departement;
 
         return $this;
     }
