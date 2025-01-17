@@ -12,11 +12,29 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+
+/**
+ * @Route("/{_locale}/Employe")
+ */
 class EmployeController extends AbstractController
 {
     /**
-     * @Route("/{_locale}/employe", name="employe")
+     * @Route("/", name="employe_index", methods={"GET"})
      */
+    public function index(EntityManagerInterface $entityManager)
+    {
+        $employe = $entityManager->getRepository(Employe::class)->findAll();
+        return $this->render('employe/index.html.twig',[
+            'employe' => $employe,
+        ]);
+    }
+
+
+
+
+     /**
+      * @Route("/new", name="employe_new", methods={"GET","POST"})
+      */
     public function new(Request $request,UserPasswordEncoderInterface $encoder): Response
     {
 

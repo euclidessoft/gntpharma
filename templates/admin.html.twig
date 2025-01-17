@@ -50,6 +50,35 @@
                         </div>
                     </a>
                 </li>
+                <li class="nav-item dropright" title="{{ 'Employe'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block employe %} {% endblock %}" href="#" id="produits"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fas fa-user fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Employé'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="produits">
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block employe_new %}{% endblock %}"
+                                   href="{{ path('employe_new') }}">
+                                    <i class="fa fa-plus"></i>
+                                    {{ 'Nouveau employé'|trans }}
+                                </a>
+                            </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block all_employe %}{% endblock %}"
+                               href="{{ path('employe_index') }}">
+                                <i class="fas fa-list"></i>
+                                {{ 'Tous les employés'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="nav-item dropright" title="{{ 'Produits'|trans }}">
                     <a class="nav-link dropdown-toggle {% block produit %} {% endblock %}" href="#" id="produits"
                        data-toggle="dropdown"
