@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Suggestion
 {
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client")
      * @ORM\JoinColumn(nullable=true)
      */
     private $client;
@@ -45,12 +45,12 @@ class Suggestion
         return $this;
     }
 
-    public function getClient(): ?User
+    public function getClient(): ?Client
     {
         return $this->client;
     }
 
-    public function setClient(?User $client): self
+    public function setClient(?Client $client): self
     {
         $this->client = $client;
 

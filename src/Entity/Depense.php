@@ -63,7 +63,7 @@ class Depense
     private $compte;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="depenses")
+     * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="depenses")
      */
     private $user;
 
@@ -186,12 +186,12 @@ class Depense
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): ?Employe
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?Employe $user): self
     {
         $this->user = $user;
 

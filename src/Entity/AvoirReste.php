@@ -24,13 +24,13 @@ class AvoirReste
     private $avoir;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client")
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Employe")
      * @ORM\JoinColumn(nullable=false)
      */
     private $admin;
@@ -182,24 +182,24 @@ class AvoirReste
         return $this->id;
     }
 
-    public function getClient(): ?User
+    public function getClient(): ?Client
     {
         return $this->client;
     }
 
-    public function setClient(?User $client): self
+    public function setClient(?Client $client): self
     {
         $this->client = $client;
 
         return $this;
     }
 
-    public function getAdmin(): ?User
+    public function getAdmin(): ?Employe
     {
         return $this->admin;
     }
 
-    public function setAdmin(?User $admin): self
+    public function setAdmin(?Employe $admin): self
     {
         $this->admin = $admin;
 
