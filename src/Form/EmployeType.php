@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Departement;
 use App\Entity\Employe;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -33,6 +34,7 @@ class EmployeType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('lieu_naissance')
+            ->add('nationalite')
             ->add('sexe', ChoiceType::class, [
                 'choices' => [
                     'Homme' => 'Homme',
@@ -59,6 +61,12 @@ class EmployeType extends AbstractType
             ])
             ->add('hiredate', DateType::class, [
                 'widget' => 'single_text',
+            ])
+            ->add('fonction', ChoiceType::class, [
+                'choices' => User::jobs,
+                'placeholder' => 'types d\'utilisateur *',
+                'label' => false,
+                'required' => true
             ])
             ->add('password', PasswordType::class, ['label' => 'Mot de password'])
         ;

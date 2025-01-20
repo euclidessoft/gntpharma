@@ -15,16 +15,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class Client extends User implements UserInterface
 {
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string",length=255, nullable=true)
      */
     private $compte;
 
-    public function getCompte(): ?int
+    public function getCompte(): ?string
     {
         return $this->compte;
     }
 
-    public function setCompte(?int $compte): self
+    public function setCompte(?string $compte): self
     {
         $this->compte = $compte;
 

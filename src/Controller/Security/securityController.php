@@ -4,7 +4,9 @@ namespace App\Controller\Security;
 
 use App\Entity\Album;
 use App\Entity\Candidature;
+use App\Entity\Employe;
 use App\Form\CandidatureType;
+use App\Form\EmployeType;
 use App\Repository\ImageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -37,36 +39,36 @@ class securityController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             $manager = $this->getDoctrine()->getManager();
-            $user = new User();
-            $form = $this->createForm(RegistrationType::class, $user);
+            $employe = new Employe();
+                $form = $this->createForm(EmployeType::class, $employe);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $hashpass = $encoder->encodePassword($user, 'Passer2023');
+                $hashpass = $encoder->encodePassword($employe, 'Passer2023');
                 //$hashpass = $encoder->encodePassword($user, $user->getPassword());
                 
         
                 //$password = $user->getPassword();
-                $user->setPassword($hashpass);
-                $user->setusername($user->getNom());
+                $employe->setPassword($hashpass);
+                $employe->setusername($employe->getNom());
                 //                $user->setRoles(['ROLE_CLIENT']);
-                $user->setRoles(['ROLE_ADMIN']);
+                $employe->setRoles(['ROLE_ADMIN']);
                 // envoie mail
                 $token = $tokenGenerator->generateToken();
-                $user->setResetToken($token);
-                $manager->persist($user);
+                $employe->setResetToken($token);
+                $manager->persist($employe);
                 $manager->flush();
 
                        //Creation compte client
-                       $compte = '411' . str_pad(count($user->getId()) + 1, 4, '0', STR_PAD_LEFT);
-                       $user->setCompte($compte);
-                       $manager->persist($user);
-                       $manager->flush();
+//                       $compte = '411' . str_pad(count($employe->getId()) + 1, 4, '0', STR_PAD_LEFT);
+//                       $employe->setCompte($compte);
+//                       $manager->persist($employe);
+//                       $manager->flush();
                 $url = $this->generateUrl('security_activation', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $message = (new \Swift_Message('Activation compte utilisateur'))
                     ->setFrom('support@gntpharma-cameroun.com')
-                    ->setTo($user->getEmail())
+                    ->setTo($employe->getEmail())
                     ->setBody($this->renderView('security/security/mail/active.html.twig', ['url' => $url]), 'text/html');
                 //                    ->setBody("Cliquez su->setBody($this->renderView('security/security/mail/active.html.twig', [ 'url' => $url ]), 'text/html');r le lien suivant pour activer votre compte utilisasateur " . $url, 'text/html');
                 //                $message = (new \Swift_Message('Activation compte utilisateur'))
