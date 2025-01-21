@@ -50,7 +50,7 @@ class securityController extends AbstractController
 
 
 //                $hashpass = $encoder->encodePassword($user, 'Passer2023');
-                $hashpass = $encoder->encodePassword($user, $user->getPassword());
+                $hashpass = $encoder->encodePassword($employe, $employe->getPassword());
                 
 
                 //$password = $user->getPassword();
