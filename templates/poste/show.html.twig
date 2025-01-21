@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<title>Poste</title>
+
+{% block body %}
+    <h1>Poste</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ poste.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ poste.nom }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ poste.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('poste_index') }}">back to list</a>
+
+    <a href="{{ path('poste_edit', {'id': poste.id}) }}">edit</a>
+
+    {{ include('poste/_delete_form.html.twig') }}
+{% endblock %}

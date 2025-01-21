@@ -63,6 +63,13 @@
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="produits">
                             <li class="dropdown-item">
+                                <a class="nav-link {% block poste %}{% endblock %}"
+                                   href="{{ path('poste_index') }}">
+                                    <i class="fa fa-plus"></i>
+                                    {{ 'Nouveau poste'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
                                 <a class="nav-link {% block employe_new %}{% endblock %}"
                                    href="{{ path('employe_new') }}">
                                     <i class="fa fa-plus"></i>

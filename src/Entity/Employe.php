@@ -4,6 +4,8 @@
 // src/Entity/Employe.php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -53,6 +55,23 @@ class Employe extends User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $matricule;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Poste::class, inversedBy="employes")
+     */
+    private $poste;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PosteEmploye::class, mappedBy="employe")
+     */
+    private $posteEmployes;
+
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->posteEmployes = new ArrayCollection();
+    }
 
 
     // Getters et setters
@@ -148,6 +167,48 @@ class Employe extends User implements UserInterface
     public function setMatricule(string $matricule): self
     {
         $this->matricule = $matricule;
+
+        return $this;
+    }
+
+    public function getPoste(): ?Poste
+    {
+        return $this->poste;
+    }
+
+    public function setPoste(?Poste $poste): self
+    {
+        $this->poste = $poste;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PosteEmploye[]
+     */
+    public function getPosteEmployes(): Collection
+    {
+        return $this->posteEmployes;
+    }
+
+    public function addPosteEmploye(PosteEmploye $posteEmploye): self
+    {
+        if (!$this->posteEmployes->contains($posteEmploye)) {
+            $this->posteEmployes[] = $posteEmploye;
+            $posteEmploye->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removePosteEmploye(PosteEmploye $posteEmploye): self
+    {
+        if ($this->posteEmployes->removeElement($posteEmploye)) {
+            // set the owning side to null (unless already changed)
+            if ($posteEmploye->getEmploye() === $this) {
+                $posteEmploye->setEmploye(null);
+            }
+        }
 
         return $this;
     }

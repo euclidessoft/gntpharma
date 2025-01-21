@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\Type\SexeType;
 use App\Entity\Departement;
 use App\Entity\Employe;
+use App\Entity\Poste;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -26,6 +27,12 @@ class EmployeType extends AbstractType
             ->add('email')
             ->add('phone')
             ->add('adresse')
+            ->add('poste', EntityType::class, [
+                'class' => Poste::class,
+                'choice_label' => 'nom',
+                'placeholder' => 'Choisissez un poste',
+                'required' => true,
+            ])
             ->add('departement', EntityType::class, [
                 'class' => Departement::class,
                 'choice_label' => 'nom',
