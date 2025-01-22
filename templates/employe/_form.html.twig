@@ -1,148 +1,98 @@
-<div class="col-lg-12 mt-3">
-    {{ form_start(form, {'attr' : { 'id' : 'form'}}) }}
-
+<div class="col-lg-12 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
+    <h3 class="mb-5">
+        <i class="fa-solid fa-landmark"></i><i class="fa fa-plus mr-2"></i>
+        {{ 'Nouvel employé'|trans }}
+    </h3>
+    <h6 class="mt-4 text-danger">
+        {{ 'Les champs marqués par * sont obligatoires'|trans }}
+    </h6>
     <div class="row">
-        <div class="col-md-6">
-            {{ form_errors(form.prenom) }}
-        </div>
-        <div class="col-md-6">
-            {{ form_errors(form.nom) }}
-        </div>
-        <div class="col-md-6">
-            <div class="form-group mb-4">
-                {{ form_row(form.prenom, {'label': false, 'attr' : { 'placeholder' : 'Prénom *'}}) }}
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group mb-4">
-                {{ form_widget(form.nom, {'attr' : { 'placeholder' : 'Nom *'}}) }}
-            </div>
-        </div>
-        <div class="col-md-6">
-            {{ form_errors(form.email) }}
-        </div>
-        <div class="col-md-6">
-            {{ form_errors(form.phone) }}
-        </div>
-        <div class="col-md-6">
-            <div class="form-group mb-4">
-                {{ form_widget(form.email, {'attr' : { 'placeholder' : 'Email *'}}) }}
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group mb-4">
-                {{ form_widget(form.phone, {'attr' : { 'placeholder' : 'Telephone *'}}) }}
-            </div>
-        </div>
-        <div class="col-md-12">
-            {{ form_errors(form.adresse) }}
-        </div>
-        <div class="col-md-12">
-            <div class="form-group mb-4">
-                {{ form_widget(form.adresse, {'attr' : { 'placeholder' : 'Adresse '}}) }}
-            </div>
-        </div>
-        <div class="col-md-12">
-            {{ form_errors(form.hiredate) }}
-        </div>
-        <div class="col-md-12">
-            <div class="form-group mb-4">
-                {{ form_widget(form.hiredate, {'attr' : { 'title' : 'Date d\'embauche '}}) }}
-            </div>
-        </div>
-        <div class="col-md-12">
-            {{ form_errors(form.matricule) }}
-        </div>
-        <div class="col-md-12">
-            <div class="form-group mb-4">
-                {{ form_widget(form.matricule, {'attr' : { 'placeholder' : 'Matricule '}}) }}
-            </div>
-        </div>
-        <div class="col-md-12">
-            {{ form_errors(form.nationalite) }}
-        </div>
-        <div class="col-md-12">
-            <div class="form-group mb-4">
-                {{ form_widget(form.nationalite, {'attr' : { 'placeholder' : 'Nationalite '}}) }}
-            </div>
-        </div>
-        <div class="col-md-12">
-            {{ form_errors(form.poste) }}
-        </div>
-        <div class="col-md-12">
-            <div class="form-group mb-4">
-                {{ form_widget(form.poste, {'attr' : { 'placeholder' : 'poste '}}) }}
-            </div>
-        </div>
+        <div class="col-lg-6">
+            <div class="card border-green mt-3 mb-3">
+                <div class="card-header bg-success-light bb-green text-green">
+                    <i class="fa fa-id-card mr-2"></i>
+                    {{ 'Information personnelle'|trans }}
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr':{'id': 'form'}}) }}
 
-        <div class="col-md-12">
-            {{ form_errors(form.Date_naissance) }}
-        </div>
-        <div class="col-md-12">
-            <div class="form-group mb-4">
-                {{ form_widget(form.Date_naissance, {'attr' : { 'title' : 'Date de naissance '}}) }}
+                    <div class="form-group">
+                        {{ form_row(form.nom, {'attr':{'placeholder':'Nom *'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.prenom, {'attr':{'placeholder':'Prénom *'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.Date_naissance, {'attr' : { 'title' : 'Date de naissance '}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.lieu_naissance, {'attr':{'placeholder':'Lieu de naissance'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.nationalite, {'attr':{'placeholder':'Nationnalité'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.phone, {'attr':{'placeholder':'Téléphone *'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.email, {'attr':{'placeholder':'Adresse email'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.sexe, {'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.civilite, {'attr':{'placeholder':'Civilité'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.adresse, {'attr':{'placeholder':'Adresse'}, 'label':false}) }}
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="col-lg-6">
+            <div class="card border-green mt-3 mb-3">
+                <div class="card-header bg-success-light bb-green text-green">
+                    <i class="fa fa-id-card mr-2"></i>
+                    {{ 'Information professionnelle'|trans }}
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr':{'id': 'form'}}) }}
 
-        <div class="col-md-12">
-            {{ form_errors(form.lieu_naissance) }}
-        </div>
-        <div class="col-md-12">
-            <div class="form-group mb-4">
-                {{ form_widget(form.lieu_naissance, {'attr' : { 'placeholder' : 'Lieu de naissance '}}) }}
-            </div>
-        </div>        
-        
-        <div class="col-md-12">
-            {{ form_errors(form.sexe) }}
-        </div>
-        <div class="col-md-12">
-            <div class="form-group mb-4">
-                {{ form_widget(form.sexe, {'attr' : { 'title' : 'Sexe de l\'employé '}}) }}
-            </div>
-        </div>
-        <div class="col-md-12">
-            {{ form_errors(form.civilite) }}
-        </div>
-        <div class="col-md-12">
-            <div class="form-group mb-4">
-                {{ form_widget(form.civilite, {'attr' : { 'placeholder' : 'Civilité de l\'employé '}}) }}
-            </div>
-        </div>
-        
-        <div class="col-md-12">
-            {{ form_errors(form.fonction) }}
-        </div>
-        <div class="col-md-12">
-            <div class="form-group mb-4">
-                {{ form_widget(form.fonction, {'attr' : { 'title' : 'Role de l\'employé '}}) }}
-            </div>
-        </div>
-
-
-        <div class="col-md-12">
-            {{ form_errors(form.password) }}
-        </div>
-        <div class="col-md-12">
-            <div class="form-group mb-4">
-                {{ form_widget(form.password, {'attr' : { 'placeholder' : 'Mot de passe '}}) }}
+                    <div class="form-group">
+                        {{ form_row(form.matricule, {'attr':{'placeholder':'Matricule *'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.prenom, {'attr':{'placeholder':'Prénom *'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.hiredate, {'attr' : { 'title' : 'Date d\'embauche '}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.poste, {'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.fonction, {'attr' : { 'title' : 'Role de l\'employé '}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.password, {'attr' : { 'placeholder' : 'Mot de passe '}}) }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    {{ form_rest(form) }}
-
-
-    <div class="col-md-7 mt-4 pt-3 fond-7">
-        <div class="centrer mb-3">
-            <button type="submit" class="btn btn-shadow btn-normal btn-success mr-3">
-                <i class="fa fa-save"></i>
-                {{ 'Enregistrer'|trans }}
-            </button>
-            <a id="annule" onclick="load('annule')" href="{{ path('security_profile') }}" class="btn btn-shadow btn-normal btn-success-light">
-                <i class="fa fa-undo"></i>
-                {{ 'Annuler'|trans }}
-            </a>
-        </div>
-        {{ form_end(form) }}
+</div>
+{{ form_rest(form) }}
+<div class="col-md-7 mt-4 pt-3 fond-7">
+    <div class="centrer mb-3">
+        <button type="submit" class="btn btn-shadow btn-normal btn-success mr-3">
+            <i class="fa fa-save"></i>
+            {{ 'Enregistrer'|trans }}
+        </button>
+        <a id="annule" onclick="load('annule')" href="{{ path('security_profile') }}" class="btn btn-shadow btn-normal btn-success-light">
+            <i class="fa fa-undo"></i>
+            {{ 'Annuler'|trans }}
+        </a>
     </div>
+    {{ form_end(form) }}
+</div>
 </div>
