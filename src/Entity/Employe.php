@@ -47,11 +47,6 @@ class Employe extends User implements UserInterface
     private $nationalite;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Departement::class, inversedBy="employes")
-     */
-    private $departement;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $matricule;
@@ -66,11 +61,23 @@ class Employe extends User implements UserInterface
      */
     private $posteEmployes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=EmployeFormation::class, mappedBy="employe")
+     */
+    private $employeFormations;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Formation::class, mappedBy="employe")
+     */
+    private $formations;
+
 
     public function __construct()
     {
         parent::__construct();
         $this->posteEmployes = new ArrayCollection();
+        $this->employeFormations = new ArrayCollection();
+        $this->formations = new ArrayCollection();
     }
 
 
@@ -147,18 +154,6 @@ class Employe extends User implements UserInterface
         return $this;
     }
 
-    public function getDepartement(): ?Departement
-    {
-        return $this->departement;
-    }
-
-    public function setDepartement(?Departement $departement): self
-    {
-        $this->departement = $departement;
-
-        return $this;
-    }
-
     public function getMatricule(): ?string
     {
         return $this->matricule;
@@ -208,6 +203,63 @@ class Employe extends User implements UserInterface
             if ($posteEmploye->getEmploye() === $this) {
                 $posteEmploye->setEmploye(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EmployeFormation[]
+     */
+    public function getEmployeFormations(): Collection
+    {
+        return $this->employeFormations;
+    }
+
+    public function addEmployeFormation(EmployeFormation $employeFormation): self
+    {
+        if (!$this->employeFormations->contains($employeFormation)) {
+            $this->employeFormations[] = $employeFormation;
+            $employeFormation->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmployeFormation(EmployeFormation $employeFormation): self
+    {
+        if ($this->employeFormations->removeElement($employeFormation)) {
+            // set the owning side to null (unless already changed)
+            if ($employeFormation->getEmploye() === $this) {
+                $employeFormation->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Formation[]
+     */
+    public function getFormations(): Collection
+    {
+        return $this->formations;
+    }
+
+    public function addFormation(Formation $formation): self
+    {
+        if (!$this->formations->contains($formation)) {
+            $this->formations[] = $formation;
+            $formation->addEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFormation(Formation $formation): self
+    {
+        if ($this->formations->removeElement($formation)) {
+            $formation->removeEmploye($this);
         }
 
         return $this;

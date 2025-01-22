@@ -33,12 +33,6 @@ class EmployeType extends AbstractType
                 'placeholder' => 'Choisissez un poste',
                 'required' => true,
             ])
-            ->add('departement', EntityType::class, [
-                'class' => Departement::class,
-                'choice_label' => 'nom',
-                'placeholder' => 'Choisissez un département',
-                'required' => true,
-            ])
             ->add('Date_naissance', DateType::class, [
                 'widget' => 'single_text',
             ])
@@ -73,7 +67,7 @@ class EmployeType extends AbstractType
             ])
             ->add('fonction', ChoiceType::class, [
                 'choices' => User::jobs,
-                'placeholder' => 'types d\'utilisateur *',
+                'placeholder' => 'Types d\'utilisateur *',
                 'label' => false,
                 'required' => true
             ])

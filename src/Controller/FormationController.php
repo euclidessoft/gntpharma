@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\EmployeFormation;
 use App\Entity\Formation;
 use App\Form\FormationType;
 use App\Repository\FormationRepository;

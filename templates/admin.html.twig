@@ -55,7 +55,7 @@
                        data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
-                            <i class="fas fa-user fa-lg"></i>
+                            <i class="fas fa-users fa-lg"></i>
                         </div>
                         <div class="title">
                             {{ 'Employé'|trans }}
@@ -63,10 +63,17 @@
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="produits">
                             <li class="dropdown-item">
+                                <a class="nav-link {% block departement %}{% endblock %}"
+                                   href="{{ path('departement_index') }}">
+                                    <i class="fa fa-plus"></i>
+                                    {{ 'Département'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
                                 <a class="nav-link {% block poste %}{% endblock %}"
                                    href="{{ path('poste_index') }}">
                                     <i class="fa fa-plus"></i>
-                                    {{ 'Nouveau poste'|trans }}
+                                    {{ 'Poste'|trans }}
                                 </a>
                             </li>
                             <li class="dropdown-item">
@@ -74,6 +81,13 @@
                                    href="{{ path('employe_new') }}">
                                     <i class="fa fa-plus"></i>
                                     {{ 'Nouveau employé'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block formation_index %}{% endblock %}"
+                                   href="{{ path('formation_index') }}">
+                                    <i class="fa fa-plus"></i>
+                                    {{ 'Formation'|trans }}
                                 </a>
                             </li>
                         <li class="dropdown-item">
@@ -91,7 +105,7 @@
                        data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
-                            <i class="fas fa-user fa-lg"></i>
+                            <i class="fas fa-user-tag fa-lg"></i>
                         </div>
                         <div class="title">
                             {{ 'Client'|trans }}

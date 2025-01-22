@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FormationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,15 +34,37 @@ class Formation
      */
     private $datefin;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="formations")
-     */
-    private $employe;
 
     /**
      * @ORM\Column(type="text")
      */
     private $contenu;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $lieu;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $type;
+
+    /**
+     * @ORM\OneToMany(targetEntity=EmployeFormation::class, mappedBy="formation")
+     */
+    private $employeFormations;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Employe::class, inversedBy="formations")
+     */
+    private $employe;
+
+    public function __construct()
+    {
+        $this->employeFormations = new ArrayCollection();
+        $this->employe = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -83,17 +107,6 @@ class Formation
         return $this;
     }
 
-    public function getEmploye(): ?Employe
-    {
-        return $this->employe;
-    }
-
-    public function setEmploye(?Employe $employe): self
-    {
-        $this->employe = $employe;
-
-        return $this;
-    }
 
     public function getContenu(): ?string
     {
@@ -103,6 +116,84 @@ class Formation
     public function setContenu(string $contenu): self
     {
         $this->contenu = $contenu;
+
+        return $this;
+    }
+
+    public function getLieu(): ?string
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(string $lieu): self
+    {
+        $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EmployeFormation[]
+     */
+    public function getEmployeFormations(): Collection
+    {
+        return $this->employeFormations;
+    }
+
+    public function addEmployeFormation(EmployeFormation $employeFormation): self
+    {
+        if (!$this->employeFormations->contains($employeFormation)) {
+            $this->employeFormations[] = $employeFormation;
+            $employeFormation->setFormation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmployeFormation(EmployeFormation $employeFormation): self
+    {
+        if ($this->employeFormations->removeElement($employeFormation)) {
+            // set the owning side to null (unless already changed)
+            if ($employeFormation->getFormation() === $this) {
+                $employeFormation->setFormation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Employe[]
+     */
+    public function getEmploye(): Collection
+    {
+        return $this->employe;
+    }
+
+    public function addEmploye(Employe $employe): self
+    {
+        if (!$this->employe->contains($employe)) {
+            $this->employe[] = $employe;
+        }
+
+        return $this;
+    }
+
+    public function removeEmploye(Employe $employe): self
+    {
+        $this->employe->removeElement($employe);
 
         return $this;
     }

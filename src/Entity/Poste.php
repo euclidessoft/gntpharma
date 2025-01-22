@@ -39,6 +39,11 @@ class Poste
      */
     private $posteEmployes;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Departement::class, inversedBy="postes")
+     */
+    private $departement;
+
     public function __construct()
     {
         $this->employes = new ArrayCollection();
@@ -130,6 +135,18 @@ class Poste
                 $posteEmploye->setPoste(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDepartement(): ?Departement
+    {
+        return $this->departement;
+    }
+
+    public function setDepartement(?Departement $departement): self
+    {
+        $this->departement = $departement;
 
         return $this;
     }

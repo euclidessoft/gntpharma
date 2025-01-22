@@ -47,15 +47,85 @@
         </div>
         <div class="col-md-12">
             <div class="form-group mb-4">
-                {{ form_widget(form.hiredate, {'attr' : { 'placeholder' : 'Date d\'embauche '}}) }}
+                {{ form_widget(form.hiredate, {'attr' : { 'title' : 'Date d\'embauche '}}) }}
             </div>
         </div>
         <div class="col-md-12">
-            {{ form_errors(form.departement) }}
+            {{ form_errors(form.matricule) }}
         </div>
         <div class="col-md-12">
             <div class="form-group mb-4">
-                {{ form_widget(form.departement, {'attr' : { 'placeholder' : 'Département '}}) }}
+                {{ form_widget(form.matricule, {'attr' : { 'placeholder' : 'Matricule '}}) }}
+            </div>
+        </div>
+        <div class="col-md-12">
+            {{ form_errors(form.nationalite) }}
+        </div>
+        <div class="col-md-12">
+            <div class="form-group mb-4">
+                {{ form_widget(form.nationalite, {'attr' : { 'placeholder' : 'Nationalite '}}) }}
+            </div>
+        </div>
+        <div class="col-md-12">
+            {{ form_errors(form.poste) }}
+        </div>
+        <div class="col-md-12">
+            <div class="form-group mb-4">
+                {{ form_widget(form.poste, {'attr' : { 'placeholder' : 'poste '}}) }}
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            {{ form_errors(form.Date_naissance) }}
+        </div>
+        <div class="col-md-12">
+            <div class="form-group mb-4">
+                {{ form_widget(form.Date_naissance, {'attr' : { 'title' : 'Date de naissance '}}) }}
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            {{ form_errors(form.lieu_naissance) }}
+        </div>
+        <div class="col-md-12">
+            <div class="form-group mb-4">
+                {{ form_widget(form.lieu_naissance, {'attr' : { 'placeholder' : 'Lieu de naissance '}}) }}
+            </div>
+        </div>        
+        
+        <div class="col-md-12">
+            {{ form_errors(form.sexe) }}
+        </div>
+        <div class="col-md-12">
+            <div class="form-group mb-4">
+                {{ form_widget(form.sexe, {'attr' : { 'title' : 'Sexe de l\'employé '}}) }}
+            </div>
+        </div>
+        <div class="col-md-12">
+            {{ form_errors(form.civilite) }}
+        </div>
+        <div class="col-md-12">
+            <div class="form-group mb-4">
+                {{ form_widget(form.civilite, {'attr' : { 'placeholder' : 'Civilité de l\'employé '}}) }}
+            </div>
+        </div>
+        
+        <div class="col-md-12">
+            {{ form_errors(form.fonction) }}
+        </div>
+        <div class="col-md-12">
+            <div class="form-group mb-4">
+                {{ form_widget(form.fonction, {'attr' : { 'title' : 'Role de l\'employé '}}) }}
+            </div>
+        </div>
+
+
+        <div class="col-md-12">
+            {{ form_errors(form.password) }}
+        </div>
+        <div class="col-md-12">
+            <div class="form-group mb-4">
+                {{ form_widget(form.password, {'attr' : { 'placeholder' : 'Mot de passe '}}) }}
             </div>
         </div>
     </div>
