@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -95,12 +97,18 @@ class Produit
      */
     private $tva;
 
+    /**
+     * @ORM\OneToMany(targetEntity=FournisseurProduit::class, mappedBy="produit")
+     */
+    private $fournisseurProduits;
+
 
     public function __construct()
     {
         $this->stock = 0;
         $this->creation = new \Datetime();
         $this->tva = false;
+        $this->fournisseurProduits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -312,6 +320,36 @@ class Produit
     public function setTva(bool $tva): self
     {
         $this->tva = $tva;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FournisseurProduit[]
+     */
+    public function getFournisseurProduits(): Collection
+    {
+        return $this->fournisseurProduits;
+    }
+
+    public function addFournisseurProduit(FournisseurProduit $fournisseurProduit): self
+    {
+        if (!$this->fournisseurProduits->contains($fournisseurProduit)) {
+            $this->fournisseurProduits[] = $fournisseurProduit;
+            $fournisseurProduit->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFournisseurProduit(FournisseurProduit $fournisseurProduit): self
+    {
+        if ($this->fournisseurProduits->removeElement($fournisseurProduit)) {
+            // set the owning side to null (unless already changed)
+            if ($fournisseurProduit->getProduit() === $this) {
+                $fournisseurProduit->setProduit(null);
+            }
+        }
 
         return $this;
     }

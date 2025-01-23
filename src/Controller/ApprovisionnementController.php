@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Approvisionnement;
 use App\Entity\Approvisionner;
+use App\Entity\FournisseurProduit;
 use App\Entity\Produit;
 use App\Entity\Stock;
 use App\Repository\ApprovisionnementRepository;
@@ -213,6 +214,37 @@ class ApprovisionnementController extends AbstractController
         $session->set("approv", $approv);
         $res['id'] = 'ok';
         $res['nb'] = count($approv);
+        $response = new Response();
+        $response->headers->set('content-type', 'application/json');
+        $re = json_encode($res);
+        $response->setContent($re);
+        return $response;
+    }
+
+    /**
+     * @Route("/fournisseur/", name="fournisseur")
+     */
+    public function fournisseur(Request $request, ProduitRepository $repository, SessionInterface $session)
+    {
+
+        $fournisseurproduits = $this->getDoctrine()->getRepository(FournisseurProduit::class)->findBy(['produit' => $request->get('prod')]);
+
+        if(count($fournisseurproduits) > 0) {
+            foreach ($fournisseurproduits as $fournisseurproduit) {
+
+                $res[] = [
+                    'id' => 'ok',
+                    'designation' => $fournisseurproduit->getFournisseur()->getDesignation(),
+                ];
+            }
+
+            }else{
+                $res[] = [
+                    'id' => 'ok',
+                    'designation' => "Aucun fournisseur",
+                ];
+            }
+
         $response = new Response();
         $response->headers->set('content-type', 'application/json');
         $re = json_encode($res);
