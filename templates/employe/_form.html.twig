@@ -7,7 +7,7 @@
         {{ 'Les champs marqués par * sont obligatoires'|trans }}
     </h6>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="card border-green mt-3 mb-3">
                 <div class="card-header bg-success-light bb-green text-green">
                     <i class="fa fa-id-card mr-2"></i>
@@ -49,10 +49,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
-            <div class="card border-green mt-3 mb-3">
-                <div class="card-header bg-success-light bb-green text-green">
-                    <i class="fa fa-id-card mr-2"></i>
+        <div class="col-lg-4">
+            <div class="card border-warning mt-3 mb-3">
+                <div class="card-header bg-warning-light bb-warning text-warning">
+                    <i class="fa fa-info-circle mr-2"></i>
+
                     {{ 'Information professionnelle'|trans }}
                 </div>
                 <div class="card-body">
@@ -79,20 +80,85 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-lg-4">
+            <div class="card border-danger mt-3 mb-3 focus-shadow-danger">
+                <div class="card-header bg-danger-light bb-danger text-danger">
+                    <i class="fa fa-info-circle mr-2"></i>
+                    {{ 'Informations sensibles'|trans }}
+                </div>
+
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ form_row(form.visite, {'attr':{'placeholder':'Visite médicale obtenue', 'class':'border-danger focus-shadow-danger'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.ethnie, {'attr':{'placeholder':'Ethnie', 'class':'border-danger focus-shadow-danger'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.bloodgroup, {'attr':{'placeholder':'Renseigner le groupe sanguin', 'class':'border-danger focus-shadow-danger'}, 'label':false}) }}
+                    </div>
+                    <div class="alert bg-danger-light border-danger mt-4 pt-4 radius-10">
+                        <div class="row">
+                            <div class="col-6 mt-1 mb-1">
+                                {{ form_widget(form.diabete, {'attr':{'class':'focus-shadow-danger'}, 'label':'Diabète'}) }}
+                            </div>
+                            <div class="col-6 mt-1 mb-1">
+                                {{ form_widget(form.handicap, {'attr':{'class':'focus-shadow-danger'}, 'label':'Handicape'}) }}
+                            </div>
+                            <div class="col-6 mt-1 mb-1">
+                                {{ form_widget(form.hypo, {'attr':{'class':'focus-shadow-danger'}, 'label':'Hypotension'}) }}
+                            </div>
+                            <div class="col-6 mt-1 mb-1">
+                                {{ form_widget(form.hyper, {'attr':{'class':'focus-shadow-danger'}, 'label':'Hypertension'}) }}
+                            </div>
+                            <div class="col-6 mt-1 mb-1">
+{#                                {{ form_widget(form.nonvoyant, {'attr':{'class':'focus-shadow-danger'}, 'label':'Non voyant'}) }}#}
+                            </div>
+                            <div class="col-6 mt-1">
+                                <input class="focus-shadow-danger" type="checkbox" id="autre" value="autre"
+                                    onclick="autretext()">
+                                <label for="autre"> {{ 'Autre'|trans }} </label>
+                            </div>
+                            <div class="col-12 mb-1">
+{#                                {{ form_widget(form.remark, {'attr':{'class':'border-danger focus-shadow-danger', 'placeholder':'Autre remarque à noter'}, 'label':false}) }}#}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border-danger mt-4 mb-3">
+                        <div class="card-header bg-danger-light bb-danger text-danger">
+                            {{ 'Personne à contacter'|trans }}
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                {{ form_row(form.famillyname, {'attr':{'placeholder':'Prénom(s) et nom', 'class':'border-danger focus-shadow-danger'}, 'label':false}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_row(form.famillylink, {'label':false, 'attr' : {'placeholder': 'Lien de parenté', 'class':'border-danger focus-shadow-danger'}}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_row(form.famillyphone, {'attr':{'placeholder':'Téléphone', 'class':'border-danger focus-shadow-danger'}, 'label':false}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-{{ form_rest(form) }}
-<div class="col-md-7 mt-4 pt-3 fond-7">
-    <div class="centrer mb-3">
-        <button type="submit" class="btn btn-shadow btn-normal btn-success mr-3">
-            <i class="fa fa-save"></i>
-            {{ 'Enregistrer'|trans }}
-        </button>
-        <a id="annule" onclick="load('annule')" href="{{ path('security_profile') }}" class="btn btn-shadow btn-normal btn-success-light">
-            <i class="fa fa-undo"></i>
-            {{ 'Annuler'|trans }}
-        </a>
+    {{ form_rest(form) }}
+    <div class="col-md-7 mt-4 pt-3 fond-7">
+        <div class="centrer mb-3">
+            <button type="submit" class="btn btn-shadow btn-normal btn-success mr-3">
+                <i class="fa fa-save"></i>
+                {{ 'Enregistrer'|trans }}
+            </button>
+            <a id="annule" onclick="load('annule')" href="{{ path('security_profile') }}" class="btn btn-shadow btn-normal btn-success-light">
+                <i class="fa fa-undo"></i>
+                {{ 'Annuler'|trans }}
+            </a>
+        </div>
+        {{ form_end(form) }}
     </div>
-    {{ form_end(form) }}
-</div>
 </div>

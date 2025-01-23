@@ -71,6 +71,55 @@ class Employe extends User implements UserInterface
      */
     private $formations;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $famillyname;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $famillylink;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $famillyphone;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $visite;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $ethnie;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $bloodgroup;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $diabete;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $handicap;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $hypo;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $hyper;
 
     public function __construct()
     {
@@ -265,6 +314,125 @@ class Employe extends User implements UserInterface
         return $this;
     }
 
+    public function getFamillyname(): ?string
+    {
+        return $this->famillyname;
+    }
+
+    public function setFamillyname(string $famillyname): self
+    {
+        $this->famillyname = $famillyname;
+
+        return $this;
+    }
+
+    public function getFamillylink(): ?string
+    {
+        return $this->famillylink;
+    }
+
+    public function setFamillylink(string $famillylink): self
+    {
+        $this->famillylink = $famillylink;
+
+        return $this;
+    }
+
+    public function getFamillyphone(): ?int
+    {
+        return $this->famillyphone;
+    }
+
+    public function setFamillyphone(int $famillyphone): self
+    {
+        $this->famillyphone = $famillyphone;
+
+        return $this;
+    }
+
+    public function getVisite(): ?string
+    {
+        return $this->visite;
+    }
+
+    public function setVisite(string $visite): self
+    {
+        $this->visite = $visite;
+
+        return $this;
+    }
+
+    public function getEthnie(): ?string
+    {
+        return $this->ethnie;
+    }
+
+    public function setEthnie(string $ethnie): self
+    {
+        $this->ethnie = $ethnie;
+
+        return $this;
+    }
+
+    public function getBloodgroup(): ?string
+    {
+        return $this->bloodgroup;
+    }
+
+    public function setBloodgroup(string $bloodgroup): self
+    {
+        $this->bloodgroup = $bloodgroup;
+
+        return $this;
+    }
+
+    public function getDiabete(): ?string
+    {
+        return $this->diabete;
+    }
+
+    public function setDiabete(string $diabete): self
+    {
+        $this->diabete = $diabete;
+
+        return $this;
+    }
+
+    public function getHandicap(): ?string
+    {
+        return $this->handicap;
+    }
+
+    public function setHandicap(string $handicap): self
+    {
+        $this->handicap = $handicap;
+
+        return $this;
+    }
+
+    public function getHypo(): ?string
+    {
+        return $this->hypo;
+    }
+
+    public function setHypo(string $hypo): self
+    {
+        $this->hypo = $hypo;
+
+        return $this;
+    }
+
+    public function getHyper(): ?string
+    {
+        return $this->hyper;
+    }
+
+    public function setHyper(string $hyper): self
+    {
+        $this->hyper = $hyper;
+
+        return $this;
+    }
 
 }
 

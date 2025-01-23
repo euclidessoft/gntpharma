@@ -9,6 +9,7 @@ use App\Entity\Employe;
 use App\Entity\Poste;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -78,6 +79,37 @@ class EmployeType extends AbstractType
                 'label' => false,
                 'required' => true
             ])
+            ->add('visite')
+            ->add('ethnie')
+            ->add('bloodgroup', ChoiceType::class, [
+                'choices' =>[
+                    'A' => 'A',
+                    'B' => 'B',
+                    'AB' => 'AB',
+                    'O' => 'O',
+                ],
+                'placeholder' => 'Sélectionnez le groupe sanguin'
+            ])
+            ->add('diabete', CheckboxType::class, [
+                'label' => 'Handicap',
+                'required' => false,
+            ])
+            ->add('handicap', CheckboxType::class, [
+                'label' => 'Handicap',
+                'required' => false,
+            ])
+            ->add('hypo', CheckboxType::class, [
+                'label' => 'Hypoglycémie',
+                'required' => false,
+            ])
+            ->add('hyper', CheckboxType::class, [
+                'label' => 'Hypertension',
+                'required' => false,
+            ])
+
+            ->add('famillyname')
+            ->add('famillylink')
+            ->add('famillyphone')
         ;
     }
 
