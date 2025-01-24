@@ -82,7 +82,7 @@ class EmployeType extends AbstractType
             ->add('visite')
             ->add('ethnie')
             ->add('bloodgroup', ChoiceType::class, [
-                'choices' =>[
+                'choices' => [
                     'A' => 'A',
                     'B' => 'B',
                     'AB' => 'AB',
@@ -106,7 +106,12 @@ class EmployeType extends AbstractType
                 'label' => 'Hypertension',
                 'required' => false,
             ])
+            ->add('epilepsie', CheckboxType::class, [
+                'label' => 'epilepsie',
+                'required' => false,
+            ])
 
+            ->add('remark')
             ->add('famillyname')
             ->add('famillylink')
             ->add('famillyphone')

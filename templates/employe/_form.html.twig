@@ -113,7 +113,7 @@
                                 {{ form_widget(form.hyper, {'attr':{'class':'focus-shadow-danger'}, 'label':'Hypertension'}) }}
                             </div>
                             <div class="col-6 mt-1 mb-1">
-{#                                {{ form_widget(form.nonvoyant, {'attr':{'class':'focus-shadow-danger'}, 'label':'Non voyant'}) }}#}
+                                {{ form_widget(form.epilepsie, {'attr':{'class':'focus-shadow-danger'}, 'label':'Epileptiques'}) }}
                             </div>
                             <div class="col-6 mt-1">
                                 <input class="focus-shadow-danger" type="checkbox" id="autre" value="autre"
@@ -121,7 +121,7 @@
                                 <label for="autre"> {{ 'Autre'|trans }} </label>
                             </div>
                             <div class="col-12 mb-1">
-{#                                {{ form_widget(form.remark, {'attr':{'class':'border-danger focus-shadow-danger', 'placeholder':'Autre remarque à noter'}, 'label':false}) }}#}
+                                {{ form_widget(form.remark, {'attr':{'class':'border-danger focus-shadow-danger', 'placeholder':'Autre maladie'}, 'label':false}) }}
                             </div>
                         </div>
                     </div>
@@ -147,18 +147,28 @@
         </div>
     </div>
 </div>
-    {{ form_rest(form) }}
-    <div class="col-md-7 mt-4 pt-3 fond-7">
-        <div class="centrer mb-3">
-            <button type="submit" class="btn btn-shadow btn-normal btn-success mr-3">
-                <i class="fa fa-save"></i>
-                {{ 'Enregistrer'|trans }}
-            </button>
-            <a id="annule" onclick="load('annule')" href="{{ path('security_profile') }}" class="btn btn-shadow btn-normal btn-success-light">
-                <i class="fa fa-undo"></i>
-                {{ 'Annuler'|trans }}
-            </a>
-        </div>
+{{ form_rest(form) }}
+<div class="container-fluid mt-4 mb-5 pt-3 pb-2 fond-7">
+    <div class="centrer">
+        {#            <div class="row">#}
+        <button type="button" class="btn btn-shadow btn-green btn-normal mb-2 mr-3" id="send" onclick="envoieadd()">
+            <i class="fa fa-save"></i>
+            {{ 'Enregistrer'|trans }}
+        </button>
+        <button type="reset" class="btn btn-shadow btn-danger btn-normal mb-2">
+            <i class="fa fa-undo"></i>
+            {{ 'Effacer'|trans }}
+        </button>
+        {{ form_rest(form) }}
         {{ form_end(form) }}
+        {#            </div>#}
     </div>
 </div>
+
+{% block script %}
+<script>
+
+{{ include('scripts/pelerinnew.html.twig') }}
+
+</script>
+{% endblock %}

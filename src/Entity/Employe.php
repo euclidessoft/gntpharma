@@ -121,6 +121,16 @@ class Employe extends User implements UserInterface
      */
     private $hyper;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $epilepsie;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $remark;
+
     public function __construct()
     {
         parent::__construct();
@@ -433,6 +443,31 @@ class Employe extends User implements UserInterface
 
         return $this;
     }
+
+    public function getEpilepsie(): ?string
+    {
+        return $this->epilepsie;
+    }
+
+    public function setEpilepsie(string $epilepsie): self
+    {
+        $this->epilepsie = $epilepsie;
+
+        return $this;
+    }
+
+    public function getRemark(): ?string
+    {
+        return $this->remark;
+    }
+
+    public function setRemark(?string $remark): self
+    {
+        $this->remark = $remark;
+
+        return $this;
+    }
+
 
 }
 
