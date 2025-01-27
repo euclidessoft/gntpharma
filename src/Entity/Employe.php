@@ -89,16 +89,6 @@ class Employe extends User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $visite;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $ethnie;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $bloodgroup;
 
     /**
@@ -130,6 +120,12 @@ class Employe extends User implements UserInterface
      * @ORM\Column(type="text", nullable=true)
      */
     private $remark;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $enfant;
+
 
     public function __construct()
     {
@@ -360,30 +356,6 @@ class Employe extends User implements UserInterface
         return $this;
     }
 
-    public function getVisite(): ?string
-    {
-        return $this->visite;
-    }
-
-    public function setVisite(string $visite): self
-    {
-        $this->visite = $visite;
-
-        return $this;
-    }
-
-    public function getEthnie(): ?string
-    {
-        return $this->ethnie;
-    }
-
-    public function setEthnie(string $ethnie): self
-    {
-        $this->ethnie = $ethnie;
-
-        return $this;
-    }
-
     public function getBloodgroup(): ?string
     {
         return $this->bloodgroup;
@@ -464,6 +436,18 @@ class Employe extends User implements UserInterface
     public function setRemark(?string $remark): self
     {
         $this->remark = $remark;
+
+        return $this;
+    }
+
+    public function getEnfant(): ?int
+    {
+        return $this->enfant;
+    }
+
+    public function setEnfant(int $enfant): self
+    {
+        $this->enfant = $enfant;
 
         return $this;
     }

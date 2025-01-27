@@ -45,8 +45,17 @@ class EmployeController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $entityManager = $this->getDoctrine()->getManager();
             
+            $poste = $employe->getPoste();
+            if($poste->getType() == true) {
+                //on cherche si le pose est deja attribue
+                $userposte = $entityManager->getRepository(PosteEmploye::class)->findOneBy(['poste' => $poste, 'datefin' => null]);
+                if($userposte){
+                    $this->addFlash('notice','Ce poste est unique et est déjà attribué à un employé.');
+                    return $this->redirectToRoute('employe_new');
+                }
+            } 
+
             $posteEmploye = new PosteEmploye();
-            
             $hashpass = $encoder->encodePassword($employe, 'Passer2023');
             $employe->setPassword($hashpass);
             $employe->setUsername($employe->getNom());

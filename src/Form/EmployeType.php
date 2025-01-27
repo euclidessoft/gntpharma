@@ -7,6 +7,8 @@ use App\Form\Type\SexeType;
 use App\Entity\Departement;
 use App\Entity\Employe;
 use App\Entity\Poste;
+use App\Form\Type\BloodGroupType;
+use App\Form\Type\LinkType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -50,18 +52,19 @@ class EmployeType extends AbstractType
                 'multiple' => false,
                 'label' => 'Sexe',
             ])
+            ->add('enfant')
             ->add('civilite', ChoiceType::class, [
                 'choices' => [
                     'Célibataire' => 'celibataire',
                     'Marié(e)' => 'marie',
                     'Divorcé(e)' => 'divorce',
-                    'Veuf' => 'veuf',
+                    'Veuf(ve)' => 'veuf',
                 ],
-                'placeholder' => 'Choisissez une civilité',
+                'placeholder' => 'Situation Matrimoniale',
                 'required' => true,
                 'expanded' => false,
                 'multiple' => false,
-                'label' => 'civilite',
+                'label' => 'situation',
             ])
             ->add('hiredate', DateType::class, [
                 'widget' => 'single_text',
@@ -79,17 +82,7 @@ class EmployeType extends AbstractType
                 'label' => false,
                 'required' => true
             ])
-            ->add('visite')
-            ->add('ethnie')
-            ->add('bloodgroup', ChoiceType::class, [
-                'choices' => [
-                    'A' => 'A',
-                    'B' => 'B',
-                    'AB' => 'AB',
-                    'O' => 'O',
-                ],
-                'placeholder' => 'Sélectionnez le groupe sanguin'
-            ])
+            ->add('bloodgroup', BloodGroupType::class,array('placeholder' => 'Sélectionnez le groupe sanguin'))
             ->add('diabete', CheckboxType::class, [
                 'label' => 'Handicap',
                 'required' => false,
@@ -110,10 +103,9 @@ class EmployeType extends AbstractType
                 'label' => 'epilepsie',
                 'required' => false,
             ])
-
             ->add('remark')
             ->add('famillyname')
-            ->add('famillylink')
+            ->add('famillylink',LinkType::class,array('placeholder' => 'Lien de parenté'))
             ->add('famillyphone')
         ;
     }

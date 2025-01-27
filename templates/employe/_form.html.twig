@@ -6,6 +6,15 @@
     <h6 class="mt-4 text-danger">
         {{ 'Les champs marqués par * sont obligatoires'|trans }}
     </h6>
+    {% for message in app.flashes('notice') %}
+    <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+            &times;
+        </button>
+        {{ message|trans }}
+    </div>
+    {% endfor %}
+
     <div class="row">
         <div class="col-lg-4">
             <div class="card border-green mt-3 mb-3">
@@ -39,6 +48,9 @@
                     </div>
                     <div class="form-group">
                         {{ form_row(form.sexe, {'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.enfant, {'attr':{'placeholder':'Nombre d\'enfant'}, 'label':false}) }}
                     </div>
                     <div class="form-group">
                         {{ form_row(form.civilite, {'attr':{'placeholder':'Civilité'}, 'label':false}) }}
@@ -89,12 +101,6 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="form-group">
-                        {{ form_row(form.visite, {'attr':{'placeholder':'Visite médicale obtenue', 'class':'border-danger focus-shadow-danger'}, 'label':false}) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_row(form.ethnie, {'attr':{'placeholder':'Ethnie', 'class':'border-danger focus-shadow-danger'}, 'label':false}) }}
-                    </div>
                     <div class="form-group">
                         {{ form_row(form.bloodgroup, {'attr':{'placeholder':'Renseigner le groupe sanguin', 'class':'border-danger focus-shadow-danger'}, 'label':false}) }}
                     </div>

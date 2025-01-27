@@ -44,6 +44,16 @@ class Poste
      */
     private $departement;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $salaire;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $type;
+
     public function __construct()
     {
         $this->employes = new ArrayCollection();
@@ -147,6 +157,30 @@ class Poste
     public function setDepartement(?Departement $departement): self
     {
         $this->departement = $departement;
+
+        return $this;
+    }
+
+    public function getSalaire(): ?int
+    {
+        return $this->salaire;
+    }
+
+    public function setSalaire(int $salaire): self
+    {
+        $this->salaire = $salaire;
+
+        return $this;
+    }
+
+    public function getType(): ?bool
+    {
+        return $this->type;
+    }
+
+    public function setType(bool $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
