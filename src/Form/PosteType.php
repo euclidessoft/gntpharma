@@ -26,8 +26,8 @@ class PosteType extends AbstractType
             ])
             ->add('type', ChoiceType::class, [
                 'choices' => [
-                    'Unique' => 'Unique',
-                    'Multiple' => 'Multiple'
+                    'Unique' => '1',
+                    'Multiple' => '0'
                 ],
                 'placeholder' => 'Occupation Unique ou Multiple'
             ])
