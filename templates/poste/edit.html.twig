@@ -3,6 +3,11 @@
 {% block body %}
 
 
+<div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
+    <h4 class="mb-5">
+        <i class="fa fa-plus mr-2"></i>
+        {{ 'Modifier le poste'|trans }}
+    </h4>
 
     {{ include('poste/_form.html.twig', {'button_label': 'Update'}) }}
 
