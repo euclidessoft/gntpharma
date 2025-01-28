@@ -1,0 +1,72 @@
+{% extends 'admin.html.twig' %}
+{% block employe %}active{% endblock %}
+{% block poste %}active{% endblock %}
+{% block body %}
+<div class="col-lg-12 mt-4 pb-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa-brands fa-product-hunt mr-2"></i>
+        {{ 'Attribuer des employés au poste'|trans }}
+    </h3>
+    {% for message in app.flashes('error') %}
+    <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+            &times;
+        </button>
+        {{ message|trans }}
+    </div>
+    {% endfor %}
+    <form method="POST">
+        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="select_all" title="Sélectionnez Tous"></th>
+                    <th>{{ 'Nom'|trans }}</th>
+                    <th>{{ 'Prénom'|trans }}</th>
+                    <th>{{ 'Téléphone'|trans }}</th>
+                    <th>{{ 'Email'|trans }}</th>
+                    <th>{{ 'Adresse'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employe in employes %}
+                <tr>
+                    <td><input type="checkbox" name="employes[]" value="{{ employe.id }}" class="employe_checkbox"></td>
+                    <td>{{ employe.nom }}</td>
+                    <td>{{ employe.prenom }}</td>
+                    <td>{{ employe.phone }}</td>
+                    <td>{{ employe.email }}</td>
+                    <td>{{ employe.adresse }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">{{ 'Aucun employé à attribuer'|trans }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if employes|length > 0 %}
+        <button type="submit" class="btn btn-success">
+            {{ 'Attribuer les employés sélectionnés'|trans }}
+        </button>
+        {% else %}
+        <div class="col-md-4 offset-md-3 mt-4 py-3 fond-7">
+            <div class="centrer">
+                <a id="{{ poste.id }}" onclick="load({{ poste.id }})" class="btn btn-success-light text-green" href="{{ path('poste_index') }}">
+                    <i class="fa fa-undo"></i>
+                    {{ 'Retour'|trans }}
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </form>
+</div>
+<script>
+    document.getElementById('select_all').addEventListener('change', function() {
+        var checkboxes = document.querySelectorAll('.employe_checkbox');
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = document.getElementById('select_all').checked;
+        });
+    });
+</script>
+{% endblock %}

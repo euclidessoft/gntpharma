@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Employe;
+use App\Entity\PosteEmploye;
 use App\Form\EmployeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,8 +44,18 @@ class EmployeController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             $entityManager = $this->getDoctrine()->getManager();
-
             
+            $poste = $employe->getPoste();
+            if($poste->getType() == true) {
+                //on cherche si le pose est deja attribue
+                $userposte = $entityManager->getRepository(PosteEmploye::class)->findOneBy(['poste' => $poste, 'datefin' => null]);
+                if($userposte){
+                    $this->addFlash('notice','Ce poste est unique et est déjà attribué à un employé.');
+                    return $this->redirectToRoute('employe_new');
+                }
+            } 
+
+            $posteEmploye = new PosteEmploye();
             $hashpass = $encoder->encodePassword($employe, 'Passer2023');
             $employe->setPassword($hashpass);
             $employe->setUsername($employe->getNom());
@@ -52,7 +63,14 @@ class EmployeController extends AbstractController
             $employe->setFonction("Employé");
             $employe->setHireDate($employe->getHireDate());
             
+
+            $posteEmploye->setDatedebut(new \DateTime());
+            $posteEmploye->setDatefin(null);
+            $posteEmploye->setPoste($employe->getPoste());
+            $posteEmploye->setEmploye($employe);
         
+        
+            $entityManager->persist($posteEmploye);
             $entityManager->persist($employe);
             $entityManager->flush();
 

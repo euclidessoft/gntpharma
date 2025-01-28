@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{_locale}//Departement")
+ * @Route("/{_locale}/Departement")
  */
 class DepartementController extends AbstractController
 {

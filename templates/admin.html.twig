@@ -55,7 +55,7 @@
                        data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
-                            <i class="fas fa-user fa-lg"></i>
+                            <i class="fas fa-users fa-lg"></i>
                         </div>
                         <div class="title">
                             {{ 'Employé'|trans }}
@@ -63,10 +63,31 @@
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="produits">
                             <li class="dropdown-item">
+                                <a class="nav-link {% block departement %}{% endblock %}"
+                                   href="{{ path('departement_index') }}">
+                                    <i class="fa fa-plus"></i>
+                                    {{ 'Département'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block poste %}{% endblock %}"
+                                   href="{{ path('poste_index') }}">
+                                    <i class="fa fa-plus"></i>
+                                    {{ 'Poste'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
                                 <a class="nav-link {% block employe_new %}{% endblock %}"
                                    href="{{ path('employe_new') }}">
                                     <i class="fa fa-plus"></i>
                                     {{ 'Nouveau employé'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block formation_index %}{% endblock %}"
+                                   href="{{ path('formation_index') }}">
+                                    <i class="fa fa-plus"></i>
+                                    {{ 'Formation'|trans }}
                                 </a>
                             </li>
                         <li class="dropdown-item">
@@ -84,7 +105,7 @@
                        data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
-                            <i class="fas fa-user fa-lg"></i>
+                            <i class="fas fa-user-tag fa-lg"></i>
                         </div>
                         <div class="title">
                             {{ 'Client'|trans }}
@@ -509,32 +530,12 @@
                                 </ul>
                             </li>
 
-                            <li class="dropdown-item submenu">
-                                <a class="nav-link dropdown-toggle {% block banque %}{% endblock %}" href="#"
-                                   id="banque"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block banque %}{% endblock %}" href="{{ path('banque_index')}}"
+                                   id="banque">
                                     <i class="fa-solid fa-landmark"></i>
                                     {{ 'Banque'|trans }}
                                 </a>
-                                <ul class="dropdown-submenu" aria-labelledby="banque">
-
-                                    <li class="dropdown-item">
-                                        <a class="nav-link  {% block new_banque %}{% endblock %}"
-                                           href="{{ path('banque_new') }}">
-                                            <i class="fa-solid fa-landmark"></i>
-                                            <i class="fas fa-plus"></i>
-                                            {{ 'Créer une banque'|trans }}
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item">
-                                        <a class="nav-link {% block all_banque %}{% endblock %}"
-                                           href="{{ path('banque_index') }}">
-                                            <i class="fa-solid fa-landmark"></i>
-                                            <i class="fas fa-landmark fa-list"></i>
-                                            {{ 'Toutes les banques'|trans }}
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
                             <li class="dropdown-item submenu">
                                 <a class="nav-link dropdown-toggle {% block financement %}{% endblock %}" href="#"

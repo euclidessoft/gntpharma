@@ -1,78 +1,180 @@
-<div class="col-lg-12 mt-3">
-    {{ form_start(form, {'attr' : { 'id' : 'form'}}) }}
+<div class="col-lg-12 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
+    <h3 class="mb-5">
+        <i class="fa-solid fa-landmark"></i><i class="fa fa-plus mr-2"></i>
+        {{ 'Nouvel employé'|trans }}
+    </h3>
+    <h6 class="mt-4 text-danger">
+        {{ 'Les champs marqués par * sont obligatoires'|trans }}
+    </h6>
+    {% for message in app.flashes('notice') %}
+    <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+            &times;
+        </button>
+        {{ message|trans }}
+    </div>
+    {% endfor %}
 
     <div class="row">
-        <div class="col-md-6">
-            {{ form_errors(form.prenom) }}
-        </div>
-        <div class="col-md-6">
-            {{ form_errors(form.nom) }}
-        </div>
-        <div class="col-md-6">
-            <div class="form-group mb-4">
-                {{ form_row(form.prenom, {'label': false, 'attr' : { 'placeholder' : 'Prénom *'}}) }}
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group mb-4">
-                {{ form_widget(form.nom, {'attr' : { 'placeholder' : 'Nom *'}}) }}
-            </div>
-        </div>
-        <div class="col-md-6">
-            {{ form_errors(form.email) }}
-        </div>
-        <div class="col-md-6">
-            {{ form_errors(form.phone) }}
-        </div>
-        <div class="col-md-6">
-            <div class="form-group mb-4">
-                {{ form_widget(form.email, {'attr' : { 'placeholder' : 'Email *'}}) }}
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group mb-4">
-                {{ form_widget(form.phone, {'attr' : { 'placeholder' : 'Telephone *'}}) }}
-            </div>
-        </div>
-        <div class="col-md-12">
-            {{ form_errors(form.adresse) }}
-        </div>
-        <div class="col-md-12">
-            <div class="form-group mb-4">
-                {{ form_widget(form.adresse, {'attr' : { 'placeholder' : 'Adresse '}}) }}
-            </div>
-        </div>
-        <div class="col-md-12">
-            {{ form_errors(form.hiredate) }}
-        </div>
-        <div class="col-md-12">
-            <div class="form-group mb-4">
-                {{ form_widget(form.hiredate, {'attr' : { 'placeholder' : 'Date d\'embauche '}}) }}
-            </div>
-        </div>
-        <div class="col-md-12">
-            {{ form_errors(form.departement) }}
-        </div>
-        <div class="col-md-12">
-            <div class="form-group mb-4">
-                {{ form_widget(form.departement, {'attr' : { 'placeholder' : 'Département '}}) }}
-            </div>
-        </div>
-    </div>
-    {{ form_rest(form) }}
+        <div class="col-lg-4">
+            <div class="card border-green mt-3 mb-3">
+                <div class="card-header bg-success-light bb-green text-green">
+                    <i class="fa fa-id-card mr-2"></i>
+                    {{ 'Information personnelle'|trans }}
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr':{'id': 'form'}}) }}
 
-
-    <div class="col-md-7 mt-4 pt-3 fond-7">
-        <div class="centrer mb-3">
-            <button type="submit" class="btn btn-shadow btn-normal btn-success mr-3">
-                <i class="fa fa-save"></i>
-                {{ 'Enregistrer'|trans }}
-            </button>
-            <a id="annule" onclick="load('annule')" href="{{ path('security_profile') }}" class="btn btn-shadow btn-normal btn-success-light">
-                <i class="fa fa-undo"></i>
-                {{ 'Annuler'|trans }}
-            </a>
+                    <div class="form-group">
+                        {{ form_row(form.nom, {'attr':{'placeholder':'Nom *'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.prenom, {'attr':{'placeholder':'Prénom *'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.Date_naissance, {'attr' : { 'title' : 'Date de naissance '}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.lieu_naissance, {'attr':{'placeholder':'Lieu de naissance'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.nationalite, {'attr':{'placeholder':'Nationnalité'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.phone, {'attr':{'placeholder':'Téléphone *'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.email, {'attr':{'placeholder':'Adresse email'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.sexe, {'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.enfant, {'attr':{'placeholder':'Nombre d\'enfant'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.civilite, {'attr':{'placeholder':'Civilité'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.adresse, {'attr':{'placeholder':'Adresse'}, 'label':false}) }}
+                    </div>
+                </div>
+            </div>
         </div>
-        {{ form_end(form) }}
+        <div class="col-lg-4">
+            <div class="card border-warning mt-3 mb-3">
+                <div class="card-header bg-warning-light bb-warning text-warning">
+                    <i class="fa fa-info-circle mr-2"></i>
+
+                    {{ 'Information professionnelle'|trans }}
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr':{'id': 'form'}}) }}
+
+                    <div class="form-group">
+                        {{ form_row(form.matricule, {'attr':{'placeholder':'Matricule *'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.prenom, {'attr':{'placeholder':'Prénom *'}, 'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.hiredate, {'attr' : { 'title' : 'Date d\'embauche '}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.poste, {'label':false}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.fonction, {'attr' : { 'title' : 'Role de l\'employé '}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.password, {'attr' : { 'placeholder' : 'Mot de passe '}}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-danger mt-3 mb-3 focus-shadow-danger">
+                <div class="card-header bg-danger-light bb-danger text-danger">
+                    <i class="fa fa-info-circle mr-2"></i>
+                    {{ 'Informations sensibles'|trans }}
+                </div>
+
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ form_row(form.bloodgroup, {'attr':{'placeholder':'Renseigner le groupe sanguin', 'class':'border-danger focus-shadow-danger'}, 'label':false}) }}
+                    </div>
+                    <div class="alert bg-danger-light border-danger mt-4 pt-4 radius-10">
+                        <div class="row">
+                            <div class="col-6 mt-1 mb-1">
+                                {{ form_widget(form.diabete, {'attr':{'class':'focus-shadow-danger'}, 'label':'Diabète'}) }}
+                            </div>
+                            <div class="col-6 mt-1 mb-1">
+                                {{ form_widget(form.handicap, {'attr':{'class':'focus-shadow-danger'}, 'label':'Handicape'}) }}
+                            </div>
+                            <div class="col-6 mt-1 mb-1">
+                                {{ form_widget(form.hypo, {'attr':{'class':'focus-shadow-danger'}, 'label':'Hypotension'}) }}
+                            </div>
+                            <div class="col-6 mt-1 mb-1">
+                                {{ form_widget(form.hyper, {'attr':{'class':'focus-shadow-danger'}, 'label':'Hypertension'}) }}
+                            </div>
+                            <div class="col-6 mt-1 mb-1">
+                                {{ form_widget(form.epilepsie, {'attr':{'class':'focus-shadow-danger'}, 'label':'Epileptiques'}) }}
+                            </div>
+                            <div class="col-6 mt-1">
+                                <input class="focus-shadow-danger" type="checkbox" id="autre" value="autre"
+                                    onclick="autretext()">
+                                <label for="autre"> {{ 'Autre'|trans }} </label>
+                            </div>
+                            <div class="col-12 mb-1">
+                                {{ form_widget(form.remark, {'attr':{'class':'border-danger focus-shadow-danger', 'placeholder':'Autre maladie'}, 'label':false}) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border-danger mt-4 mb-3">
+                        <div class="card-header bg-danger-light bb-danger text-danger">
+                            {{ 'Personne à contacter'|trans }}
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                {{ form_row(form.famillyname, {'attr':{'placeholder':'Prénom(s) et nom', 'class':'border-danger focus-shadow-danger'}, 'label':false}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_row(form.famillylink, {'label':false, 'attr' : {'placeholder': 'Lien de parenté', 'class':'border-danger focus-shadow-danger'}}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_row(form.famillyphone, {'attr':{'placeholder':'Téléphone', 'class':'border-danger focus-shadow-danger'}, 'label':false}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+{{ form_rest(form) }}
+<div class="container-fluid mt-4 mb-5 pt-3 pb-2 fond-7">
+    <div class="centrer">
+        {#            <div class="row">#}
+        <button type="button" class="btn btn-shadow btn-green btn-normal mb-2 mr-3" id="send" onclick="envoieadd()">
+            <i class="fa fa-save"></i>
+            {{ 'Enregistrer'|trans }}
+        </button>
+        <button type="reset" class="btn btn-shadow btn-danger btn-normal mb-2">
+            <i class="fa fa-undo"></i>
+            {{ 'Effacer'|trans }}
+        </button>
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        {#            </div>#}
+    </div>
+</div>
+
+{% block script %}
+<script>
+
+{{ include('scripts/pelerinnew.html.twig') }}
+
+</script>
+{% endblock %}

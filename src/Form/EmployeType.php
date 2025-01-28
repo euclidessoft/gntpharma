@@ -6,8 +6,12 @@ use App\Entity\User;
 use App\Form\Type\SexeType;
 use App\Entity\Departement;
 use App\Entity\Employe;
+use App\Entity\Poste;
+use App\Form\Type\BloodGroupType;
+use App\Form\Type\LinkType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -26,10 +30,10 @@ class EmployeType extends AbstractType
             ->add('email')
             ->add('phone')
             ->add('adresse')
-            ->add('departement', EntityType::class, [
-                'class' => Departement::class,
+            ->add('poste', EntityType::class, [
+                'class' => Poste::class,
                 'choice_label' => 'nom',
-                'placeholder' => 'Choisissez un département',
+                'placeholder' => 'Choisissez un poste',
                 'required' => true,
             ])
             ->add('Date_naissance', DateType::class, [
@@ -48,25 +52,26 @@ class EmployeType extends AbstractType
                 'multiple' => false,
                 'label' => 'Sexe',
             ])
+            ->add('enfant')
             ->add('civilite', ChoiceType::class, [
                 'choices' => [
                     'Célibataire' => 'celibataire',
                     'Marié(e)' => 'marie',
                     'Divorcé(e)' => 'divorce',
-                    'Veuf' => 'veuf',
+                    'Veuf(ve)' => 'veuf',
                 ],
-                'placeholder' => 'Choisissez une civilité',
+                'placeholder' => 'Situation Matrimoniale',
                 'required' => true,
                 'expanded' => false,
                 'multiple' => false,
-                'label' => 'civilite',
+                'label' => 'situation',
             ])
             ->add('hiredate', DateType::class, [
                 'widget' => 'single_text',
             ])
             ->add('fonction', ChoiceType::class, [
                 'choices' => User::jobs,
-                'placeholder' => 'types d\'utilisateur *',
+                'placeholder' => 'Types d\'utilisateur *',
                 'label' => false,
                 'required' => true
             ])
@@ -77,6 +82,31 @@ class EmployeType extends AbstractType
                 'label' => false,
                 'required' => true
             ])
+            ->add('bloodgroup', BloodGroupType::class,array('placeholder' => 'Sélectionnez le groupe sanguin'))
+            ->add('diabete', CheckboxType::class, [
+                'label' => 'Handicap',
+                'required' => false,
+            ])
+            ->add('handicap', CheckboxType::class, [
+                'label' => 'Handicap',
+                'required' => false,
+            ])
+            ->add('hypo', CheckboxType::class, [
+                'label' => 'Hypoglycémie',
+                'required' => false,
+            ])
+            ->add('hyper', CheckboxType::class, [
+                'label' => 'Hypertension',
+                'required' => false,
+            ])
+            ->add('epilepsie', CheckboxType::class, [
+                'label' => 'epilepsie',
+                'required' => false,
+            ])
+            ->add('remark')
+            ->add('famillyname')
+            ->add('famillylink',LinkType::class,array('placeholder' => 'Lien de parenté'))
+            ->add('famillyphone')
         ;
     }
 

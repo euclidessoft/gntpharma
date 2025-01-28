@@ -2,13 +2,8 @@
 {% block title %} {{ "Nouvelle banque"|trans }} - GNT Pharma {% endblock %}
 {% block employe %}active{% endblock %}
 {% block employe_new %}active{% endblock %}
-
 {% block body %}
-<div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
-    <h3 class="mb-5">
-        <i class="fa-solid fa-landmark"></i><i class="fa fa-plus mr-2"></i>
-        {{ 'Nouvel employé'|trans }}
-    </h3>
+
 
     {{ include('employe/_form.html.twig') }}
 </div>
