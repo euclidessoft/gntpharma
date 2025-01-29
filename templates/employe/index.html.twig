@@ -13,7 +13,6 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>{{ 'Civilité'|trans }}</th>
                 <th>{{ 'Prénom'|trans }}</th>
                 <th>{{ 'Nom'|trans }}</th>
                 <th>{{ 'Date de naissance'|trans }}</th>
@@ -22,14 +21,13 @@
                 <th>{{ 'Téléphone'|trans }}</th>
                 <th>{{ 'Email'|trans }}</th>
                 <th>{{ 'Adresse'|trans }}</th>
-                <th>{{ 'Département'|trans }}</th>
+                <th>{{ 'Status'|trans }}</th>
                 <!-- <th>{{ 'actions'|trans }}</th> -->
             </tr>
         </thead>
         <tbody>
             {% for employe in employe %}
             <tr>
-                <td>{{ employe.civilite }}</td>
                 <td>{{ employe.prenom }}</td>
                 <td>{{ employe.nom }}</td>
                 <td data-label="{{ 'Date de naissance'|trans }}">{{ employe.datenaissance ? employe.datenaissance|date('Y-m-d') : '' }}</td>
@@ -38,7 +36,14 @@
                 <td>{{ employe.phone }}</td>
                 <td>{{ employe.email }}</td>
                 <td>{{ employe.adresse }}</td>
-                <td>{{ employe.poste ? employe.poste.departement.nom }}</td>
+                <td>
+                    <form action="{{ path('employe_toggle_status', { 'id': employe.id }) }}" method="post" class="d-inline">
+                        <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ employe.id) }}">
+                        <button type="submit" class="btn btn-{% if employe.status %}danger{% else %}success{% endif %}">
+                            {% if employe.status %} Désactiver {% else %} Activer {% endif %}
+                        </button>
+                    </form>
+                </td>
                 <!-- <td>action</td> -->
                 {% else %}
             <tr>

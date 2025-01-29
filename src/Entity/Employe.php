@@ -126,6 +126,21 @@ class Employe extends User implements UserInterface
      */
     private $enfant;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Conges::class, mappedBy="employe")
+     */
+    private $conges;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CongeAccorder::class, mappedBy="employe")
+     */
+    private $congeAccorders;
+
 
     public function __construct()
     {
@@ -133,6 +148,8 @@ class Employe extends User implements UserInterface
         $this->posteEmployes = new ArrayCollection();
         $this->employeFormations = new ArrayCollection();
         $this->formations = new ArrayCollection();
+        $this->conges = new ArrayCollection();
+        $this->congeAccorders = new ArrayCollection();
     }
 
 
@@ -448,6 +465,78 @@ class Employe extends User implements UserInterface
     public function setEnfant(int $enfant): self
     {
         $this->enfant = $enfant;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Conges[]
+     */
+    public function getConges(): Collection
+    {
+        return $this->conges;
+    }
+
+    public function addConge(Conges $conge): self
+    {
+        if (!$this->conges->contains($conge)) {
+            $this->conges[] = $conge;
+            $conge->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConge(Conges $conge): self
+    {
+        if ($this->conges->removeElement($conge)) {
+            // set the owning side to null (unless already changed)
+            if ($conge->getEmploye() === $this) {
+                $conge->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CongeAccorder[]
+     */
+    public function getCongeAccorders(): Collection
+    {
+        return $this->congeAccorders;
+    }
+
+    public function addCongeAccorder(CongeAccorder $congeAccorder): self
+    {
+        if (!$this->congeAccorders->contains($congeAccorder)) {
+            $this->congeAccorders[] = $congeAccorder;
+            $congeAccorder->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCongeAccorder(CongeAccorder $congeAccorder): self
+    {
+        if ($this->congeAccorders->removeElement($congeAccorder)) {
+            // set the owning side to null (unless already changed)
+            if ($congeAccorder->getEmploye() === $this) {
+                $congeAccorder->setEmploye(null);
+            }
+        }
 
         return $this;
     }

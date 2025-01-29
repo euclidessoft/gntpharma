@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit TypeConge</title>
+
+{% block body %}
+    <h1>Edit TypeConge</h1>
+
+    {{ include('type_conge/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('type_conge_index') }}">back to list</a>
+
+    {{ include('type_conge/_delete_form.html.twig') }}
+{% endblock %}

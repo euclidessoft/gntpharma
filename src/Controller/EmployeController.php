@@ -82,4 +82,28 @@ class EmployeController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/{id}/toggle-status", name="employe_toggle_status", methods={"POST"})
+     */
+    public function toggleStatus(Request $request,Employe $employe, EntityManagerInterface $entityManager): Response
+    {
+        //verification du token csrf
+        if(!$this->isCsrfTokenValid('toggle' . $employe->getId(), $request->request->get('_token'))){
+            $this->addFlash('notice', 'Token CSRF invalide');
+            return $this->redirectToRoute('employe_index');
+        }
+
+        if($employe->getStatus()){
+            $employe->setStatus(false);
+            $this->addFlash('notice', 'Employé désativé');
+        }else{
+            $employe->setStatus(true);
+            $this->addFlash('notice', 'Employé activé');
+        }
+
+        $entityManager->persist($employe);
+        $entityManager->flush();
+        return $this->redirectToRoute('employe_index');
+    }
 }
