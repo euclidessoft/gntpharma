@@ -33,17 +33,12 @@ class Conges
     private $dateFin;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $description;
-
-    /**
      * @ORM\Column(type="datetime_immutable")
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime_immutable", nullable="true")
      */
     private $updatedAt;
 
@@ -57,6 +52,25 @@ class Conges
      */
     private $status;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $dateModifier= false;
+
+    /**
+     * @ORM\OneToOne(targetEntity=CongeAccorder::class, cascade={"persist", "remove"})
+     */
+    private $congeaccorder;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -95,18 +109,6 @@ class Conges
     public function setDateFin(\DateTimeInterface $dateFin): self
     {
         $this->dateFin = $dateFin;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
 
         return $this;
     }
@@ -155,6 +157,42 @@ class Conges
     public function setStatus(int $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDateModifier(): ?bool
+    {
+        return $this->dateModifier;
+    }
+
+    public function setDateModifier(bool $dateModifier): self
+    {
+        $this->dateModifier = $dateModifier;
+
+        return $this;
+    }
+
+    public function getCongeaccorder(): ?CongeAccorder
+    {
+        return $this->congeaccorder;
+    }
+
+    public function setCongeaccorder(?CongeAccorder $congeaccorder): self
+    {
+        $this->congeaccorder = $congeaccorder;
 
         return $this;
     }
