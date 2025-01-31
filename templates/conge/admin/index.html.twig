@@ -14,7 +14,7 @@
                 <th>Type de Congé</th>
                 <th>Période demandée</th>
                 <th>Période accordée</th>
-                <td>Description</td>
+                <td>Raison</td>
                 <th>Statut</th>
                 <th>Actions</th>
             </tr>
@@ -34,13 +34,13 @@
                 <td>{{ conges.description }}</td>
                 <td>
                     {% if conges.status == 0 %}
-                            <span class="badge badge-warning">En attente</span>
-                        {% elseif conges.datemodifier == true and conges.status == 3 %}
+                            <span class="badge badge-warning">En attente de validation</span>
+                        {% elseif conges.status == 3 %}
                             <span class="badge badge-info">En attente de confirmation</span>
                         {% elseif conges.status == 1 %}
-                            <span class="badge badge-success">Acceptée</span>
-                        {% elseif conges.status == 2 and conges.congeaccorder.status == false %}
-                            <span class="badge badge-danger">Décliner</span>
+                            <span class="badge badge-success">Validée</span>
+                        {% elseif conges.status == 2 %}
+                            <span class="badge badge-danger">Déclinée</span>
                         {% else %}
                             <span class="badge badge-danger">Rejetée</span>
                     {% endif %}

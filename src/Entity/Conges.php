@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CongesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CongesRepository::class)
@@ -24,11 +25,13 @@ class Conges
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\NotNull(message="La date de début est obligatoire.")
      */
     private $dateDebut;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\NotNull(message="La date de fin est obligatoire.")
      */
     private $dateFin;
 

@@ -16,7 +16,7 @@
             <i class="fa-solid fa-clock"></i><i class="fa fa-plus mr-2"></i>
             {{ 'Approuver la demande de congé'|trans }}
         </h4>
-        {{ form_start(form) }}
+      
         <div class="col-12 mb-4">
             {{ form_row(form.dateDebutAccorder, {'attr': {'title': 'Date début demande *'}, 'label': false}) }}
         </div>
@@ -32,12 +32,38 @@
     </div>
     <div class="col-md-3 offset-md-3 mt-4 pt-3 fond-7">
         <div class="centrer">
-            <button type="button" class="btn btn-shadow btn-green btn-normal mb-3 mr-3" id="send"
-                    onclick="envoie()">
+            <button type="submit" class="btn btn-shadow btn-green btn-normal mb-3 mr-3" id="send">
                 <i class="fa fa-save"></i>
                 {{ 'Approuver le congé'|trans }}
             </button>
             {{ form_end(form) }}
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+ <script>
+   $(document).ready(function(){
+    $('#send').click(function(e) {
+        let dateDebutAccorder = new Date($('#approuver_dateDebutAccorder').val());
+        let dateFinAccorder = new Date($('#approuver_dateFinAccorder').val());
+        let dateJour = new Date();
+        dateJour.setHours(0, 0, 0, 0); 
+        if (dateDebutAccorder < dateJour) {
+            $('#approuver_dateDebutAccorder').val("");
+            alert('La date accordée ne doit pas être inférieure à la date du jour.');
+            e.preventDefault();
+            return;
+        }
+
+        if (dateDebutAccorder > dateFinAccorder) {
+            $('#approuver_dateFinAccorder').val("");
+            alert('La date de fin ne peut pas être inférieure à la date de début.');
+            e.preventDefault();
+            return;
+        }
+    });
+});
+
+ </script>
 {% endblock %}

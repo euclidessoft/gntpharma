@@ -40,13 +40,55 @@ class ControllerCongeController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         $employe = $security->getUser();
-        $conges = $entityManager->getRepository(Conges::class)->findBy(['employe' => $employe]);
+        $conges = $congesRepository->findDemandesTraitees($employe);
 
         return $this->render('conge/demande.html.twig', [
             'conge' => $conges,
         ]);
     }
 
+    /**
+     * @Route("/Demande/Suivi", name="conges_employe_suivi")
+     */
+    public function traitement(Security $security, CongesRepository $congesRepository): Response
+    {
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $security->getUser();
+        $conges = $congesRepository->findDemandesEnAttente($employe);
+
+        return $this->render('conge/suivi.html.twig', [
+            'conge' => $conges,
+        ]);
+    }
+
+    /**
+     * @Route("/Demande/Accepter", name="conges_employe_accepter")
+     */
+    public function accepter(Security $security, CongesRepository $congesRepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $security->getUser();
+        $conges = $congesRepository->findDemandesAccepter($employe);
+
+        return $this->render('conge/accepter.html.twig', [
+            'conge' => $conges,
+        ]);
+    }
+
+    /**
+     * @Route("/Demande/Refuse", name="conges_employe_refuser")
+     */
+    public function refuser(Security $security, CongesRepository $congesRepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $security->getUser();
+        $conges = $congesRepository->findDemandesRefuse($employe);
+
+        return $this->render('conge/refuser.html.twig', [
+            'conge' => $conges,
+        ]);
+    }
 
     /**
      * @Route("/Nouveau", name="conge_new", methods={"GET", "POST"})
@@ -68,7 +110,7 @@ class ControllerCongeController extends AbstractController
             $entityManager->persist($conges);
             $entityManager->flush();
 
-            return $this->redirectToRoute('conges_employe_index');
+            return $this->redirectToRoute('conges_employe_suivi');
         }
         return $this->render('conge/new.html.twig', [
             'form' => $form->createView(),
@@ -102,17 +144,16 @@ class ControllerCongeController extends AbstractController
                 $conges->setStatus(3);
             } else {
                 $conges->setDateModifier(false);
-                $congesAccorder->setStatus(true);
-                $conges->setStatus(1);
+                $congesAccorder->setStatus(false);
+                $conges->setStatus(3);
             }
-
             $congesAccorder->setConges($conges);
             $congesAccorder->setDateDebutAccorder($startDateAccorder);
             $congesAccorder->setDateFinAccorder($endDateAccorder);
             $congesAccorder->setEmploye($conges->getEmploye());
             $congesAccorder->setType($conges->getType());
             $conges->setCongeaccorder($congesAccorder);
-
+            
             $entityManager->persist($congesAccorder);
             $entityManager->flush();
 
@@ -149,11 +190,12 @@ class ControllerCongeController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
         $congesAccorder = $conges->getCongeaccorder(); 
-
+       
         if ($this->isCsrfTokenValid('confirmer' . $conges->getId(), $request->request->get('_token'))) {
             $conges->setStatus(1);
-            $congesAccorder->setStatus(true);
         }
+      
+        
         $entityManager->persist($conges);
         $entityManager->flush();
         return $this->redirectToRoute('conge_index');

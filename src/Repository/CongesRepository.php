@@ -35,16 +35,52 @@ class CongesRepository extends ServiceEntityRepository
         ;
     }
     */
-
-    /*
-    public function findOneBySomeField($value): ?Conges
+    public function findDemandesTraitees($employe): array
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
+            ->where('c.employe = :employe')
+            ->andWhere('c.status != :status') 
+            ->setParameter('employe', $employe)
+            ->setParameter('status', '0')
+            ->orderBy('c.dateDebut', 'ASC')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
+
+    public function findDemandesEnAttente($employe): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.employe = :employe')
+            ->andWhere('c.status IN (:statuses)')
+            ->setParameter('employe', $employe)
+            ->setParameter('statuses', ['0', '3'])
+            ->orderBy('c.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findDemandesAccepter($employe): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.employe = :employe')
+            ->andWhere('c.status = :status') 
+            ->setParameter('employe', $employe)
+            ->setParameter('status', '1') 
+            ->orderBy('c.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    
+    public function findDemandesRefuse($employe): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.employe = :employe')
+            ->andWhere('c.status = :status') 
+            ->setParameter('employe', $employe)
+            ->setParameter('status', '2') 
+            ->orderBy('c.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
