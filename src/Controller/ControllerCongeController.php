@@ -40,7 +40,7 @@ class ControllerCongeController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         $employe = $security->getUser();
-        $conges = $congesRepository->findAll();
+        $conges = $congesRepository->findDemandesTraitees($employe);
         return $this->render('conge/demande.html.twig', [
             'conge' => $conges,
         ]);

@@ -35,7 +35,18 @@ class CongesRepository extends ServiceEntityRepository
         ;
     }
     */
-    
+    public function findDemandesTraitees($employe): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.employe = :employe')
+            ->andWhere('c.status NOT IN (:statuses)')
+            ->setParameter('employe', $employe)
+            ->setParameter('statuses', ['0', '3'])
+            ->orderBy('c.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findDemandesEnAttente($employe): array
     {
         return $this->createQueryBuilder('c')
@@ -52,22 +63,22 @@ class CongesRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->where('c.employe = :employe')
-            ->andWhere('c.status = :status') 
+            ->andWhere('c.status = :status')
             ->setParameter('employe', $employe)
-            ->setParameter('status', '1') 
+            ->setParameter('status', '1')
             ->orderBy('c.dateDebut', 'ASC')
             ->getQuery()
             ->getResult();
     }
 
-    
+
     public function findDemandesRefuse($employe): array
     {
         return $this->createQueryBuilder('c')
             ->where('c.employe = :employe')
-            ->andWhere('c.status = :status') 
+            ->andWhere('c.status = :status')
             ->setParameter('employe', $employe)
-            ->setParameter('status', '2') 
+            ->setParameter('status', '2')
             ->orderBy('c.dateDebut', 'ASC')
             ->getQuery()
             ->getResult();

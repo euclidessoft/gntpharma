@@ -7,22 +7,22 @@
 <div class="container mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fas fa-calendar-alt me-2"></i>
-        {{ "Mes Permissions de Congé"|trans }}
+        {{ "Mes demandes de Congé"|trans }}
     </h3>
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('conges_employe_accepter') }}">
-                {{ 'Permissions acceptées'|trans }}
+            <a class="nav-link active" href="{{ path('conges_employe_accepter') }}">
+                {{ 'Demandes acceptées'|trans }}
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ path('conges_employe_refuser') }}">
-                {{'Permissions refusée & déclinées'|trans}}
+                {{'Demandes refusée'|trans}}
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ path('conges_employe_index') }}">
-                {{'Toutes les permissions'|trans}}
+                {{'Toutes les demandes'|trans}}
             </a>
         </li>
     </ul>
