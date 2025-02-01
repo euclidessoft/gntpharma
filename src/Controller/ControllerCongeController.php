@@ -29,6 +29,7 @@ class ControllerCongeController extends AbstractController
         ]);
     }
 
+
     //Start Controller de demande de congés employé
 
     /**
@@ -41,6 +42,19 @@ class ControllerCongeController extends AbstractController
         $employe = $security->getUser();
         $conges = $congesRepository->findDemandesTraitees($employe);
         return $this->render('conge/demande.html.twig', [
+            'conge' => $conges,
+        ]);
+    }
+
+    /**
+     * @Route("/Traites", name="conges_admin_index")
+     */
+    public function demandeAdmin(Security $security, CongesRepository $congesRepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $security->getUser();
+        $conges = $congesRepository->findDemandesTraitees($employe);
+        return $this->render('conge/admin/index.html.twig', [
             'conge' => $conges,
         ]);
     }
@@ -61,6 +75,20 @@ class ControllerCongeController extends AbstractController
     }
 
     /**
+     * @Route("/Suivi", name="conges_admin_suivi")
+     */
+    public function traitementAdmin(Security $security, CongesRepository $congesRepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $security->getUser();
+        $conges = $congesRepository->findDemandesEnAttente($employe);
+
+        return $this->render('conge/admin/index.html.twig', [
+            'conge' => $conges,
+        ]);
+    }
+
+    /**
      * @Route("/Demande/Accepter", name="conges_employe_accepter")
      */
     public function accepter(Security $security, CongesRepository $congesRepository): Response
@@ -70,6 +98,35 @@ class ControllerCongeController extends AbstractController
         $conges = $congesRepository->findDemandesAccepter($employe);
 
         return $this->render('conge/demande.html.twig', [
+            'conge' => $conges,
+        ]);
+    }
+
+    
+    /**
+     * @Route("/Approuver", name="conge_admin_accepter")
+     */
+    public function accepterAdmin(Security $security, CongesRepository $congesRepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $security->getUser();
+        $conges = $congesRepository->findDemandesAccepter($employe);
+
+        return $this->render('conge/admin/index.html.twig', [
+            'conge' => $conges,
+        ]);
+    }
+
+    /**
+     * @Route("/Refuser", name="conge_admin_refuser")
+     */
+    public function refuserAdmin(Security $security, CongesRepository $congesRepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $security->getUser();
+        $conges = $congesRepository->findDemandesRefuse($employe);
+
+        return $this->render('conge/admin/index.html.twig', [
             'conge' => $conges,
         ]);
     }
@@ -116,6 +173,7 @@ class ControllerCongeController extends AbstractController
     }
 
     //End Controller de demande de congés employé
+
 
     /**
      * @Route("/{id}/approuve", name="conge_approuve", methods={"GET", "POST"})
@@ -179,6 +237,7 @@ class ControllerCongeController extends AbstractController
         return $this->redirectToRoute('conge_index');
     }
 
+
     /**
      *@Route("/{id}/confirmer", name="conge_confirmer", methods={"GET", "POST"})
      */
@@ -199,6 +258,7 @@ class ControllerCongeController extends AbstractController
         return $this->redirectToRoute('conges_employe_suivi');
     }
 
+
     /**
      *@Route("/{id}/decliner", name="conge_decliner", methods={"GET", "POST"})
      */
@@ -217,5 +277,4 @@ class ControllerCongeController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('conges_employe_suivi');
     }
-    
 }

@@ -3,11 +3,33 @@
 {% block employe %}active{% endblock %}
 {% block conges %}active{% endblock %}
 {% block body %}
-<div class="col-lg-12 mt-4 fond-7">
+<div class="container-fluid mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
-        <i class="fa fa-money-bill mr-2"></i>
+        <i class="fas fa-calendar-alt me-2"></i>
         {{ "Gestion des Demandes de Congé"|trans }}
     </h3>
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('conges_admin_index') }}">
+                {{'Toutes les demandes'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('conges_admin_suivi') }}">
+                {{ 'Demandes en cours'|trans }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('conge_admin_accepter') }}">
+                {{ 'Demandes acceptées'|trans }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('conge_admin_refuser') }}">
+                {{'Demandes refusée'|trans}}
+            </a>
+        </li>
+    </ul>
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
