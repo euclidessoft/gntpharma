@@ -71,16 +71,23 @@
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block departements %}{% endblock %}"
-                                href="{{ path('employe_index') }}">
+                                href="{{ path('departement_index') }}">
                                 <i class="fa-solid fa-users-viewfinder"></i>
                                 {{ 'Départements'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block postes %}{% endblock %}"
-                                href="#">
+                                href="{{ path('poste_index') }}">
                                 <i class="fa-solid fa-clipboard-user"></i>
                                 {{ 'Postes'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block typeconge %}{% endblock %}"
+                                href="{{ path('type_conge_index') }}">
+                                <i class="fa-solid fa-clipboard-user"></i>
+                                {{ 'Type de congé'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">

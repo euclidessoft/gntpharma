@@ -1,37 +1,39 @@
-<!DOCTYPE html>
-
-<title>TypeConge index</title>
-
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Lignes de depenses"|trans }} - GNT Pharma {% endblock %}
+{% block employe %}active{% endblock %}
+{% block typeconge %}active{% endblock %}
+{% block all_type_conges %}active{% endblock %}
 {% block body %}
-    <h1>TypeConge index</h1>
-
-    <table class="table">
+<div class="col-lg-6 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Liste des types de congé"|trans }}
+    </h3>
+    <a href="{{ path('type_conge_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouvel type conge</a>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Description</th>
-                <th>actions</th>
+                <th>{{('Nom'|trans)}}</th>
+                <th>{{('Description'|trans)}}</th>
+                <th>{{('actions'|trans)}}</th>
             </tr>
         </thead>
         <tbody>
         {% for type_conge in type_conges %}
             <tr>
-                <td>{{ type_conge.id }}</td>
-                <td>{{ type_conge.nom }}</td>
-                <td>{{ type_conge.description }}</td>
-                <td>
-                    <a href="{{ path('type_conge_show', {'id': type_conge.id}) }}">show</a>
-                    <a href="{{ path('type_conge_edit', {'id': type_conge.id}) }}">edit</a>
+                <td data-label="Nom">{{ type_conge.nom }}</td>
+                <td data-label="Description">{{ type_conge.description }}</td>
+                <td data-label="Actions">
+                    <a href="{{ path('type_conge_edit', {'id': type_conge.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
+                    {{ include('type_conge/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td colspan="4" class="text-center">Aucune ligne de dépenses</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('type_conge_new') }}">Create new</a>
 {% endblock %}
