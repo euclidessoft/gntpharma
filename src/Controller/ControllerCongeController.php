@@ -29,7 +29,6 @@ class ControllerCongeController extends AbstractController
         ]);
     }
 
-
     //Start Controller de demande de congés employé
 
     /**
@@ -56,7 +55,7 @@ class ControllerCongeController extends AbstractController
         $employe = $security->getUser();
         $conges = $congesRepository->findDemandesEnAttente($employe);
 
-        return $this->render('conge/suivi.html.twig', [
+        return $this->render('conge/demande.html.twig', [
             'conge' => $conges,
         ]);
     }
@@ -117,7 +116,6 @@ class ControllerCongeController extends AbstractController
     }
 
     //End Controller de demande de congés employé
-
 
     /**
      * @Route("/{id}/approuve", name="conge_approuve", methods={"GET", "POST"})
@@ -181,7 +179,6 @@ class ControllerCongeController extends AbstractController
         return $this->redirectToRoute('conge_index');
     }
 
-
     /**
      *@Route("/{id}/confirmer", name="conge_confirmer", methods={"GET", "POST"})
      */
@@ -202,7 +199,6 @@ class ControllerCongeController extends AbstractController
         return $this->redirectToRoute('conges_employe_suivi');
     }
 
-
     /**
      *@Route("/{id}/decliner", name="conge_decliner", methods={"GET", "POST"})
      */
@@ -221,4 +217,5 @@ class ControllerCongeController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('conges_employe_suivi');
     }
+    
 }

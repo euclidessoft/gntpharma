@@ -28,8 +28,17 @@
                     <br> Durée : {{ conges.dateFin.diff(conges.dateDebut).days + 1 }} jours
                 </td>
                 <td>
-                    {{ conges.congeaccorder ? conges.congeaccorder.dateDebutAccorder|date('d/m/Y') }} <small>au</small> {{ conges.congeaccorder ? conges.congeaccorder.dateFinAccorder|date('d/m/Y')}}
-                    <br> Durée : {{ conges.congeaccorder ? conges.congeaccorder.dateFinAccorder.diff(conges.congeaccorder.dateDebutAccorder).days + 1 }} jours
+                    {% if conges.congeaccorder %}
+                    {% if conges.congeaccorder.dateDebutAccorder is not null and conges.congeaccorder.dateFinAccorder is not null %}
+                         {{ conges.congeaccorder.dateDebutAccorder|date('d/m/Y') }} <small>au</small> {{ conges.congeaccorder.dateFinAccorder|date('d/m/Y') }}
+                        <br> Durée : {{ conges.congeaccorder.dateFinAccorder.diff(conges.congeaccorder.dateDebutAccorder).days + 1 }} jours
+                    {% else %}
+                         Non accordé
+                    {% endif %}
+
+                    {% else %}
+                         Non accordé
+                    {% endif %}
                 </td>
                 <td>{{ conges.description }}</td>
                 <td>
