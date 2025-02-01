@@ -117,38 +117,12 @@
                             {{ 'Congés'|trans }}
                         </div>
                     </a>
-
                     <ul class=" dropdown-menu" aria-labelledby="conges">
-                        <li class="dropdown-item submenu">
-                            <a class="nav-link dropdown-toggle {% block permissions %}{% endblock %}" href="#"
-                                id="rapports"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block permissions %}{% endblock %}" href="{{ path('conges_employe_index') }}">
                                 <i class="fa-solid fa-user-check"></i>
                                 {{ 'Permissions'|trans }}
                             </a>
-                            <ul class="dropdown-submenu" aria-labelledby="rapports">
-                                <li class="dropdown-item">
-                                    <a class="nav-link {% block demande_accepter %}{% endblock %}"
-                                        href="{{ path('conges_employe_accepter') }}">
-                                        <i class="fa-solid  fa-user-check"></i>
-                                        {{ 'Validée'|trans }}
-                                    </a>
-                                </li>
-                                <li class="dropdown-item">
-                                    <a class="nav-link {% block demande_refuser %}{% endblock %}"
-                                        href="{{ path('conges_employe_refuser') }}">
-                                        <i class="fa-solid fa-user-xmark"></i>
-                                        {{ 'Réfusée'|trans }}
-                                    </a>
-                                </li>
-                                <li class="dropdown-item">
-                                    <a class="nav-link {% block all_demandes %}{% endblock %}"
-                                        href="{{ path('conges_employe_index') }}">
-                                        <i class="fa-solid fa-list"></i>
-                                        {{ 'Toutes les permissions'|trans }}
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block absence %}{% endblock %}"

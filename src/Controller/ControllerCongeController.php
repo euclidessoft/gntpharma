@@ -70,7 +70,7 @@ class ControllerCongeController extends AbstractController
         $employe = $security->getUser();
         $conges = $congesRepository->findDemandesAccepter($employe);
 
-        return $this->render('conge/accepter.html.twig', [
+        return $this->render('conge/demande.html.twig', [
             'conge' => $conges,
         ]);
     }
@@ -84,7 +84,7 @@ class ControllerCongeController extends AbstractController
         $employe = $security->getUser();
         $conges = $congesRepository->findDemandesRefuse($employe);
 
-        return $this->render('conge/refuser.html.twig', [
+        return $this->render('conge/demande.html.twig', [
             'conge' => $conges,
         ]);
     }
