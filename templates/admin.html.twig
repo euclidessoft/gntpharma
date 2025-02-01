@@ -77,6 +77,13 @@
                                 </a>
                             </li>
                             <li class="dropdown-item">
+                                <a class="nav-link {% block conges %}{% endblock %}"
+                                   href="{{ path('conge_index') }}">
+                                    <i class="fa fa-plus"></i>
+                                    {{ 'Congés'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
                                 <a class="nav-link {% block employe_new %}{% endblock %}"
                                    href="{{ path('employe_new') }}">
                                     <i class="fa fa-plus"></i>

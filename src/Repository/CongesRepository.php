@@ -35,18 +35,7 @@ class CongesRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function findDemandesTraitees($employe): array
-    {
-        return $this->createQueryBuilder('c')
-            ->where('c.employe = :employe')
-            ->andWhere('c.status != :status') 
-            ->setParameter('employe', $employe)
-            ->setParameter('status', '0')
-            ->orderBy('c.dateDebut', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
+    
     public function findDemandesEnAttente($employe): array
     {
         return $this->createQueryBuilder('c')

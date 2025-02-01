@@ -40,8 +40,7 @@ class ControllerCongeController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         $employe = $security->getUser();
-        $conges = $congesRepository->findDemandesTraitees($employe);
-
+        $conges = $congesRepository->findAll();
         return $this->render('conge/demande.html.twig', [
             'conge' => $conges,
         ]);
@@ -156,7 +155,6 @@ class ControllerCongeController extends AbstractController
             
             $entityManager->persist($congesAccorder);
             $entityManager->flush();
-
             $this->addFlash('success', 'Le congé a été accordé avec succès.');
             return $this->redirectToRoute('conge_index');
         }
@@ -176,6 +174,7 @@ class ControllerCongeController extends AbstractController
         if ($this->isCsrfTokenValid('rejeter' . $conges->getId(), $request->request->get('_token'))) {
             $conges->setStatus(2);
         }
+        
         $entityManager->persist($conges);
         $entityManager->flush();
 
@@ -193,12 +192,14 @@ class ControllerCongeController extends AbstractController
        
         if ($this->isCsrfTokenValid('confirmer' . $conges->getId(), $request->request->get('_token'))) {
             $conges->setStatus(1);
+            $congesAccorder->setStatus(true);
         }
       
-        
         $entityManager->persist($conges);
+        $entityManager->persist($congesAccorder);
         $entityManager->flush();
-        return $this->redirectToRoute('conge_index');
+        
+        return $this->redirectToRoute('conges_employe_suivi');
     }
 
 
@@ -216,7 +217,8 @@ class ControllerCongeController extends AbstractController
         }
 
         $entityManager->persist($conges);
+        $entityManager->persist($congesAccorder);
         $entityManager->flush();
-        return $this->redirectToRoute('conge_index');
+        return $this->redirectToRoute('conges_employe_suivi');
     }
 }
