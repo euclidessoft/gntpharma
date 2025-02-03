@@ -17,14 +17,6 @@ class AchatType extends AbstractType
     {
         $builder
             ->add('montant')
-            ->add('libele')
-            ->add('reference')
-            ->add('fournisseur', EntityType::class, [
-                'class' => Fournisseur::class,
-                'choice_label' => 'designation',
-                'placeholder' => 'Sélectionnez un fournisseur',
-                'required' => true,
-            ])
             ->add('type', VerserType::class,array('placeholder' => 'Type de Paiement'))
             ->add('banque',EntityType::class, [
                 'class' => Banque::class,

@@ -55,15 +55,21 @@ class Approvisionnement
     private $peremption;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Fournisseur::class, inversedBy="approvisionnements")
+     */
+    private $fournisseur;
+
+    /**
      * Constructor
      */
-    public function __construct(Produit $produit, Approvisionner $approvisionner, $quantite)
+    public function __construct(Produit $produit, Approvisionner $approvisionner, $quantite, Fournisseur $fournisseur)
     {
         $this->date = new \Datetime();
         $this->produit = $produit;
         $this->archive = $produit->getStock();
         $this->approvisionner = $approvisionner;
         $this->quantite = $quantite;
+        $this->fournisseur = $fournisseur;
     }
 
 
@@ -152,6 +158,18 @@ class Approvisionnement
     public function setPeremption(\DateTimeInterface $peremption): self
     {
         $this->peremption = $peremption;
+
+        return $this;
+    }
+
+    public function getFournisseur(): ?Fournisseur
+    {
+        return $this->fournisseur;
+    }
+
+    public function setFournisseur(?Fournisseur $fournisseur): self
+    {
+        $this->fournisseur = $fournisseur;
 
         return $this;
     }

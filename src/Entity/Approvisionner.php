@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ApprovisionnerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,11 +31,17 @@ class Approvisionner
     private $date;
 
     /**
+     * @ORM\OneToMany(targetEntity=Facture::class, mappedBy="approvisionner")
+     */
+    private $factures;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->date = new \Datetime();
+        $this->factures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -62,6 +70,36 @@ class Approvisionner
     public function setUser(?Employe $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Facture[]
+     */
+    public function getFactures(): Collection
+    {
+        return $this->factures;
+    }
+
+    public function addFacture(Facture $facture): self
+    {
+        if (!$this->factures->contains($facture)) {
+            $this->factures[] = $facture;
+            $facture->setApprovisionner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFacture(Facture $facture): self
+    {
+        if ($this->factures->removeElement($facture)) {
+            // set the owning side to null (unless already changed)
+            if ($facture->getApprovisionner() === $this) {
+                $facture->setApprovisionner(null);
+            }
+        }
 
         return $this;
     }

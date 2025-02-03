@@ -1,0 +1,59 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Approvisionnement"|trans }} No  - GNT Pharma {% endblock %}
+{% block stock %}active{% endblock %}
+{% block appro %}active{% endblock %}
+{% block all_appro %}active{% endblock %}
+
+{% block body %}
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-shop mr-2"></i>
+            {{ "Détails Approvisionnement"|trans }}
+        </h3>
+        {% set total=0 %}
+        <table class="table table-success-light table-bordered table-hover table-striped w-100 text-center mt-5">
+            <thead>
+            <tr>
+                <th>{{ 'Code Produit'|trans }}</th>
+                <th class="text-left">{{ 'Désignation'|trans }}</th>
+                <th>{{'PGHT'|trans}}</th>
+                {#            <th>etat stosk</th>#}
+                <th>{{'Quantité'|trans}}</th>
+                <th>{{'Montant'|trans}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for approvisionnement in approvisionnements %}
+                <tr>
+                    <td> {{ approvisionnement.produit.id }} </td>
+                    <td class="text-left">{{ approvisionnement.produit.desigantion }} </td>
+                    <td>{{ approvisionnement.produit.pght|number_format(0, '' , ' ') }} </td>
+                    <td>{{ approvisionnement.quantite|number_format(0, '' , ' ') }}</td>
+                    <td>{{ (approvisionnement.produit.pght * approvisionnement.quantite)|number_format(0, '' , ' ') }}</td>
+                    {% set total = total + (approvisionnement.produit.pght * approvisionnement.quantite) %}
+
+
+                </tr>
+
+            {% else %}
+                <tr>
+                    <td colspan="5">{{ 'Aucune commande'|trans }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="4">{{ 'Total'|trans }}</td>
+                <td>{{ total|number_format(0, '' , ' ') }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="col-md-2 offset-md-4 mt-5 mb-5 pt-2 pb-2 fond-7">
+            <div class="centrer">
+{#                <a id="{{ approvisionner.id }}" onclick="load({{ approvisionner.id }})" href="{{ path('stock_show_print',{ 'id': approvisionner.id}) }}" class="btn btn-success float-end">#}
+                    <i class="fa fa-print"></i>
+                    {{ "payer"|trans }}
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

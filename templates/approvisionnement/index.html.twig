@@ -71,7 +71,7 @@
                                                     <select class="form-control"
                                                            id="fourniss{{ produit.id }}">
                                                         <option>{{ "selectionnez le fournisseur"|trans }}</option>
-                                                        <option><i class='fa-solid fa-spinner fa-spin-pulse'></i></option>
+{#                                                        <option><i class='fa-solid fa-spinner fa-spin-pulse text-dark'></i></option>#}
                                                     </select>
                                                 </div>
                                                 <div class="mt-4">
@@ -133,6 +133,7 @@
                     <thead class="text-center">
                     <tr>
                         <th>{{ 'Ref'|trans }}</th>
+                        <th class="text-left">{{ 'Fournisseur'|trans }}</th>
                         <th class="text-left">{{ 'Designation'|trans }}</th>
                         <th class="text-nowrap">{{'N° Lot'|trans}}</th>
                         <th>{{'Péremption'|trans}}</th>
@@ -144,6 +145,7 @@
                     {% for produit in panier %}
                         <tr id="tr{{ produit['id']}}{{ produit['lot'] }}">
                             <td>{{ produit['reference'] }}</td>
+                            <td>{{ produit['fournisseur'] }}</td>
                             <td class="text-left">{{ produit['designation'] }}</td>
                             <td>{{ produit['lot'] }} </td>
                             <td> {{ produit['peremption'] }}</td>
@@ -205,6 +207,7 @@
             var quant = $("#quant" + produit);
             var numero = $("#numero" + produit);
             var peremp = $("#peremp" + produit);
+            var fournisseur = $("#fourniss"+ produit+" option:selected");
             // var peremp = new Date($("#peremp" + produit).val());
             if(quant.val() != "" && numero.val() !="" && peremp.val() != "" && new Date($("#peremp" + produit).val()) > new Date()){
             if (quant.val() > 0) {
@@ -212,11 +215,12 @@
                 $.ajax({
                     type: "POST",
                     url: "{{ path('stock_appro_add') }}",
-                    data: "prod=" + produit + "&quantite=" + quant.val() + "&lot=" + numero.val() + "&perem=" + peremp.val(),
+                    data: "prod=" + produit + "&quantite=" + quant.val() + "&lot=" + numero.val() + "&perem=" + peremp.val()+ "&fournisseur=" + fournisseur.val(),
                     success: function (data) {
                         if (data['id'] == 'ok') {
                             $('#selectprod').append(" <tr id='tr" + produit + numero.val() + "'>\n" +
                                 "                        <td>" + data['ref'] + "</td>\n" +
+                                "                        <td>" + fournisseur.text() + "</td>\n" +
                                 "                        <td>" + data['designation'] + "</td>\n" +
                                 "                        <td>" + data['lot'] + "</td>\n" +
                                 "                        <td>" + data['peremption'] + "</td>\n" +
@@ -293,12 +297,14 @@
                     url: "{{ path('stock_fournisseur') }}",
                     data: "prod=" + produit,
                     success: function (data) {
-                        if (data[0]['id'] == 'ok') {
+                        if (data[0]['test'] == 'ok') {
                             $("#fourniss" + produit).html(" <option>{{ 'selectionnez le fournisseur'|trans }}</option>");
                             for (var i=0; i < data.length; i++) {
-                                $("#fourniss" + produit).append("<option>"+data[i]['designation']+"</option>")
+                                $("#fourniss" + produit).append("<option value='"+data[i]['id']+"'>"+data[i]['designation']+"</option>")
                             }
 
+                        }else{
+                            $("#fourniss" + produit).html(" <option>{{ 'aucun fournisseur'|trans }}</option>");
                         }
                     },
                     error: function () {

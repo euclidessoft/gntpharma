@@ -25,21 +25,9 @@ class Achat
     private $montant;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message= "Champ obligatoire")
-     */
-    private $libele;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Fournisseur::class, inversedBy="achats")
      */
     private $fournisseur;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message= "Champ obligatoire")
-     */
-    private $reference;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -83,18 +71,6 @@ class Achat
         return $this;
     }
 
-    public function getLibele(): ?string
-    {
-        return $this->libele;
-    }
-
-    public function setLibele(string $libele): self
-    {
-        $this->libele = $libele;
-
-        return $this;
-    }
-
     public function getFournisseur(): ?Fournisseur
     {
         return $this->fournisseur;
@@ -103,18 +79,6 @@ class Achat
     public function setFournisseur(?Fournisseur $fournisseur): self
     {
         $this->fournisseur = $fournisseur;
-
-        return $this;
-    }
-
-    public function getReference(): ?string
-    {
-        return $this->reference;
-    }
-
-    public function setReference(string $reference): self
-    {
-        $this->reference = $reference;
 
         return $this;
     }

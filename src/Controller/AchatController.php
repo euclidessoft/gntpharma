@@ -4,10 +4,16 @@ namespace App\Controller;
 
 use App\Complement\Solde as Solde;
 use App\Entity\Achat;
+use App\Entity\Approvisionnement;
+use App\Entity\Approvisionner;
 use App\Entity\Debit;
 use App\Entity\Ecriture;
+use App\Entity\Facture;
 use App\Form\AchatType;
 use App\Repository\AchatRepository;
+use App\Repository\ApprovisionnementRepository;
+use App\Repository\ApprovisionnerRepository;
+use App\Repository\FactureRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,11 +35,23 @@ class AchatController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="achat_new", methods={"GET","POST"})
+     * @Route("/Fournisseur_Facture_list", name="facture_list", methods={"GET"})
      */
-    public function new(Request $request, Solde $solde): Response
+    public function listfacture(FactureRepository $repository): Response
+    {
+        return $this->render('achat/facture_list.html.twig', [
+            'approvisionnements' => $repository->findBy(['payer' => false]),
+        ]);
+    }
+
+    /**
+     * @Route("/new/{facture}", name="achat_new", methods={"GET","POST"})
+     */
+    public function new(Request $request,Facture $facture, Solde $solde): Response
     {
         $achat = new Achat();
+        $achat->setMontant($facture->getMontant());
+        $achat->setFournisseur($facture->getFournisseur());
         $debit = new Debit();
         $ecriture = new Ecriture();
         $form = $this->createForm(AchatType::class, $achat);
@@ -70,14 +88,16 @@ class AchatController extends AbstractController
             if($achat->getMontant() <= $montant) {
                 $debit->setAchat($achat);
                 $debit->setMontant($achat->getMontant());
+                $facture->setPayer(true);
 
                 $ecriture->setDebit($debit);
                 $ecriture->setSolde(-$achat->getMontant());
                 $ecriture->setMontant($achat->getMontant());
-                $ecriture->setLibelle($achat->getLibele());
+                $ecriture->setLibelle('paiement approvisionnement '. $facture->getApprovisionner()->getId());
                 $entityManager->persist($achat);
                 $entityManager->persist($debit);
                 $entityManager->persist($ecriture);
+                $entityManager->persist($facture);
                 $entityManager->flush();
             return $this->redirectToRoute('achat_index', [], Response::HTTP_SEE_OTHER);
             }else{

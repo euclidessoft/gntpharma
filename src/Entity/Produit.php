@@ -102,6 +102,11 @@ class Produit
      */
     private $fournisseurProduits;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $pght;
+
 
     public function __construct()
     {
@@ -350,6 +355,18 @@ class Produit
                 $fournisseurProduit->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPght(): ?float
+    {
+        return $this->pght;
+    }
+
+    public function setPght(float $pght): self
+    {
+        $this->pght = $pght;
 
         return $this;
     }
