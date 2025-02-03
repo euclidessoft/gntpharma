@@ -71,14 +71,14 @@
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block departements %}{% endblock %}"
-                               href="{{ path('employe_index') }}">
+                               href="{{ path('departement_index') }}">
                                 <i class="fa-solid fa-users-viewfinder"></i>
                                 {{ 'Départements'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block postes %}{% endblock %}"
-                               href="#">
+                               href="{{ path('poste_index') }}">
                                 <i class="fa-solid fa-clipboard-user"></i>
                                 {{ 'Postes'|trans }}
                             </a>
@@ -200,21 +200,21 @@
 
                         <li class="dropdown-item">
                             <a class="nav-link {% block catalogue %}{% endblock %}"
-                               href="{{ path('fournisseur_new') }}">
+                               href="{{ path('formation_index') }}">
                                 <i class="fa-solid fa-book"></i>
                                 {{ 'Catalogue des formations'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block en_cours %}{% endblock %}"
-                               href="{{ path('fournisseur_new') }}">
+                               href="{{ path('formation_index') }}">
                                 <i class="fa-solid fa-book-bookmark"></i>
                                 {{ 'Formations en cours'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link {% block competences %}{% endblock %}"
-                               href="{{ path('fournisseur_index') }}">
+                               href="{{ path('formation_index') }}">
                                 <i class="fa-solid fa-graduation-cap"></i>
                                 {{ 'Compétences acquises'|trans }}
                             </a>
@@ -328,58 +328,7 @@
 {% endblock %}
 
 {% block topbar %}
-    <div class="container-fluid topbar">
-        <div class="row">
-            <div class="topbar-menu">
-                <div id="navbtn" class="navbtn" onclick="openNav()">
-                    <i class="fas fa-align-justify fa-2x"></i>
-                </div>
-            </div>
-            <div class="topbar-item">
-                <div class="row">
-                    <div class="col-lg-5 col-md-2 col-6 text-nowrap">
-                        <span class="history-box">
-                            <i class="fa fa-arrow-circle-left history-btn" title="Page précédente"
-                               onclick="window.history.back()"></i>
-                            <i class="fa fa-arrow-circle-right history-btn ml-3" title="Page suivante"
-                               onclick="window.history.forward()"></i>
-                            <i class="fa fa-redo-alt fa-rotate-270 history-btn ml-3" title="Actualiser la page"
-                               onclick="window.location.reload()"></i>
-                        </span>
-
-                        <button type="button" id="install_button" onclick="installApp()" hidden></button>
-                    </div>
-                    <div class="col-lg-2 col-md-1 col-6 text-nowrap">
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-6 text-nowrap">
-                        <div class="float-right">
-                            <label for="langue">
-                                <i class="fa fa-globe"></i>
-                            </label>
-                            <select name="langue" id="langue" onchange="choixlangue()">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-3 col-6 text-nowrap">
-                        <div class="text-right">
-                            <div class="dropdown">
-                                <a href="#" class="" data-toggle="dropdown">
-                                    {{ app.user.username }}
-                                    <img src="{{ asset('images/avatar-homme.avif') }}" class="user-image"
-                                         alt="User Image">
-                                </a>
-                                <div class="dropdown-menu">
-                                    {{ include('security/security/deconnexion-menu.html.twig') }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{ include('security/security/deconnexion-promt.html.twig') }}
-    {{ include('default/about.html.twig') }}
+    {{ include('topbar.html.twig') }}
 {% endblock %}
 
 
@@ -388,7 +337,6 @@
 
     {% endblock %}
 </div>
-
 {{ include('javascript.html.twig') }}
 {% block scripts %}
 

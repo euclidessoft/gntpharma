@@ -1,5 +1,5 @@
-{% extends 'admin.html.twig' %}
-{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% extends 'employe.html.twig' %}
+{% block title %} {{ "Tous les employes"|trans }} - GNT Pharma {% endblock %}
 {% block employe %}active{% endblock %}
 {% block all_employe %}active{% endblock %}
 {% block body %}
@@ -13,7 +13,7 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>{{ 'Civilité'|trans }}</th>
+                <th>{{ 'Matricule'|trans }}</th>
                 <th>{{ 'Prénom'|trans }}</th>
                 <th>{{ 'Nom'|trans }}</th>
                 <th>{{ 'Date de naissance'|trans }}</th>
@@ -22,27 +22,27 @@
                 <th>{{ 'Téléphone'|trans }}</th>
                 <th>{{ 'Email'|trans }}</th>
                 <th>{{ 'Adresse'|trans }}</th>
-                <th>{{ 'Département'|trans }}</th>
-                <!-- <th>{{ 'actions'|trans }}</th> -->
+                <th>{{ 'Poste'|trans }}</th>
+{#                <th>{{ 'actions'|trans }}</th>#}
             </tr>
         </thead>
         <tbody>
             {% for employe in employe %}
             <tr>
-                <td>{{ employe.civilite }}</td>
-                <td>{{ employe.prenom }}</td>
-                <td>{{ employe.nom }}</td>
-                <td data-label="{{ 'Date de naissance'|trans }}">{{ employe.datenaissance ? employe.datenaissance|date('Y-m-d') : '' }}</td>
-                <td>{{ employe.lieunaissance }}</td>
-                <td>{{ employe.sexe }}</td>
-                <td>{{ employe.phone }}</td>
-                <td>{{ employe.email }}</td>
-                <td>{{ employe.adresse }}</td>
-                <td>{{ employe.poste ? employe.poste.departement.nom }}</td>
-                <!-- <td>action</td> -->
+                <td data-label="{{ 'Matricule'|trans }}">{{ employe.matricule }}</td>
+                <td data-label="{{ 'Prénom'|trans }}">{{ employe.prenom }}</td>
+                <td data-label="{{ 'Nom'|trans }}">{{ employe.nom }}</td>
+                <td data-label="{{ 'Date de naissance'|trans }}">{{ employe.datenaissance ? employe.datenaissance|date('d/m/Y') : '' }}</td>
+                <td data-label="{{ 'Lieu de naissance'|trans }}">{{ employe.lieunaissance }}</td>
+                <td data-label="{{ 'Sexe'|trans }}">{{ employe.sexe }}</td>
+                <td data-label="{{ 'Téléphone'|trans }}">{{ employe.phone }}</td>
+                <td data-label="{{ 'Email'|trans }}">{{ employe.email }}</td>
+                <td data-label="{{ 'Adresse'|trans }}">{{ employe.adresse }}</td>
+                <td data-label="{{ 'Poste'|trans }}">{{ employe.poste ? employe.poste.departement.nom }}</td>
+{#                <td data-label="{{ ''|trans }}">action</td>#}
                 {% else %}
             <tr>
-                <td colspan="11">no records found</td>
+                <td class="text-center" colspan="10">{{ 'Aucun employé enregistré'|trans }}</td>
             </tr>
             {% endfor %}
         </tbody>
