@@ -98,6 +98,13 @@
                             </a>
                         </li>
                         <li class="dropdown-item">
+                            <a class="nav-link {% block absence_index %}{% endblock %}"
+                                href="{{ path('absence_index') }}">
+                                <i class="fa fa-plus"></i>
+                                {{ 'Absence'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
                             <a class="nav-link {% block employe_new %}{% endblock %}"
                                 href="{{ path('employe_new') }}">
                                 <i class="fa fa-plus"></i>

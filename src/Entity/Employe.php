@@ -141,6 +141,11 @@ class Employe extends User implements UserInterface
      */
     private $congeAccorders;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Absence::class, mappedBy="employe")
+     */
+    private $absences;
+
 
     public function __construct()
     {
@@ -150,6 +155,7 @@ class Employe extends User implements UserInterface
         $this->formations = new ArrayCollection();
         $this->conges = new ArrayCollection();
         $this->congeAccorders = new ArrayCollection();
+        $this->absences = new ArrayCollection();
     }
 
 
@@ -535,6 +541,36 @@ class Employe extends User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($congeAccorder->getEmploye() === $this) {
                 $congeAccorder->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Absence[]
+     */
+    public function getAbsences(): Collection
+    {
+        return $this->absences;
+    }
+
+    public function addAbsence(Absence $absence): self
+    {
+        if (!$this->absences->contains($absence)) {
+            $this->absences[] = $absence;
+            $absence->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAbsence(Absence $absence): self
+    {
+        if ($this->absences->removeElement($absence)) {
+            // set the owning side to null (unless already changed)
+            if ($absence->getEmploye() === $this) {
+                $absence->setEmploye(null);
             }
         }
 

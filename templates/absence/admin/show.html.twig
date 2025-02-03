@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<title>Absence</title>
+
+{% block body %}
+    <h1>Absence</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ absence.id }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ absence.status }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ absence.dateAbsence ? absence.dateAbsence|date('Y-m-d') : '' }}</td>
+            </tr>
+
+            {# Affichage des justificatifs #}
+            {% if justificatif|length > 0 %}
+                {% for justificatif in justificatif %}
+                    <tr>
+                        <th>Raison du justificatif</th>
+                        <td>{{ justificatif.cause }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fichier du justificatif</th>
+                        <td>
+                            {% if justificatif.file %}
+                                <a href="{{ asset('uploads/justificatifs/' ~ justificatif.file) }}" target="_blank">Télécharger le fichier</a>
+                            {% else %}
+                                Aucune pièce jointe.
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <th>Raison du justificatif</th>
+                    <td>Aucun justificatif soumis</td>
+                </tr>
+                <tr>
+                    <th>Fichier du justificatif</th>
+                    <td>Aucun fichier joint</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('absence_index') }}">Retour à la liste</a>
+    <a href="{{ path('absence_edit', {'id': absence.id}) }}">Modifier</a>
+
+{% endblock %}
