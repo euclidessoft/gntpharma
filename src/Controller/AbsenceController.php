@@ -148,4 +148,22 @@ class AbsenceController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
+    /**
+     *@Route("/{id}/confirmer", name="absence_confirmer", methods={"GET", "POST"})
+     */
+    public function confirmer(Request $request, Absence $absence)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+       
+        if ($this->isCsrfTokenValid('confirmer' . $absence->getId(), $request->request->get('_token'))) {
+            $absence->setStatus(1);
+            $absence->setJustifier(true);
+        }
+
+        $entityManager->persist($absence);
+        $entityManager->flush();
+        return $this->redirectToRoute('absence_suivi');
+    }
 }

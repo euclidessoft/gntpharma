@@ -1,27 +1,46 @@
-<!DOCTYPE html>
-<title>Absence</title>
+{% extends 'admin.html.twig' %}
 
 {% block body %}
-    <h1>Absence</h1>
+<div class="col-lg-6 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold text-center">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Absence de l'employé : "|trans }}
+        {{ absence.employe.nom }} {{ absence.employe.prenom }}
+    </h3>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ absence.id }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ absence.status }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ absence.dateAbsence ? absence.dateAbsence|date('Y-m-d') : '' }}</td>
-            </tr>
+    <div class="card">
+        <div class="card-header text-white">
+            <h5>Informations sur l'absence</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped w-100">
+                <tbody>
+                    <tr>
+                        <th>Nom complet de l'employé</th>
+                        <td>{{ absence.employe.nom }} {{ absence.employe.prenom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            {% if absence.status == 0 %}
+                            <span class="badge badge-warning">En attente</span>
+                            {% elseif absence.status == 1 %}
+                            <span class="badge badge-info">En cours de traitement</span>
+                            {% elseif absence.status == 2 %}
+                            <span class="badge badge-success">Justifié</span>
+                            {% else %}
+                            <span class="badge badge-secondary">Statut inconnu</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Date</th>
+                        <td>{{ absence.dateAbsence ? absence.dateAbsence|date('d/m/Y') : 'Non spécifiée' }}</td>
+                    </tr>
 
-            {# Affichage des justificatifs #}
-            {% if justificatif|length > 0 %}
-                {% for justificatif in justificatif %}
+                    {# Affichage des justificatifs si disponibles #}
+                    {% if absence.reponseAbsences is not empty %}
+                    {% for justificatif in absence.reponseAbsences %}
                     <tr>
                         <th>Raison du justificatif</th>
                         <td>{{ justificatif.cause }}</td>
@@ -30,27 +49,38 @@
                         <th>Fichier du justificatif</th>
                         <td>
                             {% if justificatif.file %}
-                                <a href="{{ asset('uploads/justificatifs/' ~ justificatif.file) }}" target="_blank">Télécharger le fichier</a>
+                            <a class="btn btn-success btn-sm" href="{{ asset('uploads/justificatifs/' ~ justificatif.file) }}" target="_blank">
+                                <i class="fa fa-download"></i> Télécharger le fichier
+                            </a>
                             {% else %}
-                                Aucune pièce jointe.
+                            Aucune pièce jointe.
                             {% endif %}
                         </td>
                     </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                    <th>Raison du justificatif</th>
-                    <td>Aucun justificatif soumis</td>
-                </tr>
-                <tr>
-                    <th>Fichier du justificatif</th>
-                    <td>Aucun fichier joint</td>
-                </tr>
-            {% endif %}
-        </tbody>
-    </table>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <th>Raison du justificatif</th>
+                        <td>Aucun justificatif soumis</td>
+                    </tr>
+                    <tr>
+                        <th>Fichier du justificatif</th>
+                        <td>Aucun fichier joint</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <a href="{{ path('absence_index') }}">Retour à la liste</a>
-    <a href="{{ path('absence_edit', {'id': absence.id}) }}">Modifier</a>
+    <div class="py-4 d-flex justify-content-center">
+        <form method="POST" action="{{ path('absence_confirmer', {'id': absence.id }) }}" style="display:inline;">
+            <input type="hidden" name="_token" value="{{ csrf_token('confirmer' ~ absence.id) }}">
+            <button type="submit" class="btn btn-danger btn-sm">
+                <i class="fas fa-times"></i> Accepter
+            </button>
+        </form>
+    </div>
 
+</div>
 {% endblock %}

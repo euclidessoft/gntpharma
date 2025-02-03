@@ -37,7 +37,7 @@
                     <span class="badge badge-danger">En attente de justification</span>
                     {% elseif absence.status == 1 %}
                     <span class="badge badge-primary">En cours de traitement</span>
-                    {% else %}
+                    {% elseif absence.status == 1 and absence.justifier == true %}
                     <span>Justifié</span>
                     {% endif %}
                 </td>
