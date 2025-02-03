@@ -5,10 +5,9 @@
 {% block body %}
 <div class="container-fluid mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
-        <i class="fa fa-money-bill mr-2"></i>
-        {{ "Listes des employés"|trans }}
+        <i class="fa fa-users mr-2"></i>
+        {{ "Tous les employes"|trans }}
     </h3>
-
 
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
@@ -16,14 +15,13 @@
                 <th>{{ 'Matricule'|trans }}</th>
                 <th>{{ 'Prénom'|trans }}</th>
                 <th>{{ 'Nom'|trans }}</th>
-                <th>{{ 'Date de naissance'|trans }}</th>
-                <th>{{ 'Lieu de naissance'|trans }}</th>
+                <th>{{ 'Age'|trans }}</th>
                 <th>{{ 'Sexe'|trans }}</th>
                 <th>{{ 'Téléphone'|trans }}</th>
                 <th>{{ 'Email'|trans }}</th>
                 <th>{{ 'Adresse'|trans }}</th>
                 <th>{{ 'Poste'|trans }}</th>
-{#                <th>{{ 'actions'|trans }}</th>#}
+                <th>{{ 'Status'|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -32,14 +30,20 @@
                 <td data-label="{{ 'Matricule'|trans }}">{{ employe.matricule }}</td>
                 <td data-label="{{ 'Prénom'|trans }}">{{ employe.prenom }}</td>
                 <td data-label="{{ 'Nom'|trans }}">{{ employe.nom }}</td>
-                <td data-label="{{ 'Date de naissance'|trans }}">{{ employe.datenaissance ? employe.datenaissance|date('d/m/Y') : '' }}</td>
-                <td data-label="{{ 'Lieu de naissance'|trans }}">{{ employe.lieunaissance }}</td>
+                <td data-label="{{ 'Age'|trans }}"> </td>
                 <td data-label="{{ 'Sexe'|trans }}">{{ employe.sexe }}</td>
                 <td data-label="{{ 'Téléphone'|trans }}">{{ employe.phone }}</td>
                 <td data-label="{{ 'Email'|trans }}">{{ employe.email }}</td>
                 <td data-label="{{ 'Adresse'|trans }}">{{ employe.adresse }}</td>
                 <td data-label="{{ 'Poste'|trans }}">{{ employe.poste ? employe.poste.departement.nom }}</td>
-{#                <td data-label="{{ ''|trans }}">action</td>#}
+                <td data-label="{{ 'Statut'|trans }}">
+                    <form action="{{ path('employe_toggle_status', { 'id': employe.id }) }}" method="post" class="d-inline">
+                        <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ employe.id) }}">
+                        <button type="submit" class="btn btn-{% if employe.status %}danger{% else %}success{% endif %}">
+                            {% if employe.status %} Désactiver {% else %} Activer {% endif %}
+                        </button>
+                    </form>
+                </td>
                 {% else %}
             <tr>
                 <td class="text-center" colspan="10">{{ 'Aucun employé enregistré'|trans }}</td>

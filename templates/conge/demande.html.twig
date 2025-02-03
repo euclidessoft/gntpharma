@@ -1,0 +1,106 @@
+{% extends 'employe.html.twig' %}
+{% block title %}Mes demandes des Congés{% endblock %}
+{% block conges %}active{% endblock %}
+{% block permissions %}active{% endblock %}
+{% block body %}
+
+<div class="container mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fas fa-calendar-alt me-2"></i>
+        {{ "Mes demandes de Congé"|trans }}
+    </h3>
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('conges_employe_index') }}">
+                {{'Toutes les demandes'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('conges_employe_suivi') }}">
+                {{ 'Demandes en cours'|trans }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('conges_employe_accepter') }}">
+                {{ 'Demandes acceptées'|trans }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('conges_employe_refuser') }}">
+                {{'Demandes refusée'|trans}}
+            </a>
+        </li>
+
+    </ul>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>Type de Congé</th>
+                <th>Période demande</th>
+                <th>Période accordée</th>
+                <td>Raison</td>
+                <th>Statut</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for conges in conge %}
+            <tr>
+                <td>{{ conges.type.nom }}</td>
+                <td>
+                    {{ conges.dateDebut|date('d/m/Y') }} <small class="text-muted">au</small> {{ conges.dateFin|date('d/m/Y') }}
+                    <br> Durée : {{ conges.dateFin.diff(conges.dateDebut).days + 1 }} jours
+                </td>
+                <td>
+                    {% if conges.congeaccorder %}
+                    {% if conges.congeaccorder.dateDebutAccorder is not null and conges.congeaccorder.dateFinAccorder is not null %}
+                    {{ conges.congeaccorder.dateDebutAccorder|date('d/m/Y') }} <small>au</small> {{ conges.congeaccorder.dateFinAccorder|date('d/m/Y') }}
+                    <br> Durée : {{ conges.congeaccorder.dateFinAccorder.diff(conges.congeaccorder.dateDebutAccorder).days + 1 }} jours
+                    {% else %}
+                    Non accordé
+                    {% endif %}
+                    {% else %}
+                    Non accordé
+                    {% endif %}
+                </td>
+                <td>{{ conges.description }}</td>
+                <td>
+                    {% if conges.status == 0 %}
+                    <span class="badge badge-info">En attente de validation</span>
+                    {% elseif conges.status == 1 and conges.congeaccorder is not null and conges.congeaccorder.status == true %}
+                    <span class="badge badge-success">Confirmée</span>
+                    {% elseif conges.status == 2 and conges.congeaccorder is null %}
+                    <span class="badge badge-danger">Rejetée</span>
+                    {% elseif conges.status == 2 and conges.congeaccorder is not null and conges.congeaccorder.status == false %}
+                    <span class="badge badge-danger">Déclinée</span>
+                    {% else %}
+                    <span class="badge badge-warning">En attente de confirmation</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if conges.status == 3 %}
+                    <form method="POST" action="{{ path('conge_confirmer', {'id': conges.id }) }}" style="display:inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('confirmer' ~ conges.id) }}">
+                        <button type="submit" class="btn btn-success btn-sm">
+                            Confirmer
+                        </button>
+                    </form>
+                    <form method="POST" action="{{ path('conge_decliner', {'id': conges.id }) }}" style="display:inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('decliner' ~ conges.id) }}">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="fas fa-times"></i> Décliner
+                        </button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6">Aucune demande enregistrée</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
