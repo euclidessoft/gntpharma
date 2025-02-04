@@ -14,10 +14,9 @@
             <th>{{ ('Date absence'|trans) }}</th>
             <th>{{ ('Status') }}</th>
             <th>{{ ('Sanction') }}</th>
-            {#                <th>{{('Status')}}</th>#}
-            {% if absences|filter(absence => absence.status == 0 and absence.justifier == false)|length > 0 %}
-                <th>{{ ('Actions'|trans) }}</th>
-            {% endif %}
+{#            {% if absences|filter(absence => absence.status == 0 and absence.justifier == false)|length > 0 %}#}
+            <th>{{ ('Actions'|trans) }}</th>
+{#            {% endif %}#}
         </tr>
         </thead>
         <tbody>
@@ -53,13 +52,18 @@
                 {#                    <span>Justifié</span>#}
                 {#                    {% endif %}#}
                 {#                </td>#}
-                {% if absence.status == 0 %}
-                    <td data-label="Actions">
 
-                        <a href="{{ path('absence_justifier', {'id': absence.id }) }}" class="btn btn-success btn-sm">Justifier</a>
-
-                    </td>
-                {% endif %}
+                <td data-label="Actions">
+                    {% if absence.status == 0 and absence.justifier == 0 %}
+                        <a href="{{ path('absence_justifier', {'id': absence.id }) }}" class="btn btn-success btn-sm">
+                            Justifier
+                        </a>
+                    {% else %}
+                        <a href="{{ path('absence_justifier', {'id': absence.id }) }}" class="btn btn-success">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                    {% endif %}
+                </td>
             </tr>
         {% else %}
             <tr>

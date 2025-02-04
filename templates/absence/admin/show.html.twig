@@ -76,19 +76,19 @@
                 </table>
             </div>
         </div>
-
-        <div class="py-4 d-flex justify-content-center">
-            <form method="POST" action="{{ path('absence_confirmer', {'id': absence.id }) }}" style="display:inline;">
-                <input type="hidden" name="_token" value="{{ csrf_token('confirmer' ~ absence.id) }}">
-                <button type="submit" class="btn btn-success">
-                    <i class="fas fa-check"></i> Accepter
-                </button>
-            </form>
-            <a href="{{ path('absence_refuser', {'id': absence.id }) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir refuser cette absence ?');">
-                <i class="fas fa-times"></i>
-                Refuser
-            </a>
-        </div>
-
+        {% if absence.justifier == 0 and absence.status == 1 %}
+            <div class="py-4 d-flex justify-content-center">
+                <form method="POST" action="{{ path('absence_confirmer', {'id': absence.id }) }}" style="display:inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('confirmer' ~ absence.id) }}">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check"></i> Accepter
+                    </button>
+                </form>
+                <a href="{{ path('absence_refuser', {'id': absence.id }) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir refuser cette absence ?');">
+                    <i class="fas fa-times"></i>
+                    Refuser
+                </a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
