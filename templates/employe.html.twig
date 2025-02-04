@@ -258,7 +258,7 @@
                 </li>
                 <li class="nav-item" title="{{ 'Réclamation'|trans }}">
                     <a class="nav-link {% block reclamation %} {% endblock %}"
-                        href="{{ path('reclamation_index',{'user':app.user.id}) }}">
+                        href="#">
                         <div class="icone">
                             <i class="fa-solid fa-user-clock fa-lg"></i>
                         </div>
@@ -335,11 +335,6 @@
     {% block scripts %}
 
     {% endblock %}
-
-{{ include('javascript.html.twig') }}
-{% block scripts %}
-
-{% endblock %}
 </body>
 
 </html>
