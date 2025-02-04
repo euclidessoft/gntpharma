@@ -1,0 +1,84 @@
+{% extends 'admin.html.twig' %}
+{% block employe %}active{% endblock %}
+{% block poste %}active{% endblock %}
+
+{% block body %}
+<div class="col-lg-6 mt-4 pb-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa-brands fa-product-hunt mr-2"></i>
+        {{ "Détails dépense"|trans }}
+    </h3>
+
+    <table class="table table-success-light table-bordered text-center table-hover table-striped w-100">
+        <tbody>
+            <tr>
+                <th>Poste</th>
+                <td>{{ poste.nom }} </td>
+            </tr>
+            <tr>
+                <th>Département du poste</th>
+                <td>{{ poste.departement.nom }} </td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ poste.description }} </td>
+            </tr>
+            <tr>
+                <th>Salaire</th>
+                <td>{{ poste.salaire|number_format(2, ',', ' ') }} </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="col-lg-6 mt-4 pb-4 fond-7">
+    <h3 class="mt-4 text-bold">
+        <i class="fa-brands fa-product-hunt mr-2"></i>
+        {{ "Liste des employés qui occupe cet poste"|trans }}
+    </h3>
+    <!-- Bouton pour attribuer des employés au poste -->
+    <div class="py-4">
+        
+        <a href="{{ path('poste_attribuer', {'id': poste.id}) }}" class="btn btn-success">
+            <i class="fa fa-plus-circle"></i> {{ 'Attribuer des employés'|trans }}
+        </a>
+    </div>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>{{('Nom'|trans)}}</th>
+                <th>{{('Prénom'|trans)}}</th>
+                <th>{{('Téléphone'|trans)}}</th>
+                <th>{{('Email'|trans)}}</th>
+                <th>{{('Adresse'|trans)}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employe in employes %}
+            <tr>
+                <td data-label="Nom">{{ employe.nom }}</td>
+                <td data-label="Description">{{ employe.prenom }}</td>
+                <td data-label="Description">{{ employe.phone }}</td>
+                <td data-label="Description">{{ employe.email }}</td>
+                <td data-label="Description">{{ employe.adresse }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center">Aucun employé pour ce poste</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="col-md-4 offset-md-3 mt-4 py-3 fond-7">
+    <div class="centrer">
+        {#            <a class="btn btn-success mr-3" href="{{ path('poste_edit', {'id': poste.id}) }}">#}
+        {#                <i class="fa fa-edit"></i> Modifier</a>#}
+        <a id="{{ poste.id }}" onclick="load({{ poste.id }})" class="btn btn-success-light text-green" href="{{ path('poste_index') }}">
+            <i class="fa fa-undo"></i>
+            {{ 'Retour'|trans }}
+        </a>
+    </div>
+</div>
+
+</div>
+{% endblock %}

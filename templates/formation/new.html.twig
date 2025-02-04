@@ -1,17 +1,11 @@
 {% extends 'admin.html.twig' %}
-{% block title %} {{ "Nouvelle ligne de dépense"|trans }} - GNT Pharma {% endblock %}
+{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
 {% block employe %}active{% endblock %}
-{% block departement_index %}active{% endblock %}
-{% block new_departement %}active{% endblock %}
+{% block formation_index %}active{% endblock %}
+{% block new_formation %}active{% endblock %}
 
 {% block body %}
-<div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
-    <h4 class="mb-5">
-        <i class="fa-solid fa-house"></i><i class="fa fa-plus mr-2"></i>
-        {{ 'Nouvelle département'|trans }}
-    </h4>
-
-    {{ include('departement/_form.html.twig') }}
+    {{ include('formation/_form.html.twig') }}
     <div class="col-md-3 offset-md-3 mt-4 pt-3 fond-7">
         <div class="centrer">
             {#                <div class="row">#}

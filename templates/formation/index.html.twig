@@ -1,0 +1,49 @@
+{% extends 'employe.html.twig' %}
+{% block title %} {{ "Lignes de depenses"|trans }} - GNT Pharma {% endblock %}
+{% block employe %}active{% endblock %}
+{% block formation_index %}active{% endblock %}
+{% block all_formations %}active{% endblock %}
+{% block body %}
+<div class="col-lg-8 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Liste des formations"|trans }}
+    </h3>
+    <a href="{{ path('formation_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouvelle formation</a>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>{{('Nom'|trans)}}</th>
+                <th>{{('Date début'|trans)}}</th>
+                <th>{{('Date fin'|trans)}}</th>
+                <th>{{('Contenu'|trans)}}</th>
+                <th>{{('Lieu'|trans)}}</th>
+                <th>{{('Type'|trans)}}</th>
+                <th>{{('actions'|trans)}}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for formation in formations %}
+            <tr>
+                <td data-label="Nom">{{ formation.nom }}</td>
+                <td data-label="Date début">{{ formation.datedebut ? formation.datedebut|date('Y-m-d') : '' }}</td>
+                <td data-label="Date fin">{{ formation.datefin ? formation.datefin|date('Y-m-d') : '' }}</td>
+                <td data-label="Contenu">{{ formation.contenu }}</td>
+                <td data-label="Lieu">{{ formation.lieu }}</td>
+                <td data-label="Type">{{ formation.type }}</td>
+                <td data-label="Actions">
+                    <!-- <a href="{{ path('formation_show', {'id': formation.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a> -->
+                    <a href="{{ path('formation_edit', {'id': formation.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
+                    {{ include('formation/_delete_form.html.twig') }}
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4" class="text-center">Aucune ligne de dépenses</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

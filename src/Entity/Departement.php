@@ -25,13 +25,13 @@ class Departement
     private $nom;
 
     /**
-     * @ORM\OneToMany(targetEntity=Employe::class, mappedBy="departement")
+     * @ORM\OneToMany(targetEntity=Poste::class, mappedBy="departement")
      */
-    private $employes;
+    private $postes;
 
     public function __construct()
     {
-        $this->employes = new ArrayCollection();
+        $this->postes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -52,29 +52,29 @@ class Departement
     }
 
     /**
-     * @return Collection|Employe[]
+     * @return Collection|Poste[]
      */
-    public function getEmployes(): Collection
+    public function getPostes(): Collection
     {
-        return $this->employes;
+        return $this->postes;
     }
 
-    public function addEmploye(Employe $employe): self
+    public function addPoste(Poste $poste): self
     {
-        if (!$this->employes->contains($employe)) {
-            $this->employes[] = $employe;
-            $employe->setDepartement($this);
+        if (!$this->postes->contains($poste)) {
+            $this->postes[] = $poste;
+            $poste->setDepartement($this);
         }
 
         return $this;
     }
 
-    public function removeEmploye(Employe $employe): self
+    public function removePoste(Poste $poste): self
     {
-        if ($this->employes->removeElement($employe)) {
+        if ($this->postes->removeElement($poste)) {
             // set the owning side to null (unless already changed)
-            if ($employe->getDepartement() === $this) {
-                $employe->setDepartement(null);
+            if ($poste->getDepartement() === $this) {
+                $poste->setDepartement(null);
             }
         }
 

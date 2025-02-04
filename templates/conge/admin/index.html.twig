@@ -1,0 +1,77 @@
+{% extends 'admin.html.twig' %}
+{% block title %}Gestion des Congés - Admin{% endblock %}
+{% block employe %}active{% endblock %}
+{% block conges %}active{% endblock %}
+{% block body %}
+<div class="col-lg-12 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Gestion des Demandes de Congé"|trans }}
+    </h3>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>Employé</th>
+                <th>Type de Congé</th>
+                <th>Période demandée</th>
+                <th>Période accordée</th>
+                <td>Raison</td>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for conges in conge %}
+            <tr>
+                <td>{{ conges.employe.prenom }} {{ conges.employe.nom }}</td>
+                <td>{{ conges.type.nom }}</td>
+                <td>{{ conges.dateDebut|date('d/m/Y') }} <small>au</small> {{ conges.dateFin|date('d/m/Y') }}
+                    <br> Durée : {{ conges.dateFin.diff(conges.dateDebut).days + 1 }} jours
+                </td>
+                <td>
+                    {% if conges.congeaccorder %}
+                    {% if conges.congeaccorder.dateDebutAccorder is not null and conges.congeaccorder.dateFinAccorder is not null %}
+                    {{ conges.congeaccorder.dateDebutAccorder|date('d/m/Y') }} <small>au</small> {{ conges.congeaccorder.dateFinAccorder|date('d/m/Y') }}
+                    <br> Durée : {{ conges.congeaccorder.dateFinAccorder.diff(conges.congeaccorder.dateDebutAccorder).days + 1 }} jours
+                    {% else %}
+                    Non accordé
+                    {% endif %}
+                    {% else %}
+                    Non accordé
+                    {% endif %}
+                </td>
+                <td>{{ conges.description }}</td>
+                <td>
+                    {% if conges.status == 0 %}
+                    <span class="badge badge-info">En attente de validation</span>
+                    {% elseif conges.status == 1 and conges.congeaccorder is not null and conges.congeaccorder.status == true %}
+                    <span class="badge badge-success">Confirmée</span>
+                    {% elseif conges.status == 2 and conges.congeaccorder is null %}
+                    <span class="badge badge-danger">Rejetée</span>
+                    {% elseif conges.status == 2 and conges.congeaccorder is not null and conges.congeaccorder.status == false %}
+                    <span class="badge badge-danger">Déclinée</span>
+                    {% else %}
+                    <span class="badge badge-warning">En attente de confirmation</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if conges.status == false %}
+                    <a href="{{ path('conge_approuve', {'id': conges.id }) }}" class="btn btn-success btn-sm">Approuver</a>
+                    <form method="POST" action="{{ path('conge_rejeter', {'id': conges.id }) }}" style="display:inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('rejeter' ~ conges.id) }}">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="fas fa-times"></i> Rejeter
+                        </button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7">Aucune demande enregistrée</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
