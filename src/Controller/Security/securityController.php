@@ -37,7 +37,7 @@ class securityController extends AbstractController
      */
     public function new(Request $request, UserPasswordEncoderInterface $encoder, TokenGeneratorInterface $tokenGenerator, \Swift_Mailer $mail)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        // if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             $manager = $this->getDoctrine()->getManager();
             $employe = new Employe();
                 $form = $this->createForm(EmployeType::class, $employe);
@@ -100,10 +100,10 @@ class securityController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-        } else {
-            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
-            return $this->redirectToRoute('security_login');
-        }
+        // } else {
+        //     $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
+        //     return $this->redirectToRoute('security_login');
+        // }
     }
 
     /**

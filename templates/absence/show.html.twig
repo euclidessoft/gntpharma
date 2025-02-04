@@ -1,0 +1,54 @@
+{% extends 'employe.html.twig' %}
+
+{% block body %}
+    <div class="col-lg-6 mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold text-center">
+            <i class="fa fa-money-bill mr-2"></i>
+            {{ "Details du refus "|trans }}
+        </h3>
+
+        <div class="card">
+            <div class="card-header text-white">
+                <h5>Informations sur le refus d'absence</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped w-100">
+                    <tbody>
+                    {% for sanction in absence.sanctions %}
+                        <tr>
+                            <th>Motif du refus</th>
+                            <td>{{ sanction.motif }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date de refus</th>
+                            <td>{{ sanction.dateSanction ? sanction.dateSanction|date('d/m/Y') : 'Non spécifiée' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Sanction</th>
+                            <td>{{ sanction.type ? sanction.type.nom : "Non spécifiée" }}</td>
+                        </tr>
+                        <tr>
+                            <th>Responsable</th>
+                            <td>
+                                {{ sanction.responsable ? sanction.responsable.prenom ~ ' ' ~ sanction.responsable.nom : "Aucun responsable" }}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2">Aucune sanction</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="centrer mt-3">
+            <a id="{{ absence.id }}" onclick="load({{ absence.id }})" href="{{ path('absence_suivi') }}"
+               class="btn btn-success-light btn-normal mb-3">
+                <i class="fa fa-undo"></i>
+                {{ 'Retour'|trans }}
+            </a>
+        </div>
+    </div>
+{% endblock %}
