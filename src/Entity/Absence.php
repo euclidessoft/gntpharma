@@ -44,9 +44,15 @@ class Absence
      */
     private $reponseAbsences;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Sanction::class, mappedBy="absence")
+     */
+    private $sanctions;
+
     public function __construct()
     {
         $this->reponseAbsences = new ArrayCollection();
+        $this->sanctions = new ArrayCollection();
     }
 
     
@@ -127,6 +133,36 @@ class Absence
             // set the owning side to null (unless already changed)
             if ($reponseAbsence->getAbsence() === $this) {
                 $reponseAbsence->setAbsence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sanction[]
+     */
+    public function getSanctions(): Collection
+    {
+        return $this->sanctions;
+    }
+
+    public function addSanction(Sanction $sanction): self
+    {
+        if (!$this->sanctions->contains($sanction)) {
+            $this->sanctions[] = $sanction;
+            $sanction->setAbsence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSanction(Sanction $sanction): self
+    {
+        if ($this->sanctions->removeElement($sanction)) {
+            // set the owning side to null (unless already changed)
+            if ($sanction->getAbsence() === $this) {
+                $sanction->setAbsence(null);
             }
         }
 

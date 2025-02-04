@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Absence;
 use App\Entity\ReponseAbsence;
+use App\Entity\Sanction;
 use App\Form\AbsenceType;
 use App\Form\ReponseAbsenceType;
+use App\Form\SanctionType;
 use App\Repository\AbsenceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -164,6 +166,32 @@ class AbsenceController extends AbstractController
 
         $entityManager->persist($absence);
         $entityManager->flush();
-        return $this->redirectToRoute('absence_suivi');
+        return $this->redirectToRoute('absence_index');
     }
+
+    /**
+     * @Route("/{id}/refuser", name="absence_refuser", methods={"GET","POST"})
+     */
+    public function refuser(Request $request,Absence $absence): Response
+    {
+        $sanction = new Sanction();
+        $form = $this->createForm(SanctionType::class, $sanction);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $entityManager = $this->getDoctrine()->getManager();
+            $sanction->setDateSanction(new \DateTime());
+            $sanction->setAbsence($absence);
+            $absence->setJustifier(true);
+            $absence->setStatus(0);
+            $entityManager->persist($sanction);
+            $entityManager->flush();
+            return $this->redirectToRoute('absence_index');
+        }
+        return $this->render("absence/admin/sanction.html.twig", [
+            'form' => $form->createView(),
+        ]);
+
+    }
+
+
 }
