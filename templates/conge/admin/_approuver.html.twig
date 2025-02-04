@@ -1,4 +1,5 @@
-{% extends 'admin.html.twig' %}
+{% extends 'employe.html.twig' %}
+{% block title %} {{ "Modification employé "|trans }} - GNT Pharma {% endblock %}
 {% block body %}
     {{ form_start(form, {'attr': {'id': 'form'}}) }}
 
@@ -14,7 +15,7 @@
     <div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
         <h4 class="mb-5">
             <i class="fa-solid fa-clock"></i><i class="fa fa-plus mr-2"></i>
-            {{ 'Approuver la demande de congé'|trans }}
+            {{ 'Traitement de la demande de congé'|trans }}
         </h4>
       
         <div class="col-12 mb-4">
@@ -58,7 +59,7 @@
 
         if (dateDebutAccorder > dateFinAccorder) {
             $('#approuver_dateFinAccorder').val("");
-            alert('La date de fin ne peut pas être inférieure à la date de début.');
+            alert('La date de fin ne peut être inférieure à la date de début.');
             e.preventDefault();
             return;
         }

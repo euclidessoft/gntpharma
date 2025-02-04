@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Security;
 /**
  * @Route("/{_locale}/Conges")
  */
-class ControllerCongeController extends AbstractController
+class CongeController extends AbstractController
 {
     /**
      * @Route("/", name="conge_index")
