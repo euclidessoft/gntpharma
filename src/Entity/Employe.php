@@ -146,6 +146,11 @@ class Employe extends User implements UserInterface
      */
     private $absences;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Sanction::class, mappedBy="responsable")
+     */
+    private $sanctions;
+
 
     public function __construct()
     {
@@ -156,6 +161,7 @@ class Employe extends User implements UserInterface
         $this->conges = new ArrayCollection();
         $this->congeAccorders = new ArrayCollection();
         $this->absences = new ArrayCollection();
+        $this->sanctions = new ArrayCollection();
     }
 
 
@@ -571,6 +577,36 @@ class Employe extends User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($absence->getEmploye() === $this) {
                 $absence->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sanction[]
+     */
+    public function getSanctions(): Collection
+    {
+        return $this->sanctions;
+    }
+
+    public function addSanction(Sanction $sanction): self
+    {
+        if (!$this->sanctions->contains($sanction)) {
+            $this->sanctions[] = $sanction;
+            $sanction->setResponsable($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSanction(Sanction $sanction): self
+    {
+        if ($this->sanctions->removeElement($sanction)) {
+            // set the owning side to null (unless already changed)
+            if ($sanction->getResponsable() === $this) {
+                $sanction->setResponsable(null);
             }
         }
 

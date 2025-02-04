@@ -172,7 +172,7 @@ class AbsenceController extends AbstractController
     /**
      * @Route("/{id}/refuser", name="absence_refuser", methods={"GET","POST"})
      */
-    public function refuser(Request $request,Absence $absence): Response
+    public function refuser(Request $request, Absence $absence): Response
     {
         $sanction = new Sanction();
         $form = $this->createForm(SanctionType::class, $sanction);
@@ -183,6 +183,7 @@ class AbsenceController extends AbstractController
             $sanction->setAbsence($absence);
             $absence->setJustifier(true);
             $absence->setStatus(0);
+            $sanction->setResponsable($this->getUser());//Employe qui a traite l'absence
             $entityManager->persist($sanction);
             $entityManager->flush();
             return $this->redirectToRoute('absence_index');

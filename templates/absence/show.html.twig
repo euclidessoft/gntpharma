@@ -27,6 +27,12 @@
                             <th>Sanction</th>
                             <td>{{ sanction.type ? sanction.type.nom : "Non spécifiée" }}</td>
                         </tr>
+                        <tr>
+                            <th>Responsable</th>
+                            <td>
+                                {{ sanction.responsable ? sanction.responsable.prenom ~ ' ' ~ sanction.responsable.nom : "Aucun responsable" }}
+                            </td>
+                        </tr>
                     {% else %}
                         <tr>
                             <td colspan="2">Aucune sanction</td>

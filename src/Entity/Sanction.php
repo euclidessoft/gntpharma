@@ -37,6 +37,11 @@ class Sanction
      */
     private $dateSanction;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="sanctions")
+     */
+    private $responsable;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Sanction
     public function setDateSanction(\DateTimeInterface $dateSanction): self
     {
         $this->dateSanction = $dateSanction;
+
+        return $this;
+    }
+
+    public function getResponsable(): ?Employe
+    {
+        return $this->responsable;
+    }
+
+    public function setResponsable(?Employe $responsable): self
+    {
+        $this->responsable = $responsable;
 
         return $this;
     }
