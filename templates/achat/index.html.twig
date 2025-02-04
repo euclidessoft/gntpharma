@@ -12,8 +12,6 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>{{ ('Reference'|trans) }}</th>
-                <th>{{ ('Libele'|trans) }}</th>
                 <th>{{ ('Fournisseur'|trans) }}</th>
                 <th>{{ ('Montant'|trans) }}</th>
                 <th>{{ ('Banque'|trans) }}</th>
@@ -23,8 +21,6 @@
         <tbody>
         {% for achat in achats %}
             <tr>
-                <td>{{ achat.reference }}</td>
-                <td>{{ achat.libele }}</td>
                 <td><a href="{{ path('fournisseur_show', { id: achat.fournisseur.id }) }}">{{ achat.fournisseur.designation }}</a></td>
                 <td>{{ achat.montant|number_format(0, '' , ' ') }}</td>
                 <td>{{ achat.banque ? achat.banque.nom : '' }}</td>

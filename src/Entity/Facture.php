@@ -17,8 +17,84 @@ class Facture
      */
     private $id;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Fournisseur::class, inversedBy="factures")
+     */
+    private $fournisseur;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Approvisionner::class, inversedBy="factures")
+     */
+    private $approvisionner;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $montant;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $payer;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->payer = false;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getFournisseur(): ?Fournisseur
+    {
+        return $this->fournisseur;
+    }
+
+    public function setFournisseur(?Fournisseur $fournisseur): self
+    {
+        $this->fournisseur = $fournisseur;
+
+        return $this;
+    }
+
+    public function getApprovisionner(): ?Approvisionner
+    {
+        return $this->approvisionner;
+    }
+
+    public function setApprovisionner(?Approvisionner $approvisionner): self
+    {
+        $this->approvisionner = $approvisionner;
+
+        return $this;
+    }
+
+    public function getMontant(): ?int
+    {
+        return $this->montant;
+    }
+
+    public function setMontant(int $montant): self
+    {
+        $this->montant = $montant;
+
+        return $this;
+    }
+
+    public function getPayer(): ?bool
+    {
+        return $this->payer;
+    }
+
+    public function setPayer(bool $payer): self
+    {
+        $this->payer = $payer;
+
+        return $this;
     }
 }

@@ -63,7 +63,7 @@ class Conges
     /**
      * @ORM\Column(type="boolean")
      */
-    private bool $dateModifier= false;
+    private $dateModifier= false;
 
     /**
      * @ORM\OneToOne(targetEntity=CongeAccorder::class, cascade={"persist", "remove"})

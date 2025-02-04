@@ -28,6 +28,16 @@ class ApprovisionnementRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function payer()
+    {
+         return $query = $this->createQueryBuilder('a')
+            ->andWhere('a.regler = :con')
+            ->setParameter('con' , false)
+            ->groupBy('a.fournisseur')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Approvisionnement[] Returns an array of Approvisionnement objects
     //  */

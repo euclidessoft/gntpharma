@@ -74,7 +74,7 @@ class EmployeController extends AbstractController
             $entityManager->persist($employe);
             $entityManager->flush();
 
-            $this->addFlash('notice', 'Employé créé avec success');
+            $this->addFlash('notice', 'Employé créé avec succès');
             return $this->redirectToRoute("employe_index");
            
         }

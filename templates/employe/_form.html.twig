@@ -1,26 +1,9 @@
-<div class="col-lg-12 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
-    <h3 class="mb-5">
-        <i class="fa-solid fa-landmark"></i><i class="fa fa-plus mr-2"></i>
-        {{ 'Nouvel employé'|trans }}
-    </h3>
-    <h6 class="mt-4 text-danger">
-        {{ 'Les champs marqués par * sont obligatoires'|trans }}
-    </h6>
-    {% for message in app.flashes('notice') %}
-    <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-            &times;
-        </button>
-        {{ message|trans }}
-    </div>
-    {% endfor %}
-
-    <div class="row">
+<div class="row">
         <div class="col-lg-4">
             <div class="card border-green mt-3 mb-3">
                 <div class="card-header bg-success-light bb-green text-green">
                     <i class="fa fa-id-card mr-2"></i>
-                    {{ 'Information personnelle'|trans }}
+                    {{ 'Informations personnelles'|trans }}
                 </div>
                 <div class="card-body">
                     {{ form_start(form, {'attr':{'id': 'form'}}) }}
@@ -47,10 +30,10 @@
                         {{ form_row(form.email, {'attr':{'placeholder':'Adresse email'}, 'label':false}) }}
                     </div>
                     <div class="form-group">
-                        {{ form_row(form.sexe, {'label':false}) }}
+                        {{ form_row(form.sexe, {'attr':{'title':'Choisir le sexe de l\'employé'}, 'label':false}) }}
                     </div>
                     <div class="form-group">
-                        {{ form_row(form.enfant, {'attr':{'placeholder':'Nombre d\'enfant'}, 'label':false}) }}
+                        {{ form_row(form.enfant, {'attr':{'placeholder':'Nombre d\'enfant','title':'Le nombre d\'enfant de l\'employé'}, 'label':false}) }}
                     </div>
                     <div class="form-group">
                         {{ form_row(form.civilite, {'attr':{'placeholder':'Civilité'}, 'label':false}) }}
@@ -62,11 +45,11 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="card border-warning mt-3 mb-3">
-                <div class="card-header bg-warning-light bb-warning text-warning">
+            <div class="card border-green mt-3 mb-3">
+                <div class="card-header bg-success-light bb-green text-green">
                     <i class="fa fa-info-circle mr-2"></i>
 
-                    {{ 'Information professionnelle'|trans }}
+                    {{ 'Informations professionnelles'|trans }}
                 </div>
                 <div class="card-body">
                     {{ form_start(form, {'attr':{'id': 'form'}}) }}
@@ -162,7 +145,7 @@
             {{ 'Enregistrer'|trans }}
         </button>
         <button type="reset" class="btn btn-shadow btn-danger btn-normal mb-2">
-            <i class="fa fa-undo"></i>
+            <i class="fa fa-delete-left"></i>
             {{ 'Effacer'|trans }}
         </button>
         {{ form_rest(form) }}
@@ -174,7 +157,7 @@
 {% block script %}
 <script>
 
-{{ include('scripts/pelerinnew.html.twig') }}
+{{ include('scripts/employenew.html.twig') }}
 
 </script>
 {% endblock %}

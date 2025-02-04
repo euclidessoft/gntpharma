@@ -4,10 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Approvisionnement;
 use App\Entity\Approvisionner;
+use App\Entity\Facture;
+use App\Entity\Fournisseur;
+use App\Entity\FournisseurProduit;
 use App\Entity\Produit;
 use App\Entity\Stock;
 use App\Repository\ApprovisionnementRepository;
 use App\Repository\ApprovisionnerRepository;
+use App\Repository\FournisseurRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +28,9 @@ class ApprovisionnementController extends AbstractController
     /**
      * @Route("/Approvisionnement/", name="appro_index", methods={"GET"})
      */
-    public function index(SessionInterface $session, ApprovisionnementRepository $approvisionnementRepository, ProduitRepository $produitRepository): Response
+    public function index(SessionInterface $session, ApprovisionnementRepository $approvisionnementRepository, ProduitRepository $produitRepository, FournisseurRepository $fournisseurRepository): Response
     {
+
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
             $produits = $produitRepository->findAll();
 
@@ -42,10 +47,12 @@ class ApprovisionnementController extends AbstractController
             foreach ($approv as $key => $item) {// ffabrication des donnees dans la session pour affichage
                 $ligne = explode("/",$item);
                 $produit = $produitRepository->find($ligne[0]);
+                $fournisseur = $fournisseurRepository->find($ligne[4]);
                 $dataPanier[]= [
                  'idtab' => $key,
                 'id' => $ligne[0],
                 'designation' => $produit->getDesigantion(),
+                'fournisseur' => $fournisseur->getDesignation(),
                 'reference' => $produit->getReference(),
                 'quantite' => $ligne[1],
                 'lot' => $ligne[2],
@@ -100,7 +107,7 @@ class ApprovisionnementController extends AbstractController
     /**
      * @Route("/add/", name="appro_add")
      */
-    public function add(Request $request, ProduitRepository $produitRepository, SessionInterface $session)
+    public function add(Request $request, ProduitRepository $produitRepository, FournisseurRepository $fournisseurRepository, SessionInterface $session)
     {
         // On récupère le panier actuel
         $approv = $session->get("approv", []);
@@ -109,6 +116,7 @@ class ApprovisionnementController extends AbstractController
             $numero = $request->get('lot');// recuperation de id produit
             $peremption = $request->get('perem');// recuperation de id produit
             $quantite = $request->get('quantite');// recuperation de la quantite commamde
+            $idfournisseur = $request->get('fournisseur');// recuperation de la quantite commamde
             foreach ($approv as $key => $item) {
                 $ligne = explode("/",$item);
                 if ($ligne[0] == $id && $ligne[2] == $numero) {
@@ -117,9 +125,10 @@ class ApprovisionnementController extends AbstractController
                 }
             }
             $produit = $produitRepository->find($id); // recuperation de id produit dans la db
+            $fournisseur = $fournisseurRepository->find($idfournisseur); // recuperation de id produit dans la db
 //            if (empty($approv[$id])) {//verification existance produit dans le panier
 
-            $chaine = $id."/".$quantite."/".$numero."/".$peremption;
+            $chaine = $id."/".$quantite."/".$numero."/".$peremption."/".$idfournisseur;
 
 //            $produit->setQuantite($quantite);
 //            $produit->setLot($numero);
@@ -134,6 +143,7 @@ class ApprovisionnementController extends AbstractController
             $res['id'] = 'ok';
             $res['ref'] = $produit->getReference();
             $res['designation'] = $produit->getDesigantion();
+            $res['fournisseur'] = $fournisseur->getDesignation();
             $res['lot'] = $numero;
             $res['peremption'] = $peremption;
             $res['quantite'] = $quantite;//$produit->getQuantite();
@@ -221,6 +231,38 @@ class ApprovisionnementController extends AbstractController
     }
 
     /**
+     * @Route("/fournisseur/", name="fournisseur")
+     */
+    public function fournisseur(Request $request, ProduitRepository $repository, SessionInterface $session)
+    {
+
+        $fournisseurproduits = $this->getDoctrine()->getRepository(FournisseurProduit::class)->findBy(['produit' => $request->get('prod')]);
+
+        if(count($fournisseurproduits) > 0) {
+            foreach ($fournisseurproduits as $fournisseurproduit) {
+
+                $res[] = [
+                    'test' => 'ok',
+                    'id' => $fournisseurproduit->getFournisseur()->getId(),
+                    'designation' => $fournisseurproduit->getFournisseur()->getDesignation(),
+                ];
+            }
+
+            }else{
+                $res[] = [
+                    'test' => 'no',
+                    'designation' => "Aucun fournisseur",
+                ];
+            }
+
+        $response = new Response();
+        $response->headers->set('content-type', 'application/json');
+        $re = json_encode($res);
+        $response->setContent($re);
+        return $response;
+    }
+
+    /**
      * @Route("/deleteAll/", name="delete_all")
      */
     public function deleteAll(SessionInterface $session)
@@ -243,14 +285,14 @@ class ApprovisionnementController extends AbstractController
     /**
      * @Route("/valider/", name="valider")
      */
-    public function valider(SessionInterface $session, ProduitRepository $produitRepository)
+    public function valider(SessionInterface $session)
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
-            $produits = $produitRepository->findAll();
             $approv = $session->get("approv", []);
             $em = $this->getDoctrine()->getManager();
             $approvisionner = new  Approvisionner();
-
+            $fact = [];
+            $listfournisseur = [];
             if (count($approv) >= 1) {
 
                 $approvisionner->setUser($this->getUser());
@@ -262,8 +304,26 @@ class ApprovisionnementController extends AbstractController
                     $quantite= $product[1];
                     $lot= $product[2];
                     $peremption= $product[3];
+                    $idfourn= $product[4];
+
                     $produit = $em->getRepository(Produit::class)->find($id);
-                    $approvisionnenment = new Approvisionnement($produit, $approvisionner, $quantite);
+                    $fournisseur = $em->getRepository(Fournisseur::class)->find($idfourn);
+                    //creation de facture
+
+                    if(in_array($idfourn, $listfournisseur)){
+                        $fact[$idfourn] =[
+                            "montant" => $fact[$idfourn]["montant"] + $produit->getPght() * $quantite,
+                        ];
+                        $listfournisseur[]= $idfourn;
+
+                    }else{
+                        $fact[$idfourn] =[
+                            "montant" => $produit->getPght() * $quantite,
+                        ];
+                        $listfournisseur[]= $idfourn;
+                    }
+                    // fin facture
+                    $approvisionnenment = new Approvisionnement($produit, $approvisionner, $quantite, $fournisseur);
                     $approvisionnenment->setLot($lot);
                     $approvisionnenment->setPeremption(new \DateTime($peremption));
                     $$i = new Stock($produit, $lot, $peremption, $quantite);
@@ -273,6 +333,14 @@ class ApprovisionnementController extends AbstractController
                     $em->persist($produit);
                     $em->persist($approvisionnenment);
                     $i++;
+                    $em->flush();
+                }
+                foreach ($listfournisseur as $value){
+                    $facture = new Facture();
+                    $facture->setMontant($fact[$value]["montant"]);
+                    $facture->setApprovisionner($approvisionner);
+                    $facture->setFournisseur($em->getRepository(Fournisseur::class)->find($value));
+                    $em->persist($facture);
                     $em->flush();
                 }
                 $em->flush();

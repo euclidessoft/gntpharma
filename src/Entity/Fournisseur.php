@@ -61,10 +61,28 @@ class Fournisseur
      */
     private $achats;
 
+    /**
+     * @ORM\OneToMany(targetEntity=FournisseurProduit::class, mappedBy="fournisseur")
+     */
+    private $fournisseurProduits;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Approvisionnement::class, mappedBy="fournisseur")
+     */
+    private $approvisionnements;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Facture::class, mappedBy="fournisseur")
+     */
+    private $factures;
+
     public function __construct()
     {
         $this->achats = new ArrayCollection();
         $this->compte = 0;
+        $this->fournisseurProduits = new ArrayCollection();
+        $this->approvisionnements = new ArrayCollection();
+        $this->factures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -169,6 +187,96 @@ class Fournisseur
             // set the owning side to null (unless already changed)
             if ($achat->getFournisseur() === $this) {
                 $achat->setFournisseur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FournisseurProduit[]
+     */
+    public function getFournisseurProduits(): Collection
+    {
+        return $this->fournisseurProduits;
+    }
+
+    public function addFournisseurProduit(FournisseurProduit $fournisseurProduit): self
+    {
+        if (!$this->fournisseurProduits->contains($fournisseurProduit)) {
+            $this->fournisseurProduits[] = $fournisseurProduit;
+            $fournisseurProduit->setFournisseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFournisseurProduit(FournisseurProduit $fournisseurProduit): self
+    {
+        if ($this->fournisseurProduits->removeElement($fournisseurProduit)) {
+            // set the owning side to null (unless already changed)
+            if ($fournisseurProduit->getFournisseur() === $this) {
+                $fournisseurProduit->setFournisseur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Approvisionnement[]
+     */
+    public function getApprovisionnements(): Collection
+    {
+        return $this->approvisionnements;
+    }
+
+    public function addApprovisionnement(Approvisionnement $approvisionnement): self
+    {
+        if (!$this->approvisionnements->contains($approvisionnement)) {
+            $this->approvisionnements[] = $approvisionnement;
+            $approvisionnement->setFournisseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApprovisionnement(Approvisionnement $approvisionnement): self
+    {
+        if ($this->approvisionnements->removeElement($approvisionnement)) {
+            // set the owning side to null (unless already changed)
+            if ($approvisionnement->getFournisseur() === $this) {
+                $approvisionnement->setFournisseur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Facture[]
+     */
+    public function getFactures(): Collection
+    {
+        return $this->factures;
+    }
+
+    public function addFacture(Facture $facture): self
+    {
+        if (!$this->factures->contains($facture)) {
+            $this->factures[] = $facture;
+            $facture->setFournisseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFacture(Facture $facture): self
+    {
+        if ($this->factures->removeElement($facture)) {
+            // set the owning side to null (unless already changed)
+            if ($facture->getFournisseur() === $this) {
+                $facture->setFournisseur(null);
             }
         }
 

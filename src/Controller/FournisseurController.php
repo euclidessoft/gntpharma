@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Fournisseur;
+use App\Entity\FournisseurProduit;
 use App\Form\FournisseurType;
 use App\Repository\FournisseurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
