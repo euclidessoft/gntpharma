@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
- * @Route("/{_locale}/absence")
+ * @Route("/{_locale}/Absence")
  */
 class AbsenceController extends AbstractController
 {
@@ -190,8 +190,16 @@ class AbsenceController extends AbstractController
         return $this->render("absence/admin/sanction.html.twig", [
             'form' => $form->createView(),
         ]);
-
     }
 
+    /**
+     * @Route("/detail/{id}", name="absence_detail", methods={"GET"})
+     */
+    public function detail(Absence $absence): Response
+    {
+        return $this->render('absence/show.html.twig', [
+            'absence' => $absence,
+        ]);
+    }
 
 }
