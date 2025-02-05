@@ -1,12 +1,12 @@
-{% extends 'admin.html.twig' %}
-{% block title %}Gestion des Congés - Admin{% endblock %}
+{% extends 'employe.html.twig' %}
+{% block title %} {{ "Gestion des congés"|trans }} - GNT Pharma {% endblock %}
 {% block employe %}active{% endblock %}
 {% block conges %}active{% endblock %}
 {% block body %}
 <div class="container-fluid mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
-        <i class="fas fa-calendar-alt me-2"></i>
-        {{ "Gestion des Demandes de Congé"|trans }}
+        <i class="fa fa-user-slash mr-2"></i>
+        {{ "Gestion des demandes de congé"|trans }}
     </h3>
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
@@ -33,56 +33,70 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>Employé</th>
-                <th>Type de Congé</th>
-                <th>Période demandée</th>
-                <th>Période accordée</th>
-                <td>Raison</td>
-                <th>Statut</th>
-                <th>Actions</th>
+                <th>{{ "Matricule"|trans }}</th>
+                <th>{{ "Employé"|trans }}</th>
+                <th>{{ "Type de congé"|trans }}</th>
+                <th>{{ "Période demandée"|trans }}</th>
+                <th>{{ "Période accordée"|trans }}</th>
+                <th>{{ "Raison"|trans }}</th>
+                <th>{{ "Statut"|trans }}</th>
+                <th>{{ "Actions"|trans }}</th>
             </tr>
         </thead>
         <tbody>
             {% for conges in conge %}
             <tr>
-                <td>{{ conges.employe.prenom }} {{ conges.employe.nom }}</td>
-                <td>{{ conges.type.nom }}</td>
-                <td>{{ conges.dateDebut|date('d/m/Y') }} <small>au</small> {{ conges.dateFin|date('d/m/Y') }}
-                    <br> Durée : {{ conges.dateFin.diff(conges.dateDebut).days + 1 }} jours
+                <td data-label="{{ 'Matricule'|trans }}">{{ conges.employe.matricule }}</td>
+                <td data-label="{{ 'Employé'|trans }}">{{ conges.employe.prenom }} {{ conges.employe.nom }}</td>
+                <td data-label="{{ 'Type de congé'|trans }}">{{ conges.type.nom }}</td>
+                <td data-label="{{ 'Période demandée'|trans }}">{{ conges.dateDebut|date('d/m/Y') }} <small>au</small> {{ conges.dateFin|date('d/m/Y') }}
+                    <br> {{ "Durée"|trans }} : {{ conges.dateFin.diff(conges.dateDebut).days + 1 }} {{ "jours"|trans }}
                 </td>
-                <td>
+                <td data-label="{{ 'Période accordée'|trans }}">
                     {% if conges.congeaccorder %}
                     {% if conges.congeaccorder.dateDebutAccorder is not null and conges.congeaccorder.dateFinAccorder is not null %}
                     {{ conges.congeaccorder.dateDebutAccorder|date('d/m/Y') }} <small>au</small> {{ conges.congeaccorder.dateFinAccorder|date('d/m/Y') }}
-                    <br> Durée : {{ conges.congeaccorder.dateFinAccorder.diff(conges.congeaccorder.dateDebutAccorder).days + 1 }} jours
+                    <br> {{ "Durée"|trans }} : {{ conges.congeaccorder.dateFinAccorder.diff(conges.congeaccorder.dateDebutAccorder).days + 1 }} {{ "jours"|trans }}
                     {% else %}
-                    Non accordé
+                    {{ "Non accordé"|trans }}
                     {% endif %}
                     {% else %}
-                    Non accordé
+                    {{ "Non accordé"|trans }}
                     {% endif %}
                 </td>
-                <td>{{ conges.description }}</td>
-                <td>
+                <td data-label="{{ 'Raison'|trans }}">{{ conges.description }}</td>
+                <td data-label="{{ 'Statut'|trans }}">
                     {% if conges.status == 0 %}
-                    <span class="badge badge-info">En attente de validation</span>
+                    <span class="badge badge-info">
+                        {{ "En attente de validation"|trans }}
+                    </span>
                     {% elseif conges.status == 1 and conges.congeaccorder is not null and conges.congeaccorder.status == true %}
-                    <span class="badge badge-success">Confirmée</span>
+                    <span class="badge badge-success">
+                        {{ "Confirmée"|trans }}
+                    </span>
                     {% elseif conges.status == 2 and conges.congeaccorder is null %}
-                    <span class="badge badge-danger">Rejetée</span>
+                    <span class="badge badge-danger">
+                        {{ "Rejetée"|trans }}
+                    </span>
                     {% elseif conges.status == 2 and conges.congeaccorder is not null and conges.congeaccorder.status == false %}
-                    <span class="badge badge-danger">Déclinée</span>
+                    <span class="badge badge-danger">
+                        {{ "Déclinée"|trans }}
+                    </span>
                     {% else %}
-                    <span class="badge badge-warning">En attente de confirmation</span>
+                    <span class="badge badge-warning">
+                        {{ "En attente de confirmation"|trans }}
+                    </span>
                     {% endif %}
                 </td>
-                <td>
+                <td data-label="{{ 'Actions'|trans }}">
                     {% if conges.status == false %}
-                    <a href="{{ path('conge_approuve', {'id': conges.id }) }}" class="btn btn-success btn-sm">Approuver</a>
+                    <a href="{{ path('conge_approuve', {'id': conges.id }) }}" class="btn btn-success btn-sm">
+                        {{ "Approuver"|trans }}
+                    </a>
                     <form method="POST" action="{{ path('conge_rejeter', {'id': conges.id }) }}" style="display:inline;">
                         <input type="hidden" name="_token" value="{{ csrf_token('rejeter' ~ conges.id) }}">
                         <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fas fa-times"></i> Rejeter
+                            <i class="fas fa-times"></i> {{ "Rejeter"|trans }}
                         </button>
                     </form>
                     {% endif %}
@@ -90,7 +104,7 @@
             </tr>
             {% else %}
             <tr>
-                <td colspan="7">Aucune demande enregistrée</td>
+                <td data-label="colspan" colspan="8">{{ "Aucune demande enregistrée"|trans }}</td>
             </tr>
             {% endfor %}
         </tbody>
