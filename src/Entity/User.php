@@ -133,6 +133,11 @@ class User implements UserInterface
      */
     private $depenses;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DemandeExplication::class, mappedBy="responsable")
+     */
+    private $demandeExplications;
+
 
     public function __construct()
     {
@@ -141,6 +146,7 @@ class User implements UserInterface
         $this->livreur = false;
         $this->transferts = new ArrayCollection();
         $this->depenses = new ArrayCollection();
+        $this->demandeExplications = new ArrayCollection();
     }
 
     public function getUsername(): ?string
@@ -373,6 +379,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($depense->getUser() === $this) {
                 $depense->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DemandeExplication[]
+     */
+    public function getDemandeExplications(): Collection
+    {
+        return $this->demandeExplications;
+    }
+
+    public function addDemandeExplication(DemandeExplication $demandeExplication): self
+    {
+        if (!$this->demandeExplications->contains($demandeExplication)) {
+            $this->demandeExplications[] = $demandeExplication;
+            $demandeExplication->setResponsable($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemandeExplication(DemandeExplication $demandeExplication): self
+    {
+        if ($this->demandeExplications->removeElement($demandeExplication)) {
+            // set the owning side to null (unless already changed)
+            if ($demandeExplication->getResponsable() === $this) {
+                $demandeExplication->setResponsable(null);
             }
         }
 

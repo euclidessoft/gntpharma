@@ -1,0 +1,52 @@
+{% extends 'admin.html.twig' %}
+{% block employe %}active{% endblock %}
+{% block demande %}active{% endblock %}
+{% block body %}
+<div class="container-fluid mt-4 fond-7">
+    <h3 class="mt-4 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Listes des demandes d'explication"|trans }}
+    </h3>
+    <a href="{{ path('demande_explication_new')}}" class="btn btn-success my-3"><i class="fas fa-plus"></i>Nouvelle demande</a>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>{{ 'Matricule'|trans }}</th>
+                <th>{{ 'Nom complet de l\'employé'|trans }}</th>
+                <th>{{ 'Date demande d\'explication'|trans }}</th>
+                <th>{{ 'Date de l\incident'|trans }}</th>
+                <th>{{ 'Objet demande'|trans }}</th>
+                <th>{{ 'Statut'|trans }}</th>
+                <th>{{ 'actions'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for demandeExplications in demandeExplication %}
+            <tr>
+                <td data-label="Matricule">{{ demandeExplications.employe.matricule }}</td>
+                <td data-label="{{ 'Nom complet de l\'employé'|trans }}">{{ demandeExplications.employe.nom ~ ' ' ~ demandeExplications.employe.prenom }}</td>
+                <td data-label="{{ 'Date demande d\'explication'|trans }}">{{ demandeExplications.date ? demandeExplications.date|date('d/m/Y') : '' }}</td>
+                <td data-label="{{ 'Date de l\'incident'|trans }}">{{ demandeExplications.dateIncident ? demandeExplications.dateIncident|date('d/m/Y') : '' }}</td>
+                <td data-label="{{ 'Objet demande'|trans }}">{{ demandeExplications.objet }}</td>
+                <td data-label="{{ 'Status'|trans }}">
+                    {% if demandeExplications.status == false %}
+                    <span class="badge badge-warning">En attente de reponse</span>
+                    {% else %}
+                    <span class="badge badge-success">Repondu</span>
+                </td>
+                {% endif %}
+                <td data-label="{{ 'actions'|trans }}" class="text-nowrap">
+                    <a id="{{ demandeExplications.id }}" onclick="load({{ demandeExplications.id }})" href="{{ path('demande_explication_show', {'id': demandeExplications.id}) }}" title="{{'Voir'|trans}}" class="btn btn-success">
+                        <i class="fa fa-eye"></i>
+                    </a>
+                </td>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endblock %}

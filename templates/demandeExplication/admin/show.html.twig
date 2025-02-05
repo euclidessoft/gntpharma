@@ -1,0 +1,71 @@
+{% extends 'admin.html.twig' %}
+{% block employe %}active{% endblock %}
+{% block demande %}active{% endblock %}
+{% block body %}
+<div class="col-lg-8 mt-4 fond-7">
+    <div class="card">
+        <div class="card-header text-white">
+            <h4>Détails de la demande d'explication</h4>
+        </div>
+        <div class="card-body">
+            <h5 class="mb-3">
+                <i class="fa-solid fa-user"></i> Information de l'employé
+            </h5>
+            <ul class="list-group mb-4">
+                <li class="list-group-item"><strong>Nom & Prénom :</strong> {{ demandeExplications.employe.nom ~ ' ' ~ demandeExplications.employe.prenom }}</li>
+                <li class="list-group-item"><strong>Matricule :</strong> {{ demandeExplications.employe.matricule }}</li>
+                <li class="list-group-item"><strong>Poste :</strong> {{ demandeExplications.employe.poste.nom }}</li>
+            </ul>
+            <h5 class="mb-3">
+                <i class="fa-solid fa-info-circle"></i> Détails de la demande
+            </h5>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Objet :</strong> {{ demandeExplications.objet }}</li>
+                <li class="list-group-item"><strong>Date de l'incident :</strong> {{ demandeExplications.dateIncident ? demandeExplications.dateIncident|date('d/m/Y') : '' }}</li>
+                <li class="list-group-item"><strong>Date de soumission :</strong> {{ demandeExplications.date ? demandeExplications.date|date('d/m/Y') : '' }}</li>
+                <li class="list-group-item">
+                    <!-- <strong>Détails :</strong> -->
+                    <p class="mt-2">{{ demandeExplications.details }}</p>
+                    <h5 class="mt-2">Cordialement,</h5>
+                    <p class="mt-2">
+                        <strong>{{ demandeExplications.responsable.nom ~' '~ demandeExplications.responsable.prenom }}</strong><br>
+                        {{ demandeExplications.responsable.poste.nom }}<br>
+                        {{ demandeExplications.responsable.email }} | {{ demandeExplications.responsable.phone }}
+                    </p>
+                </li>
+            </ul>
+
+            <!-- Réponse de l'employé -->
+            {% if demandeExplications.reponse %}
+            <h5 class="mt-4 mb-3 text-success">
+                <i class="fa-solid fa-reply"></i> Réponse de l'employé
+            </h5>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Date de réponse :</strong>{{ demandeExplications.dateReponse ? demandeExplications.dateReponse|date('d/m/Y') : '' }}</li>
+                <li class="list-group-item">
+                    <!-- <strong>Détails :</strong> -->
+                    <p class="mt-2">{{ demandeExplications.reponse }}</p>
+                    <h5 class="mt-2">Cordialement,</h5>
+                    <p class="mt-2">
+                        <strong>{{ demandeExplications.employe.nom ~' '~ demandeExplications.employe.prenom }}</strong><br>
+                        {{ demandeExplications.employe.poste.nom }}<br>
+                        {{ demandeExplications.employe.email }} | {{ demandeExplications.employe.phone }}
+                    </p>
+                </li>
+            </ul>
+            {% else %}
+            <h5 class="mt-4 mb-3 text-success">
+                <i class="fa-solid fa-hourglass-start"></i> En attente de réponse de l'employé
+            </h5>
+            {% endif %}
+        </div>
+        <div class="centrer">
+            <a id="{{ demandeExplications.id }}" onclick="load({{ demandeExplications.id }})" href="{{ path('demande_explication') }}"
+               class="btn btn-success mb-3">
+                <i class="fa fa-undo"></i>
+                {{ 'Retour'|trans }}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

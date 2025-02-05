@@ -1,0 +1,38 @@
+{% extends 'employe.html.twig' %}
+{% block administration %}active{% endblock %}
+{% block explication %}active{% endblock %}
+
+{% block body %}
+    {{ form_start(form, {'attr': {'id': 'form'}}) }}
+
+
+    {% for message in app.flashes('notice') %}
+        <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                &times;
+            </button>
+            {{ message|trans }}
+        </div>
+    {% endfor %}
+    <div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
+        <h4 class="mb-5">
+            <i class="fa-solid fa-clock"></i><i class="fa fa-plus mr-2"></i>
+            {{ 'Reponse à demande d\'explication'|trans }}
+        </h4>
+        <div class="col-12 mb-4">
+            {{ form_row(form.reponse, {'attr': {'placeholder': 'Details de la reponse d\'explication *',rows: 10}, 'label': false}) }}
+        </div>
+    </div>
+    <div class="col-md-3 offset-md-3 mt-4 pt-3 fond-7">
+        <div class="centrer">
+            <button type="submit" class="btn btn-shadow btn-green btn-normal mb-3 mr-3" id="send">
+                <i class="fa fa-save"></i>
+                {{ 'Reponse à la demande'|trans }}
+            </button>
+            {{ form_end(form) }}
+        </div>
+        <div class="centrer">
+            
+        </div>
+    </div>
+{% endblock %}
