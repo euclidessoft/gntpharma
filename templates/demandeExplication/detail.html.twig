@@ -48,11 +48,11 @@
                 <!-- Boutons "Répondre" et "Retour" -->
                 <div class="text-center mt-4">
                     {% if demandeExplications.status == false %}
-                    <button id="btn-repondre" class="btn btn-success btn-lg mx-2">
+                    <button id="btn-repondre" class="btn btn-success mx-2">
                         <i class="fa fa-reply"></i> Répondre
                     </button>
                     {% endif %}
-                    <a href="{{ path('demande_explication_index') }}" class="btn btn-outline-success btn-lg mx-2">
+                    <a href="{{ path('demande_explication_index') }}" class="btn btn-outline-success mx-2">
                         <i class="fa fa-undo"></i> Retour
                     </a>
                 </div>
@@ -80,7 +80,7 @@
                     <div class="centrer">
                         <button type="submit" class="btn btn-shadow btn-green btn-normal mb-3 mr-3" id="send">
                             <i class="fa fa-save"></i>
-                            {{ 'Répondre à la demande'|trans }}
+                            {{ 'Envoyer'|trans }}
                         </button>
                     </div>
                 </div>
