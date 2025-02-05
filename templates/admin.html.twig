@@ -112,6 +112,13 @@
                             </a>
                         </li>
                         <li class="dropdown-item">
+                            <a class="nav-link {% block demande %}{% endblock %}"
+                                href="{{ path('demande_explication') }}">
+                                <i class="fa fa-plus"></i>
+                                {{ 'Demande d\'explication'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
                             <a class="nav-link {% block all_employe %}{% endblock %}"
                                href="{{ path('employe_index') }}">
                                 <i class="fas fa-list"></i>

@@ -1,0 +1,109 @@
+{% extends 'employe.html.twig' %}
+{% block administration %}active{% endblock %}
+{% block explication %}active{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="col-lg-10 fond-7 shadow rounded">
+        <div class="card">
+            <div class="card-header text-white text-center">
+                <h4><i class="fa-solid fa-info-circle"></i> Détails de la demande d'explication</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="mb-4 text-bold"><i class="fa-solid fa-user"></i> Détails de la demande</h5>
+                <ul class="list-group mb-4">
+                    <li class="list-group-item"><strong>Objet :</strong> {{ demandeExplications.objet }}</li>
+                    <li class="list-group-item"><strong>Date de l'incident :</strong> {{ demandeExplications.dateIncident ? demandeExplications.dateIncident|date('d/m/Y') : 'N/A' }}</li>
+                    <li class="list-group-item"><strong>Date de soumission :</strong> {{ demandeExplications.date ? demandeExplications.date|date('d/m/Y') : 'N/A' }}</li>
+                    <li class="list-group-item">
+                        <p class="mt-2">{{ demandeExplications.details }}</p>
+                        <h5 class="mt-3">Cordialement,</h5>
+                        <p class="text-right">
+                            <strong>{{ demandeExplications.responsable.nom ~ ' ' ~ demandeExplications.responsable.prenom }}</strong><br>
+                            {{ demandeExplications.responsable.poste.nom }}<br>
+                            {{ demandeExplications.responsable.email }} | {{ demandeExplications.responsable.phone }}
+                        </p>
+                    </li>
+                </ul>
+
+                <!-- Afficher la réponse de l'employé -->
+                {% if demandeExplications.status == true %}
+                <div class="mt-4">
+                    <h5 class="text-success text-bold"><i class="fa-solid fa-reply"></i> Votre réponse</h5>
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item"><strong>Date de réponse :</strong> {{ demandeExplications.dateReponse ? demandeExplications.dateReponse|date('d/m/Y') : 'N/A' }}</li>
+                        <li class="list-group-item">
+                            <p class="mt-2">{{ demandeExplications.reponse }}</p>
+                            <h5 class="mt-3">Cordialement,</h5>
+                            <p class="text-right mt-3">
+                                <strong>{{ demandeExplications.employe.nom ~ ' ' ~ demandeExplications.employe.prenom }}</strong><br>
+                                {{ demandeExplications.employe.poste.nom }}<br>
+                                {{ demandeExplications.employe.email }} | {{ demandeExplications.employe.phone }}
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Boutons "Répondre" et "Retour" -->
+                <div class="text-center mt-4">
+                    {% if demandeExplications.status == false %}
+                    <button id="btn-repondre" class="btn btn-success mx-2">
+                        <i class="fa fa-reply"></i> Répondre
+                    </button>
+                    {% endif %}
+                    <a href="{{ path('demande_explication_index') }}" class="btn btn-outline-success mx-2">
+                        <i class="fa fa-undo"></i> Retour
+                    </a>
+                </div>
+            </div>
+            <!-- Formulaire de réponse caché par défaut -->
+            <div id="reponse-form" class="col-lg-12 mt-4 pb-5 pt-3 px-5" style="display: none;">
+                {{ form_start(form, {'attr': {'id': 'form'}}) }}
+
+                {% for message in app.flashes('notice') %}
+                <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message|trans }}
+                </div>
+                {% endfor %}
+
+                <h4 class="mb-5">
+                    <i class="fa-solid fa-clock"></i><i class="fa fa-plus mr-2"></i>
+                    {{ 'Réponse à demande d\'explication'|trans }}
+                </h4>
+                <div class="col-12 mb-4">
+                    {{ form_row(form.reponse, {'attr': {'placeholder': 'Détails de la réponse d\'explication *', 'rows': 10}, 'label': false}) }}
+                </div>
+
+                <div class="col-md-4 offset-md-3 mt-4 pt-3 fond-7">
+                    <div class="centrer">
+                        <button type="submit" class="btn btn-shadow btn-green btn-normal mb-3 mr-3" id="send">
+                            <i class="fa fa-save"></i>
+                            {{ 'Envoyer'|trans }}
+                        </button>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        $('#btn-repondre').click(function() {
+            $('#reponse-form').toggle();
+        });
+        $('#send').click(function(e) {
+            var reponse = $('#reponse').val();
+            if (reponse === '') {
+                alert('Veuillez entrer une réponse avant d\'envoyer.');
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+{% endblock %}
