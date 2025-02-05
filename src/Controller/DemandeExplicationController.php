@@ -79,35 +79,28 @@ class DemandeExplicationController extends AbstractController
     }
 
     /**
-     *@Route("/Suivi/Detail/{id}", name="demande_explication_detail", methods={"GET"})
+     *@Route("/Suivi/Detail/{id}", name="demande_explication_detail", methods={"GET","POST"})
      */
-    public function details(DemandeExplication $demandeExplications): Response
+    public function details(Request $request, DemandeExplication $demandeExplications): Response
     {
-        return $this->render("demandeExplication/detail.html.twig", [
-            'demandeExplications' => $demandeExplications,
-        ]);
-    }
-
-    /**
-     *@Route("/Suivi/Reponse/{id}", name="reponse_demande", methods={"POST","GET"})
-     */
-    public function reponse(Request $request, DemandeExplication $demandeExplication): Response
-    {
-        $form = $this->createForm(ReponseExplicationType::class, $demandeExplication);
+        $form = $this->createForm(ReponseExplicationType::class, $demandeExplications);
         $form->handleRequest($request);
        
         if($form->isSubmitted() && $form->isValid()){
             $entityManager = $this->getDoctrine()->getManager();
-            $demandeExplication->setDatereponse(new \DateTime());
-            $demandeExplication->setStatus(true);
+            $demandeExplications->setDatereponse(new \DateTime());
+            $demandeExplications->setStatus(true);
 
-            $entityManager->persist($demandeExplication);
+            $entityManager->persist($demandeExplications);
             $entityManager->flush();
 
-            return $this->redirectToRoute("demande_explication_index");
+            return $this->redirectToRoute("demande_explication_detail");
         }
-        return $this->render("demandeExplication/reponse.html.twig", [
+
+        return $this->render("demandeExplication/detail.html.twig", [
+            'demandeExplications' => $demandeExplications,
             'form' => $form->createView(),
         ]);
     }
+
 }
