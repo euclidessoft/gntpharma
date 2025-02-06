@@ -190,7 +190,7 @@ class AbsenceController extends AbstractController
 
             if($typeSanction == 'Demande d\'explication'){
                 $demandeExplication = new DemandeExplication();
-                $demandeExplication->setObjet('reponse_explication');
+                $demandeExplication->setObjet('Absence non justifiée');
                 $demandeExplication->setDetails($form->get('demandes')->getData());
                 $demandeExplication->setDate(new \DateTime());
                 $demandeExplication->setDateIncident($sanction->getAbsence()->getDateAbsence());

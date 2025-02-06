@@ -20,23 +20,7 @@
                         <td>{{ absence.employe.nom }} {{ absence.employe.prenom }}</td>
                     </tr>
                     <tr>
-                        <th>Status</th>
-                        <td>
-                            {% if absence.status == 0 and absence.justifier == 0 %}
-                                <span class="badge badge-warning">En attente de justification</span>
-                            {% elseif absence.justifier == 0 and absence.status == 1 %}
-                                <span class="badge badge-info">En attente de validation</span>
-                            {% elseif absence.status == 1 and absence.justifier == 1 %}
-                                <span class="badge badge-success">Absence justifiée</span>
-                            {% elseif absence.status == 0 and absence.justifier == 1 %}
-                                <span class="badge badge-danger">Rejetee</span>
-                            {% else %}
-                                <span class="badge badge-secondary">Statut inconnu</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Date</th>
+                        <th>Date d'absence</th>
                         <td>{{ absence.dateAbsence ? absence.dateAbsence|date('d/m/Y') : 'Non spécifiée' }}</td>
                     </tr>
 
@@ -54,7 +38,7 @@
                                         <a class="btn btn-success btn-sm"
                                            href="{{ asset('uploads/justificatifs/' ~ justificatif.file) }}"
                                         >
-                                            <i class="fa fa-download"></i> Télécharger le fichier
+                                            <i class="fa fa-eye"></i> Voir le fichier
                                         </a>
                                     {% else %}
                                         Aucune pièce jointe.
@@ -72,8 +56,47 @@
                             <td>Aucun fichier joint</td>
                         </tr>
                     {% endif %}
+
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            {% if absence.status == 0 and absence.justifier == 0 %}
+                                <span class="badge badge-warning">En attente de justification</span>
+                            {% elseif absence.justifier == 0 and absence.status == 1 %}
+                                <span class="badge badge-info">En attente de validation</span>
+                            {% elseif absence.status == 1 and absence.justifier == 1 %}
+                                <span class="badge badge-success">Absence justifiée</span>
+                            {% elseif absence.status == 0 and absence.justifier == 1 %}
+                                <span class="badge badge-danger">Rejetee</span>
+                            {% else %}
+                                <span class="badge badge-secondary">Statut inconnu</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {# Affichage des informations de refus si l'absence est rejetée #}
+                    {% if absence.status == 0 and absence.justifier == 1 %}
+                        {% for sanction in absence.sanctions %}
+                            <tr>
+                                <th>Motif de rejet</th>
+                                <td>{{ sanction.motif }}</td>
+                            </tr>
+                            <tr>
+                                <th>Responsable</th>
+                                <td>{{ sanction.responsable.prenom ~' '~ sanction.responsable.nom }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date d'opération</th>
+                                <td>{{ sanction.dateSanction ? sanction.dateSanction|date('d/m/Y') }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td>Aucune sanction</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
                     </tbody>
                 </table>
+
             </div>
         </div>
         {% if absence.justifier == 0 and absence.status == 1 %}

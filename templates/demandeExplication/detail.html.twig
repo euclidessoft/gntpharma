@@ -17,11 +17,12 @@
                     <li class="list-group-item"><strong>Date de soumission :</strong> {{ demandeExplications.date ? demandeExplications.date|date('d/m/Y') : 'N/A' }}</li>
                     <li class="list-group-item">
                         <p class="mt-2">{{ demandeExplications.details }}</p>
-                        <h5 class="mt-3">Cordialement,</h5>
-                        <p class="text-right">
+
+                        <p class="text-right mt-5">
                             <strong>{{ demandeExplications.responsable.nom ~ ' ' ~ demandeExplications.responsable.prenom }}</strong><br>
                             {{ demandeExplications.responsable.poste.nom }}<br>
-                            {{ demandeExplications.responsable.email }} | {{ demandeExplications.responsable.phone }}
+                            {{ demandeExplications.responsable.phone }} <br>
+                            {{ demandeExplications.responsable.email }}
                         </p>
                     </li>
                 </ul>
