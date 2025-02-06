@@ -22,6 +22,8 @@ class SanctionType extends AbstractType
                 'required' => true,
                 'placeholder' => 'Sélectionnez le type de sanction',
             ])
+            ->add('montant')
+            ->add('demandes')
         ;
     }
 

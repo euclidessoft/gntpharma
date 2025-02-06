@@ -42,6 +42,16 @@ class Sanction
      */
     private $responsable;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $montant;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $demandes;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +113,30 @@ class Sanction
     public function setResponsable(?Employe $responsable): self
     {
         $this->responsable = $responsable;
+
+        return $this;
+    }
+
+    public function getMontant(): ?int
+    {
+        return $this->montant;
+    }
+
+    public function setMontant(?int $montant): self
+    {
+        $this->montant = $montant;
+
+        return $this;
+    }
+
+    public function getDemandes(): ?string
+    {
+        return $this->demandes;
+    }
+
+    public function setDemandes(?string $demandes): self
+    {
+        $this->demandes = $demandes;
 
         return $this;
     }

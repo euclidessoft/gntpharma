@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Absence;
+use App\Entity\DemandeExplication;
 use App\Entity\ReponseAbsence;
 use App\Entity\Sanction;
 use App\Form\AbsenceType;
@@ -139,7 +140,6 @@ class AbsenceController extends AbstractController
                 }
                 $justificatif->setFile($newFileName);
             }
-
             $absence->setStatus(1);
 
             $entityManager->persist($justificatif);
@@ -179,13 +179,29 @@ class AbsenceController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $entityManager = $this->getDoctrine()->getManager();
+            $typeSanction = $sanction->getType()->getNom();
+
             $sanction->setDateSanction(new \DateTime());
             $sanction->setAbsence($absence);
             $absence->setJustifier(true);
             $absence->setStatus(0);
             $sanction->setResponsable($this->getUser());//Employe qui a traite l'absence
             $entityManager->persist($sanction);
+
+            if($typeSanction == 'Demande d\'explication'){
+                $demandeExplication = new DemandeExplication();
+                $demandeExplication->setObjet('reponse_explication');
+                $demandeExplication->setDetails($form->get('demandes')->getData());
+                $demandeExplication->setDate(new \DateTime());
+                $demandeExplication->setDateIncident($sanction->getAbsence()->getDateAbsence());
+                $demandeExplication->setStatus(false);
+                $demandeExplication->setEmploye($sanction->getAbsence()->getEmploye());
+                $demandeExplication->setResponsable($sanction->getResponsable());
+                $entityManager->persist($demandeExplication);
+            }
+
             $entityManager->flush();
+
             return $this->redirectToRoute('absence_index');
         }
         return $this->render("absence/admin/sanction.html.twig", [

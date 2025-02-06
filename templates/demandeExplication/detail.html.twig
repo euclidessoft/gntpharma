@@ -58,7 +58,7 @@
                 </div>
             </div>
             <!-- Formulaire de réponse caché par défaut -->
-            <div id="reponse-form" class="col-lg-12 mt-4 pb-5 pt-3 px-5" style="display: none;">
+            <div id="reponse-form" class="col-lg-12 mt-4 pb-5 pt-3 px-5">
                 {{ form_start(form, {'attr': {'id': 'form'}}) }}
 
                 {% for message in app.flashes('notice') %}
@@ -94,8 +94,11 @@
 {% block scripts %}
 <script>
     $(document).ready(function() {
+        var explication = $('#reponse-form');
+        explication.hide();
         $('#btn-repondre').click(function() {
-            $('#reponse-form').toggle();
+        explication.toggle();
+        $('#reponse_explication_reponse').focus();
         });
         $('#send').click(function(e) {
             var reponse = $('#reponse').val();

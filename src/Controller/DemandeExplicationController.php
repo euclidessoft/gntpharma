@@ -94,7 +94,7 @@ class DemandeExplicationController extends AbstractController
             $entityManager->persist($demandeExplications);
             $entityManager->flush();
 
-            return $this->redirectToRoute("demande_explication_detail");
+            return $this->redirectToRoute("demande_explication_detail", ['id' => $demandeExplications->getId()]);
         }
 
         return $this->render("demandeExplication/detail.html.twig", [
