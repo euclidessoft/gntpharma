@@ -261,7 +261,7 @@ tr {
     z-index: 1033;
 }
 
-.nav-item > .nav-link {
+.navbar-nav .nav-item > .nav-link {
     color: var(--blanc);
     font-size: 20px;
     padding: 5px 0;
@@ -275,12 +275,12 @@ tr {
     color: var(--vert) !important;
 }*/
 
-/*.nav-item > */.nav-link:hover {
+.navbar-nav .nav-link:hover {
     background: var(--blanc) !important;
     color: var(--vert) !important;
 }
 
-.nav-link.active {
+.navbar-nav .nav-link.active {
     background: var(--vert-clair);
     color: var(--vert) !important;
 }
