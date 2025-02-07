@@ -42,18 +42,23 @@
                 </table>
             </div>
         </div>
-
-        <div class="centrer mt-3">
+        <!-- Section de boutons -->
+        <div class="text-center mt-4">
+            <!-- Retour -->
             <a id="{{ absence.id }}" onclick="load({{ absence.id }})" href="{{ path('absence_suivi') }}"
-               class="btn btn-success-light btn-normal mb-3">
-                <i class="fa fa-undo"></i>
-                {{ 'Retour'|trans }}
+               class="btn btn-success-light mb-3">
+                <i class="fa fa-undo"></i> {{ 'Retour'|trans }}
             </a>
-            <a href="#"
-               class="btn btn-success-light btn-normal mb-3">
-                <i class="fa fa-eye"></i>
-                {{ 'Voir'|trans }}
-            </a>
+
+            <!-- Voir la demande d'explication -->
+            {% for sanction in absence.sanctions %}
+                {% if sanction.type and sanction.type.nom == 'Demande d\'explication' %}
+                    <a href="{{ path('demande_explication_detail', { id: sanction.explication.id }) }}"
+                       class="btn btn-success mb-3">
+                        <i class="fa fa-eye"></i> {{ 'Voir la demande'|trans }}
+                    </a>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

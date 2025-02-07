@@ -31,7 +31,6 @@ class EmployeController extends AbstractController
 
 
 
-
      /**
       * @Route("/new", name="employe_new", methods={"GET","POST"})
       */
@@ -59,7 +58,7 @@ class EmployeController extends AbstractController
             $hashpass = $encoder->encodePassword($employe, 'Passer2023');
             $employe->setPassword($hashpass);
             $employe->setUsername($employe->getNom());
-            $employe->setRoles(["ROLE_EMPLOYE"]);
+            // $employe->setRoles(["ROLE_EMPLOYE"]);
             $employe->setFonction("Employé");
             $employe->setHireDate($employe->getHireDate());
             

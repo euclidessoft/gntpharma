@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use function mysql_xdevapi\getSession;
 
 /**
  * @Route("/{_locale}/Absence")
@@ -197,9 +198,9 @@ class AbsenceController extends AbstractController
                 $demandeExplication->setStatus(false);
                 $demandeExplication->setEmploye($sanction->getAbsence()->getEmploye());
                 $demandeExplication->setResponsable($sanction->getResponsable());
+                $sanction->setExplication($demandeExplication);
                 $entityManager->persist($demandeExplication);
             }
-
             $entityManager->flush();
 
             return $this->redirectToRoute('absence_index');

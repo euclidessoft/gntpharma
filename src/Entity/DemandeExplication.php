@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DemandeExplicationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -61,6 +63,16 @@ class DemandeExplication
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $datereponse;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Sanction::class, mappedBy="explication")
+     */
+    private $sanctions;
+
+    public function __construct()
+    {
+        $this->sanctions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -171,6 +183,36 @@ class DemandeExplication
     public function setDatereponse(?\DateTimeInterface $datereponse): self
     {
         $this->datereponse = $datereponse;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sanction[]
+     */
+    public function getSanctions(): Collection
+    {
+        return $this->sanctions;
+    }
+
+    public function addSanction(Sanction $sanction): self
+    {
+        if (!$this->sanctions->contains($sanction)) {
+            $this->sanctions[] = $sanction;
+            $sanction->setExplication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSanction(Sanction $sanction): self
+    {
+        if ($this->sanctions->removeElement($sanction)) {
+            // set the owning side to null (unless already changed)
+            if ($sanction->getExplication() === $this) {
+                $sanction->setExplication(null);
+            }
+        }
 
         return $this;
     }

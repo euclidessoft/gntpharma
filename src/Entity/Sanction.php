@@ -52,6 +52,11 @@ class Sanction
      */
     private $demandes;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=DemandeExplication::class, inversedBy="sanctions")
+     */
+    private $explication;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +142,18 @@ class Sanction
     public function setDemandes(?string $demandes): self
     {
         $this->demandes = $demandes;
+
+        return $this;
+    }
+
+    public function getExplication(): ?DemandeExplication
+    {
+        return $this->explication;
+    }
+
+    public function setExplication(?DemandeExplication $explication): self
+    {
+        $this->explication = $explication;
 
         return $this;
     }
