@@ -58,8 +58,9 @@ class EmployeController extends AbstractController
             $hashpass = $encoder->encodePassword($employe, 'Passer2023');
             $employe->setPassword($hashpass);
             $employe->setUsername($employe->getNom());
-            // $employe->setRoles(["ROLE_EMPLOYE"]);
+            $employe->setRoles(["ROLE_EMPLOYE","ROLE_ADMIN"]);
             $employe->setFonction("Employé");
+            $employe->setStatus(false);
             $employe->setHireDate($employe->getHireDate());
             
 

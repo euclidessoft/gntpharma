@@ -16,7 +16,6 @@
                 <th>{{('Employé'|trans)}}</th>
                 <th>{{('Date absence'|trans)}}</th>
                 <th>{{('Status')}}</th>
-{#                <th>{{('Status')}}</th>#}
                 <th>{{('actions'|trans)}}</th>
             </tr>
         </thead>
@@ -37,15 +36,6 @@
                     <span class="badge badge-danger">Non justifiée</span>
                     {% endif %}
                 </td>
-{#                <td data-label="Status">#}
-{#                {% if absence.status == 0 %}#}
-{#                    <span class="badge badge-danger">En attente de justification</span>#}
-{#                    {% elseif absence.status == 1 %}#}
-{#                    <span class="badge badge-primary">En cours de traitement</span>#}
-{#                    {% else %}#}
-{#                    <span>Justifié</span>#}
-{#                    {% endif %}#}
-{#                </td>#}
                 <td data-label="Actions">
                     <a href="{{ path('absence_show', {'id': absence.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
                 </td>

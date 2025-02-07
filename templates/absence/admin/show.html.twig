@@ -4,8 +4,7 @@
     <div class="col-lg-6 mt-4 fond-7">
         <h3 class="mt-4 mb-5 text-bold text-center">
             <i class="fa fa-money-bill mr-2"></i>
-            {{ "Absence de l'employé : "|trans }}
-            {{ absence.employe.nom }} {{ absence.employe.prenom }}
+            {{ "Détails absence"|trans }}
         </h3>
 
         <div class="card">
@@ -16,7 +15,7 @@
                 <table class="table table-bordered table-striped w-100">
                     <tbody>
                     <tr>
-                        <th>Nom complet de l'employé</th>
+                        <th>Employé</th>
                         <td>{{ absence.employe.nom }} {{ absence.employe.prenom }}</td>
                     </tr>
                     <tr>
@@ -24,7 +23,6 @@
                         <td>{{ absence.dateAbsence ? absence.dateAbsence|date('d/m/Y') : 'Non spécifiée' }}</td>
                     </tr>
 
-                    {# Affichage des justificatifs si disponibles #}
                     {% if absence.reponseAbsences is not empty %}
                         {% for justificatif in absence.reponseAbsences %}
                             <tr>
@@ -36,9 +34,8 @@
                                 <td>
                                     {% if justificatif.file %}
                                         <a class="btn btn-success btn-sm"
-                                           href="{{ asset('uploads/justificatifs/' ~ justificatif.file) }}"
-                                        >
-                                            <i class="fa fa-eye"></i> Voir le fichier
+                                           href="{{ asset('uploads/justificatifs/' ~ justificatif.file) }}" target="_blank">
+                                            <i class="fa fa-eye"></i> Voir le justificatif
                                         </a>
                                     {% else %}
                                         Aucune pièce jointe.
@@ -85,12 +82,16 @@
                                 <td>{{ sanction.responsable.prenom ~' '~ sanction.responsable.nom }}</td>
                             </tr>
                             <tr>
+                                <th>Décision</th>
+                                <td>{{ sanction.type.nom }}</td>
+                            </tr>
+                            <tr>
                                 <th>Date d'opération</th>
                                 <td>{{ sanction.dateSanction ? sanction.dateSanction|date('d/m/Y') }}</td>
                             </tr>
                         {% else %}
                             <tr>
-                                <td>Aucune sanction</td>
+                                <td>Aucune décision</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

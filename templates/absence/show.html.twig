@@ -16,26 +16,26 @@
                     <tbody>
                     {% for sanction in absence.sanctions %}
                         <tr>
-                            <th>Motif du refus</th>
+                            <th>{{ 'Motif du refus'|trans }}</th>
                             <td>{{ sanction.motif }}</td>
                         </tr>
                         <tr>
-                            <th>Date de refus</th>
+                            <th>{{ 'Date de refus'|trans }}</th>
                             <td>{{ sanction.dateSanction ? sanction.dateSanction|date('d/m/Y') : 'Non spécifiée' }}</td>
                         </tr>
                         <tr>
-                            <th>Sanction</th>
+                            <th>{{ 'Décision'|trans }}</th>
                             <td>{{ sanction.type ? sanction.type.nom : "Non spécifiée" }}</td>
                         </tr>
                         <tr>
-                            <th>Responsable</th>
+                            <th>{{ 'Responsable'|trans }}</th>
                             <td>
                                 {{ sanction.responsable ? sanction.responsable.prenom ~ ' ' ~ sanction.responsable.nom : "Aucun responsable" }}
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="2">Aucune sanction</td>
+                            <td colspan="2">{{ 'Aucune décision'|trans }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

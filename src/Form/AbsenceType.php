@@ -20,6 +20,7 @@ class AbsenceType extends AbstractType
                 'choice_label' => function(Employe $employe){
                     return $employe->getNom().' '.$employe->getPrenom();
                 },
+                'placeholder' => 'Selectionnez l\'employé',
             ])
             ->add('dateAbsence', DateType::class, [
                 'widget' => 'single_text',

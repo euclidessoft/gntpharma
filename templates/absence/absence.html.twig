@@ -12,11 +12,9 @@
         <thead>
         <tr>
             <th>{{ ('Date absence'|trans) }}</th>
-            <th>{{ ('Status') }}</th>
-            <th>{{ ('Sanction') }}</th>
-{#            {% if absences|filter(absence => absence.status == 0 and absence.justifier == false)|length > 0 %}#}
+            <th>{{ ('Status'|trans) }}</th>
+            <th>{{ ('Décision'|trans) }}</th>
             <th>{{ ('Actions'|trans) }}</th>
-{#            {% endif %}#}
         </tr>
         </thead>
         <tbody>
@@ -31,7 +29,7 @@
                     {% elseif absence.status == 1 and absence.justifier == 1 %}
                         <span class="badge badge-success">Absence justifiée</span>
                     {% elseif absence.status == 0 and absence.justifier == 1 %}
-                        <span class="badge badge-danger">Absence non justifiée</span>
+                        <span class="badge badge-danger">Non justifiée</span>
                     {% else %}
                         <span class="badge badge-secondary">Statut inconnu</span>
                     {% endif %}
