@@ -62,13 +62,11 @@ class EmployeController extends AbstractController
             $employe->setFonction("Employé");
             $employe->setStatus(false);
             $employe->setHireDate($employe->getHireDate());
-            
 
             $posteEmploye->setDatedebut(new \DateTime());
             $posteEmploye->setDatefin(null);
             $posteEmploye->setPoste($employe->getPoste());
             $posteEmploye->setEmploye($employe);
-        
         
             $entityManager->persist($posteEmploye);
             $entityManager->persist($employe);

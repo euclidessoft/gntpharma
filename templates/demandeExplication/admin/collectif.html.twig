@@ -1,0 +1,89 @@
+{% extends 'admin.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid mt-4 fond-7">
+        <h3 class="mt-4 text-bold">
+            <i class="fa fa-money-bill mr-2"></i>
+            {{ "Listes des demandes d'explication"|trans }}
+        </h3>
+        {{ form_start(form, {'attr': {'id': 'form'}}) }}
+
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {{ message|trans }}
+            </div>
+        {% endfor %}
+
+        <div class="row">
+            <!-- Formulaire de demande d'explication -->
+            <div class="col-lg-6 mt-4 pb-5 pt-3 px-5">
+                <h4 class="mb-5">
+                    <i class="fa-solid fa-clock"></i><i class="fa fa-plus mr-2"></i>
+                    {{ 'Formulaire demande d\'explication'|trans }}
+                </h4>
+                <div class="col-12 mb-4">
+                    {{ form_row(form.dateIncident, {'attr': {'title': 'Date de l\'incident de l\'employé *'}, 'label': false}) }}
+                </div>
+                <div class="col-12 mb-4">
+                    {{ form_row(form.objet, {'attr': {'placeholder': 'Objet de la demande d\'explication *'}, 'label': false}) }}
+                </div>
+                <div class="col-12 mb-4">
+                    {{ form_row(form.details, {'attr': {'placeholder': 'Détails de la demande d\'explication *', 'rows': 10}, 'label': false}) }}
+                </div>
+            </div>
+
+            <div class="col-lg-6 mt-4 pb-5 pt-3 px-5">
+                <h4 class="mb-5">
+                    <i class="fa-solid fa-users"></i><i class="fa fa-list mr-2"></i>
+                    {{ 'Liste des employés'|trans }}
+                </h4>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" id="select_all" title="Sélectionner tout"/></th>
+                        <th>{{ 'Nom'|trans }}</th>
+                        <th>{{ 'Prénom'|trans }}</th>
+                        <th>{{ 'Email'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if employes is empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">{{ 'Aucun employé disponible'|trans }}</td>
+                        </tr>
+                    {% else %}
+                        {% for employe in employes %}
+                            <tr>
+                                <td><input type="checkbox" name="employes[]" value="{{ employe.id }}" class="employe_checkbox"></td>
+                                <td>{{ employe.nom }}</td>
+                                <td>{{ employe.prenom }}</td>
+                                <td>{{ employe.email }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-3 offset-md-3 mt-4 pt-3 fond-7">
+            <div class="centrer">
+                <button type="submit" class="btn btn-shadow btn-green btn-normal mb-3 mr-3" id="send">
+                    <i class="fa fa-save"></i>
+                    {{ 'Rédiger la demande'|trans }}
+                </button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('select_all').addEventListener('change', function() {
+            var checkboxes = document.querySelectorAll('.employe_checkbox');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = document.getElementById('select_all').checked;
+            });
+        });
+    </script>
+{% endblock %}

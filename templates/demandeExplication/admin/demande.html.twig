@@ -1,0 +1,46 @@
+{% extends 'admin.html.twig' %}
+{% block title %} {{ "Créer un avoir"|trans }} - GNT Pharma {% endblock %}
+{% block finance %}active{% endblock %}
+{% block remboursement %}active{% endblock %}
+{% block livraison_test %}active{% endblock %}
+
+{% block body %}
+    <div class="container_paiement  mt-4 fond-7 text-center">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa-solid fa-money-bill mr-2"></i>
+            {{ 'Créer une demande d\'explication'|trans }}
+        </h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4">
+                        <a href="{{ path('demande_explication_new') }}">
+                            <div class="p-3 rounded border border-green avoir">
+                                <div class="text-green textavoir text-center py-3 rounded-top">
+                                    <i class="fas fa-user fa-3x"></i>
+                                </div>
+                                <div class="text-bold text-green textavoir text-center py-3 rounded-bottom">
+                                    {{'Individuel'|trans}}
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4">
+                        <a href="{{ path('demande_explication_collectif') }}">
+                            <div class="p-3 rounded border border-green avoir">
+                                <div class="text-green textavoir text-center py-3 rounded-top border-green">
+                                    <i class="fas fa-users fa-3x"></i>
+                                </div>
+                                <div class="text-green textavoir text-bold text-center py-3 rounded-bottom">
+                                    {{'Collectif'|trans}}
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

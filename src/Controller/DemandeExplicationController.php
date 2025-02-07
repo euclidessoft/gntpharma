@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\DemandeExplication;
+use App\Entity\Employe;
 use App\Form\DemandeExplicationType;
 use App\Form\ReponseExplicationType;
 use App\Repository\DemandeExplicationRepository;
@@ -28,9 +29,17 @@ class DemandeExplicationController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/Choix_demande", name="demande_choix", methods={"GET","POST"})
+     */
+    public function demandeExplication(Request $request): Response
+    {
+        return $this->render('demandeExplication/admin/demande.html.twig');
+    }
+
 
     /**
-     *@Route("/new", name="demande_explication_new", methods={"GET","POST"})
+     * @Route("/new", name="demande_explication_new", methods={"GET","POST"})
      */
     public function new(Request $request, Security $security): Response
     {
@@ -56,7 +65,36 @@ class DemandeExplicationController extends AbstractController
     }
 
     /**
-     *@Route("/show/{id}", name="demande_explication_show", methods={"GET"})
+     * @Route("/Collectif", name="demande_explication_collectif", methods={"GET","POST"})
+     */
+    public function DemandeCollectif(Request $request, Security $security): Response
+    {
+
+        $demandeExplication = new DemandeExplication();
+        $form = $this->createForm(DemandeExplicationType::class, $demandeExplication);
+        $form->handleRequest($request);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $employes = $entityManager->getRepository(Employe::class)->findAll();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $responsable = $security->getUser();
+
+            $demandeExplication->setDate(new \DateTime());
+            $demandeExplication->setStatus(false);
+            $demandeExplication->setResponsable($responsable);
+            $entityManager->persist($demandeExplication);
+            $entityManager->flush();
+            return $this->redirectToRoute('demande_explication');
+        }
+        return $this->render("demandeExplication/admin/collectif.html.twig", [
+            "form" => $form->createView(),
+            'employes' => $employes,
+        ]);
+    }
+
+    /**
+     * @Route("/show/{id}", name="demande_explication_show", methods={"GET"})
      */
     public function show(DemandeExplication $demandeExplications): Response
     {
@@ -79,14 +117,14 @@ class DemandeExplicationController extends AbstractController
     }
 
     /**
-     *@Route("/Suivi/Detail/{id}", name="demande_explication_detail", methods={"GET","POST"})
+     * @Route("/Suivi/Detail/{id}", name="demande_explication_detail", methods={"GET","POST"})
      */
     public function details(Request $request, DemandeExplication $demandeExplications): Response
     {
         $form = $this->createForm(ReponseExplicationType::class, $demandeExplications);
         $form->handleRequest($request);
-       
-        if($form->isSubmitted() && $form->isValid()){
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $demandeExplications->setDatereponse(new \DateTime());
             $demandeExplications->setStatus(true);
