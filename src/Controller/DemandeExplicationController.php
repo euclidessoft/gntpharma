@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\DemandeExplication;
 use App\Entity\Employe;
+use App\Entity\ReponseExplication;
 use App\Form\DemandeExplicationType;
+use App\Form\ExplicationCollectifType;
 use App\Form\ReponseExplicationType;
 use App\Repository\DemandeExplicationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,6 +26,7 @@ class DemandeExplicationController extends AbstractController
     public function index(DemandeExplicationRepository $demandeExplicationRepository): Response
     {
         $demandeExplication = $demandeExplicationRepository->findAll();
+
         return $this->render('demandeExplication/admin/index.html.twig', [
             'demandeExplication' => $demandeExplication,
         ]);
@@ -43,63 +46,27 @@ class DemandeExplicationController extends AbstractController
      */
     public function new(Request $request, Security $security): Response
     {
-
         $demandeExplication = new DemandeExplication();
         $form = $this->createForm(DemandeExplicationType::class, $demandeExplication);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager = $this->getDoctrine()->getManager();
             $responsable = $security->getUser();
-
             $demandeExplication->setDate(new \DateTime());
             $demandeExplication->setStatus(false);
             $demandeExplication->setResponsable($responsable);
+            $employes = $demandeExplication->getEmploye();
+
+            foreach ($employes as $employe) {
+                $demandeExplication->addEmploye($employe);
+            }
             $entityManager->persist($demandeExplication);
             $entityManager->flush();
-            return $this->redirectToRoute('demande_explication');
         }
+
         return $this->render("demandeExplication/admin/new.html.twig", [
-            "form" => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/Collectif", name="demande_explication_collectif", methods={"GET","POST"})
-     */
-    public function DemandeCollectif(Request $request, Security $security): Response
-    {
-
-        $demandeExplication = new DemandeExplication();
-        $form = $this->createForm(DemandeExplicationType::class, $demandeExplication);
-        $form->handleRequest($request);
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $employes = $entityManager->getRepository(Employe::class)->findAll();
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $responsable = $security->getUser();
-
-            $demandeExplication->setDate(new \DateTime());
-            $demandeExplication->setStatus(false);
-            $demandeExplication->setResponsable($responsable);
-            $entityManager->persist($demandeExplication);
-            $entityManager->flush();
-            return $this->redirectToRoute('demande_explication');
-        }
-        return $this->render("demandeExplication/admin/collectif.html.twig", [
-            "form" => $form->createView(),
-            'employes' => $employes,
-        ]);
-    }
-
-    /**
-     * @Route("/show/{id}", name="demande_explication_show", methods={"GET"})
-     */
-    public function show(DemandeExplication $demandeExplications): Response
-    {
-        return $this->render("demandeExplication/admin/show.html.twig", [
-            'demandeExplications' => $demandeExplications,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -108,37 +75,65 @@ class DemandeExplicationController extends AbstractController
      */
     public function suivi(Security $security, DemandeExplicationRepository $demandeExplicationRepository): Response
     {
-
         $employe = $security->getUser();
-        $demandeExplication = $demandeExplicationRepository->findBy(['employe' => $employe]);
+        $demandeExplication = $demandeExplicationRepository->findByEmploye($employe);
         return $this->render("demandeExplication/index.html.twig", [
             'demandeExplication' => $demandeExplication,
         ]);
     }
 
+
+    /**
+     * @Route("/detail/{id}", name="demande_explication_details", methods={"GET"})
+     */
+    public function detail(DemandeExplication $demandeExplications): Response
+    {
+        return $this->render("demandeExplication/admin/details.html.twig", [
+            'demandeExplication' => $demandeExplications,
+        ]);
+    }
+
+
     /**
      * @Route("/Suivi/Detail/{id}", name="demande_explication_detail", methods={"GET","POST"})
      */
-    public function details(Request $request, DemandeExplication $demandeExplications): Response
+    public function reponse(Request $request, DemandeExplication $demandeExplications, Security $security): Response
     {
-        $form = $this->createForm(ReponseExplicationType::class, $demandeExplications);
+
+        $reponseExplication = new ReponseExplication();
+
+        $form = $this->createForm(ReponseExplicationType::class, $reponseExplication);
         $form->handleRequest($request);
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $security->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $demandeExplications->setDatereponse(new \DateTime());
+
+            $reponseExplication->setDateReponse(new \DateTime());
+            $reponseExplication->setStatus(true);
+            $reponseExplication->setDemandeExplication($demandeExplications);
+            $reponseExplication->setEmploye($employe);
+            $reponseExplication->setReponse($form->get('reponse')->getData());
             $demandeExplications->setStatus(true);
 
-            $entityManager->persist($demandeExplications);
+            $entityManager->persist($reponseExplication);
             $entityManager->flush();
 
-            return $this->redirectToRoute("demande_explication_detail", ['id' => $demandeExplications->getId()]);
+            return $this->redirectToRoute('demande_explication_detail', ['id' => $demandeExplications->getId()]);
         }
+
+        $responses = $entityManager->getRepository(ReponseExplication::class)->findBy([
+            'demandeExplication' => $demandeExplications,
+            'employe' => $employe,
+        ]);
 
         return $this->render("demandeExplication/detail.html.twig", [
             'demandeExplications' => $demandeExplications,
             'form' => $form->createView(),
+            'responses' => $responses,
         ]);
     }
+
+
 
 }

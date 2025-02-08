@@ -36,6 +36,17 @@ class DemandeExplicationRepository extends ServiceEntityRepository
     }
     */
 
+    public function findByEmploye($employe)
+    {
+        return $this->createQueryBuilder('d')
+            ->join('d.employe', 'e')
+            ->where('e = :employe')
+            ->setParameter('employe', $employe)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /*
     public function findOneBySomeField($value): ?DemandeExplication
     {

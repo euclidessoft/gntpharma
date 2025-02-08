@@ -1,0 +1,60 @@
+{% extends 'admin.html.twig' %}
+
+{% block employe %}active{% endblock %}
+{% block demande %}active{% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-4 fond-7">
+        <h3 class="mt-4 text-bold">
+            <i class="fa fa-money-bill mr-2"></i>
+            {{ "Détails de la demande d'explication"|trans }}
+        </h3>
+
+        <!-- Détails de la demande d'explication -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <p><strong>{{ 'Date de la demande'|trans }} :</strong> {{ demandeExplication.date ? demandeExplication.date|date('d/m/Y') : '' }}</p>
+                <p><strong>{{ 'Date de l\'incident'|trans }} :</strong> {{ demandeExplication.dateIncident ? demandeExplication.dateIncident|date('d/m/Y') : '' }}</p>
+                <h4>{{ demandeExplication.objet }}</h4>
+                <p><strong>{{ 'Détails'|trans }} :</strong> {{ demandeExplication.details }}</p>
+                <p><strong>{{ 'Statut'|trans }} :</strong>
+                    {% if demandeExplication.status == false %}
+                        <span class="badge badge-warning">{{ 'En attente de réponse'|trans }}</span>
+                    {% else %}
+                        <span class="badge badge-success">{{ 'Répondu'|trans }}</span>
+                    {% endif %}
+                </p>
+{#                <p><strong>{{ 'Réponse'|trans }} :</strong> {{ demandeExplication.reponse ? demandeExplication.reponse : 'Aucune réponse' }}</p>#}
+            </div>
+        </div>
+
+        <h3 class="mt-4 text-bold">
+            <i class="fa fa-users mr-2"></i>
+            {{ "Liste des employés associés à la demande d'explication"|trans }}
+        </h3>
+
+        <!-- Liste des employés associés -->
+        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+            <thead>
+            <tr>
+                <th>{{ 'Matricule'|trans }}</th>
+                <th>{{ 'Nom de l\'employé'|trans }}</th>
+                <th>{{ 'Status'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for employe in demandeExplication.employe %}
+                <tr>
+                    <td data-label="{{ 'Matricule'|trans }}">{{ employe.matricule }}</td>
+                    <td data-label="{{ 'Nom de l\'employé'|trans }}">{{ employe.nom ~ ' ' ~ employe.prenom }}</td>
+                    <td data-label="{{ 'Status'|trans }}">En attente de reponse</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">{{ 'Aucun employé associé à cette demande'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

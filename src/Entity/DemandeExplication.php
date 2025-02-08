@@ -20,11 +20,6 @@ class DemandeExplication
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="demandeExplications")
-     */
-    private $employe;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $objet;
@@ -55,40 +50,36 @@ class DemandeExplication
     private $responsable;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $reponse;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $datereponse;
-
-    /**
      * @ORM\OneToMany(targetEntity=Sanction::class, mappedBy="explication")
      */
     private $sanctions;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Employe::class, inversedBy="demandeExplications")
+     */
+    private $employe;
+
+    /**
+     * @ORM\OneToMany(targetEntity=EmployeDemande::class, mappedBy="demandeExplication")
+     */
+    private $employeDemandes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ReponseExplication::class, mappedBy="demandeExplication")
+     */
+    private $reponseExplications;
+
     public function __construct()
     {
         $this->sanctions = new ArrayCollection();
+        $this->employe = new ArrayCollection();
+        $this->employeDemandes = new ArrayCollection();
+        $this->reponseExplications = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEmploye(): ?Employe
-    {
-        return $this->employe;
-    }
-
-    public function setEmploye(?Employe $employe): self
-    {
-        $this->employe = $employe;
-
-        return $this;
     }
 
     public function getObjet(): ?string
@@ -163,30 +154,6 @@ class DemandeExplication
         return $this;
     }
 
-    public function getReponse(): ?string
-    {
-        return $this->reponse;
-    }
-
-    public function setReponse(?string $reponse): self
-    {
-        $this->reponse = $reponse;
-
-        return $this;
-    }
-
-    public function getDatereponse(): ?\DateTimeInterface
-    {
-        return $this->datereponse;
-    }
-
-    public function setDatereponse(?\DateTimeInterface $datereponse): self
-    {
-        $this->datereponse = $datereponse;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Sanction[]
      */
@@ -216,5 +183,90 @@ class DemandeExplication
 
         return $this;
     }
+
+    /**
+     * @return Collection|Employe[]
+     */
+    public function getEmploye(): Collection
+    {
+        return $this->employe;
+    }
+
+    public function addEmploye(Employe $employe): self
+    {
+        if (!$this->employe->contains($employe)) {
+            $this->employe[] = $employe;
+        }
+
+        return $this;
+    }
+
+    public function removeEmploye(Employe $employe): self
+    {
+        $this->employe->removeElement($employe);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EmployeDemande[]
+     */
+    public function getEmployeDemandes(): Collection
+    {
+        return $this->employeDemandes;
+    }
+
+    public function addEmployeDemande(EmployeDemande $employeDemande): self
+    {
+        if (!$this->employeDemandes->contains($employeDemande)) {
+            $this->employeDemandes[] = $employeDemande;
+            $employeDemande->setDemandeExplication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmployeDemande(EmployeDemande $employeDemande): self
+    {
+        if ($this->employeDemandes->removeElement($employeDemande)) {
+            // set the owning side to null (unless already changed)
+            if ($employeDemande->getDemandeExplication() === $this) {
+                $employeDemande->setDemandeExplication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ReponseExplication[]
+     */
+    public function getReponseExplications(): Collection
+    {
+        return $this->reponseExplications;
+    }
+
+    public function addReponseExplication(ReponseExplication $reponseExplication): self
+    {
+        if (!$this->reponseExplications->contains($reponseExplication)) {
+            $this->reponseExplications[] = $reponseExplication;
+            $reponseExplication->setDemandeExplication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReponseExplication(ReponseExplication $reponseExplication): self
+    {
+        if ($this->reponseExplications->removeElement($reponseExplication)) {
+            // set the owning side to null (unless already changed)
+            if ($reponseExplication->getDemandeExplication() === $this) {
+                $reponseExplication->setDemandeExplication(null);
+            }
+        }
+
+        return $this;
+    }
+
 
 }

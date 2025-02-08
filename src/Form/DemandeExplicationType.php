@@ -25,6 +25,7 @@ class DemandeExplicationType extends AbstractType
                 'choice_label' => function(Employe $employe){
                     return $employe->getNom().' '.$employe->getPrenom();
                 },
+                'multiple' => true,
                 'required' => true,
                 'placeholder' => 'Selectionnez l\'employé',
             ])
