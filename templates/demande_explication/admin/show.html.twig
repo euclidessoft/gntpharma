@@ -1,0 +1,82 @@
+{% extends 'admin.html.twig' %}
+
+{% block employe %}active{% endblock %}
+{% block demande %}active{% endblock %}
+
+{% block body %}
+<div class="col-lg-8 mt-4 fond-7">
+    <div class="card">
+        <div class="card-header text-white">
+            <h4>Détails de la demande d'explication</h4>
+        </div>
+        <div class="card-body">
+
+            <!-- Information des employés concernés -->
+            <h5 class="mb-3">
+                <i class="fa-solid fa-user"></i> Employés concernés
+            </h5>
+            <table class="table table-success-light table-bordered table-hover table-striped w-100">
+                <thead>
+                    <tr>
+                        <th>{{ 'Matricule'|trans }}</th>
+                        <th>{{ 'Employé(s)'|trans }}</th>
+                        <th>{{ 'Poste'|trans }}</th>
+                        <th>{{ 'Statut'|trans }}</th>
+                        <th>{{ 'Actions'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employe in demandeExplications.employe %}
+                    <tr>
+                        <td>{{ employe.matricule }}</td>
+                        <td>{{ employe.nom ~ ' ' ~ employe.prenom }}</td>
+                        <td>{{ employe.poste.nom }}</td>
+                        <td>
+                            {% set statut = statuts[employe.id] %}
+                            {% if statut == true %}
+                                <span class="badge badge-success">Répondu</span>
+                            {% else %}
+                                <span class="badge badge-warning">En attente</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-success btn-sm"><i class="fas fa-eye"></i>Voir réponse</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-danger">Aucun employé affecté</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Détails de la demande -->
+            <h5 class="mb-3">
+                <i class="fa-solid fa-info-circle"></i> Détails de la demande
+            </h5>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Objet :</strong> {{ demandeExplications.objet }}</li>
+                <li class="list-group-item"><strong>Date de l'incident :</strong> {{ demandeExplications.dateIncident ? demandeExplications.dateIncident|date('d/m/Y') : 'N/A' }}</li>
+                <li class="list-group-item"><strong>Date de soumission :</strong> {{ demandeExplications.date ? demandeExplications.date|date('d/m/Y') : 'N/A' }}</li>
+                <li class="list-group-item">
+                    <p class="mt-2">{{ demandeExplications.details }}</p>
+                    <p>Cordialement,</p>
+                    <p class="mt-2 text-right">
+                        <strong>{{ demandeExplications.responsable.nom ~' '~ demandeExplications.responsable.prenom }}</strong><br>
+                        {{ demandeExplications.responsable.poste.nom }}<br>
+                        {{ demandeExplications.responsable.email }} | {{ demandeExplications.responsable.phone }}
+                    </p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="centrer">
+            <a href="{{ path('demande_index') }}" class="btn btn-success mb-3">
+                <i class="fa fa-undo"></i> {{ 'Retour'|trans }}
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

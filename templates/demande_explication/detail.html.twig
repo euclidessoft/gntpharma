@@ -28,23 +28,23 @@
                 </ul>
 
                 <!-- Afficher la réponse de l'employé -->
-                {% if demandeExplications.status == true %}
-                <div class="mt-4">
-                    <h5 class="text-success text-bold"><i class="fa-solid fa-reply"></i> Votre réponse</h5>
-                    <ul class="list-group mb-4">
-                        <li class="list-group-item"><strong>Date de réponse :</strong> {{ demandeExplications.dateReponse ? demandeExplications.dateReponse|date('d/m/Y') : 'N/A' }}</li>
-                        <li class="list-group-item">
-                            <p class="mt-2">{{ demandeExplications.reponse }}</p>
-                            <h5 class="mt-3">Cordialement,</h5>
-                            <p class="text-right mt-3">
-                                <strong>{{ demandeExplications.employe.nom ~ ' ' ~ demandeExplications.employe.prenom }}</strong><br>
-                                {{ demandeExplications.employe.poste.nom }}<br>
-                                {{ demandeExplications.employe.email }} | {{ demandeExplications.employe.phone }}
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-                {% endif %}
+                    <div class="mt-4">
+                        {% for reponse in reponses %}
+                            <h5 class="text-success text-bold"><i class="fa-solid fa-reply"></i> Votre réponse</h5>
+                            <ul class="list-group mb-4">
+                                <li class="list-group-item"><strong>Date de réponse :</strong> {{ reponse.dateReponse ? reponse.dateReponse|date('d/m/Y') : 'N/A' }}</li>
+                                <li class="list-group-item">
+                                    <p class="mt-2">{{ reponse.reponse }}</p>
+                                    <h5 class="mt-3">Cordialement,</h5>
+                                    <p class="text-right mt-3">
+                                        <strong>{{ reponse.employe ? reponse.employe.nom ~ ' ' ~ reponse.employe.prenom }}</strong><br>
+                                        {{ reponse.employe ? reponse.employe.poste.nom }}<br>
+                                        {{ reponse.employe ? reponse.employe.email }} | {{ reponse.employe ? reponse.employe.phone }}
+                                    </p>
+                                </li>
+                            </ul>
+                        {% endfor %}
+                    </div>
 
                 <!-- Boutons "Répondre" et "Retour" -->
                 <div class="text-center mt-4">

@@ -152,9 +152,15 @@ class Employe extends User implements UserInterface
     private $sanctions;
 
     /**
-     * @ORM\OneToMany(targetEntity=DemandeExplication::class, mappedBy="employe")
+     * @ORM\ManyToMany(targetEntity=DemandeExplication::class, mappedBy="employe")
      */
     private $demandeExplications;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ReponseExplication::class, mappedBy="employe")
+     */
+    private $reponseExplications;
+
 
 
     public function __construct()
@@ -168,6 +174,7 @@ class Employe extends User implements UserInterface
         $this->absences = new ArrayCollection();
         $this->sanctions = new ArrayCollection();
         $this->demandeExplications = new ArrayCollection();
+        $this->reponseExplications = new ArrayCollection();
     }
 
 
@@ -631,7 +638,7 @@ class Employe extends User implements UserInterface
     {
         if (!$this->demandeExplications->contains($demandeExplication)) {
             $this->demandeExplications[] = $demandeExplication;
-            $demandeExplication->setEmploye($this);
+            $demandeExplication->addEmploye($this);
         }
 
         return $this;
@@ -640,14 +647,41 @@ class Employe extends User implements UserInterface
     public function removeDemandeExplication(DemandeExplication $demandeExplication): self
     {
         if ($this->demandeExplications->removeElement($demandeExplication)) {
-            // set the owning side to null (unless already changed)
-            if ($demandeExplication->getEmploye() === $this) {
-                $demandeExplication->setEmploye(null);
-            }
+            $demandeExplication->removeEmploye($this);
         }
 
         return $this;
     }
+
+    /**
+     * @return Collection|ReponseExplication[]
+     */
+    public function getReponseExplications(): Collection
+    {
+        return $this->reponseExplications;
+    }
+
+    public function addReponseExplication(ReponseExplication $reponseExplication): self
+    {
+        if (!$this->reponseExplications->contains($reponseExplication)) {
+            $this->reponseExplications[] = $reponseExplication;
+            $reponseExplication->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReponseExplication(ReponseExplication $reponseExplication): self
+    {
+        if ($this->reponseExplications->removeElement($reponseExplication)) {
+            // set the owning side to null (unless already changed)
+            if ($reponseExplication->getEmploye() === $this) {
+                $reponseExplication->setEmploye(null);
+            }
+        }
+
+        return $this;
+    } 
 
 
 }

@@ -17,16 +17,8 @@ class DemandeExplicationType extends AbstractType
         $builder
             ->add('objet')
             ->add('details')
-            ->add('dateIncident', DateType::class, [
+            ->add('dateIncident',DateType::class, [
                 'widget' => 'single_text',
-            ])
-            ->add('employe',EntityType::class, [
-                'class' => Employe::class,
-                'choice_label' => function(Employe $employe){
-                    return $employe->getNom().' '.$employe->getPrenom();
-                },
-                'required' => true,
-                'placeholder' => 'Selectionnez l\'employé',
             ])
         ;
     }
