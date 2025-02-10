@@ -62,56 +62,56 @@
                         </div>
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="administration">
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Employés'|trans }}">
                             <a class="nav-link {% block employe %}{% endblock %}"
                                 href="{{ path('employe_index') }}">
                                 <i class="fa-solid fa-address-card"></i>
                                 {{ 'Employés'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Départements'|trans }}">
                             <a class="nav-link {% block departements %}{% endblock %}" href="{{ path('departement_index') }}">
                                 <i class="fa-solid fa-users-viewfinder"></i>
                                 {{ 'Départements'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Postes'|trans }}">
                             <a class="nav-link {% block postes %}{% endblock %}" href="{{ path('poste_index') }}">
                                 <i class="fa-solid fa-clipboard-user"></i>
                                 {{ 'Postes'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
-                            <a class="nav-link {% block typeconge %}{% endblock %}"
-                                href="{{ path('type_conge_index') }}">
-                                <i class="fa-solid fa-clipboard-user"></i>
-                                {{ 'Type de congé'|trans }}
-                            </a>
-                        </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Performance'|trans }}">
                             <a class="nav-link {% block performance %}{% endblock %}"
                                 href="#">
                                 <i class="fa-solid fa-chart-line"></i>
                                 {{ 'Performance'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Demande d\'explication'|trans }}">
                             <a class="nav-link {% block explication %}{% endblock %}"
                                 href="{{ path('demande_explication_index') }}">
                                 <i class="fa-solid fa-user-pen"></i>
                                 {{ 'Demande d\'explication'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Sanctions'|trans }}">
                             <a class="nav-link {% block sanctions %}{% endblock %}"
                                 href="#">
                                 <i class="fa-solid fa-user-xmark"></i>
                                 {{ 'Sanctions'|trans }}
                             </a>
                         </li>
+                        <li class="dropdown-item" title="{{ 'Configuration'|trans }}">
+                            <a class="nav-link {% block config %}{% endblock %}"
+                               href="{{ path('employe_congif') }}">
+                                <i class="fa-solid fa-gears"></i>
+                                {{ 'Configuration'|trans }}
+                            </a>
+                        </li>
                     </ul>
                 </li>
-                <li class="nav-item dropright" title="{{ 'Congés'|trans }}">
+                <li class="nav-item dropright" title="{{ 'Discipline'|trans }}">
                     <a class="nav-link dropdown-toggle {% block conges %} {% endblock %}" href="#" id="conges"
                         data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
@@ -119,28 +119,28 @@
                             <i class="fa-solid fa-users-slash fa-lg"></i>
                         </div>
                         <div class="title">
-                            {{ 'Congés'|trans }}
+                            {{ 'Discipline'|trans }}
                         </div>
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="conges">
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Permissions'|trans }}">
                             <a class="nav-link {% block permissions %}{% endblock %}" href="{{ path('conges_employe_index') }}">
                                 <i class="fa-solid fa-user-check"></i>
                                 {{ 'Permissions'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Absences'|trans }}">
                             <a class="nav-link {% block absence %}{% endblock %}"
                                 href="{{ path('absence_suivi') }}">
                                 <i class="fa fa-user-slash"></i>
                                 {{ 'Absences'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Planning des congés'|trans }}">
                             <a class="nav-link {% block planning %}{% endblock %}"
                                 href="#">
                                 <i class="fa-solid fa-calendar-days"></i>
-                                {{ 'Planning des congés '|trans }}
+                                {{ 'Planning des congés'|trans }}
                             </a>
                         </li>
                     </ul>
@@ -157,14 +157,14 @@
                         </div>
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="paie">
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Fiche de paie'|trans }}">
                             <a class="nav-link {% block fiche %}{% endblock %}"
                                 href="{{ path('produit_new') }}">
                                 <i class="fa-solid fa-money-check-dollar"></i>
                                 {{ 'Fiche de paie'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Primes et avantages'|trans }}">
                             <a class="nav-link {% block all_produits %}{% endblock %}"
                                 href="#">
                                 <i class="fa-solid fa-money-bill-wheat"></i>
@@ -172,7 +172,7 @@
                             </a>
                         </li>
 
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Historique des paiements'|trans }}">
                             <a class="nav-link {% block arrivage %}{% endblock %}"
                                 href="{{ path('produit_arrivage_admin') }}">
                                 <i class="fa-solid fa-rectangle-list"></i>
@@ -194,19 +194,19 @@
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="formations">
 
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Catalogue des formations'|trans }}">
                             <a class="nav-link {% block catalogue %}{% endblock %}" href="{{ path('formation_index') }}">
                                 <i class="fa-solid fa-book"></i>
                                 {{ 'Catalogue des formations'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Formations en cours'|trans }}">
                             <a class="nav-link {% block en_cours %}{% endblock %}" href="{{ path('formation_index') }}">
                                 <i class="fa-solid fa-book-bookmark"></i>
                                 {{ 'Formations en cours'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Compétences acquises'|trans }}">
                             <a class="nav-link {% block competences %}{% endblock %}" href="{{ path('formation_index') }}">
                                 <i class="fa-solid fa-graduation-cap"></i>
                                 {{ 'Compétences acquises'|trans }}
@@ -226,28 +226,28 @@
                         </div>
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="communication">
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Messagerie interne'|trans }}">
                             <a class="nav-link {% block messagerie %}{% endblock %}"
                                 href="{{ path('stock_index') }}">
                                 <i class="fa-solid fa-comments"></i>
                                 {{ 'Messagerie interne'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Notes de service'|trans }}">
                             <a class="nav-link {% block note %}{% endblock %}"
                                 href="{{ path('stock_index') }}">
                                 <i class="fa-regular fa-note-sticky"></i>
                                 {{ 'Notes de service'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Événements'|trans }}">
                             <a class="nav-link {% block evenement %}{% endblock %}"
                                 href="{{ path('stock_index') }}">
                                 <i class="fa-solid fa-mug-saucer"></i>
                                 {{ 'Événements'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Enquêtes'|trans }}">
                             <a class="nav-link {% block enquetes %}{% endblock %}"
                                 href="{{ path('stock_index') }}">
                                 <i class="fa-solid fa-file-circle-question"></i>
@@ -279,26 +279,26 @@
                         </div>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="Aide">
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Manuel'|trans }}">
                             <a class="nav-link {% block manuel %}{% endblock %}" href="#">
                                 <i class="fas fa-book"></i>
                                 {{ 'Manuel'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Suggestions à l’entreprise'|trans }}">
                             <a class="nav-link {% block suggestion %}{% endblock %}"
                                 href="{{ path('suggestion_index') }}">
                                 <i class="fas fa-comments"></i>
                                 {{ 'Suggestions à l’entreprise'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'Signaler un bug'|trans }}">
                             <a class="nav-link {% block bug %}{% endblock %}" href="#">
                                 <i class="fas fa-bug"></i>
                                 {{ 'Signaler un bug'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item">
+                        <li class="dropdown-item" title="{{ 'A propos de l\'application'|trans }}">
                             <a href="#" class="nav-link" data-toggle="modal" data-target="#about">
                                 <i class="fas fa-check-circle"></i>
                                 {{ 'A propos de l\'application'|trans }}

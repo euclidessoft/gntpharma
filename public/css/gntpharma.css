@@ -752,6 +752,7 @@ select:required {
     color: var(--gris-hover);
     font-size: 18px;
     white-space: nowrap;
+    padding: 10px;
 }
 
 .nav-tabs .nav-link:hover,
