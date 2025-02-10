@@ -18,45 +18,33 @@ class ReponseExplication
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=DemandeExplication::class, inversedBy="reponseExplications")
-     */
-    private $demandeExplication;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="reponseExplications")
      */
     private $employe;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=DemandeExplication::class, inversedBy="reponseExplications")
+     */
+    private $demande;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $reponse;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateReponse;
 
     /**
      * @ORM\Column(type="boolean")
      */
     private $status;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $reponse;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $dateReponse;
-
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDemandeExplication(): ?DemandeExplication
-    {
-        return $this->demandeExplication;
-    }
-
-    public function setDemandeExplication(?DemandeExplication $demandeExplication): self
-    {
-        $this->demandeExplication = $demandeExplication;
-
-        return $this;
     }
 
     public function getEmploye(): ?Employe
@@ -67,6 +55,42 @@ class ReponseExplication
     public function setEmploye(?Employe $employe): self
     {
         $this->employe = $employe;
+
+        return $this;
+    }
+
+    public function getDemande(): ?DemandeExplication
+    {
+        return $this->demande;
+    }
+
+    public function setDemande(?DemandeExplication $demande): self
+    {
+        $this->demande = $demande;
+
+        return $this;
+    }
+
+    public function getReponse(): ?string
+    {
+        return $this->reponse;
+    }
+
+    public function setReponse(string $reponse): self
+    {
+        $this->reponse = $reponse;
+
+        return $this;
+    }
+
+    public function getDateReponse(): ?\DateTimeInterface
+    {
+        return $this->dateReponse;
+    }
+
+    public function setDateReponse(\DateTimeInterface $dateReponse): self
+    {
+        $this->dateReponse = $dateReponse;
 
         return $this;
     }
@@ -82,29 +106,4 @@ class ReponseExplication
 
         return $this;
     }
-
-    public function getReponse(): ?string
-    {
-        return $this->reponse;
-    }
-
-    public function setReponse(?string $reponse): self
-    {
-        $this->reponse = $reponse;
-
-        return $this;
-    }
-
-    public function getDateReponse(): ?\DateTimeInterface
-    {
-        return $this->dateReponse;
-    }
-
-    public function setDateReponse(?\DateTimeInterface $dateReponse): self
-    {
-        $this->dateReponse = $dateReponse;
-
-        return $this;
-    }
-
 }

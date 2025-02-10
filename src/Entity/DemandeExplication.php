@@ -60,20 +60,15 @@ class DemandeExplication
     private $employe;
 
     /**
-     * @ORM\OneToMany(targetEntity=EmployeDemande::class, mappedBy="demandeExplication")
-     */
-    private $employeDemandes;
-
-    /**
-     * @ORM\OneToMany(targetEntity=ReponseExplication::class, mappedBy="demandeExplication")
+     * @ORM\OneToMany(targetEntity=ReponseExplication::class, mappedBy="demande")
      */
     private $reponseExplications;
+
 
     public function __construct()
     {
         $this->sanctions = new ArrayCollection();
         $this->employe = new ArrayCollection();
-        $this->employeDemandes = new ArrayCollection();
         $this->reponseExplications = new ArrayCollection();
     }
 
@@ -209,36 +204,6 @@ class DemandeExplication
     }
 
     /**
-     * @return Collection|EmployeDemande[]
-     */
-    public function getEmployeDemandes(): Collection
-    {
-        return $this->employeDemandes;
-    }
-
-    public function addEmployeDemande(EmployeDemande $employeDemande): self
-    {
-        if (!$this->employeDemandes->contains($employeDemande)) {
-            $this->employeDemandes[] = $employeDemande;
-            $employeDemande->setDemandeExplication($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEmployeDemande(EmployeDemande $employeDemande): self
-    {
-        if ($this->employeDemandes->removeElement($employeDemande)) {
-            // set the owning side to null (unless already changed)
-            if ($employeDemande->getDemandeExplication() === $this) {
-                $employeDemande->setDemandeExplication(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|ReponseExplication[]
      */
     public function getReponseExplications(): Collection
@@ -250,7 +215,7 @@ class DemandeExplication
     {
         if (!$this->reponseExplications->contains($reponseExplication)) {
             $this->reponseExplications[] = $reponseExplication;
-            $reponseExplication->setDemandeExplication($this);
+            $reponseExplication->setDemande($this);
         }
 
         return $this;
@@ -260,8 +225,8 @@ class DemandeExplication
     {
         if ($this->reponseExplications->removeElement($reponseExplication)) {
             // set the owning side to null (unless already changed)
-            if ($reponseExplication->getDemandeExplication() === $this) {
-                $reponseExplication->setDemandeExplication(null);
+            if ($reponseExplication->getDemande() === $this) {
+                $reponseExplication->setDemande(null);
             }
         }
 

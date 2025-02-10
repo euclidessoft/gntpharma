@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\DemandeExplication;
+use App\Entity\Employe;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -36,15 +37,14 @@ class DemandeExplicationRepository extends ServiceEntityRepository
     }
     */
 
-    public function findByEmploye($employe)
+    public function findByEmploye(Employe $employe)
     {
         return $this->createQueryBuilder('d')
-            ->join('d.employe', 'e')
-            ->where('e = :employe')
-            ->setParameter('employe', $employe)
-            ->getQuery()
-            ->getResult()
-        ;
+        ->innerJoin('d.employe', 'e') 
+        ->where('e = :employe')
+        ->setParameter('employe', $employe)
+        ->getQuery()
+        ->getResult();
     }
 
     /*

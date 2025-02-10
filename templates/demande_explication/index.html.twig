@@ -1,0 +1,50 @@
+{% extends 'employe.html.twig' %}
+
+{% block administration %}active{% endblock %}
+{% block explication %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-4 fond-7">
+    <h3 class="mt-4 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Listes des demandes d'explication"|trans }}
+    </h3>
+    
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>{{ 'Date demande d\'explication'|trans }}</th>
+                <th>{{ 'Date de l\'incident'|trans }}</th>
+                <th>{{ 'Objet demande'|trans }}</th>
+                <th>{{ 'Statut'|trans }}</th>
+                <th>{{ 'Actions'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for demande in demandes %}
+                <tr>
+                    <td>{{ demande.date ? demande.date|date('d/m/Y') : '' }}</td>
+                    <td>{{ demande.dateIncident ? demande.dateIncident|date('d/m/Y') : 'N/A' }}</td>
+                    <td>{{ demande.objet }}</td>
+                    <td>
+                        
+                            <span class="badge badge-success">Répondu</span>
+                        
+                            <span class="badge badge-warning">En attente</span>
+                        
+                    </td>
+                    <td>
+                        <a href="{{ path('demande_explication_detail', {'id': demande.id }) }}" class="btn btn-success" title="{{'Voir'|trans}}">
+                            <i class="fa fa-eye mr-2"></i>{{ 'Détails'|trans }}
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-danger">{{ 'Aucune demande trouvée'|trans }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

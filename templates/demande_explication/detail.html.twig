@@ -28,9 +28,8 @@
                 </ul>
 
                 <!-- Afficher la réponse de l'employé -->
-                {% if demandeExplications.status == true %}
                     <div class="mt-4">
-                        {% for reponse in responses %}
+                        {% for reponse in reponses %}
                             <h5 class="text-success text-bold"><i class="fa-solid fa-reply"></i> Votre réponse</h5>
                             <ul class="list-group mb-4">
                                 <li class="list-group-item"><strong>Date de réponse :</strong> {{ reponse.dateReponse ? reponse.dateReponse|date('d/m/Y') : 'N/A' }}</li>
@@ -46,7 +45,6 @@
                             </ul>
                         {% endfor %}
                     </div>
-                {% endif %}
 
                 <!-- Boutons "Répondre" et "Retour" -->
                 <div class="text-center mt-4">

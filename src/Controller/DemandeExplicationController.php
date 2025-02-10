@@ -6,7 +6,6 @@ use App\Entity\DemandeExplication;
 use App\Entity\Employe;
 use App\Entity\ReponseExplication;
 use App\Form\DemandeExplicationType;
-use App\Form\ExplicationCollectifType;
 use App\Form\ReponseExplicationType;
 use App\Repository\DemandeExplicationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,124 +15,131 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
 /**
- * @Route("/{_locale}/Explication")
+ * @Route("/{_locale}/Demande")
  */
 class DemandeExplicationController extends AbstractController
 {
     /**
-     * @Route("/", name="demande_explication")
+     * @Route("/", name="demande_index")
      */
     public function index(DemandeExplicationRepository $demandeExplicationRepository): Response
     {
-        $demandeExplication = $demandeExplicationRepository->findAll();
-
-        return $this->render('demandeExplication/admin/index.html.twig', [
-            'demandeExplication' => $demandeExplication,
+        $demandes = $demandeExplicationRepository->findAll();
+        return $this->render('demande_explication/admin/index.html.twig', [
+            'demandes' => $demandes,
         ]);
     }
 
     /**
-     * @Route("/Choix_demande", name="demande_choix", methods={"GET","POST"})
+     * @Route("/new", name="explication_new", methods={"GET","POST"})
      */
-    public function demandeExplication(Request $request): Response
+    public function new(Request $request): Response
     {
-        return $this->render('demandeExplication/admin/demande.html.twig');
-    }
-
-
-    /**
-     * @Route("/new", name="demande_explication_new", methods={"GET","POST"})
-     */
-    public function new(Request $request, Security $security): Response
-    {
-        $demandeExplication = new DemandeExplication();
-        $form = $this->createForm(DemandeExplicationType::class, $demandeExplication);
+        $demande = new DemandeExplication();
+        $form = $this->createForm(DemandeExplicationType::class, $demande);
         $form->handleRequest($request);
+
+        $employes = $this->getDoctrine()->getRepository(Employe::class)->findAll();
         if ($form->isSubmitted() && $form->isValid()) {
-
             $entityManager = $this->getDoctrine()->getManager();
-            $responsable = $security->getUser();
-            $demandeExplication->setDate(new \DateTime());
-            $demandeExplication->setStatus(false);
-            $demandeExplication->setResponsable($responsable);
-            $employes = $demandeExplication->getEmploye();
+            $demande->setDate(new \DateTime());
+            $selectEmployes = $request->get('demande')['employes'];
+            $demande->setStatus(false);
+            if (!empty($selectEmployes)) {
 
-            foreach ($employes as $employe) {
-                $demandeExplication->addEmploye($employe);
+                // Recherche des employés sélectionnés
+                $employe = $this->getDoctrine()->getRepository(Employe::class);
+                $employes = $employe->findBy(['id' => $selectEmployes]);
+
+                // Ajout des employés à la demande d'explication
+                foreach ($employes as $employe) {
+                    $demande->addEmploye($employe);
+                }
             }
-            $entityManager->persist($demandeExplication);
-            $entityManager->flush();
-        }
 
-        return $this->render("demandeExplication/admin/new.html.twig", [
+            $entityManager->persist($demande);
+            $entityManager->flush();
+            return $this->redirectToRoute('demande_index');
+        }
+        return $this->render("demande_explication/admin/new.html.twig", [
             'form' => $form->createView(),
+            'employes' => $employes,
         ]);
     }
 
     /**
-     * @Route("/Suivi", name="demande_explication_index")
+     * @Route("/{id}", name="explication_show", methods={"GET"})
+     */
+    public function show(DemandeExplication $demandeExplications): Response
+    {
+
+        $reponses = $demandeExplications->getReponseExplications();
+        $status = [];
+        foreach($demandeExplications->getEmploye() as $employe){
+            $reponse = $reponses->filter(function($r) use ($employe) {
+                return $r->getEmploye() === $employe;
+            })->first();  
+             if ($reponse) {
+                $statuts[$employe->getId()] = $reponse->getStatus();  
+            } else {
+                $statuts[$employe->getId()] = false; 
+            }
+        }
+        return $this->render('demande_explication/admin/show.html.twig', [
+            'demandeExplications' => $demandeExplications,
+            'statuts' => $statuts,
+        ]);
+    }
+
+
+    /**** Methode de l'employe***** */
+
+    /**
+     * @Route("Suivi", name="demande_explication_index", methods={"GET"})
      */
     public function suivi(Security $security, DemandeExplicationRepository $demandeExplicationRepository): Response
     {
-        $employe = $security->getUser();
-        $demandeExplication = $demandeExplicationRepository->findByEmploye($employe);
-        return $this->render("demandeExplication/index.html.twig", [
-            'demandeExplication' => $demandeExplication,
-        ]);
-    }
-
-
-    /**
-     * @Route("/detail/{id}", name="demande_explication_details", methods={"GET"})
-     */
-    public function detail(DemandeExplication $demandeExplications): Response
-    {
-        return $this->render("demandeExplication/admin/details.html.twig", [
-            'demandeExplication' => $demandeExplications,
-        ]);
-    }
-
-
-    /**
-     * @Route("/Suivi/Detail/{id}", name="demande_explication_detail", methods={"GET","POST"})
-     */
-    public function reponse(Request $request, DemandeExplication $demandeExplications, Security $security): Response
-    {
-
-        $reponseExplication = new ReponseExplication();
-
-        $form = $this->createForm(ReponseExplicationType::class, $reponseExplication);
-        $form->handleRequest($request);
         $entityManager = $this->getDoctrine()->getManager();
         $employe = $security->getUser();
+        $demandes = $demandeExplicationRepository->findByEmploye($employe);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $reponseExplication->setDateReponse(new \DateTime());
-            $reponseExplication->setStatus(true);
-            $reponseExplication->setDemandeExplication($demandeExplications);
-            $reponseExplication->setEmploye($employe);
-            $reponseExplication->setReponse($form->get('reponse')->getData());
-            $demandeExplications->setStatus(true);
-
-            $entityManager->persist($reponseExplication);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('demande_explication_detail', ['id' => $demandeExplications->getId()]);
-        }
-
-        $responses = $entityManager->getRepository(ReponseExplication::class)->findBy([
-            'demandeExplication' => $demandeExplications,
-            'employe' => $employe,
-        ]);
-
-        return $this->render("demandeExplication/detail.html.twig", [
-            'demandeExplications' => $demandeExplications,
-            'form' => $form->createView(),
-            'responses' => $responses,
+        return $this->render("demande_explication/index.html.twig", [
+            'demandes' => $demandes,
         ]);
     }
 
+    /**
+     * @Route("Suivi/{id}/details", name="demande_explication_detail", methods={"POST","GET"})
+     */
+    public function details(Security $security, DemandeExplication $demandeExplication, Request $request): Response
+    {
+        $employe = $security->getUser();
+        $reponse = new ReponseExplication();
+        $form = $this->createForm(ReponseExplicationType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $reponse->setReponse($form->get('reponse')->getData());
+            $reponse->setDateReponse(new \DateTime());
+            $reponse->setDemande($demandeExplication);
+            $reponse->setEmploye($employe);
+            $reponse->setStatus(true);
 
-
+            $entityManager->persist($reponse);
+            $entityManager->flush();
+            return $this->redirectToRoute('demande_explication_detail', ['id' => $demandeExplication->getId()]);
+        }
+        $reponses = $demandeExplication->getReponseExplications();
+        $reponseFilter = [];
+        foreach ($reponses as $reponse) {
+            if ($reponse->getEmploye() === $employe) {
+                $reponseFilter[] = $reponse;
+            }
+        }
+        return $this->render('demande_explication/detail.html.twig', [
+            'demandeExplications' => $demandeExplication,
+            'reponses' => $reponseFilter,
+            'form' => $form->createView(),
+        ]);
+    }
 }

@@ -9,7 +9,7 @@
             <i class="fa fa-money-bill mr-2"></i>
             {{ "Listes des demandes d'explication"|trans }}
         </h3>
-        <a href="{{ path('demande_explication_new') }}" class="btn btn-success my-3"><i class="fas fa-plus"></i>Nouvelle demande</a>
+        <a href="{{ path('explication_new') }}" class="btn btn-success my-3"><i class="fas fa-plus"></i>Nouvelle demande</a>
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
             <thead>
             <tr>
@@ -17,40 +17,31 @@
                 <th>{{ 'Date de l\'incident'|trans }}</th>
                 <th>{{ 'Objet demande'|trans }}</th>
                 <th>{{ 'Employés'|trans }}</th>
-                <th>{{ 'Statut'|trans }}</th>
                 <th>{{ 'Actions'|trans }}</th>
             </tr>
             </thead>
             <tbody>
-            {% for demandeExplications in demandeExplication %}
+            {% for demande in demandes %}
                 <tr>
                     <td data-label="{{ 'Date demande d\'explication'|trans }}">
-                        {{ demandeExplications.date ? demandeExplications.date|date('d/m/Y') : '' }}
+                        {{ demande.date ? demande.date|date('d/m/Y') : '' }}
                     </td>
                     <td data-label="{{ 'Date de l\'incident'|trans }}">
-                        {{ demandeExplications.dateIncident ? demandeExplications.dateIncident|date('d/m/Y') : '' }}
+                        {{ demande.dateIncident ? demande.dateIncident|date('d/m/Y') : '' }}
                     </td>
-                    <td data-label="{{ 'Objet demande'|trans }}">{{ demandeExplications.objet }}</td>
+                    <td data-label="{{ 'Objet demande'|trans }}">{{ demande.objet }}</td>
 
                     <!-- Affichage des employés associés -->
                     <td data-label="{{ 'Employés'|trans }}">
-                        {% for employe in demandeExplications.employe %}
+                        {% for employe in demande.employe %}
                             {{ employe.nom ~ ' ' ~ employe.prenom }}{% if not loop.last %}, {% endif %}
                         {% endfor %}
                     </td>
 
-                    <td data-label="{{ 'Status'|trans }}">
-                        {% if demandeExplications.status == false %}
-                            <span class="badge badge-warning">En attente de réponse</span>
-                        {% else %}
-                            <span class="badge badge-success">Répondu</span>
-                        {% endif %}
-                    </td>
                     <td data-label="{{ 'Actions'|trans }}" class="text-nowrap">
-                        <a id="{{ demandeExplications.id }}" onclick="load({{ demandeExplications.id }})"
-                           href="{{ path('demande_explication_details', {'id': demandeExplications.id}) }}"
-                           title="{{ 'Voir'|trans }}" class="btn btn-success">
+                        <a id="{{ demande.id }}" onclick="load({{ demande.id }})" href="{{ path('explication_show', {'id': demande.id}) }}" title="{{ 'Voir'|trans }}" class="btn btn-success">
                             <i class="fa fa-eye"></i>
+                            Details
                         </a>
                     </td>
                 </tr>
