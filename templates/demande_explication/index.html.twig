@@ -27,11 +27,8 @@
                     <td>{{ demande.dateIncident ? demande.dateIncident|date('d/m/Y') : 'N/A' }}</td>
                     <td>{{ demande.objet }}</td>
                     <td>
-                        
-                            <span class="badge badge-success">Répondu</span>
-                        
-                            <span class="badge badge-warning">En attente</span>
-                        
+                        <span class="badge badge-success">Répondu</span>
+                        <span class="badge badge-warning">En attente</span>
                     </td>
                     <td>
                         <a href="{{ path('demande_explication_detail', {'id': demande.id }) }}" class="btn btn-success" title="{{'Voir'|trans}}">
