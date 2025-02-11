@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Employe;
 use App\Entity\PosteEmploye;
 use App\Form\EmployeType;
+use App\Repository\DepartementRepository;
+use App\Repository\PosteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,41 +26,41 @@ class EmployeController extends AbstractController
     public function index(EntityManagerInterface $entityManager)
     {
         $employe = $entityManager->getRepository(Employe::class)->findAll();
-        return $this->render('employe/index.html.twig',[
+        return $this->render('employe/index.html.twig', [
             'employe' => $employe,
         ]);
     }
 
 
 
-     /**
-      * @Route("/new", name="employe_new", methods={"GET","POST"})
-      */
-    public function new(Request $request,UserPasswordEncoderInterface $encoder): Response
+    /**
+     * @Route("/new", name="employe_new", methods={"GET","POST"})
+     */
+    public function new(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
 
         $employe = new Employe();
         $form = $this->createForm(EmployeType::class, $employe);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            
+
             $poste = $employe->getPoste();
-            if($poste->getType() == true) {
+            if ($poste->getType() == true) {
                 //on cherche si le pose est deja attribue
                 $userposte = $entityManager->getRepository(PosteEmploye::class)->findOneBy(['poste' => $poste, 'datefin' => null]);
-                if($userposte){
-                    $this->addFlash('notice','Ce poste est unique et est déjà attribué à un employé.');
+                if ($userposte) {
+                    $this->addFlash('notice', 'Ce poste est unique et est déjà attribué à un employé.');
                     return $this->redirectToRoute('employe_new');
                 }
-            } 
+            }
 
             $posteEmploye = new PosteEmploye();
             $hashpass = $encoder->encodePassword($employe, 'Passer2023');
             $employe->setPassword($hashpass);
             $employe->setUsername($employe->getNom());
-            $employe->setRoles(["ROLE_EMPLOYE","ROLE_ADMIN"]);
+            $employe->setRoles(["ROLE_EMPLOYE", "ROLE_ADMIN"]);
             $employe->setFonction("Employé");
             $employe->setStatus(false);
             $employe->setHireDate($employe->getHireDate());
@@ -67,14 +69,13 @@ class EmployeController extends AbstractController
             $posteEmploye->setDatefin(null);
             $posteEmploye->setPoste($employe->getPoste());
             $posteEmploye->setEmploye($employe);
-        
+
             $entityManager->persist($posteEmploye);
             $entityManager->persist($employe);
             $entityManager->flush();
 
             $this->addFlash('notice', 'Employé créé avec succès');
             return $this->redirectToRoute("employe_index");
-           
         }
         return $this->render('employe/new.html.twig', [
             'form' => $form->createView(),
@@ -84,18 +85,18 @@ class EmployeController extends AbstractController
     /**
      * @Route("/{id}/toggle-status", name="employe_toggle_status", methods={"POST"})
      */
-    public function toggleStatus(Request $request,Employe $employe, EntityManagerInterface $entityManager): Response
+    public function toggleStatus(Request $request, Employe $employe, EntityManagerInterface $entityManager): Response
     {
         //verification du token csrf
-        if(!$this->isCsrfTokenValid('toggle' . $employe->getId(), $request->request->get('_token'))){
+        if (!$this->isCsrfTokenValid('toggle' . $employe->getId(), $request->request->get('_token'))) {
             $this->addFlash('notice', 'Token CSRF invalide');
             return $this->redirectToRoute('employe_index');
         }
 
-        if($employe->getStatus()){
+        if ($employe->getStatus()) {
             $employe->setStatus(false);
             $this->addFlash('notice', 'Employé désativé');
-        }else{
+        } else {
             $employe->setStatus(true);
             $this->addFlash('notice', 'Employé activé');
         }
@@ -106,10 +107,12 @@ class EmployeController extends AbstractController
     }
 
     /**
-         * @Route("/config", name="employe_congif", methods={"GET"})
-         */
-        public function config()
-        {
+     * @Route("/config", name="employe_congif", methods={"GET"})
+     */
+    public function config()
+    {
         return $this->render('employe/config.html.twig');
-        }
+    }
+
+ 
 }

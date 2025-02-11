@@ -4,11 +4,43 @@
 {% block typeconge %}active{% endblock %}
 {% block all_type_conges %}active{% endblock %}
 {% block body %}
-<div class="col-lg-6 mt-4 fond-7">
-    <h3 class="mt-4 mb-5 text-bold">
-        <i class="fa fa-money-bill mr-2"></i>
-        {{ "Liste des types de congé"|trans }}
-    </h3>
+
+
+<div class="container mt-4 fond-7 pb-5 pt-3 px-5">
+    <h4 class="text-bold mb-5">
+        <i class="fa-solid fa-gears fa-lg"></i>
+        {{ 'Configuration du système'|trans }}
+    </h4>
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('departement_index') }}">
+                {{'Département'|trans }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('poste_index') }}">
+                {{'Poste'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('type_conge_index') }}">
+                {{'Permission'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('type_sanction_index') }}">
+                {{'Absence'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                {{'Sanction'|trans}}
+            </a>
+        </li>
+    </ul>
+    <h5 class="text-bold">{{ "Liste des types de congé"|trans }}</h5>
+    <div class="tab-content">
+        <!-- Section Département -->
     <a href="{{ path('type_conge_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouvel type conge</a>
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
