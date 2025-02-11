@@ -1,9 +1,9 @@
 {{ form_start(form, {'attr': {'id': 'form'}}) }}
 
-<div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
-    <h4 class="mb-3">
-        <i class="fa-brands fa-product-hunt mr-2"></i><i class="fa fa-plus mr-2"></i>
-        {{ 'Nouvelle Absence'|trans }}
+<div class="col-lg-5 mt-5 fond-7 pb-5 pt-3 px-5">
+    <h4 class="text-bold mt-3 mb-5">
+        <i class="fa fa-user-slash"></i>
+        {{ 'Nouvelle absence'|trans }}
     </h4>
 
     {% for message in app.flashes('notice') %}
@@ -22,7 +22,7 @@
         </div>
 
         <div class="col-12 mb-4">
-            {{ form_row(form.dateAbsence, {'attr': {'placeholder': 'Sélectionnez un employé *'}, 'label': false}) }}
+            {{ form_row(form.dateAbsence, {'attr': {'placeholder': 'Date d\'absence', 'title': 'Date d\'absence'}, 'label': false}) }}
         </div>
         {{ form_rest(form) }}
     </div>

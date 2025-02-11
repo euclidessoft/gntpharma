@@ -104,4 +104,12 @@ class EmployeController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('employe_index');
     }
+
+    /**
+         * @Route("/config", name="employe_congif", methods={"GET"})
+         */
+        public function config()
+        {
+        return $this->render('employe/config.html.twig');
+        }
 }

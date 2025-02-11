@@ -1,0 +1,42 @@
+{% extends 'employe.html.twig' %}
+{% block title %} {{ "Modification employé "|trans }} - GNT Pharma {% endblock %}
+{% block employe %}active{% endblock %}
+{% block employe_new %}active{% endblock %}
+{% block body %}
+
+    <div class="container mt-4 fond-7 pb-5 pt-3 px-5">
+    <h4 class="text-bold mb-5">
+        <i class="fa-solid fa-gears fa-lg"></i>
+        {{ 'Configuration du système'|trans }}
+    </h4>
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('departement_index') }}">
+                    {{'Département'|trans }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('poste_index') }}">
+                    {{'Poste'|trans}}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('conge_index') }}">
+                    {{'Permission'|trans}}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('type_sanction_index') }}">
+                    {{'Absence'|trans}}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    {{'Sanction'|trans}}
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+{% endblock %}

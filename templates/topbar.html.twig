@@ -20,15 +20,32 @@
                     <button type="button" id="install_button" onclick="installApp()" hidden></button>
                 </div>
                 <div class="col-lg-2 col-md-1 col-6 text-nowrap">
-                    <i class="fa-solid fa-bell"></i>
+
                 </div>
                 <div class="col-lg-2 col-md-3 col-6 text-nowrap">
-                    <div class="float-right">
-                        <label for="langue">
-                            <i class="fa fa-globe"></i>
-                        </label>
-                        <select name="langue" id="langue" onchange="choixlangue()">
-                        </select>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="dropdown">
+                                <a href="#" class="" data-toggle="dropdown">
+                                    <i class="fa-solid fa-bell fa-lg"></i>
+                                    <small class="ml-n2" style="vertical-align: top">
+                                        <span class="badge badge-danger">0</span>
+                                    </small>
+                                </a>
+                                <div class="dropdown-menu">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <div class="text-right">
+                                <label for="langue">
+                                    <i class="fa fa-globe"></i>
+                                </label>
+                                <select name="langue" id="langue" onchange="choixlangue()">
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-6 text-nowrap">
@@ -42,7 +59,8 @@
                             <div class="dropdown-menu">
                                 <div class="row">
                                     <div class="col-5">
-                                        <img src="{{ asset('images/avatar-homme.avif') }}" alt="" class="w-100 mx-2">
+                                        <img src="{{ asset('images/avatar-homme.avif') }}" alt=""
+                                             class="w-100 mx-2">
                                     </div>
                                     <div class="col-7">
                                         <div class="mt-0">
@@ -60,8 +78,8 @@
                                         {% if is_granted('ROLE_ADMIN') %}
                                             <div class="mt-2">
                                                 <a href="{{ path('security_users') }}" {% block admin %}{% endblock %}>
-                                                    <i class="fas fa-user-cog"></i>
-                                                    {{ 'Administration'|trans }}
+                                                    <i class="fa-solid fa-users-gear"></i>
+                                                    {{ 'Gestion utilisateurs'|trans }}
                                                 </a>
                                             </div>
                                         {% endif %}
@@ -69,7 +87,7 @@
                                             <a href="{{ path('security_logout') }}" data-toggle="modal"
                                                data-target="#logout">
                                                 <i class="fa fa-power-off"></i>
-                                                {{'Déconnexion'|trans}}
+                                                {{ 'Déconnexion'|trans }}
                                             </a>
                                         </div>
                                     </div>
@@ -90,7 +108,7 @@
             <div class="modal-header">
                 <h4 class="modal-title fs-5" id="deconnexion">
                     <i class="fa-solid fa-triangle-exclamation"></i>
-                    {{'Déconnexion'|trans}}
+                    {{ 'Déconnexion'|trans }}
                 </h4>
                 <button type="button" class="close" data-dismiss="modal"
                         aria-label="Close">
@@ -100,7 +118,7 @@
             <div class="modal-body px-5 pb-5">
                 <p class="">
                     <b>
-                        {{'Voulez-vous vraiment vous déconnecter ?'|trans}}
+                        {{ 'Voulez-vous vraiment vous déconnecter ?'|trans }}
                     </b>
                 </p>
                 <button type="button" id="oui" onclick="deconnexion()" class="btn btn-danger mr-2">
