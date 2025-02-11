@@ -22,18 +22,18 @@
 
             <!-- Détails de la demande -->
             <h5 class="mb-3">
-                <i class="fa-solid fa-info-circle"></i> Détails de la demande
+                <i class="fa-solid fa-info-circle"></i> Détails de la reponse
             </h5>
             <ul class="list-group">
-                <li class="list-group-item"><strong>Objet :</strong> {{ demandeExplication.objet }}</li>
+                <li class="list-group-item"><strong>Objet :</strong> objet</li>
                 <li class="list-group-item"><strong>Date de l'incident :</strong> {{ demandeExplication.dateIncident ? demandeExplication.dateIncident|date('d/m/Y') : 'N/A' }}</li>
-                <li class="list-group-item"><strong>Date de soumission :</strong> {{ demandeExplication.date ? demandeExplication.date|date('d/m/Y') : 'N/A' }}</li>
+                <li class="list-group-item"><strong>Date de reponse :</strong> {{ reponse.dateReponse ? reponse.dateReponse|date('d/m/Y') : 'N/A' }}</li>
                 <li class="list-group-item">
-                    <p class="mt-2">{{ demandeExplication.details }}</p>
+                    <p class="mt-2">{{ reponse.reponse }}</p>
                     <p>Cordialement,</p>
                     <p class="mt-2 text-right">
-                        <strong>{{ demandeExplication.responsable.nom ~' '~ demandeExplication.responsable.prenom }}</strong><br>
-                        {{ demandeExplication.responsable.poste.nom }}<br>
+                        <strong>{{employe.nom ~' '~ employe.prenom }}</strong><br>
+                        {{ employe.poste.nom }}<br>
                         {{ demandeExplication.responsable.email }} | {{ demandeExplication.responsable.phone }}
                     </p>
                 </li>

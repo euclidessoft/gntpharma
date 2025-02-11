@@ -75,19 +75,48 @@ class DemandeExplicationController extends AbstractController
 
         $reponses = $demandeExplications->getReponseExplications();
         $status = [];
-        foreach($demandeExplications->getEmploye() as $employe){
-            $reponse = $reponses->filter(function($r) use ($employe) {
+        foreach ($demandeExplications->getEmploye() as $employe) {
+            $reponse = $reponses->filter(function ($r) use ($employe) {
                 return $r->getEmploye() === $employe;
-            })->first();  
-             if ($reponse) {
-                $statuts[$employe->getId()] = $reponse->getStatus();  
+            })->first();
+            if ($reponse) {
+                $statuts[$employe->getId()] = $reponse->getStatus();
             } else {
-                $statuts[$employe->getId()] = false; 
+                $statuts[$employe->getId()] = false;
             }
         }
         return $this->render('demande_explication/admin/show.html.twig', [
             'demandeExplications' => $demandeExplications,
             'statuts' => $statuts,
+        ]);
+    }
+
+
+    /**
+     * @Route("/{id}/reponse/{employeId}", name="demande_explication_reponse", methods={"GET"})
+     */
+    public function reponse(DemandeExplication $demandeExplication, $employeId): Response
+    {
+        $employe = null;
+        foreach ($demandeExplication->getEmploye() as $emp) {
+            if ($emp->getId() == $employeId) {
+                $employe = $emp;
+                break;
+            }
+        }
+        $reponse = null;
+        if ($employe) {
+            foreach ($demandeExplication->getReponseExplications() as $reponseExplication) {
+                if ($reponseExplication->getEmploye()->getId() == $employeId) {
+                    $reponse = $reponseExplication;
+                    break;
+                }
+            }
+        }
+        return $this->render('demande_explication/admin/reponse.html.twig', [
+            'demandeExplication' => $demandeExplication,
+            'employe' => $employe,
+            'reponse' => $reponse,
         ]);
     }
 
