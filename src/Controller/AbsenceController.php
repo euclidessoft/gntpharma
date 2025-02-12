@@ -173,7 +173,7 @@ class AbsenceController extends AbstractController
     /**
      * @Route("/{id}/refuser", name="absence_refuser", methods={"GET","POST"})
      */
-    public function refuser(Request $request, Absence $absence): Response
+    public function refuser(Request $request, Absence $absence,Security $security): Response
     {
         $sanction = new Sanction();
         $form = $this->createForm(SanctionType::class, $sanction);
@@ -181,12 +181,13 @@ class AbsenceController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $entityManager = $this->getDoctrine()->getManager();
             $typeSanction = $sanction->getType()->getNom();
+            
 
             $sanction->setDateSanction(new \DateTime());
             $sanction->setAbsence($absence);
             $absence->setJustifier(true);
             $absence->setStatus(0);
-            $sanction->setResponsable($this->getUser());//Employe qui a traite l'absence
+            $sanction->setResponsable($security->getUser());
             $entityManager->persist($sanction);
 
             if($typeSanction == 'Demande d\'explication'){
@@ -195,13 +196,14 @@ class AbsenceController extends AbstractController
                 $demandeExplication->setDetails($form->get('demandes')->getData());
                 $demandeExplication->setDate(new \DateTime());
                 $demandeExplication->setDateIncident($sanction->getAbsence()->getDateAbsence());
+                $demandeExplication->addEmploye($sanction->getAbsence()->getEmploye());
                 $demandeExplication->setStatus(false);
-                dd($demandeExplication);
-                $demandeExplication->setEmploye($sanction->getAbsence()->getEmploye());
-                $demandeExplication->setResponsable($sanction->getResponsable());
+                $demandeExplication->setResponsable($security->getUser());
                 $sanction->setExplication($demandeExplication);
                 $entityManager->persist($demandeExplication);
             }
+
+            dd($absence,$sanction,$demandeExplication);
             $entityManager->flush();
 
             return $this->redirectToRoute('absence_index');

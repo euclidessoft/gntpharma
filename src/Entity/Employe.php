@@ -161,6 +161,11 @@ class Employe extends User implements UserInterface
      */
     private $reponseExplications;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DemandeExplication::class, mappedBy="responsable")
+     */
+    private $demandeExplication;
+
 
 
     public function __construct()
@@ -175,6 +180,7 @@ class Employe extends User implements UserInterface
         $this->sanctions = new ArrayCollection();
         $this->demandeExplications = new ArrayCollection();
         $this->reponseExplications = new ArrayCollection();
+        $this->demandeExplication = new ArrayCollection();
     }
 
 
@@ -681,6 +687,14 @@ class Employe extends User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|DemandeExplication[]
+     */
+    public function getDemandeExplication(): Collection
+    {
+        return $this->demandeExplication;
     } 
 
 

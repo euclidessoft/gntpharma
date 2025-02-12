@@ -59,6 +59,11 @@ class DemandeExplication
      */
     private $reponseExplications;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="demandeExplication")
+     */
+    private $responsable;
+
 
     public function __construct()
     {
@@ -213,6 +218,18 @@ class DemandeExplication
                 $reponseExplication->setDemande(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getResponsable(): ?Employe
+    {
+        return $this->responsable;
+    }
+
+    public function setResponsable(?Employe $responsable): self
+    {
+        $this->responsable = $responsable;
 
         return $this;
     }
