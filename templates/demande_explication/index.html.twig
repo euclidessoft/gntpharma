@@ -9,7 +9,7 @@
         <i class="fa fa-money-bill mr-2"></i>
         {{ "Listes des demandes d'explication"|trans }}
     </h3>
-    
+
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
@@ -21,17 +21,20 @@
             </tr>
         </thead>
         <tbody>
-            {% for demande in demandes %}
+            {% for demandeExplication in demandeStatus %}
                 <tr>
-                    <td>{{ demande.date ? demande.date|date('d/m/Y') : '' }}</td>
-                    <td>{{ demande.dateIncident ? demande.dateIncident|date('d/m/Y') : 'N/A' }}</td>
-                    <td>{{ demande.objet }}</td>
+                    <td>{{ demandeExplication.demande.date ? demandeExplication.demande.date|date('d/m/Y') : '' }}</td>
+                    <td>{{ demandeExplication.demande.dateIncident ? demandeExplication.demande.dateIncident|date('d/m/Y') : 'N/A' }}</td>
+                    <td>{{ demandeExplication.demande.objet }}</td>
                     <td>
-                        <span class="badge badge-success">Répondu</span>
-                        <span class="badge badge-warning">En attente</span>
+                        {% if demandeExplication.status %}
+                            <span class="badge badge-success">Répondu</span>
+                        {% else %}
+                            <span class="badge badge-warning">En attente</span>
+                        {% endif %}
                     </td>
                     <td>
-                        <a href="{{ path('demande_explication_detail', {'id': demande.id }) }}" class="btn btn-success" title="{{'Voir'|trans}}">
+                        <a href="{{ path('demande_explication_detail', {'id': demandeExplication.demande.id }) }}" class="btn btn-success" title="{{'Voir'|trans}}">
                             <i class="fa fa-eye mr-2"></i>{{ 'Détails'|trans }}
                         </a>
                     </td>

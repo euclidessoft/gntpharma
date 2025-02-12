@@ -132,8 +132,26 @@ class DemandeExplicationController extends AbstractController
         $employe = $security->getUser();
         $demandes = $demandeExplicationRepository->findByEmploye($employe);
 
+        $demandeStatus = [];
+        foreach ($demandes as $demande) {
+            $status = false;  
+            $reponses = $demande->getReponseExplications();
+    
+            foreach ($reponses as $reponse) {
+                if ($reponse->getEmploye() === $employe) {
+                    $status = $reponse->getStatus();
+                    break;  
+                }
+            }
+                
+            $demandeStatus[] = [
+                'demande' => $demande,
+                'status' => $status,
+            ];
+        }
+    
         return $this->render("demande_explication/index.html.twig", [
-            'demandes' => $demandes,
+            'demandeStatus' => $demandeStatus,
         ]);
     }
 
@@ -149,11 +167,11 @@ class DemandeExplicationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $reponse->setReponse($form->get('reponse')->getData());
+            $reponse->setObjet($demandeExplication->getObjet());
             $reponse->setDateReponse(new \DateTime());
             $reponse->setDemande($demandeExplication);
             $reponse->setEmploye($employe);
             $reponse->setStatus(true);
-
             $entityManager->persist($reponse);
             $entityManager->flush();
             return $this->redirectToRoute('demande_explication_detail', ['id' => $demandeExplication->getId()]);

@@ -42,6 +42,11 @@ class ReponseExplication
      */
     private $status;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $objet;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,18 @@ class ReponseExplication
     public function setStatus(bool $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getObjet(): ?string
+    {
+        return $this->objet;
+    }
+
+    public function setObjet(string $objet): self
+    {
+        $this->objet = $objet;
 
         return $this;
     }
