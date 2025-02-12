@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\TypeSanction;
+use App\Entity\TypeDecision;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method TypeSanction|null find($id, $lockMode = null, $lockVersion = null)
- * @method TypeSanction|null findOneBy(array $criteria, array $orderBy = null)
- * @method TypeSanction[]    findAll()
- * @method TypeSanction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TypeDecision|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TypeDecision|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TypeDecision[]    findAll()
+ * @method TypeDecision[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TypeSanctionRepository extends ServiceEntityRepository
+class TypeDecisionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TypeSanction::class);
+        parent::__construct($registry, TypeDecision::class);
     }
 
     // /**
-    //  * @return TypeSanction[] Returns an array of TypeSanction objects
+    //  * @return TypeDecision[] Returns an array of TypeDecision objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class TypeSanctionRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?TypeSanction
+    public function findOneBySomeField($value): ?TypeDecision
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')

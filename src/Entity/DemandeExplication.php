@@ -45,11 +45,6 @@ class DemandeExplication
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sanction::class, mappedBy="explication")
-     */
-    private $sanctions;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Employe::class, inversedBy="demandeExplications")
      */
     private $employe;
@@ -64,12 +59,17 @@ class DemandeExplication
      */
     private $responsable;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Decision::class, mappedBy="explication")
+     */
+    private $decisions;
+
 
     public function __construct()
     {
-        $this->sanctions = new ArrayCollection();
         $this->employe = new ArrayCollection();
         $this->reponseExplications = new ArrayCollection();
+        $this->decisions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -137,37 +137,6 @@ class DemandeExplication
         return $this;
     }
 
-
-    /**
-     * @return Collection|Sanction[]
-     */
-    public function getSanctions(): Collection
-    {
-        return $this->sanctions;
-    }
-
-    public function addSanction(Sanction $sanction): self
-    {
-        if (!$this->sanctions->contains($sanction)) {
-            $this->sanctions[] = $sanction;
-            $sanction->setExplication($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSanction(Sanction $sanction): self
-    {
-        if ($this->sanctions->removeElement($sanction)) {
-            // set the owning side to null (unless already changed)
-            if ($sanction->getExplication() === $this) {
-                $sanction->setExplication(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection|Employe[]
      */
@@ -230,6 +199,36 @@ class DemandeExplication
     public function setResponsable(?Employe $responsable): self
     {
         $this->responsable = $responsable;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Decision[]
+     */
+    public function getDecisions(): Collection
+    {
+        return $this->decisions;
+    }
+
+    public function addDecision(Decision $decision): self
+    {
+        if (!$this->decisions->contains($decision)) {
+            $this->decisions[] = $decision;
+            $decision->setExplication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDecision(Decision $decision): self
+    {
+        if ($this->decisions->removeElement($decision)) {
+            // set the owning side to null (unless already changed)
+            if ($decision->getExplication() === $this) {
+                $decision->setExplication(null);
+            }
+        }
 
         return $this;
     }

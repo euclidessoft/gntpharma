@@ -3,12 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Absence;
+use App\Entity\Decision;
 use App\Entity\DemandeExplication;
 use App\Entity\ReponseAbsence;
-use App\Entity\Sanction;
 use App\Form\AbsenceType;
+use App\Form\DecisionType;
 use App\Form\ReponseAbsenceType;
-use App\Form\SanctionType;
 use App\Repository\AbsenceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -177,34 +177,36 @@ class AbsenceController extends AbstractController
      */
     public function refuser(Request $request, Absence $absence,Security $security): Response
     {
-        $sanction = new Sanction();
-        $form = $this->createForm(SanctionType::class, $sanction);
+        $decision = new Decision();
+        
+        $form = $this->createForm(DecisionType::class, $decision);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $responsable = $security->getUser();
             $entityManager = $this->getDoctrine()->getManager();
-            $typeSanction = $sanction->getType()->getNom();
 
-            $sanction->setDateSanction(new \DateTime());
-            $sanction->setAbsence($absence);
-            $sanction->setResponsable($responsable);
-            $sanction->setDateConfirm(new \DateTime());
+            $typeDecision = $decision->getType()->getNom();
+            $decision->setDateDecision(new \DateTime());
+            $decision->setAbsences($absence);
+            $decision->setResponsable($responsable);
+            $decision->setDateConfirm(new \DateTime());
+
             $absence->setJustifier(true);
             $absence->setStatus(0);
             $absence->setResponsable($responsable);
             $absence->setDateConfirm(new \DateTime());
-            $entityManager->persist($sanction);
+            $entityManager->persist($decision);
 
-            if($typeSanction == 'Demande d\'explication'){
+            if($typeDecision == 'Demande d\'explication'){
                 $demandeExplication = new DemandeExplication();
                 $demandeExplication->setObjet('Absence non justifiée');
                 $demandeExplication->setDetails($form->get('demandes')->getData());
                 $demandeExplication->setDate(new \DateTime());
-                $demandeExplication->setDateIncident($sanction->getAbsence()->getDateAbsence());
-                $demandeExplication->addEmploye($sanction->getAbsence()->getEmploye());
+                $demandeExplication->setDateIncident($decision->getAbsences()->getDateAbsence());
+                $demandeExplication->addEmploye($decision->getAbsences()->getEmploye());
                 $demandeExplication->setStatus(false);
                 $demandeExplication->setResponsable($responsable);
-                $sanction->setExplication($demandeExplication);
+                $decision->setExplication($demandeExplication);
                 $entityManager->persist($demandeExplication);
             }
 
@@ -212,7 +214,7 @@ class AbsenceController extends AbstractController
 
             return $this->redirectToRoute('absence_index');
         }
-        return $this->render("absence/admin/sanction.html.twig", [
+        return $this->render("absence/admin/decision.html.twig", [
             'form' => $form->createView(),
         ]);
     }

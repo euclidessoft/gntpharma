@@ -14,29 +14,29 @@
             <div class="card-body">
                 <table class="table table-bordered table-striped w-100">
                     <tbody>
-                    {% for sanction in absence.sanctions %}
+                    {% for decision in absence.decisions %}
                         <tr>
                             <th>{{ 'Motif du refus'|trans }}</th>
-                            <td>{{ sanction.motif }}</td>
+                            <td>{{ decision.motif }}</td>
                         </tr>
                         <tr>
                             <th>{{ 'Date de refus'|trans }}</th>
-                            <td>{{ sanction.dateSanction ? sanction.dateSanction|date('d/m/Y') : 'Non spécifiée' }}</td>
+                            <td>{{ decision.datedecision ? decision.datedecision|date('d/m/Y') : 'Non spécifiée' }}</td>
                         </tr>
                         <tr>
                             <th>{{ 'Décision'|trans }}</th>
-                            <td>{{ sanction.type ? sanction.type.nom : "Non spécifiée" }}</td>
+                            <td>{{ decision.type ? decision.type.nom : "Non spécifiée" }}</td>
                         </tr>
                         <tr>
                             <th>{{ 'Responsable'|trans }}</th>
                             <td>
-                                {{ sanction.responsable ? sanction.responsable.prenom ~ ' ' ~ sanction.responsable.nom : "Aucun responsable" }}
+                                {{ decision.responsable ? decision.responsable.prenom ~ ' ' ~ decision.responsable.nom : "Aucun responsable" }}
                             </td>
                         </tr>
                         <tr>
                             <th>{{ 'Date de confirmation'|trans }}</th>
                             <td>
-                                {{ sanction.dateConfirm ? sanction.dateConfirm|date('d/m/Y') : 'Non spécifiée' }}
+                                {{ decision.dateConfirm ? decision.dateConfirm|date('d/m/Y') : 'Non spécifiée' }}
                             </td>
                         </tr>
                     {% else %}
@@ -57,9 +57,9 @@
             </a>
 
             <!-- Voir la demande d'explication -->
-            {% for sanction in absence.sanctions %}
-                {% if sanction.type and sanction.type.nom == 'Demande d\'explication' %}
-                    <a href="{{ path('demande_explication_detail', { id: sanction.explication.id }) }}"
+            {% for decision in absence.decisions %}
+                {% if decision.type and decision.type.nom == 'Demande d\'explication' %}
+                    <a href="{{ path('demande_explication_detail', { id: decision.explication.id }) }}"
                        class="btn btn-success mb-3">
                         <i class="fa fa-eye"></i> {{ 'Voir la demande'|trans }}
                     </a>

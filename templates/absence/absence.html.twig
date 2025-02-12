@@ -34,9 +34,9 @@
                         <span class="badge badge-secondary">Statut inconnu</span>
                     {% endif %}
                 </td>
-                <td data-label="Sanction">
-                    {% for sanction in absence.sanctions %}
-                        <span>{{ sanction.type.nom }}</span><br>
+                <td data-label="decision">
+                    {% for decision in absence.decisions %}
+                        <span>{{ decision.type.nom }}</span><br>
                     {% endfor %}
                 </td>
                 <td data-label="Actions">

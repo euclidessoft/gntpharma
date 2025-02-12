@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\TypeSanctionRepository;
+use App\Repository\TypeDecisionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=TypeSanctionRepository::class)
+ * @ORM\Entity(repositoryClass=TypeDecisionRepository::class)
  */
-class TypeSanction
+class TypeDecision
 {
     /**
      * @ORM\Id
@@ -25,13 +25,13 @@ class TypeSanction
     private $nom;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sanction::class, mappedBy="type")
+     * @ORM\OneToMany(targetEntity=Decision::class, mappedBy="type")
      */
-    private $sanctions;
+    private $decisions;
 
     public function __construct()
     {
-        $this->sanctions = new ArrayCollection();
+        $this->decisions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -52,29 +52,29 @@ class TypeSanction
     }
 
     /**
-     * @return Collection|Sanction[]
+     * @return Collection|Decision[]
      */
-    public function getSanctions(): Collection
+    public function getDecisions(): Collection
     {
-        return $this->sanctions;
+        return $this->decisions;
     }
 
-    public function addSanction(Sanction $sanction): self
+    public function addDecision(Decision $decision): self
     {
-        if (!$this->sanctions->contains($sanction)) {
-            $this->sanctions[] = $sanction;
-            $sanction->setType($this);
+        if (!$this->decisions->contains($decision)) {
+            $this->decisions[] = $decision;
+            $decision->setType($this);
         }
 
         return $this;
     }
 
-    public function removeSanction(Sanction $sanction): self
+    public function removeDecision(Decision $decision): self
     {
-        if ($this->sanctions->removeElement($sanction)) {
+        if ($this->decisions->removeElement($decision)) {
             // set the owning side to null (unless already changed)
-            if ($sanction->getType() === $this) {
-                $sanction->setType(null);
+            if ($decision->getType() === $this) {
+                $decision->setType(null);
             }
         }
 

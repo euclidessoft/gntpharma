@@ -84,22 +84,22 @@
                     {# Affichage des informations de refus si l'absence est rejetée #}
 
                     {% if absence.status == 0 and absence.justifier == 1 %}
-                    {% for sanction in absence.sanctions %}
+                    {% for decision in absence.decisions %}
                     <tr>
                         <th>Motif de rejet</th>
-                        <td>{{ sanction.motif }}</td>
+                        <td>{{ decision.motif }}</td>
                     </tr>
                     <tr>
                         <th>Responsable</th>
-                        <td>{{ sanction.responsable.prenom ~' '~ sanction.responsable.nom }}</td>
+                        <td>{{ decision.responsable.prenom ~' '~ decision.responsable.nom }}</td>
                     </tr>
                     <tr>
                         <th>Décision</th>
-                        <td>{{ sanction.type.nom }}</td>
+                        <td>{{ decision.type.nom }}</td>
                     </tr>
                     <tr>
                         <th>Date d'opération</th>
-                        <td>{{ sanction.dateSanction ? sanction.dateSanction|date('d/m/Y') }}</td>
+                        <td>{{ decision.datedecision ? decision.datedecision|date('d/m/Y') }}</td>
                     </tr>
                     {% else %}
                     <tr>

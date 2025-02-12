@@ -45,11 +45,6 @@ class Absence
     private $reponseAbsences;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sanction::class, mappedBy="absence")
-     */
-    private $sanctions;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="absence")
      */
     private $responsable;
@@ -59,10 +54,15 @@ class Absence
      */
     private $dateConfirm;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Decision::class, mappedBy="absences")
+     */
+    private $decisions;
+
     public function __construct()
     {
         $this->reponseAbsences = new ArrayCollection();
-        $this->sanctions = new ArrayCollection();
+        $this->decisions = new ArrayCollection();
     }
 
     
@@ -149,36 +149,6 @@ class Absence
         return $this;
     }
 
-    /**
-     * @return Collection|Sanction[]
-     */
-    public function getSanctions(): Collection
-    {
-        return $this->sanctions;
-    }
-
-    public function addSanction(Sanction $sanction): self
-    {
-        if (!$this->sanctions->contains($sanction)) {
-            $this->sanctions[] = $sanction;
-            $sanction->setAbsence($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSanction(Sanction $sanction): self
-    {
-        if ($this->sanctions->removeElement($sanction)) {
-            // set the owning side to null (unless already changed)
-            if ($sanction->getAbsence() === $this) {
-                $sanction->setAbsence(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getResponsable(): ?Employe
     {
         return $this->responsable;
@@ -199,6 +169,36 @@ class Absence
     public function setDateConfirm(?\DateTimeInterface $dateConfirm): self
     {
         $this->dateConfirm = $dateConfirm;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Decision[]
+     */
+    public function getDecisions(): Collection
+    {
+        return $this->decisions;
+    }
+
+    public function addDecision(Decision $decision): self
+    {
+        if (!$this->decisions->contains($decision)) {
+            $this->decisions[] = $decision;
+            $decision->setAbsences($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDecision(Decision $decision): self
+    {
+        if ($this->decisions->removeElement($decision)) {
+            // set the owning side to null (unless already changed)
+            if ($decision->getAbsences() === $this) {
+                $decision->setAbsences(null);
+            }
+        }
 
         return $this;
     }

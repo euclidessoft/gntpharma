@@ -26,7 +26,7 @@
             </div>
 
             <div class="col-12 mb-4" id="typeSanction" style="display: none;">
-                {{ form_row(form.montant, {'attr': {'placeholder': 'Selectionnez le type de sanction *'}, 'label': false}) }}
+              <h1>Liste sanction</h1>
             </div>
             <div class="col-12 mb-4" id="reponse-form">
                 {{ form_row(form.demandes, {'attr': {'placeholder': 'Détails de la réponse d\'explication *', 'rows': 10}, 'label': false}) }}
@@ -53,7 +53,7 @@
         $(document).ready(function () {
             $('#typeSanction').hide();
             $('#reponse-form').hide();
-            $('#sanction_type').on('change', function () {
+            $('#decision_type').on('change', function () {
                 const selected = $(this).find('option:selected').text().trim();
                 $('#typeSanction').hide();
                 if (selected === 'Sanction') {

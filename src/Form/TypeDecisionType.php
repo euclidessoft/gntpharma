@@ -2,12 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\TypeSanction;
+use App\Entity\TypeDecision;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TypeSanctionType extends AbstractType
+class TypeDecisionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -19,7 +19,7 @@ class TypeSanctionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => TypeSanction::class,
+            'data_class' => TypeDecision::class,
         ]);
     }
 }

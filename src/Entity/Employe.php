@@ -147,11 +147,6 @@ class Employe extends User implements UserInterface
     private $absences;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sanction::class, mappedBy="responsable")
-     */
-    private $sanctions;
-
-    /**
      * @ORM\ManyToMany(targetEntity=DemandeExplication::class, mappedBy="employe")
      */
     private $demandeExplications;
@@ -171,6 +166,11 @@ class Employe extends User implements UserInterface
      */
     private $absence;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Decision::class, mappedBy="responsable")
+     */
+    private $decisions;
+
 
 
     public function __construct()
@@ -182,11 +182,11 @@ class Employe extends User implements UserInterface
         $this->conges = new ArrayCollection();
         $this->congeAccorders = new ArrayCollection();
         $this->absences = new ArrayCollection();
-        $this->sanctions = new ArrayCollection();
         $this->demandeExplications = new ArrayCollection();
         $this->reponseExplications = new ArrayCollection();
         $this->demandeExplication = new ArrayCollection();
         $this->absence = new ArrayCollection();
+        $this->decisions = new ArrayCollection();
     }
 
 
@@ -609,36 +609,6 @@ class Employe extends User implements UserInterface
     }
 
     /**
-     * @return Collection|Sanction[]
-     */
-    public function getSanctions(): Collection
-    {
-        return $this->sanctions;
-    }
-
-    public function addSanction(Sanction $sanction): self
-    {
-        if (!$this->sanctions->contains($sanction)) {
-            $this->sanctions[] = $sanction;
-            $sanction->setResponsable($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSanction(Sanction $sanction): self
-    {
-        if ($this->sanctions->removeElement($sanction)) {
-            // set the owning side to null (unless already changed)
-            if ($sanction->getResponsable() === $this) {
-                $sanction->setResponsable(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|DemandeExplication[]
      */
     public function getDemandeExplications(): Collection
@@ -709,6 +679,36 @@ class Employe extends User implements UserInterface
     public function getAbsence(): Collection
     {
         return $this->absence;
+    }
+
+    /**
+     * @return Collection|Decision[]
+     */
+    public function getDecisions(): Collection
+    {
+        return $this->decisions;
+    }
+
+    public function addDecision(Decision $decision): self
+    {
+        if (!$this->decisions->contains($decision)) {
+            $this->decisions[] = $decision;
+            $decision->setResponsable($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDecision(Decision $decision): self
+    {
+        if ($this->decisions->removeElement($decision)) {
+            // set the owning side to null (unless already changed)
+            if ($decision->getResponsable() === $this) {
+                $decision->setResponsable(null);
+            }
+        }
+
+        return $this;
     } 
 
 
