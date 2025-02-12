@@ -45,11 +45,6 @@ class DemandeExplication
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="demandeExplications")
-     */
-    private $responsable;
-
-    /**
      * @ORM\OneToMany(targetEntity=Sanction::class, mappedBy="explication")
      */
     private $sanctions;
@@ -137,17 +132,6 @@ class DemandeExplication
         return $this;
     }
 
-    public function getResponsable(): ?User
-    {
-        return $this->responsable;
-    }
-
-    public function setResponsable(?User $responsable): self
-    {
-        $this->responsable = $responsable;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Sanction[]

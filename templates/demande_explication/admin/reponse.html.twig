@@ -6,7 +6,7 @@
 <div class="col-lg-8 mt-4 fond-7">
     <div class="card">
         <div class="card-header text-white">
-            <h4>Détails de la demande d'explication pour {{ employe.nom ~ ' ' ~ employe.prenom }}</h4>
+            <h4>Détails de la demande d'explication</h4>
         </div>
         <div class="card-body">
 
@@ -25,7 +25,7 @@
                 <i class="fa-solid fa-info-circle"></i> Détails de la reponse
             </h5>
             <ul class="list-group">
-                <li class="list-group-item"><strong>Objet :</strong> objet</li>
+                <li class="list-group-item"><strong>Objet :</strong> {{ demandeExplication.objet }}</li>
                 <li class="list-group-item"><strong>Date de l'incident :</strong> {{ demandeExplication.dateIncident ? demandeExplication.dateIncident|date('d/m/Y') : 'N/A' }}</li>
                 <li class="list-group-item"><strong>Date de reponse :</strong> {{ reponse.dateReponse ? reponse.dateReponse|date('d/m/Y') : 'N/A' }}</li>
                 <li class="list-group-item">

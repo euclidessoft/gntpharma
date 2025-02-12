@@ -196,6 +196,7 @@ class AbsenceController extends AbstractController
                 $demandeExplication->setDate(new \DateTime());
                 $demandeExplication->setDateIncident($sanction->getAbsence()->getDateAbsence());
                 $demandeExplication->setStatus(false);
+                dd($demandeExplication);
                 $demandeExplication->setEmploye($sanction->getAbsence()->getEmploye());
                 $demandeExplication->setResponsable($sanction->getResponsable());
                 $sanction->setExplication($demandeExplication);
