@@ -61,10 +61,10 @@ class Fournisseur
      */
     private $achats;
 
-    /**
-     * @ORM\OneToMany(targetEntity=FournisseurProduit::class, mappedBy="fournisseur")
-     */
-    private $fournisseurProduits;
+//    /**
+//     * @ORM\OneToMany(targetEntity=FournisseurProduit::class, mappedBy="fournisseur")
+//     */
+//    private $fournisseurProduits;
 
     /**
      * @ORM\OneToMany(targetEntity=Approvisionnement::class, mappedBy="fournisseur")
@@ -76,12 +76,19 @@ class Fournisseur
      */
     private $factures;
 
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Produit", mappedBy="fournisseurs")
+     */
+    private $produits;
+
     public function __construct()
     {
         $this->achats = new ArrayCollection();
         $this->compte = 0;
-        $this->fournisseurProduits = new ArrayCollection();
+//        $this->fournisseurProduits = new ArrayCollection();
         $this->approvisionnements = new ArrayCollection();
+        $this->produits = new ArrayCollection();
         $this->factures = new ArrayCollection();
     }
 
@@ -192,36 +199,36 @@ class Fournisseur
 
         return $this;
     }
-
-    /**
-     * @return Collection|FournisseurProduit[]
-     */
-    public function getFournisseurProduits(): Collection
-    {
-        return $this->fournisseurProduits;
-    }
-
-    public function addFournisseurProduit(FournisseurProduit $fournisseurProduit): self
-    {
-        if (!$this->fournisseurProduits->contains($fournisseurProduit)) {
-            $this->fournisseurProduits[] = $fournisseurProduit;
-            $fournisseurProduit->setFournisseur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFournisseurProduit(FournisseurProduit $fournisseurProduit): self
-    {
-        if ($this->fournisseurProduits->removeElement($fournisseurProduit)) {
-            // set the owning side to null (unless already changed)
-            if ($fournisseurProduit->getFournisseur() === $this) {
-                $fournisseurProduit->setFournisseur(null);
-            }
-        }
-
-        return $this;
-    }
+//
+//    /**
+//     * @return Collection|FournisseurProduit[]
+//     */
+//    public function getFournisseurProduits(): Collection
+//    {
+//        return $this->fournisseurProduits;
+//    }
+//
+//    public function addFournisseurProduit(FournisseurProduit $fournisseurProduit): self
+//    {
+//        if (!$this->fournisseurProduits->contains($fournisseurProduit)) {
+//            $this->fournisseurProduits[] = $fournisseurProduit;
+//            $fournisseurProduit->setFournisseur($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeFournisseurProduit(FournisseurProduit $fournisseurProduit): self
+//    {
+//        if ($this->fournisseurProduits->removeElement($fournisseurProduit)) {
+//            // set the owning side to null (unless already changed)
+//            if ($fournisseurProduit->getFournisseur() === $this) {
+//                $fournisseurProduit->setFournisseur(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
 
     /**
      * @return Collection|Approvisionnement[]
@@ -278,6 +285,33 @@ class Fournisseur
             if ($facture->getFournisseur() === $this) {
                 $facture->setFournisseur(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Produit[]
+     */
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
+
+    public function addProduit(Produit $produit): self
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits[] = $produit;
+            $produit->addFournisseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Produit $produit): self
+    {
+        if ($this->produits->removeElement($produit)) {
+            $produit->removeFournisseur($this);
         }
 
         return $this;

@@ -103,8 +103,9 @@ class Produit
 //    private $fournisseurProduits;
 
     /**
-     * ORM\ManyToMany(targetEntity=Fournisseur::class, inversedBy: 'produits')
-     * */
+     * @ORM\ManyToMany(targetEntity="App\Entity\Fournisseur", inversedBy="produits")
+     * @ORM\JoinTable(name="produit_fournisseur")
+     */
     private $fournisseurs;
 
     /**
@@ -373,6 +374,30 @@ class Produit
     public function setPght(float $pght): self
     {
         $this->pght = $pght;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Fournisseur[]
+     */
+    public function getFournisseurs(): Collection
+    {
+        return $this->fournisseurs;
+    }
+
+    public function addFournisseur(Fournisseur $fournisseur): self
+    {
+        if (!$this->fournisseurs->contains($fournisseur)) {
+            $this->fournisseurs[] = $fournisseur;
+        }
+
+        return $this;
+    }
+
+    public function removeFournisseur(Fournisseur $fournisseur): self
+    {
+        $this->fournisseurs->removeElement($fournisseur);
 
         return $this;
     }

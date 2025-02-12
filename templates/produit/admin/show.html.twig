@@ -75,8 +75,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for fournisseurProduit in produit.fournisseurProduits %}
-            {% set  fournisseur = fournisseurProduit.fournisseur %}
+        {% for fournisseur in produit.fournisseurs %}
             <tr>
                 <td data-label="Désignation">{{ fournisseur.designation }}</td>
                 <td data-label="Adresse">{{ fournisseur.adresse }}</td>
@@ -87,10 +86,6 @@
                     <a id="{{ fournisseur.id }}" onclick="load({{ fournisseur.id }})" href="{{ path('fournisseur_show', {'id': fournisseur.id}) }}" title="{{'Voir'|trans}}" class="btn btn-success">
                         <i class="fa fa-eye"></i>
                     </a>
-                    <a href="{{ path('fournisseur_edit', {'id': fournisseur.id}) }}" title="{{'Modifier'|trans}}" class="btn btn-success-light">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                    {{ include('fournisseur/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}

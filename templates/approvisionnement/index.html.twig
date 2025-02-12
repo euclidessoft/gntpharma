@@ -47,7 +47,7 @@
                                 <button type="button"
                                         class="btn btn-success" {# {% if produit.id in inlist %} disabled {% endif %}" #}
                                         data-toggle="modal" data-target="#modal{{ produit.id }}"
-                                        id="btn{{ produit.id }}" onclick="fournisseur({{ produit.id }})">
+                                       id="btn{{ produit.id }}" {# onclick="fournisseur({{ produit.id }})"#}>
                                     <i class="fa fa-plus"></i> {{ 'Ajouter'|trans }}
                                 </button>
 
@@ -70,7 +70,12 @@
                                                     <label for="quant{{ produit.id }}"></label>
                                                     <select class="form-control"
                                                            id="fourniss{{ produit.id }}">
-                                                        <option>{{ "selectionnez le fournisseur"|trans }}</option>
+
+                                                        {% for fournisseur in produit.fournisseurs %}
+                                                            <option value='{{ fournisseur.id }}'>{{ fournisseur.designation }}</option>
+                                                        {% else %}
+                                                            <option>aucun fournisseur</option>
+                                                        {% endfor %}
 {#                                                        <option><i class='fa-solid fa-spinner fa-spin-pulse text-dark'></i></option>#}
                                                     </select>
                                                 </div>
@@ -291,27 +296,27 @@
             }
         }
 
-        function fournisseur(produit) {
-                $.ajax({
-                    type: "POST",
-                    url: "{{ path('stock_fournisseur') }}",
-                    data: "prod=" + produit,
-                    success: function (data) {
-                        if (data[0]['test'] == 'ok') {
-                            $("#fourniss" + produit).html(" <option>{{ 'selectionnez le fournisseur'|trans }}</option>");
-                            for (var i=0; i < data.length; i++) {
-                                $("#fourniss" + produit).append("<option value='"+data[i]['id']+"'>"+data[i]['designation']+"</option>")
-                            }
+        {#function fournisseur(produit) {#}
+        {#        $.ajax({#}
+        {#            type: "POST",#}
+        {#            url: "{{ path('stock_fournisseur') }}",#}
+        {#            data: "prod=" + produit,#}
+        {#            success: function (data) {#}
+        {#                if (data[0]['test'] == 'ok') {#}
+        {#                    $("#fourniss" + produit).html(" <option>{{ 'selectionnez le fournisseur'|trans }}</option>");#}
+        {#                    for (var i=0; i < data.length; i++) {#}
+        {#                        $("#fourniss" + produit).append("<option value='"+data[i]['id']+"'>"+data[i]['designation']+"</option>")#}
+        {#                    }#}
 
-                        }else{
-                            $("#fourniss" + produit).html(" <option>{{ 'aucun fournisseur'|trans }}</option>");
-                        }
-                    },
-                    error: function () {
-                        alert("{{ 'La requête n’a pas abouti'|trans }}");
-                    }
-                });
-        }
+        {#                }else{#}
+        {#                    $("#fourniss" + produit).html(" <option>{{ 'aucun fournisseur'|trans }}</option>");#}
+        {#                }#}
+        {#            },#}
+        {#            error: function () {#}
+        {#                alert("{{ 'La requête n’a pas abouti'|trans }}");#}
+        {#            }#}
+        {#        });#}
+        {#}#}
 
         function modif(produit, quantite) {// fonction declenchement modification
             $("#quant" + produit).val(quantite);
