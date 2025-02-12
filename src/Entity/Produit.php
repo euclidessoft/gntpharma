@@ -97,10 +97,15 @@ class Produit
      */
     private $tva;
 
+//    /**
+//     * @ORM\OneToMany(targetEntity=FournisseurProduit::class, mappedBy="produit")
+//     */
+//    private $fournisseurProduits;
+
     /**
-     * @ORM\OneToMany(targetEntity=FournisseurProduit::class, mappedBy="produit")
-     */
-    private $fournisseurProduits;
+     * ORM\ManyToMany(targetEntity=Fournisseur::class, inversedBy: 'produits')
+     * */
+    private $fournisseurs;
 
     /**
      * @ORM\Column(type="float")
@@ -113,7 +118,8 @@ class Produit
         $this->stock = 0;
         $this->creation = new \Datetime();
         $this->tva = false;
-        $this->fournisseurProduits = new ArrayCollection();
+//        $this->fournisseurProduits = new ArrayCollection();
+        $this->fournisseurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -329,35 +335,35 @@ class Produit
         return $this;
     }
 
-    /**
-     * @return Collection|FournisseurProduit[]
-     */
-    public function getFournisseurProduits(): Collection
-    {
-        return $this->fournisseurProduits;
-    }
-
-    public function addFournisseurProduit(FournisseurProduit $fournisseurProduit): self
-    {
-        if (!$this->fournisseurProduits->contains($fournisseurProduit)) {
-            $this->fournisseurProduits[] = $fournisseurProduit;
-            $fournisseurProduit->setProduit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFournisseurProduit(FournisseurProduit $fournisseurProduit): self
-    {
-        if ($this->fournisseurProduits->removeElement($fournisseurProduit)) {
-            // set the owning side to null (unless already changed)
-            if ($fournisseurProduit->getProduit() === $this) {
-                $fournisseurProduit->setProduit(null);
-            }
-        }
-
-        return $this;
-    }
+//    /**
+//     * @return Collection|FournisseurProduit[]
+//     */
+//    public function getFournisseurProduits(): Collection
+//    {
+//        return $this->fournisseurProduits;
+//    }
+//
+//    public function addFournisseurProduit(FournisseurProduit $fournisseurProduit): self
+//    {
+//        if (!$this->fournisseurProduits->contains($fournisseurProduit)) {
+//            $this->fournisseurProduits[] = $fournisseurProduit;
+//            $fournisseurProduit->setProduit($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeFournisseurProduit(FournisseurProduit $fournisseurProduit): self
+//    {
+//        if ($this->fournisseurProduits->removeElement($fournisseurProduit)) {
+//            // set the owning side to null (unless already changed)
+//            if ($fournisseurProduit->getProduit() === $this) {
+//                $fournisseurProduit->setProduit(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
 
     public function getPght(): ?float
     {
