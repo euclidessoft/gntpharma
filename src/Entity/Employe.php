@@ -166,6 +166,11 @@ class Employe extends User implements UserInterface
      */
     private $demandeExplication;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Absence::class, mappedBy="responsable")
+     */
+    private $absence;
+
 
 
     public function __construct()
@@ -181,6 +186,7 @@ class Employe extends User implements UserInterface
         $this->demandeExplications = new ArrayCollection();
         $this->reponseExplications = new ArrayCollection();
         $this->demandeExplication = new ArrayCollection();
+        $this->absence = new ArrayCollection();
     }
 
 
@@ -695,6 +701,14 @@ class Employe extends User implements UserInterface
     public function getDemandeExplication(): Collection
     {
         return $this->demandeExplication;
+    }
+
+    /**
+     * @return Collection|Absence[]
+     */
+    public function getAbsence(): Collection
+    {
+        return $this->absence;
     } 
 
 

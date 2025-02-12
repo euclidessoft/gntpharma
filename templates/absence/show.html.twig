@@ -33,6 +33,12 @@
                                 {{ sanction.responsable ? sanction.responsable.prenom ~ ' ' ~ sanction.responsable.nom : "Aucun responsable" }}
                             </td>
                         </tr>
+                        <tr>
+                            <th>{{ 'Date de confirmation'|trans }}</th>
+                            <td>
+                                {{ sanction.dateConfirm ? sanction.dateConfirm|date('d/m/Y') : 'Non spécifiée' }}
+                            </td>
+                        </tr>
                     {% else %}
                         <tr>
                             <td colspan="2">{{ 'Aucune décision'|trans }}</td>

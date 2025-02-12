@@ -57,6 +57,11 @@ class Sanction
      */
     private $explication;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateConfirm;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,6 +159,18 @@ class Sanction
     public function setExplication(?DemandeExplication $explication): self
     {
         $this->explication = $explication;
+
+        return $this;
+    }
+
+    public function getDateConfirm(): ?\DateTimeInterface
+    {
+        return $this->dateConfirm;
+    }
+
+    public function setDateConfirm(?\DateTimeInterface $dateConfirm): self
+    {
+        $this->dateConfirm = $dateConfirm;
 
         return $this;
     }

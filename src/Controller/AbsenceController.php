@@ -156,15 +156,17 @@ class AbsenceController extends AbstractController
     /**
      *@Route("/{id}/confirmer", name="absence_confirmer", methods={"GET", "POST"})
      */
-    public function confirmer(Request $request, Absence $absence)
+    public function confirmer(Request $request, Absence $absence,Security $security)
     {
         $entityManager = $this->getDoctrine()->getManager();
-       
+        $responsable = $security->getUser();
+     
         if ($this->isCsrfTokenValid('confirmer' . $absence->getId(), $request->request->get('_token'))) {
             $absence->setStatus(1);
             $absence->setJustifier(true);
+            $absence->setResponsable($responsable);
+            $absence->setDateAbsence(new \DateTime());
         }
-
         $entityManager->persist($absence);
         $entityManager->flush();
         return $this->redirectToRoute('absence_index');
@@ -179,15 +181,18 @@ class AbsenceController extends AbstractController
         $form = $this->createForm(SanctionType::class, $sanction);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $responsable = $security->getUser();
             $entityManager = $this->getDoctrine()->getManager();
             $typeSanction = $sanction->getType()->getNom();
-            
 
             $sanction->setDateSanction(new \DateTime());
             $sanction->setAbsence($absence);
+            $sanction->setResponsable($responsable);
+            $sanction->setDateConfirm(new \DateTime());
             $absence->setJustifier(true);
             $absence->setStatus(0);
-            $sanction->setResponsable($security->getUser());
+            $absence->setResponsable($responsable);
+            $absence->setDateConfirm(new \DateTime());
             $entityManager->persist($sanction);
 
             if($typeSanction == 'Demande d\'explication'){
@@ -198,7 +203,7 @@ class AbsenceController extends AbstractController
                 $demandeExplication->setDateIncident($sanction->getAbsence()->getDateAbsence());
                 $demandeExplication->addEmploye($sanction->getAbsence()->getEmploye());
                 $demandeExplication->setStatus(false);
-                $demandeExplication->setResponsable($security->getUser());
+                $demandeExplication->setResponsable($responsable);
                 $sanction->setExplication($demandeExplication);
                 $entityManager->persist($demandeExplication);
             }

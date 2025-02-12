@@ -49,6 +49,16 @@ class Absence
      */
     private $sanctions;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="absence")
+     */
+    private $responsable;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateConfirm;
+
     public function __construct()
     {
         $this->reponseAbsences = new ArrayCollection();
@@ -165,6 +175,30 @@ class Absence
                 $sanction->setAbsence(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getResponsable(): ?Employe
+    {
+        return $this->responsable;
+    }
+
+    public function setResponsable(?Employe $responsable): self
+    {
+        $this->responsable = $responsable;
+
+        return $this;
+    }
+
+    public function getDateConfirm(): ?\DateTimeInterface
+    {
+        return $this->dateConfirm;
+    }
+
+    public function setDateConfirm(?\DateTimeInterface $dateConfirm): self
+    {
+        $this->dateConfirm = $dateConfirm;
 
         return $this;
     }
