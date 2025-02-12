@@ -25,8 +25,8 @@
                 {{ form_row(form.type, {'attr': {'placeholder': 'Sélectionnez le type de sanction *'}, 'label': false}) }}
             </div>
 
-            <div class="col-12 mb-4" id="montant" style="display: none;">
-                {{ form_row(form.montant, {'attr': {'placeholder': 'Entrez le montant *'}, 'label': false}) }}
+            <div class="col-12 mb-4" id="typeSanction" style="display: none;">
+                {{ form_row(form.montant, {'attr': {'placeholder': 'Selectionnez le type de sanction *'}, 'label': false}) }}
             </div>
             <div class="col-12 mb-4" id="reponse-form">
                 {{ form_row(form.demandes, {'attr': {'placeholder': 'Détails de la réponse d\'explication *', 'rows': 10}, 'label': false}) }}
@@ -51,19 +51,19 @@
 {% block scripts %}
     <script>
         $(document).ready(function () {
-            $('#montant').hide();
+            $('#typeSanction').hide();
             $('#reponse-form').hide();
             $('#sanction_type').on('change', function () {
                 const selected = $(this).find('option:selected').text().trim();
-                $('#montant').hide();
-                if (selected === 'Ponction salariale') {
-                    $('#montant').show();
+                $('#typeSanction').hide();
+                if (selected === 'Sanction') {
+                    $('#typeSanction').show();
                     $('#reponse-form').hide();
                 } else if (selected === 'Demande d\'explication') {
                     $('#reponse-form').show();
-                    $('#montant').hide();
+                    $('#typeSanction').hide();
                 } else {
-                    $('#montant').hide();
+                    $('#typeSanction').hide();
                     $('#reponse-form').hide();
                 }
             });

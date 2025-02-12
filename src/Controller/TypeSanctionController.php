@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/{_locale}/SanctionType/")
+ * @Route("/{_locale}/SanctionType")
  */
 class TypeSanctionController extends AbstractController
 {
