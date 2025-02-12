@@ -62,8 +62,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for fournisseurproduit in fournisseur.fournisseurProduits %}
-            {% set produit = fournisseurproduit.produit %}
+        {% for produit in fournisseur.Produits %}
             <tr>
                 <td>{{ produit.reference }}</td>
                 <td>{{ produit.desigantion }}</td>

@@ -29,9 +29,19 @@ class AchatController extends AbstractController
      */
     public function index(AchatRepository $achatRepository): Response
     {
-        return $this->render('achat/index.html.twig', [
+        $response = $this->render('achat/index.html.twig', [
             'achats' => $achatRepository->findAll(),
         ]);
+        $response->setSharedMaxAge(0);
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('no-store', true);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->setCache([
+            'max_age' => 0,
+            'private' => true,
+        ]);
+        return $response;
+
     }
 
     /**
@@ -39,9 +49,19 @@ class AchatController extends AbstractController
      */
     public function listfacture(FactureRepository $repository): Response
     {
-        return $this->render('achat/facture_list.html.twig', [
+
+        $response = $this->render('achat/facture_list.html.twig', [
             'approvisionnements' => $repository->findBy(['payer' => false]),
         ]);
+        $response->setSharedMaxAge(0);
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('no-store', true);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->setCache([
+            'max_age' => 0,
+            'private' => true,
+        ]);
+        return $response;
     }
 
     /**
@@ -99,16 +119,34 @@ class AchatController extends AbstractController
                 $entityManager->persist($ecriture);
                 $entityManager->persist($facture);
                 $entityManager->flush();
-            return $this->redirectToRoute('achat_index', [], Response::HTTP_SEE_OTHER);
+                $response = $this->redirectToRoute('achat_index', [], Response::HTTP_SEE_OTHER);
+                $response->setSharedMaxAge(0);
+                $response->headers->addCacheControlDirective('no-cache', true);
+                $response->headers->addCacheControlDirective('no-store', true);
+                $response->headers->addCacheControlDirective('must-revalidate', true);
+                $response->setCache([
+                    'max_age' => 0,
+                    'private' => true,
+                ]);
+                return $response;
             }else{
                 $this->addFlash('notice', 'Montant non disponible');
             }
         }
 
-        return $this->render('achat/new.html.twig', [
+        $response = $this->render('achat/new.html.twig', [
             'achat' => $achat,
             'form' => $form->createView(),
         ]);
+        $response->setSharedMaxAge(0);
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('no-store', true);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->setCache([
+            'max_age' => 0,
+            'private' => true,
+        ]);
+        return $response;
     }
 
     /**
@@ -116,9 +154,18 @@ class AchatController extends AbstractController
      */
     public function show(Achat $achat): Response
     {
-        return $this->render('achat/show.html.twig', [
+        $response = $this->render('achat/show.html.twig', [
             'achat' => $achat,
         ]);
+        $response->setSharedMaxAge(0);
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('no-store', true);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->setCache([
+            'max_age' => 0,
+            'private' => true,
+        ]);
+        return $response;
     }
 
     /**
@@ -132,13 +179,31 @@ class AchatController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('achat_index', [], Response::HTTP_SEE_OTHER);
+            $response = $this->redirectToRoute('achat_index', [], Response::HTTP_SEE_OTHER);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
 
-        return $this->render('achat/edit.html.twig', [
+        $response = $this->render('achat/edit.html.twig', [
             'achat' => $achat,
             'form' => $form->createView(),
         ]);
+        $response->setSharedMaxAge(0);
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('no-store', true);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->setCache([
+            'max_age' => 0,
+            'private' => true,
+        ]);
+        return $response;
     }
 
     /**
@@ -152,6 +217,15 @@ class AchatController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('achat_index', [], Response::HTTP_SEE_OTHER);
+        $response = $this->redirectToRoute('achat_index', [], Response::HTTP_SEE_OTHER);
+        $response->setSharedMaxAge(0);
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('no-store', true);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->setCache([
+            'max_age' => 0,
+            'private' => true,
+        ]);
+        return $response;
     }
 }
