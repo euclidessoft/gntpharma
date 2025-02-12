@@ -203,7 +203,6 @@ class AbsenceController extends AbstractController
                 $entityManager->persist($demandeExplication);
             }
 
-            dd($absence,$sanction,$demandeExplication);
             $entityManager->flush();
 
             return $this->redirectToRoute('absence_index');
