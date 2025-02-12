@@ -33,7 +33,7 @@ class DemandeExplicationController extends AbstractController
     /**
      * @Route("/new", name="explication_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,Security $security): Response
     {
         $demande = new DemandeExplication();
         $form = $this->createForm(DemandeExplicationType::class, $demande);
@@ -43,10 +43,10 @@ class DemandeExplicationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $demande->setDate(new \DateTime());
+            $demande->setResponsable($security->getUser());
             $selectEmployes = $request->get('demande')['employes'];
             $demande->setStatus(false);
             if (!empty($selectEmployes)) {
-
                 // Recherche des employés sélectionnés
                 $employe = $this->getDoctrine()->getRepository(Employe::class);
                 $employes = $employe->findBy(['id' => $selectEmployes]);
@@ -56,7 +56,6 @@ class DemandeExplicationController extends AbstractController
                     $demande->addEmploye($employe);
                 }
             }
-
             $entityManager->persist($demande);
             $entityManager->flush();
             return $this->redirectToRoute('demande_index');
