@@ -9,7 +9,6 @@
         <thead>
             <tr>
                 <th>Sanction</th>
-                <th>Description</th>
                 <th>Date de création</th>
             </tr>
         </thead>
@@ -17,7 +16,6 @@
             {% for sanction in sanctions %}
             <tr>
                 <td>{{ sanction.typeSanction.nom }}</td>
-                <td>{{ sanction.description }}</td>
                 <td>{{ sanction.dateCreation ? sanction.dateCreation|date('d/m/Y') : '' }}</td>
             </tr>
             {% else %}

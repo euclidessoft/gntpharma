@@ -27,7 +27,7 @@ class DecisionType extends AbstractType
                 'class' => TypeSanction::class,
                 'choice_label' => 'nom',
                 'required' => true,
-                'placeholder' => 'Sélectionnez le type de sanction',
+                'placeholder' => 'Sélectionnez la sanction',
             ])
 
         ;

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<title>TypeSanction index</title>
+
+{% block body %}
+    <h1>TypeSanction index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Descritpion</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for type_sanction in type_sanctions %}
+            <tr>
+                <td>{{ type_sanction.id }}</td>
+                <td>{{ type_sanction.nom }}</td>
+                <td>{{ type_sanction.descritpion }}</td>
+                <td>
+                    <a href="{{ path('type_sanction_show', {'id': type_sanction.id}) }}">show</a>
+                    <a href="{{ path('type_sanction_edit', {'id': type_sanction.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('type_sanction_new') }}">Create new</a>
+{% endblock %}

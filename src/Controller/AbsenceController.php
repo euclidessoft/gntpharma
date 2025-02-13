@@ -6,6 +6,7 @@ use App\Entity\Absence;
 use App\Entity\Decision;
 use App\Entity\DemandeExplication;
 use App\Entity\ReponseAbsence;
+use App\Entity\Sanction;
 use App\Form\AbsenceType;
 use App\Form\DecisionType;
 use App\Form\ReponseAbsenceType;
@@ -209,7 +210,11 @@ class AbsenceController extends AbstractController
                 $decision->setExplication($demandeExplication);
                 $entityManager->persist($demandeExplication);
             }elseif($typeDecision == 'Sanction'){
-                $decision->setTypeSanction($decision->getTypeSanction());
+                $sanction = new Sanction();
+                $sanction->setDateCreation(new \DateTime());
+                $sanction->setTypeSanction($decision->getTypeSanction());
+                $sanction->setEmploye($decision->getAbsences()->getEmploye());
+                $entityManager->persist($sanction);
             }
 
             $entityManager->flush();

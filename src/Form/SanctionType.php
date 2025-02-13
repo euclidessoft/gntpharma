@@ -24,7 +24,7 @@ class SanctionType extends AbstractType
                 'required' => true,
                 'expanded' => false,
             ])
-            ->add('description')
+            // ->add('description')
             ->add('typeSanction', EntityType::class, [
                 'class' => TypeSanction::class,
                 'choice_label' => 'nom',
