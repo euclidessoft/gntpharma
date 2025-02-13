@@ -208,6 +208,8 @@ class AbsenceController extends AbstractController
                 $demandeExplication->setResponsable($responsable);
                 $decision->setExplication($demandeExplication);
                 $entityManager->persist($demandeExplication);
+            }elseif($typeDecision == 'Sanction'){
+                $decision->setTypeSanction($decision->getTypeSanction());
             }
 
             $entityManager->flush();

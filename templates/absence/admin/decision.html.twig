@@ -1,72 +1,72 @@
 {% extends 'admin.html.twig' %}
 
 {% block body %}
-    {{ form_start(form, {'attr': {'id': 'form'}}) }}
+{{ form_start(form, {'attr': {'id': 'form'}}) }}
 
-    <div class="col-lg-6 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
-        <h4 class="mb-3">
-            <i class="fa-brands fa-product-hunt mr-2"></i><i class="fa fa-plus mr-2"></i>
-            {{ 'Nouvelle décision'|trans }}
-        </h4>
+<div class="col-lg-6 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
+    <h4 class="mb-3">
+        <i class="fa-brands fa-product-hunt mr-2"></i><i class="fa fa-plus mr-2"></i>
+        {{ 'Nouvelle décision'|trans }}
+    </h4>
 
-        {% for message in app.flashes('notice') %}
-            <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                {{ message|trans }}
-            </div>
-        {% endfor %}
+    {% for message in app.flashes('notice') %}
+    <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        {{ message|trans }}
+    </div>
+    {% endfor %}
 
-        <div class="row">
-            <div class="col-12 mb-4">
-                {{ form_row(form.motif, {'attr': {'placeholder': 'Entrez le motif du refus *'}, 'label': false}) }}
-            </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            {{ form_row(form.motif, {'attr': {'placeholder': 'Entrez le motif du refus *'}, 'label': false}) }}
+        </div>
 
-            <div class="col-12 mb-4">
-                {{ form_row(form.type, {'attr': {'placeholder': 'Sélectionnez le type de sanction *'}, 'label': false}) }}
-            </div>
+        <div class="col-12 mb-4">
+            {{ form_row(form.type, {'attr': {'placeholder': 'Sélectionnez le type de sanction *'}, 'label': false}) }}
+        </div>
 
-            <div class="col-12 mb-4" id="typeSanction" style="display: none;">
-              <h1>Liste sanction</h1>
-            </div>
-            <div class="col-12 mb-4" id="reponse-form">
-                {{ form_row(form.demandes, {'attr': {'placeholder': 'Détails de la réponse d\'explication *', 'rows': 10}, 'label': false}) }}
-            </div>
-
+        <div class="col-12 mb-4" id="typeSanction" style="display: none;">
+            {{ form_row(form.typeSanction, {'attr': {'placeholder': 'Sélectionnez le type de sanction *'}, 'label': false}) }}
+        </div>
+        <div class="col-12 mb-4" id="reponse-form">
+            {{ form_row(form.demandes, {'attr': {'placeholder': 'Détails de la réponse d\'explication *', 'rows': 10}, 'label': false}) }}
         </div>
 
     </div>
 
-    <div class="col-md-3 offset-md-3 mt-4 pt-3 fond-7">
-        <div class="centrer">
-            <button type="submit" class="btn btn-shadow btn-green btn-normal mb-3 mr-3" id="send">
-                <i class="fa fa-save"></i>
-                {{ 'Envoyer la notification'|trans }}
-            </button>
-        </div>
-    </div>
+</div>
 
-    {{ form_end(form) }}
+<div class="col-md-3 offset-md-3 mt-4 pt-3 fond-7">
+    <div class="centrer">
+        <button type="submit" class="btn btn-shadow btn-green btn-normal mb-3 mr-3" id="send">
+            <i class="fa fa-save"></i>
+            {{ 'Envoyer la notification'|trans }}
+        </button>
+    </div>
+</div>
+
+{{ form_end(form) }}
 {% endblock %}
 
 {% block scripts %}
-    <script>
-        $(document).ready(function () {
+<script>
+    $(document).ready(function() {
+        $('#typeSanction').hide();
+        $('#reponse-form').hide();
+        $('#decision_type').on('change', function() {
+            const selected = $(this).find('option:selected').text().trim();
             $('#typeSanction').hide();
-            $('#reponse-form').hide();
-            $('#decision_type').on('change', function () {
-                const selected = $(this).find('option:selected').text().trim();
+            if (selected === 'Sanction') {
+                $('#typeSanction').show();
+                $('#reponse-form').hide();
+            } else if (selected === 'Demande d\'explication') {
+                $('#reponse-form').show();
                 $('#typeSanction').hide();
-                if (selected === 'Sanction') {
-                    $('#typeSanction').show();
-                    $('#reponse-form').hide();
-                } else if (selected === 'Demande d\'explication') {
-                    $('#reponse-form').show();
-                    $('#typeSanction').hide();
-                } else {
-                    $('#typeSanction').hide();
-                    $('#reponse-form').hide();
-                }
-            });
+            } else {
+                $('#typeSanction').hide();
+                $('#reponse-form').hide();
+            }
         });
-    </script>
+    });
+</script>
 {% endblock %}

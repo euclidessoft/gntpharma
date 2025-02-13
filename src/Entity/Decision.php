@@ -57,6 +57,11 @@ class Decision
      */
     private $demandes;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeSanction::class, inversedBy="decisions")
+     */
+    private $typeSanction;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,6 +159,18 @@ class Decision
     public function setDemandes(?string $demandes): self
     {
         $this->demandes = $demandes;
+
+        return $this;
+    }
+
+    public function getTypeSanction(): ?TypeSanction
+    {
+        return $this->typeSanction;
+    }
+
+    public function setTypeSanction(?TypeSanction $typeSanction): self
+    {
+        $this->typeSanction = $typeSanction;
 
         return $this;
     }
