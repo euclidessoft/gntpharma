@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit TypeSanction</title>
+
+{% block body %}
+    <h1>Edit TypeSanction</h1>
+
+    {{ include('type_sanction/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('type_sanction_index') }}">back to list</a>
+
+    {{ include('type_sanction/_delete_form.html.twig') }}
+{% endblock %}

@@ -23,11 +23,6 @@ class Sanction
     private $dateCreation;
 
     /**
-     * @ORM\Column(type="text")
-     */
-    private $description;
-
-    /**
      * @ORM\ManyToOne(targetEntity=TypeSanction::class, inversedBy="sanctions")
      */
     private $typeSanction;
@@ -55,17 +50,6 @@ class Sanction
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
 
     public function getTypeSanction(): ?TypeSanction
     {

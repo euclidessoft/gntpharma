@@ -27,19 +27,19 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="{{ path('type_decision_index') }}">
+            <a class="nav-link" href="{{ path('type_sanction_index') }}">
                 {{'Absence'|trans}}
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('type_sanction_index') }}">
+            <a class="nav-link active" href="{{ path('type_sanction_index') }}">
                 {{'Sanction'|trans}}
             </a>
         </li>
     </ul>
-    <h5>{{ "Types de decision"|trans }}</h5>
+    <h5>{{ "Types de sanction"|trans }}</h5>
     <div class="tab-content">
-        <a href="{{ path('type_decision_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouveau</a>
+        <a href="{{ path('type_sanction_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouveau</a>
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
             <thead>
                 <tr>
@@ -49,13 +49,13 @@
                 </tr>
             </thead>
             <tbody>
-                {% for type_decision in type_decisions %}
+                {% for type_sanction in type_sanctions %}
                 <tr>
-                    <td>{{ type_decision.id }}</td>
-                    <td>{{ type_decision.nom }}</td>
+                    <td>{{ type_sanction.id }}</td>
+                    <td>{{ type_sanction.nom }}</td>
                     <td>
-                        <a href="{{ path('type_decision_show', {'id': type_decision.id}) }}">show</a>
-                        <a href="{{ path('type_decision_edit', {'id': type_decision.id}) }}">edit</a>
+                        <a href="{{ path('type_sanction_show', {'id': type_sanction.id}) }}">show</a>
+                        <a href="{{ path('type_sanction_edit', {'id': type_sanction.id}) }}">edit</a>
                     </td>
                 </tr>
                 {% else %}
