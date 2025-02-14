@@ -177,7 +177,6 @@ class Employe extends User implements UserInterface
     private $sanctions;
 
 
-
     public function __construct()
     {
         parent::__construct();
@@ -745,8 +744,7 @@ class Employe extends User implements UserInterface
         }
 
         return $this;
-    } 
-
+    }
 
 }
 

@@ -7,6 +7,7 @@ use App\Entity\Decision;
 use App\Entity\DemandeExplication;
 use App\Entity\ReponseAbsence;
 use App\Entity\Sanction;
+use App\Entity\TamponAbsence;
 use App\Form\AbsenceType;
 use App\Form\DecisionType;
 use App\Form\ReponseAbsenceType;
@@ -29,15 +30,72 @@ class AbsenceController extends AbstractController
      */
     public function index(AbsenceRepository $absenceRepository): Response
     {
+        $absences = $absenceRepository->findBy([], ['employe' => 'ASC', 'dateAbsence' => 'ASC']);
+
+        $groupedAbsences = [];
+        $currentEmployee = null;
+        $currentStartDate = null;
+        $currentEndDate = null;
+        $currentStatus = null;
+
+        foreach ($absences as $absence) {
+            $employee = $absence->getEmploye();
+            $dateAbsence = $absence->getDateAbsence();
+            $status = $absence->getStatus();
+
+            if ($currentEmployee !== $employee) {
+                if ($currentEmployee !== null) {
+                    $groupedAbsences[] = [
+                        'employee' => $currentEmployee,
+                        'startDate' => $currentStartDate,
+                        'endDate' => $currentEndDate,
+                        'status' => $currentStatus,
+                    ];
+                }
+                $currentEmployee = $employee;
+                $currentStartDate = $dateAbsence;
+                $currentEndDate = $dateAbsence;
+                $currentStatus = $status;
+            } else {
+
+                $nextDay = (clone $currentEndDate)->modify('+1 day');
+                if ($dateAbsence == $nextDay) {
+                    $currentEndDate = $dateAbsence;
+                } else {
+                    $groupedAbsences[] = [
+                        'employee' => $currentEmployee,
+                        'startDate' => $currentStartDate,
+                        'endDate' => $currentEndDate,
+                        'status' => $currentStatus,
+                    ];
+                    $currentStartDate = $dateAbsence;
+                    $currentEndDate = $dateAbsence;
+                    $currentStatus = $status;
+                }
+            }
+        }
+        if ($currentEmployee !== null) {
+            $groupedAbsences[] = [
+                'employee' => $currentEmployee,
+                'startDate' => $currentStartDate,
+                'endDate' => $currentEndDate,
+                'status' => $currentStatus,
+            ];
+        }
+
+        dd($absences);
+
         return $this->render('absence/admin/index.html.twig', [
-            'absences' => $absenceRepository->findAll(),
+            'groupedAbsences' => $groupedAbsences,
+            'absences' => $absences,
         ]);
     }
+
 
     /**
      * @Route("/Suivi", name="absence_suivi", methods={"GET"})
      */
-    public function absence(AbsenceRepository $absenceRepository, Security $security): Response
+    public function absence(Security $security): Response
     {
         $employe = $this->getUser();
         $absences = $this->getDoctrine()->getRepository(Absence::class)->findBy(['employe' => $employe]);
@@ -57,7 +115,7 @@ class AbsenceController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-
+            $employe = $absence->getEmploye();
             $absence->setJustifier(false);
             $absence->setStatus(0);
             $entityManager->persist($absence);
@@ -65,7 +123,6 @@ class AbsenceController extends AbstractController
 
             return $this->redirectToRoute('absence_index', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->render('absence/admin/new.html.twig', [
             'absence' => $absence,
             'form' => $form->createView(),
@@ -80,7 +137,7 @@ class AbsenceController extends AbstractController
         $justificatif = $absence->getReponseAbsences();
         return $this->render('absence/admin/show.html.twig', [
             'absence' => $absence,
-            'justificatif' => $justificatif, 
+            'justificatif' => $justificatif,
         ]);
     }
 
@@ -157,11 +214,11 @@ class AbsenceController extends AbstractController
     /**
      *@Route("/{id}/confirmer", name="absence_confirmer", methods={"GET", "POST"})
      */
-    public function confirmer(Request $request, Absence $absence,Security $security)
+    public function confirmer(Request $request, Absence $absence, Security $security)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $responsable = $security->getUser();
-     
+
         if ($this->isCsrfTokenValid('confirmer' . $absence->getId(), $request->request->get('_token'))) {
             $absence->setStatus(1);
             $absence->setJustifier(true);
@@ -176,13 +233,13 @@ class AbsenceController extends AbstractController
     /**
      * @Route("/{id}/refuser", name="absence_refuser", methods={"GET","POST"})
      */
-    public function refuser(Request $request, Absence $absence,Security $security): Response
+    public function refuser(Request $request, Absence $absence, Security $security): Response
     {
         $decision = new Decision();
-        
+
         $form = $this->createForm(DecisionType::class, $decision);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $responsable = $security->getUser();
             $entityManager = $this->getDoctrine()->getManager();
 
@@ -198,7 +255,7 @@ class AbsenceController extends AbstractController
             $absence->setDateConfirm(new \DateTime());
             $entityManager->persist($decision);
 
-            if($typeDecision == 'Demande d\'explication'){
+            if ($typeDecision == 'Demande d\'explication') {
                 $demandeExplication = new DemandeExplication();
                 $demandeExplication->setObjet('Absence non justifiée');
                 $demandeExplication->setDetails($form->get('demandes')->getData());
@@ -209,7 +266,7 @@ class AbsenceController extends AbstractController
                 $demandeExplication->setResponsable($responsable);
                 $decision->setExplication($demandeExplication);
                 $entityManager->persist($demandeExplication);
-            }elseif($typeDecision == 'Sanction'){
+            } elseif ($typeDecision == 'Sanction') {
                 $sanction = new Sanction();
                 $sanction->setDateCreation(new \DateTime());
                 $sanction->setTypeSanction($decision->getTypeSanction());
@@ -235,5 +292,4 @@ class AbsenceController extends AbstractController
             'absence' => $absence,
         ]);
     }
-
 }

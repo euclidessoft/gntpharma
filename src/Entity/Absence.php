@@ -203,5 +203,4 @@ class Absence
         return $this;
     }
 
-
 }

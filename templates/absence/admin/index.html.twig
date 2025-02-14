@@ -1,7 +1,9 @@
 {% extends 'admin.html.twig' %}
+
 {% block title %} {{ "Lignes de depenses"|trans }} - GNT Pharma {% endblock %}
 {% block employe %}active{% endblock %}
-{% block absence_index  %}active{% endblock %}
+{% block absence_index %}active{% endblock %}
+
 {% block body %}
 <div class="col-lg-10 mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
@@ -14,38 +16,41 @@
             <tr>
                 <th>{{('Matricule'|trans)}}</th>
                 <th>{{('Employé'|trans)}}</th>
-                <th>{{('Date absence'|trans)}}</th>
+                <th>{{('Date(s)'|trans)}}</th>
                 <th>{{('Status')}}</th>
                 <th>{{('actions'|trans)}}</th>
             </tr>
         </thead>
         <tbody>
-            {% for absence in absences %}
+            {% for absence in groupedAbsences %}
             <tr>
-                <td>{{ absence.employe.matricule }}</td>
-                <td data-label="Nom">{{ absence.employe.nom }} {{ absence.employe.prenom }}</td>
-                <td data-label="Date absence">{{ absence.dateAbsence ? absence.dateAbsence|date('d/m/Y') }}</td>
-                <td data-label="Justifier">
-                    {% if absence.justifier == 0 and absence.status == 0 %}
+                <td>{{ absence.employee.matricule }}</td>
+                <td>{{ absence.employee.nom }} {{ absence.employee.prenom }}</td>
+                <td>
+                    {{ absence.startDate|date('d/m/Y') }} 
+                    {% if absence.startDate != absence.endDate %}
+                        au {{ absence.endDate|date('d/m/Y') }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if absence.status == 0 %}
                     <span class="badge badge-warning">En attente de justification</span>
-                    {% elseif absence.justifier == false and absence.status == 1 %}
-                        <span class="badge badge-info">En attente de validation</span>
-                    {% elseif absence.justifier == true and absence.status == 1 %}
+                    {% elseif absence.status == 1 %}
                     <span class="badge badge-success">Justifié</span>
-                        {% else %}
+                    {% else %}
                     <span class="badge badge-danger">Non justifiée</span>
                     {% endif %}
                 </td>
-                <td data-label="Actions">
-                    <a href="{{ path('absence_show', {'id': absence.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
+                <td>
+                    <a href="{{ path('absence_show', {'id': absence.employee.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
                 </td>
             </tr>
             {% else %}
             <tr>
-                <td colspan="4" class="text-center">Aucune ligne de dépenses</td>
+                <td colspan="5" class="text-center">Aucune absence</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-
-    {% endblock %}
+</div>
+{% endblock %}
