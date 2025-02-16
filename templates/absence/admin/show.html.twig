@@ -1,140 +1,89 @@
 {% extends 'admin.html.twig' %}
 
 {% block body %}
-<div class="col-lg-6 mt-4 fond-7">
+<div class="col-lg-8 mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold text-center">
         <i class="fa fa-money-bill mr-2"></i>
-        {{ "Détails absence"|trans }}
+        {{ "Détails des absences"|trans }}
     </h3>
 
     <div class="card">
         <div class="card-header text-white">
-            <h5>Informations sur l'absence</h5>
+            <h5>Informations sur l'employé</h5>
         </div>
         <div class="card-body">
             <table class="table table-bordered table-striped w-100">
                 <tbody>
                     <tr>
                         <th>Employé</th>
-                        <td>{{ absence.employe.nom }} {{ absence.employe.prenom }}</td>
+                        <td>{{ employe.nom }} {{ employe.prenom }}</td>
                     </tr>
-                    <tr>
-                        <th>Date d'absence</th>
-                        <td>{{ absence.dateAbsence ? absence.dateAbsence|date('d/m/Y') : 'Non spécifiée' }}</td>
-                    </tr>
-
-                    {% if absence.reponseAbsences is not empty %}
-                    {% for justificatif in absence.reponseAbsences %}
-                    <tr>
-                        <th>Raison du justificatif</th>
-                        <td>{{ justificatif.cause }}</td>
-                    </tr>
-                    <tr>
-                        <th>Fichier du justificatif</th>
-                        <td>
-                            {% if justificatif.file %}
-                            <a class="btn btn-success btn-sm"
-                                href="{{ asset('uploads/justificatifs/' ~ justificatif.file) }}" target="_blank">
-                                <i class="fa fa-eye"></i> Voir le justificatif
-                            </a>
-                            {% else %}
-                            Aucune pièce jointe.
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% else %}
-                    <tr>
-                        <th>Raison du justificatif</th>
-                        <td>Aucun justificatif soumis</td>
-                    </tr>
-                    <tr>
-                        <th>Fichier du justificatif</th>
-                        <td>Aucun fichier joint</td>
-                    </tr>
-                    {% endif %}
-
-                    <tr>
-                        <th>Status</th>
-                        <td>
-                            {% if absence.status == 0 and absence.justifier == 0 %}
-                            <span class="badge badge-warning">En attente de justification</span>
-                            {% elseif absence.justifier == 0 and absence.status == 1 %}
-                            <span class="badge badge-info">En attente de validation</span>
-                            {% elseif absence.status == 1 and absence.justifier == 1 %}
-                            <span class="badge badge-success">Absence justifiée</span>
-                            {% elseif absence.status == 0 and absence.justifier == 1 %}
-                            <span class="badge badge-danger">Rejetee</span>
-                            {% else %}
-                            <span class="badge badge-secondary">Statut inconnu</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                    {% if absence.status == 1 and absence.justifier == 1 or absence.status == 0 and absence.justifier == 1 %}
-                        <th>Responsable</th>
-                        <td>{{ absence.responsable.nom }} {{ absence.responsable.prenom }}</td>
-                    </tr>
-                    <tr>
-                        <th>Date de confirmation</th>
-                        <td>{{ absence.dateConfirm ? absence.dateConfirm|date('d/m/Y'): '' }}</td>
-                    </tr>
-                    {% endif %}
-
-                    {# Affichage des informations de refus si l'absence est rejetée #}
-
-                    {% if absence.status == 0 and absence.justifier == 1 %}
-                    {% for decision in absence.decisions %}
-                    <tr>
-                        <th>Motif de rejet</th>
-                        <td>{{ decision.motif }}</td>
-                    </tr>
-                    <tr>
-                        <th>Responsable</th>
-                        <td>{{ decision.responsable.prenom ~' '~ decision.responsable.nom }}</td>
-                    </tr>
-                    <tr>
-                        <th>Décision</th>
-                        <td>{{ decision.type.nom }}</td>
-                    </tr>
-                    <tr>
-                        <th>Date d'opération</th>
-                        <td>{{ decision.datedecision ? decision.datedecision|date('d/m/Y') }}</td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td>Aucune décision</td>
-                    </tr>
-                    {% endfor %}
-                    {% endif %}
                 </tbody>
             </table>
-
         </div>
     </div>
-    {% if absence.justifier == 0 and absence.status == 1 %}
-    <div class="py-4 d-flex justify-content-center">
-        <form method="POST" action="{{ path('absence_confirmer', {'id': absence.id }) }}"
-            style="display:inline;">
-            <input type="hidden" name="_token" value="{{ csrf_token('confirmer' ~ absence.id) }}">
-            <button type="submit" class="btn btn-success">
-                <i class="fas fa-check"></i> Accepter
-            </button>
-        </form>
-        <a href="{{ path('absence_refuser', {'id': absence.id }) }}" class="btn btn-danger"
-            onclick="return confirm('Êtes-vous sûr de vouloir refuser cette absence ?');">
-            <i class="fas fa-times"></i>
-            Refuser
-        </a>
+
+    <div class="card mt-4">
+        <div class="card-header text-white">
+            <h5>Historique des absences</h5>
+        </div>
+        <div class="card-body">
+            {% if absences is empty %}
+                <p class="text-center text-muted">Aucune absence enregistrée.</p>
+            {% else %}
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Date d'absence</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for absence in absences %}
+                            <tr>
+                                <td>{{ absence.dateAbsence ? absence.dateAbsence|date('d/m/Y') : 'Non spécifiée' }}</td>
+                                <td>
+                                    {% if absence.status == 0 and absence.justifier == 0 %}
+                                        <span class="badge badge-warning">En attente de justification</span>
+                                    {% elseif absence.justifier == 0 and absence.status == 1 %}
+                                        <span class="badge badge-info">En attente de validation</span>
+                                    {% elseif absence.status == 1 and absence.justifier == 1 %}
+                                        <span class="badge badge-success">Absence justifiée</span>
+                                    {% elseif absence.status == 0 and absence.justifier == 1 %}
+                                        <span class="badge badge-danger">Rejetée</span>
+                                    {% else %}
+                                        <span class="badge badge-secondary">Statut inconnu</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if absence.justifier == 0 and absence.status == 1 %}
+                                        <form method="POST" action="{{ path('absence_confirmer', {'id': absence.id }) }}" style="display:inline;">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('confirmer' ~ absence.id) }}">
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i class="fas fa-check"></i> Accepter
+                                            </button>
+                                        </form>
+                                        <a href="{{ path('absence_refuser', {'id': absence.id }) }}" class="btn btn-danger btn-sm"
+                                           onclick="return confirm('Êtes-vous sûr de vouloir refuser cette absence ?');">
+                                            <i class="fas fa-times"></i> Refuser
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted">Aucune action requise</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
     </div>
-    {% else %}
+
     <div class="centrer mt-3">
-        <a id="{{ absence.id }}" onclick="load({{ absence.id }})" href="{{ path('absence_index') }}"
-            class="btn btn-success-light btn-normal mb-3">
-            <i class="fa fa-undo"></i>
-            {{ 'Retour'|trans }}
+        <a href="{{ path('absence_index') }}" class="btn btn-success-light btn-normal mb-3">
+            <i class="fa fa-undo"></i> {{ 'Retour'|trans }}
         </a>
     </div>
-    {% endif %}
 </div>
 {% endblock %}

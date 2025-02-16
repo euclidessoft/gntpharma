@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Absence;
+use App\Entity\Employe;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -35,6 +36,19 @@ class AbsenceRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByEmployeAndDates(Employe $employe, array $dates)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.employe = :employe')
+            ->andWhere('a.dateAbsence IN (:dates)')
+            ->setParameter('employe', $employe)
+            ->setParameter('dates', $dates)
+            ->getQuery()
+            ->getResult();
+    }
+
+
 
     /*
     public function findOneBySomeField($value): ?Absence

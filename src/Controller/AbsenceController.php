@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Absence;
 use App\Entity\Decision;
 use App\Entity\DemandeExplication;
+use App\Entity\Employe;
 use App\Entity\ReponseAbsence;
 use App\Entity\Sanction;
 use App\Entity\TamponAbsence;
@@ -37,6 +38,7 @@ class AbsenceController extends AbstractController
         $currentStartDate = null;
         $currentEndDate = null;
         $currentStatus = null;
+        $currentDates = [];
 
         foreach ($absences as $absence) {
             $employee = $absence->getEmploye();
@@ -50,60 +52,50 @@ class AbsenceController extends AbstractController
                         'startDate' => $currentStartDate,
                         'endDate' => $currentEndDate,
                         'status' => $currentStatus,
+                        'dates' => $currentDates, // Stocker toutes les dates de ce groupe
                     ];
                 }
                 $currentEmployee = $employee;
                 $currentStartDate = $dateAbsence;
                 $currentEndDate = $dateAbsence;
                 $currentStatus = $status;
+                $currentDates = [$dateAbsence]; // Nouvelle liste de dates
             } else {
-
                 $nextDay = (clone $currentEndDate)->modify('+1 day');
                 if ($dateAbsence == $nextDay) {
                     $currentEndDate = $dateAbsence;
+                    $currentDates[] = $dateAbsence; // Ajouter la date dans la liste
                 } else {
                     $groupedAbsences[] = [
                         'employee' => $currentEmployee,
                         'startDate' => $currentStartDate,
                         'endDate' => $currentEndDate,
                         'status' => $currentStatus,
+                        'dates' => $currentDates, // Stocker toutes les dates de ce groupe
                     ];
                     $currentStartDate = $dateAbsence;
                     $currentEndDate = $dateAbsence;
                     $currentStatus = $status;
+                    $currentDates = [$dateAbsence]; // Réinitialiser la liste de dates
                 }
             }
         }
+
         if ($currentEmployee !== null) {
             $groupedAbsences[] = [
                 'employee' => $currentEmployee,
                 'startDate' => $currentStartDate,
                 'endDate' => $currentEndDate,
                 'status' => $currentStatus,
+                'dates' => $currentDates, // Ajouter les dernières absences
             ];
         }
 
-        dd($absences);
-
         return $this->render('absence/admin/index.html.twig', [
             'groupedAbsences' => $groupedAbsences,
-            'absences' => $absences,
         ]);
     }
-
-
-    /**
-     * @Route("/Suivi", name="absence_suivi", methods={"GET"})
-     */
-    public function absence(Security $security): Response
-    {
-        $employe = $this->getUser();
-        $absences = $this->getDoctrine()->getRepository(Absence::class)->findBy(['employe' => $employe]);
-        return $this->render('absence/absence.html.twig', [
-            'absences' => $absences,
-        ]);
-    }
-
+    
     /**
      * @Route("/new", name="absence_new", methods={"GET","POST"})
      */
@@ -129,15 +121,32 @@ class AbsenceController extends AbstractController
         ]);
     }
 
+
     /**
-     * @Route("/{id}", name="absence_show", methods={"GET"})
+     * @Route("/{id}/", name="absence_show", methods={"GET"})
      */
-    public function show(Absence $absence): Response
+    public function show(Request $request, AbsenceRepository $absenceRepository, Employe $employe)
     {
-        $justificatif = $absence->getReponseAbsences();
+        $datesParam = $request->query->get('dates'); 
+        $datesArray = explode(',', $datesParam); 
+        $formattedDates = array_map(fn($date) => new \DateTime($date), $datesArray);
+        $dateStrings = array_map(fn($date) => $date->format('Y-m-d'), $formattedDates);
+        $absences = $absenceRepository->findByEmployeAndDates($employe, $dateStrings);
         return $this->render('absence/admin/show.html.twig', [
-            'absence' => $absence,
-            'justificatif' => $justificatif,
+            'absences' => $absences,
+            'employe' => $employe,
+        ]);
+    }
+
+    /**
+     * @Route("/Suivi", name="absence_suivi", methods={"GET"})
+     */
+    public function absence(Security $security): Response
+    {
+        $employe = $this->getUser();
+        $absences = $this->getDoctrine()->getRepository(Absence::class)->findBy(['employe' => $employe]);
+        return $this->render('absence/absence.html.twig', [
+            'absences' => $absences,
         ]);
     }
 
