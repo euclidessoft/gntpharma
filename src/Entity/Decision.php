@@ -64,6 +64,16 @@ class Decision
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateDebut;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateFin;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -173,6 +183,30 @@ class Decision
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getDateDebut(): ?\DateTimeInterface
+    {
+        return $this->dateDebut;
+    }
+
+    public function setDateDebut(?\DateTimeInterface $dateDebut): self
+    {
+        $this->dateDebut = $dateDebut;
+
+        return $this;
+    }
+
+    public function getDateFin(): ?\DateTimeInterface
+    {
+        return $this->dateFin;
+    }
+
+    public function setDateFin(?\DateTimeInterface $dateFin): self
+    {
+        $this->dateFin = $dateFin;
 
         return $this;
     }
