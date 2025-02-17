@@ -30,8 +30,10 @@ class User implements UserInterface
         'Administrateur' => 'Administrateur',
         'Client' => 'Client' ,
         'Financier' => 'Financier' ,
+        'RH' => 'RH' ,
         'Gestionnaire de stock' => 'Gestionnaire de stock' ,
         'Livreur' => 'Livreur' ,
+        'EMPLOYER' => 'EMPLOYER' ,
     ];
 
     /**

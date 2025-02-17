@@ -605,6 +605,14 @@ class securityController extends AbstractController
                             $user->setRoles(['ROLE_FINANCE']);
                             break;
                         }
+                    case 'RH': {
+                        $user->setRoles(['ROLE_RH']);
+                        break;
+                    }
+                    case 'EMPLOYER': {
+                        $user->setRoles(['ROLE_EMPLOYER']);
+                        break;
+                    }
                     case 'Gestionnaire de stock': {
                             $user->setRoles(['ROLE_STOCK']);
                             break;
