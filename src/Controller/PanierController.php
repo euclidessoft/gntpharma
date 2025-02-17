@@ -167,6 +167,39 @@ class PanierController extends AbstractController
             return $response;
 
         }
+        elseif ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+
+            $response = $this->render('commande/admin/dashbord_livreur.html.twig', [
+                'deja' => $livrerRepository->findBy(['livreur' => $this->getUser()->getId(), 'livrer' => true]),
+                'attente' => $livrerRepository->findBy(['livreur' => $this->getUser()->getId(), 'livrer' => false]),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+
+        }
+        elseif ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+
+            $response = $this->render('security/security/admin/profile.html.twig', [
+                'user' => $this->getUser(),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+
+        }
         else {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
