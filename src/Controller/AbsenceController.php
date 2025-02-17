@@ -212,10 +212,31 @@ class AbsenceController extends AbstractController
                 $decision->setExplication($demandeExplication);
                 $entityManager->persist($demandeExplication);
             } elseif ($typeDecision == 'Sanction') {
+                
                 $sanction = new Sanction();
                 $sanction->setDateCreation(new \DateTime());
                 $sanction->setTypeSanction($decision->getTypeSanction());
                 $sanction->setEmploye($decision->getAbsences()->getEmploye());
+                $typeSanction = $decision->getTypeSanction()->getNom();
+
+                if($typeSanction === 'mis a pied'){
+                    $dateDebut = $decision->getDateDebut();
+                    $dateFin = $decision->getDateFin();
+                    $decision->setDateDebut($dateDebut);
+                    $decision->setDateFin($dateFin);
+                    $sanction->setDateDebut($dateDebut);
+                    $sanction->setDateFin($dateFin);
+
+
+                    $absence = new Absence();
+                    $absence->setEmploye($decision->getAbsences()->getEmploye());
+                    $absence->setDateAbsence($dateDebut);
+                    $absence->setDateFin($dateFin);
+                    $absence->setJustifier(true);
+                    $absence->setStatus(1);
+                    $entityManager->persist($absence);
+                }
+                
                 $entityManager->persist($sanction);
             }
 

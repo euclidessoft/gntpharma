@@ -32,6 +32,16 @@ class Sanction
      */
     private $employe;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateDebut;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateFin;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -71,6 +81,30 @@ class Sanction
     public function setEmploye(?Employe $employe): self
     {
         $this->employe = $employe;
+
+        return $this;
+    }
+
+    public function getDateDebut(): ?\DateTimeInterface
+    {
+        return $this->dateDebut;
+    }
+
+    public function setDateDebut(?\DateTimeInterface $dateDebut): self
+    {
+        $this->dateDebut = $dateDebut;
+
+        return $this;
+    }
+
+    public function getDateFin(): ?\DateTimeInterface
+    {
+        return $this->dateFin;
+    }
+
+    public function setDateFin(?\DateTimeInterface $dateFin): self
+    {
+        $this->dateFin = $dateFin;
 
         return $this;
     }

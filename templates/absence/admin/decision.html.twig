@@ -28,8 +28,15 @@
         <div class="col-12 mb-4" id="typeSanction">
             {{ form_row(form.typeSanction, {'attr': {'placeholder': 'Sélectionnez la sanction *'}, 'label': false}) }}
         </div>
+
         <div class="col-12 mb-4" id="reponse-form">
             {{ form_row(form.demandes, {'attr': {'placeholder': 'Détails de la réponse d\'explication *', 'rows': 10}, 'label': false}) }}
+        </div>
+        <div class="col-12 mb-4" id="dateDebut">
+            {{ form_row(form.dateDebut, {'attr': {'title': 'Date debut mis à pied *'}, 'label': false}) }}
+        </div>
+        <div class="col-12 mb-4" id="dateFin">
+            {{ form_row(form.dateFin, {'attr': {'title': 'Date fin mis à pied*'}, 'label': false}) }}
         </div>
 
     </div>
@@ -53,6 +60,9 @@
     $(document).ready(function() {
         $('#typeSanction').hide();
         $('#reponse-form').hide();
+        $('#dateDebut').hide();
+        $('#dateFin').hide();
+
         $('#decision_type').on('change', function() {
             const selected = $(this).find('option:selected').text().trim();
     
@@ -67,7 +77,16 @@
                 $('#reponse-form').hide();
             }
         });
-        
+        $('#decision_typeSanction').on('change', function() {
+            const selectedSanction = $(this).find('option:selected').text().trim();
+            if (selectedSanction === 'mis a pied') {
+                $('#dateDebut').show();
+                $('#dateFin').show();
+            } else {
+                $('#dateDebut').hide();
+                $('#dateFin').hide();
+            }
+        });
     });
 </script>
 {% endblock %}
