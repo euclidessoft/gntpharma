@@ -2,5 +2,46 @@
 
 {% block title %} {{ 'Mon profile'|trans }} {% endblock %}
 {% block body %}
-    {{ include('security/security/profile-info.html.twig') }}
+{#    {{ include('security/security/profile-info.html.twig') }}#}
+
+
+    <div class="col-lg-7 mt-5 mb-5 p-5 fond-7">
+        <h3 class="text-bold">
+            <i class="fa fa-user mr-2"></i>
+            {{ 'Profil Utilisateur'|trans }}
+        </h3>
+        <div class="row">
+            {% for message in app.flashes('notice') %}
+                <div class="col-lg-12 mt-4 alert alert-success alert-dismissible fade show radius-10 shadow-black"
+                     role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message|trans }}
+                </div>
+            {% endfor %}
+            {{ include('security/security/boutons.html.twig') }}
+            <div class="col-lg-3 mt-5 text-center">
+                <img src="{{ asset('images/team_1.avif') }}" alt="" class="w-100 img-fluid rounded">
+                {#                                                    {% if user.sexe == "Monsieur" %}#}
+                {#                                                     <img src="{{asset('images/avatar.jpg') }}" width="100" alt="Photo" class="rounded-circle" />#}
+                {#                                                     {% else %}#}
+                {#                                                     <img src="{{asset('images/avatar-femme.jpg') }}" width="100" alt="Photo" class="rounded-circle" />#}
+                {#                                                     {% endif %}#}
+                {#                                                     <h6 class="mt-3">{{ user.bloodgroup }}</h6>#}
+            </div>
+            <div class="col-lg-9 mt-5">
+                <div class="row">
+                    <div class="col-lg-3 text-right text-bold">{{ 'Prénom'|trans }}</div>
+                    <div class="col-lg-9 ml-n4">{{ user.prenom }}</div>
+                    <div class="col-lg-3 text-right text-bold">{{ 'Nom'|trans }}</div>
+                    <div class="col-lg-9 ml-n4">{{ user.nom }}</div>
+                    <div class="col-lg-3 text-right text-bold">{{ 'Téléphone'|trans }}</div>
+                    <div class="col-lg-9 ml-n4">{{ user.phone }}</div>
+                    <div class="col-lg-3 text-right text-bold">{{ 'Email'|trans }}</div>
+                    <div class="col-lg-9 ml-n4">{{ user.email }}</div>
+                    <div class="col-lg-3 text-right text-bold">{{ 'Adresse'|trans }}</div>
+                    <div class="col-lg-9 ml-n4">{{ user.adresse }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
