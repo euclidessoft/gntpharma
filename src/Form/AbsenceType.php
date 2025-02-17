@@ -22,9 +22,6 @@ class AbsenceType extends AbstractType
                 },
                 'placeholder' => 'Selectionnez l\'employé',
             ])
-            ->add('dateAbsence', DateType::class, [
-                'widget' => 'single_text',
-            ])
         ;
     }
 

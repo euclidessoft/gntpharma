@@ -34,6 +34,7 @@ class Decision
 
     /**
      * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="decisions")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $responsable;
 
@@ -59,6 +60,7 @@ class Decision
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeSanction::class, inversedBy="decisions")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $typeSanction;
 

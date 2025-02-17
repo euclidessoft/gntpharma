@@ -1,27 +1,96 @@
-{% if detailedAbsences is not null %}
-    <h3>Détails des absences de {{ employee.nom }}</h3>
-    <p><strong>Intervalle : </strong>{{ detailedAbsences.startDate|date('d/m/Y') }} 
-    {% if detailedAbsences.startDate != detailedAbsences.endDate %}
-        au {{ detailedAbsences.endDate|date('d/m/Y') }}
-    {% endif %}</p>
-    
-    <ul>
-        {% for absence in detailedAbsences.absences %}
-            <li>{{ absence.dateAbsence|date('d/m/Y') }} - 
-                {% if absence.status == 0 and absence.justifier == 0 %}
-                    <span class="badge badge-warning">En attente de justification</span>
-                {% elseif absence.justifier == 0 and absence.status == 1 %}
-                    <span class="badge badge-info">En attente de validation</span>
-                {% elseif absence.status == 1 and absence.justifier == 1 %}
-                    <span class="badge badge-success">Absence justifiée</span>
-                {% elseif absence.status == 0 and absence.justifier == 1 %}
-                    <span class="badge badge-danger">Rejetée</span>
-                {% else %}
-                    <span class="badge badge-secondary">Statut inconnu</span>
-                {% endif %}
-            </li>
+{% extends 'employe.html.twig' %}
+
+{% block body %}
+<div class="col-lg-8 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold text-center">
+        <i class="fa fa-user-clock mr-2"></i>
+        {{ "Détails de l'absence"|trans }}
+    </h3>
+
+    <div class="card shadow-sm">
+        <div class="card-header text-white">
+            <h5 class="mb-0">Informations sur l'employé</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th class="w-50">Employé</th>
+                        <td><strong>{{ absence.employe.nom }} {{ absence.employe.prenom }}</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Période d'absence</th>
+                        <td>
+                            <i class="fa fa-calendar-alt"></i>
+                            {{ absence.dateAbsence|date('d/m/Y') }}
+                            {% if absence.dateAbsence != absence.dateFin %}
+                            au {{ absence.dateFin|date('d/m/Y') }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Justification (fichiers)</th>
+                        {% if absence.reponseAbsences|length > 0 %}
+                        {% for justificatif in absence.reponseAbsences %}
+                        <td>
+                            <a href="{{ asset('uploads/justificatifs/' ~ justificatif.file) }}" target="_blank" class="btn btn-success btn-sm">
+                                <i class="fas fa-eye"></i> Voir le justificatif
+                            </a>
+                        </td>
+                        {% endfor %}
+                        {% else %}
+                        <td>Aucun justificatif fourni</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <th>Statut</th>
+                        <td>
+                            {% if absence.status == 0 and absence.justifier == 0 %}
+                            <span class="badge badge-warning"><i class="fas fa-exclamation-circle"></i> En attente de justification</span>
+                            {% elseif absence.status == 1 and absence.justifier == 0 %}
+                            <span class="badge badge-info"><i class="fas fa-clock"></i> En attente de validation</span>
+                            {% elseif absence.status == 1 and absence.justifier == 1 %}
+                            <span class="badge badge-success"><i class="fas fa-check-circle"></i> Absence justifiée</span>
+                            {% elseif absence.status == 0 and absence.justifier == 1 %}
+                            <span class="badge badge-danger"><i class="fas fa-times-circle"></i> Non justifiée</span>
+                            {% else %}
+                            <span class="badge badge-secondary"><i class="fas fa-question-circle"></i> Statut inconnu</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Décisions</th>
+                        <td>
+                            {% for decision in absence.decisions %}
+                            <p>{{ decision.type.nom }}</p>
+                            {% else %}
+                            <p>Aucune décision</p>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% if (absence.status == 1 and absence.justifier == 1) or (absence.status == 0 and absence.justifier == 1) %}
+                    <tr>
+                        <th>Responsable</th>
+                        <td>{{ absence.responsable.nom ~ ' ' ~ absence.responsable.prenom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date de confirmation</th>
+                        <td>{{ absence.dateConfirm ? absence.dateConfirm|date('d/m/Y') : '' }}</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="text-center py-4">
+        <a href="{{ path('absence_suivi') }}" class="btn btn-success-light">
+            <i class="fa fa-arrow-left"></i> {{ 'Retour'|trans }}
+        </a>
+        {% for decision in absence.decisions %}
+        {% if decision.type.nom == 'Demande d\'explication' %}
+        <a href="{{ path('demande_explication_detail', {'id': decision.explication.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i>Voir la demande</a>
+        {% endif %}
         {% endfor %}
-    </ul>
-{% else %}
-    <p class="text-center text-muted">Aucune absence trouvée pour cet intervalle.</p>
-{% endif %}
+    </div>
+</div>
+{% endblock %}

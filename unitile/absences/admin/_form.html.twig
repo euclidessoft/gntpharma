@@ -21,6 +21,9 @@
             {{ form_row(form.employe, {'attr': {'placeholder': 'Sélectionnez un employé *'}, 'label': false}) }}
         </div>
 
+        <div class="col-12 mb-4">
+            {{ form_row(form.dateAbsence, {'attr': {'placeholder': 'Date d\'absence', 'title': 'Date d\'absence'}, 'label': false}) }}
+        </div>
         {{ form_rest(form) }}
     </div>
 </div>

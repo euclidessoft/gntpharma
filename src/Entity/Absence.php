@@ -59,6 +59,11 @@ class Absence
      */
     private $decisions;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateFin;
+
     public function __construct()
     {
         $this->reponseAbsences = new ArrayCollection();
@@ -199,6 +204,18 @@ class Absence
                 $decision->setAbsences(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateFin(): ?\DateTimeInterface
+    {
+        return $this->dateFin;
+    }
+
+    public function setDateFin(?\DateTimeInterface $dateFin): self
+    {
+        $this->dateFin = $dateFin;
 
         return $this;
     }

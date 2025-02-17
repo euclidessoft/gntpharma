@@ -5,42 +5,101 @@ namespace App\Controller;
 use App\Entity\Absence;
 use App\Entity\Decision;
 use App\Entity\DemandeExplication;
+use App\Entity\Employe;
 use App\Entity\ReponseAbsence;
 use App\Entity\Sanction;
+use App\Entity\TamponAbsence;
 use App\Form\AbsenceType;
 use App\Form\DecisionType;
 use App\Form\ReponseAbsenceType;
 use App\Repository\AbsenceRepository;
-use App\Repository\DemandeExplicationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\String\Slugger\AsciiSlugger;
+use function mysql_xdevapi\getSession;
 
 /**
  * @Route("/{_locale}/Absence")
  */
-class AbsenceController extends AbstractController
+class AbsencesController extends AbstractController
 {
-
     /**
      * @Route("/", name="absence_index", methods={"GET"})
      */
     public function index(AbsenceRepository $absenceRepository): Response
     {
-        $absences = $absenceRepository->findBy([], ['dateAbsence' => 'DESC']);
+        $absences = $absenceRepository->findBy([], ['employe' => 'ASC', 'dateAbsence' => 'ASC']);
+
+        $groupedAbsences = [];
+        $currentEmployee = null;
+        $currentStartDate = null;
+        $currentEndDate = null;
+        $currentStatus = null;
+        $currentDates = [];
+
+        foreach ($absences as $absence) {
+            $employee = $absence->getEmploye();
+            $dateAbsence = $absence->getDateAbsence();
+            $status = $absence->getStatus();
+
+            if ($currentEmployee !== $employee) {
+                if ($currentEmployee !== null) {
+                    $groupedAbsences[] = [
+                        'employee' => $currentEmployee,
+                        'startDate' => $currentStartDate,
+                        'endDate' => $currentEndDate,
+                        'status' => $currentStatus,
+                        'dates' => $currentDates, // Stocker toutes les dates de ce groupe
+                    ];
+                }
+                $currentEmployee = $employee;
+                $currentStartDate = $dateAbsence;
+                $currentEndDate = $dateAbsence;
+                $currentStatus = $status;
+                $currentDates = [$dateAbsence]; // Nouvelle liste de dates
+            } else {
+                $nextDay = (clone $currentEndDate)->modify('+1 day');
+                if ($dateAbsence == $nextDay) {
+                    $currentEndDate = $dateAbsence;
+                    $currentDates[] = $dateAbsence; // Ajouter la date dans la liste
+                } else {
+                    $groupedAbsences[] = [
+                        'employee' => $currentEmployee,
+                        'startDate' => $currentStartDate,
+                        'endDate' => $currentEndDate,
+                        'status' => $currentStatus,
+                        'dates' => $currentDates, // Stocker toutes les dates de ce groupe
+                    ];
+                    $currentStartDate = $dateAbsence;
+                    $currentEndDate = $dateAbsence;
+                    $currentStatus = $status;
+                    $currentDates = [$dateAbsence]; // Réinitialiser la liste de dates
+                }
+            }
+        }
+
+        if ($currentEmployee !== null) {
+            $groupedAbsences[] = [
+                'employee' => $currentEmployee,
+                'startDate' => $currentStartDate,
+                'endDate' => $currentEndDate,
+                'status' => $currentStatus,
+                'dates' => $currentDates, // Ajouter les dernières absences
+            ];
+        }
 
         return $this->render('absence/admin/index.html.twig', [
-            'absences' => $absences,
+            'groupedAbsences' => $groupedAbsences,
         ]);
     }
-
+    
     /**
      * @Route("/new", name="absence_new", methods={"GET","POST"})
      */
-    public function new(Request $request, AbsenceRepository $absenceRepository): Response
+    public function new(Request $request): Response
     {
         $absence = new Absence();
         $form = $this->createForm(AbsenceType::class, $absence);
@@ -49,40 +108,6 @@ class AbsenceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $employe = $absence->getEmploye();
-
-            // Définir la date du jour pour la date de début et de fin (journée entière)
-            $dateDebut = new \DateTime(); // Date d'aujourd'hui
-            $dateFin = clone $dateDebut; // Date de fin égale à la date de début (journée entière)
-
-            $absence->setDateAbsence($dateDebut);
-            $absence->setDateFin($dateFin);
-
-            // Récupérer la dernière absence enregistrée pour cet employé
-            $dernierAbsence = $absenceRepository->findOneBy(
-                ['employe' => $employe],
-                ['dateFin' => 'DESC']
-            );
-
-            if ($dernierAbsence) {
-                $dernierDateFin = $dernierAbsence->getDateFin();
-                $dernierDateFin->modify('+1 day');
-                if ($dernierDateFin->format('Y-m-d') === $dateDebut->format('Y-m-d')) {
-                    $dernierAbsence->setDateFin($dateFin);
-                    $entityManager->flush();
-                    return $this->redirectToRoute('absence_index', [], Response::HTTP_SEE_OTHER);
-                }
-
-                // Vérifier si la nouvelle absence chevauche la précédente
-                if ($dateDebut <= $dernierAbsence->getDateFin()) {
-                    // Si la nouvelle absence commence avant ou pendant la dernière absence
-                    if ($absence->getDateFin() > $dernierAbsence->getDateFin()) {
-                        $dernierAbsence->setDateFin($absence->getDateFin()); // Met à jour la date de fin
-                        $entityManager->flush();
-                    }
-                    return $this->redirectToRoute('absence_index', [], Response::HTTP_SEE_OTHER);
-                }
-            }
-
             $absence->setJustifier(false);
             $absence->setStatus(0);
             $entityManager->persist($absence);
@@ -90,28 +115,33 @@ class AbsenceController extends AbstractController
 
             return $this->redirectToRoute('absence_index', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->render('absence/admin/new.html.twig', [
-            'form' => $form->createView(),
             'absence' => $absence,
+            'form' => $form->createView(),
         ]);
     }
+
 
     /**
-     * @Route("/{id}/Show", name="absence_show", methods={"GET"})
+     * @Route("/{id}/", name="absence_show", methods={"GET"})
      */
-    public function show(Absence $absence): Response
+    public function show(Request $request, AbsenceRepository $absenceRepository, Employe $employe)
     {
+        $datesParam = $request->query->get('dates'); 
+        $datesArray = explode(',', $datesParam); 
+        $formattedDates = array_map(fn($date) => new \DateTime($date), $datesArray);
+        $dateStrings = array_map(fn($date) => $date->format('Y-m-d'), $formattedDates);
+        $absences = $absenceRepository->findByEmployeAndDates($employe, $dateStrings);
         return $this->render('absence/admin/show.html.twig', [
-            'absences' => $absence,
+            'absences' => $absences,
+            'employe' => $employe,
         ]);
     }
-
 
     /**
      * @Route("/Suivi", name="absence_suivi", methods={"GET"})
      */
-    public function suivi(Security $security): Response
+    public function absence(Security $security): Response
     {
         $employe = $this->getUser();
         $absences = $this->getDoctrine()->getRepository(Absence::class)->findBy(['employe' => $employe]);
@@ -119,7 +149,41 @@ class AbsenceController extends AbstractController
             'absences' => $absences,
         ]);
     }
-    
+
+    /**
+     * @Route("/{id}/edit", name="absence_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Absence $absence): Response
+    {
+        $form = $this->createForm(AbsenceType::class, $absence);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('absence_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('absence/admin/edit.html.twig', [
+            'absence' => $absence,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="absence_delete", methods={"POST"})
+     */
+    public function delete(Request $request, Absence $absence): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $absence->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($absence);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('absence_index', [], Response::HTTP_SEE_OTHER);
+    }
+
     /**
      * @Route("/justifier/{id}", name="absence_justifier", methods={"GET", "POST"})
      */
@@ -155,6 +219,7 @@ class AbsenceController extends AbstractController
         ]);
     }
 
+
     /**
      *@Route("/{id}/confirmer", name="absence_confirmer", methods={"GET", "POST"})
      */
@@ -179,6 +244,7 @@ class AbsenceController extends AbstractController
      */
     public function refuser(Request $request, Absence $absence, Security $security): Response
     {
+        dd('ol');
         $decision = new Decision();
 
         $form = $this->createForm(DecisionType::class, $decision);
@@ -197,8 +263,6 @@ class AbsenceController extends AbstractController
             $absence->setStatus(0);
             $absence->setResponsable($responsable);
             $absence->setDateConfirm(new \DateTime());
-
-            dd($absence);
             $entityManager->persist($decision);
 
             if ($typeDecision == 'Demande d\'explication') {
@@ -230,7 +294,7 @@ class AbsenceController extends AbstractController
     }
 
     /**
-     * @Route("/Detail/{id}", name="absence_detail", methods={"GET"})
+     * @Route("/detail/{id}", name="absence_detail", methods={"GET"})
      */
     public function detail(Absence $absence): Response
     {

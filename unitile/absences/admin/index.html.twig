@@ -1,0 +1,59 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %} {{ "Liste des absences"|trans }} - GNT Pharma {% endblock %}
+{% block employe %}active{% endblock %}
+{% block absence_index %}active{% endblock %}
+
+{% block body %}
+<div class="col-lg-10 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Liste des absences"|trans }}
+    </h3>
+    <a href="{{ path('absence_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i> Nouvel absence</a>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>{{ 'Matricule'|trans }}</th>
+                <th>{{ 'Employé'|trans }}</th>
+                <th>{{ 'Date(s)'|trans }}</th>
+                <th>{{ 'Statut'|trans }}</th>
+                <th>{{ 'Actions'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for absence in groupedAbsences %}
+            <tr>
+                <td>{{ absence.employee.matricule }}</td>
+                <td>{{ absence.employee.nom }} {{ absence.employee.prenom }}</td>
+                <td>
+                    {{ absence.startDate|date('d/m/Y') }}
+                    {% if absence.startDate != absence.endDate %}
+                    - {{ absence.endDate|date('d/m/Y') }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if absence.status == 0 %}
+                    <span class="badge badge-warning">En attente de justification</span>
+                    {% elseif absence.status == 1 %}
+                    <span class="badge badge-success">Justifié</span>
+                    {% else %}
+                    <span class="badge badge-danger">Non justifiée</span>
+                    {% endif %}
+                </td>
+                <td><a href="{{ path('absence_show', { 'id': absence.employee.id, 'dates': absence.dates|map(d => d|date('Y-m-d'))|join(',')}) }}" class="btn btn-primary">
+                        Voir détails
+                    </a>
+
+
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center">Aucune absence</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

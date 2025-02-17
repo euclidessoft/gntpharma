@@ -7,6 +7,7 @@ use App\Entity\TypeDecision;
 use App\Entity\TypeSanction;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,17 +17,20 @@ class DecisionType extends AbstractType
     {
         $builder
             ->add('motif')
-            ->add('type',EntityType::class, [
-                'class' => TypeDecision::class,
-                'choice_label' => 'nom',
+            ->add('type', ChoiceType::class, [
+                'choices' => [
+                    'Avertissement' => 'Avertissement',
+                    'Demande d\'explication' => 'Demande d\'explication',
+                    'Sanction' => 'Sanction',
+                ],
                 'required' => true,
                 'placeholder' => 'Sélectionnez le type de decision',
             ])
             ->add('demandes')
-            ->add('typeSanction',EntityType::class, [
+            ->add('typeSanction', EntityType::class, [
                 'class' => TypeSanction::class,
                 'choice_label' => 'nom',
-                'required' => true,
+                'required' => false,
                 'placeholder' => 'Sélectionnez la sanction',
             ])
 

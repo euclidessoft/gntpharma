@@ -1,0 +1,45 @@
+{% extends 'employe.html.twig' %}
+
+{% block title %} Détails de l'absence {% endblock %}
+
+{% block body %}
+    <h2>Détails de l'absence</h2>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <tbody>
+            <tr>
+                <th>Date de début</th>
+                <td>{{ absence.startDate|date('d/m/Y') }}</td>
+            </tr>
+            <tr>
+                <th>Date de fin</th>
+                <td>{{ absence.endDate|date('d/m/Y') }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>
+                    {% if absence.status == 0 and absence.justifier == 0 %}
+                        <span class="badge badge-warning">En attente de justification</span>
+                    {% elseif absence.justifier == 0 and absence.status == 1 %}
+                        <span class="badge badge-info">En attente de validation</span>
+                    {% elseif absence.status == 1 and absence.justifier == 1 %}
+                        <span class="badge badge-success">Absence justifiée</span>
+                    {% elseif absence.status == 0 and absence.justifier == 1 %}
+                        <span class="badge badge-danger">Non justifiée</span>
+                    {% else %}
+                        <span class="badge badge-secondary">Statut inconnu</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Décisions</th>
+                <td>
+                    {% for decision in absence.decisions %}
+                        <p>{{ decision.type.nom }}</p>
+                    {% else %}
+                        <p>Aucune décision</p>
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

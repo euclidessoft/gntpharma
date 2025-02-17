@@ -22,11 +22,11 @@
         </div>
 
         <div class="col-12 mb-4">
-            {{ form_row(form.type, {'attr': {'title': 'Sélectionnez le type de sanction *'}, 'label': false}) }}
+            {{ form_row(form.type, {'attr': {'placeholder': 'Sélectionnez le type de sanction *'}, 'label': false}) }}
         </div>
 
-        <div class="col-12 mb-4" id="typeSanction">
-            {{ form_row(form.typeSanction, {'attr': {'placeholder': 'Sélectionnez la sanction *'}, 'label': false}) }}
+        <div class="col-12 mb-4" id="typeSanction" style="display: none;">
+            {{ form_row(form.typeSanction, {'attr': {'placeholder': 'Sélectionnez le type de sanction *'}, 'label': false}) }}
         </div>
         <div class="col-12 mb-4" id="reponse-form">
             {{ form_row(form.demandes, {'attr': {'placeholder': 'Détails de la réponse d\'explication *', 'rows': 10}, 'label': false}) }}
@@ -55,7 +55,7 @@
         $('#reponse-form').hide();
         $('#decision_type').on('change', function() {
             const selected = $(this).find('option:selected').text().trim();
-    
+            $('#typeSanction').hide();
             if (selected === 'Sanction') {
                 $('#typeSanction').show();
                 $('#reponse-form').hide();
@@ -65,12 +65,6 @@
             } else {
                 $('#typeSanction').hide();
                 $('#reponse-form').hide();
-            }
-        });
-        $('#form').submit(function(e) {
-            if ($('#decision_type').val() === "" || ($('#decision_type').val() === "Sanction" && $('#typeSanction').val() === "") || ($('#decision_type').val() === "Demande d'explication" && $('#reponse-form textarea').val() === "")) {
-                e.preventDefault();
-                alert("Veuillez remplir tous les champs obligatoires.");
             }
         });
     });
