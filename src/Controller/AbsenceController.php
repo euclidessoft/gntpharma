@@ -187,7 +187,7 @@ class AbsenceController extends AbstractController
             $responsable = $security->getUser();
             $entityManager = $this->getDoctrine()->getManager();
 
-            $typeDecision = $decision->getType()->getNom();
+            $typeDecision = $decision->getType();
             $decision->setDateDecision(new \DateTime());
             $decision->setAbsences($absence);
             $decision->setResponsable($responsable);
@@ -198,7 +198,6 @@ class AbsenceController extends AbstractController
             $absence->setResponsable($responsable);
             $absence->setDateConfirm(new \DateTime());
 
-            dd($absence);
             $entityManager->persist($decision);
 
             if ($typeDecision == 'Demande d\'explication') {

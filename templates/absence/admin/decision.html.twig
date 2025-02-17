@@ -67,12 +67,7 @@
                 $('#reponse-form').hide();
             }
         });
-        $('#form').submit(function(e) {
-            if ($('#decision_type').val() === "" || ($('#decision_type').val() === "Sanction" && $('#typeSanction').val() === "") || ($('#decision_type').val() === "Demande d'explication" && $('#reponse-form textarea').val() === "")) {
-                e.preventDefault();
-                alert("Veuillez remplir tous les champs obligatoires.");
-            }
-        });
+        
     });
 </script>
 {% endblock %}

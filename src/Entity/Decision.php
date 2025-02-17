@@ -49,11 +49,6 @@ class Decision
     private $dateConfirm;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TypeDecision::class, inversedBy="decisions")
-     */
-    private $type;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $demandes;
@@ -63,6 +58,11 @@ class Decision
      * @ORM\JoinColumn(nullable=true)
      */
     private $typeSanction;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $type;
 
     public function getId(): ?int
     {
@@ -141,18 +141,6 @@ class Decision
         return $this;
     }
 
-    public function getType(): ?TypeDecision
-    {
-        return $this->type;
-    }
-
-    public function setType(?TypeDecision $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
     public function getDemandes(): ?string
     {
         return $this->demandes;
@@ -173,6 +161,18 @@ class Decision
     public function setTypeSanction(?TypeSanction $typeSanction): self
     {
         $this->typeSanction = $typeSanction;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

@@ -63,7 +63,7 @@
                         <th>Décisions</th>
                         <td>
                             {% for decision in absences.decisions %}
-                            <p>{{ decision.type.nom }}</p>
+                            <p>{{ decision.type }}</p>
                             {% else %}
                             <p>Aucune décision</p>
                             {% endfor %}

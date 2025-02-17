@@ -62,7 +62,7 @@
                         <th>Décisions</th>
                         <td>
                             {% for decision in absence.decisions %}
-                            <p>{{ decision.type.nom }}</p>
+                            <p>{{ decision.type }}</p>
                             {% else %}
                             <p>Aucune décision</p>
                             {% endfor %}
@@ -87,7 +87,7 @@
             <i class="fa fa-arrow-left"></i> {{ 'Retour'|trans }}
         </a>
         {% for decision in absence.decisions %}
-        {% if decision.type.nom == 'Demande d\'explication' %}
+        {% if decision.type == 'Demande d\'explication' %}
         <a href="{{ path('demande_explication_detail', {'id': decision.explication.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i>Voir la demande</a>
         {% endif %}
         {% endfor %}
