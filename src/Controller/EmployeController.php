@@ -60,7 +60,38 @@ class EmployeController extends AbstractController
             $hashpass = $encoder->encodePassword($employe, 'Passer2023');
             $employe->setPassword($hashpass);
             $employe->setUsername($employe->getNom());
-            $employe->setRoles(["ROLE_EMPLOYE", "ROLE_ADMIN"]);
+            switch ($employe->getFonction()) {
+                case 'Administrateur': {
+                    $employe->setRoles(['ROLE_ADMIN']);
+                    break;
+                }
+                case 'Client': {
+                    $employe->setRoles(['ROLE_CLIENT']);
+                    $employe->setClient(true);
+                    break;
+                }
+                case 'Financier': {
+                    $employe->setRoles(['ROLE_FINANCE']);
+                    break;
+                }
+                case 'RH': {
+                    $employe->setRoles(['ROLE_RH']);
+                    break;
+                }
+                case 'EMPLOYER': {
+                    $employe->setRoles(['ROLE_EMPLOYER']);
+                    break;
+                }
+                case 'Gestionnaire de stock': {
+                    $employe->setRoles(['ROLE_STOCK']);
+                    break;
+                }
+                case 'Livreur': {
+                    $employe->setRoles(['ROLE_LIVREUR']);
+                    $employe->setLivreur(true);
+                    break;
+                }
+            }
             $employe->setFonction("Employé");
             $employe->setStatus(false);
             $employe->setHireDate($employe->getHireDate());
