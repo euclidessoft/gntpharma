@@ -176,6 +176,26 @@ class Employe extends User implements UserInterface
      */
     private $sanctions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Paie::class, mappedBy="employe")
+     */
+    private $paies;
+
+    /**
+     * @ORM\OneToMany(targetEntity=HeureSuplementaire::class, mappedBy="employe")
+     */
+    private $heureSuplementaires;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Prime::class, mappedBy="employe")
+     */
+    private $primes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Retenue::class, mappedBy="employe")
+     */
+    private $retenues;
+
 
     public function __construct()
     {
@@ -192,6 +212,10 @@ class Employe extends User implements UserInterface
         $this->absence = new ArrayCollection();
         $this->decisions = new ArrayCollection();
         $this->sanctions = new ArrayCollection();
+        $this->paies = new ArrayCollection();
+        $this->heureSuplementaires = new ArrayCollection();
+        $this->primes = new ArrayCollection();
+        $this->retenues = new ArrayCollection();
     }
 
 
@@ -740,6 +764,126 @@ class Employe extends User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($sanction->getEmploye() === $this) {
                 $sanction->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Paie[]
+     */
+    public function getPaies(): Collection
+    {
+        return $this->paies;
+    }
+
+    public function addPaie(Paie $paie): self
+    {
+        if (!$this->paies->contains($paie)) {
+            $this->paies[] = $paie;
+            $paie->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removePaie(Paie $paie): self
+    {
+        if ($this->paies->removeElement($paie)) {
+            // set the owning side to null (unless already changed)
+            if ($paie->getEmploye() === $this) {
+                $paie->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|HeureSuplementaire[]
+     */
+    public function getHeureSuplementaires(): Collection
+    {
+        return $this->heureSuplementaires;
+    }
+
+    public function addHeureSuplementaire(HeureSuplementaire $heureSuplementaire): self
+    {
+        if (!$this->heureSuplementaires->contains($heureSuplementaire)) {
+            $this->heureSuplementaires[] = $heureSuplementaire;
+            $heureSuplementaire->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHeureSuplementaire(HeureSuplementaire $heureSuplementaire): self
+    {
+        if ($this->heureSuplementaires->removeElement($heureSuplementaire)) {
+            // set the owning side to null (unless already changed)
+            if ($heureSuplementaire->getEmploye() === $this) {
+                $heureSuplementaire->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Prime[]
+     */
+    public function getPrimes(): Collection
+    {
+        return $this->primes;
+    }
+
+    public function addPrime(Prime $prime): self
+    {
+        if (!$this->primes->contains($prime)) {
+            $this->primes[] = $prime;
+            $prime->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrime(Prime $prime): self
+    {
+        if ($this->primes->removeElement($prime)) {
+            // set the owning side to null (unless already changed)
+            if ($prime->getEmploye() === $this) {
+                $prime->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Retenue[]
+     */
+    public function getRetenues(): Collection
+    {
+        return $this->retenues;
+    }
+
+    public function addRetenue(Retenue $retenue): self
+    {
+        if (!$this->retenues->contains($retenue)) {
+            $this->retenues[] = $retenue;
+            $retenue->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRetenue(Retenue $retenue): self
+    {
+        if ($this->retenues->removeElement($retenue)) {
+            // set the owning side to null (unless already changed)
+            if ($retenue->getEmploye() === $this) {
+                $retenue->setEmploye(null);
             }
         }
 

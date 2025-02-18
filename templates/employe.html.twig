@@ -146,8 +146,22 @@
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="paie">
                         <li class="dropdown-item" title="{{ 'Fiche de paie'|trans }}">
+                            <a class="nav-link {% block heure_supplementaire %}{% endblock %}"
+                                href="{{ path('heure_suplementaire_index') }}">
+                                <i class="fa-solid fa-money-check-dollar"></i>
+                                {{ 'Heure Supplementaire'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item" title="{{ 'Fiche de paie'|trans }}">
+                            <a class="nav-link {% block prime %}{% endblock %}"
+                                href="{{ path('prime_index') }}">
+                                <i class="fa-solid fa-money-check-dollar"></i>
+                                {{ 'Primes'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item" title="{{ 'Fiche de paie'|trans }}">
                             <a class="nav-link {% block fiche %}{% endblock %}"
-                                href="{{ path('produit_new') }}">
+                                href="{{ path('paie_index') }}">
                                 <i class="fa-solid fa-money-check-dollar"></i>
                                 {{ 'Fiche de paie'|trans }}
                             </a>

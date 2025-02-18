@@ -1,11 +1,17 @@
-{% extends 'employe.html.twig' %}
-{% block title %} {{ "Nouvelle absence"|trans }} - GNT Pharma {% endblock %}
-{% block employe %}active{% endblock %}
-{% block depense %}active{% endblock %}
-{% block absence_index  %}active{% endblock %}
+{% extends 'rh.html.twig' %}
+{% block title %} {{ "Nouvelle ligne de dépense"|trans }} - GNT Pharma {% endblock %}
+{% block paie %}active{% endblock %}
+{% block new_paie %}active{% endblock %}
 
 {% block body %}
-    {{ include('absence/admin/_form.html.twig') }}
+    <div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
+    <h4 class="mb-5">
+        <i class="fa fa-plus mr-2"></i>
+        {{ 'Nouvel paie'|trans }}
+    </h4>
+
+    {{ include('paie/_form.html.twig') }}
+
     <div class="col-md-3 offset-md-3 mt-4 pt-3 fond-7">
         <div class="centrer">
             {#                <div class="row">#}
@@ -26,5 +32,4 @@
     </div>
 
     {{ form_end(form) }}
-
 {% endblock %}

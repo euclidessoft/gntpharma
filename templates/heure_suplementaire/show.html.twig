@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<title>HeureSuplementaire</title>
+
+{% block body %}
+    <h1>HeureSuplementaire</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ heure_suplementaire.id }}</td>
+            </tr>
+            <tr>
+                <th>Duree</th>
+                <td>{{ heure_suplementaire.duree }}</td>
+            </tr>
+            <tr>
+                <th>TauxHoraire</th>
+                <td>{{ heure_suplementaire.tauxHoraire }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('heure_suplementaire_index') }}">back to list</a>
+
+    <a href="{{ path('heure_suplementaire_edit', {'id': heure_suplementaire.id}) }}">edit</a>
+
+    {{ include('heure_suplementaire/_delete_form.html.twig') }}
+{% endblock %}

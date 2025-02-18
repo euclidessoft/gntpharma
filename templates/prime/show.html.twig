@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<title>Prime</title>
+
+{% block body %}
+    <h1>Prime</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ prime.id }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ prime.montant }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ prime.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('prime_index') }}">back to list</a>
+
+    <a href="{{ path('prime_edit', {'id': prime.id}) }}">edit</a>
+
+    {{ include('prime/_delete_form.html.twig') }}
+{% endblock %}
