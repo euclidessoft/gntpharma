@@ -25,9 +25,9 @@
 
 				<div class="col-3 {{bold}}">{{ message.sender.email }}</div>
 				<div class="col-3 {{bold}}">
-					<a href="{{ path("read", {id: message.id}) }}">{{ message.title }}</a>
+					<a href="{{ path("read", {id: message.id}) }}">{{ message.message.title }}</a>
 				</div>
-				<div class="col-3 {{bold}}">{{ message.createdAt|date }}</div>
+				<div class="col-3 {{bold}}">{{ message.message.createdAt|date }}</div>
 				<div class="col-3">
                     <a href="{{ path("delete", {id: message.id}) }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-excel-fill text-danger" viewbox="0 0 16 16">

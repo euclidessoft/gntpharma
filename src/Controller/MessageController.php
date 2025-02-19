@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Message;
+use App\Entity\MessageRecipient;
 use App\Form\MessageType;
 use App\Repository\MessageRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,17 +20,21 @@ class MessageController extends AbstractController
     /**
      * @Route("/messages", name="message")
      */
-    public function index(): Response
+    public function index(EntityManagerInterface $em): Response
     {
+        $user = $this->getUser();
+        $messageRecipients = $em->getRepository(MessageRecipient::class)
+            ->findBy(['recipient' => $user], ['id' => 'DESC']);
+
         return $this->render('message/index.html.twig', [
-            'controller_name' => 'MessagesController',
+            'messageRecipients' => $messageRecipients,
         ]);
     }
 
     /**
      * @Route("/send", name="send")
      */
-    public function send(Request $request): Response
+    public function send(Request $request, EntityManagerInterface $em): Response
     {
         $message = new Message;
         $form = $this->createForm(MessageType::class, $message);
@@ -38,7 +44,15 @@ class MessageController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $message->setSender($this->getUser());
 
-            $em = $this->getDoctrine()->getManager();
+            $recipients = $form->get('recipients')->getData();
+
+            foreach ($recipients as $userRecipient) {
+                $messageRecipient = new MessageRecipient();
+                $messageRecipient->setRecipient($userRecipient);
+                $messageRecipient->setIsRead(false);
+                $messageRecipient->setSender($this->getUser());
+                $message->addRecipient($messageRecipient);
+            }
             $em->persist($message);
             $em->flush();
 
@@ -71,7 +85,7 @@ class MessageController extends AbstractController
     /**
      * @Route("/read/{id}", name="read")
      */
-    public function read(Message $message): Response
+    public function read(MessageRecipient $message): Response
     {
         $message->setIsRead(true);
         $em = $this->getDoctrine()->getManager();
@@ -79,6 +93,19 @@ class MessageController extends AbstractController
         $em->flush();
 
         return $this->render('message/read.html.twig', compact("message"));
+    }
+
+    /**
+     * @Route("/readSend/{id}", name="readSend")
+     */
+    public function readsend(Message $message): Response
+    {
+//        $message->setIsRead(true);
+//        $em = $this->getDoctrine()->getManager();
+//        $em->persist($message);
+//        $em->flush();
+
+        return $this->render('message/readsend.html.twig', compact("message"));
     }
 
     /**

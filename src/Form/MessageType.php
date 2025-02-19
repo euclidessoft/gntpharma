@@ -27,12 +27,13 @@ class MessageType extends AbstractType
                     "class" => "form-control"
                 ]
             ])
-            ->add('recipient', EntityType::class, [
-                "class" => User::class,
-                "choice_label" => function($recipient){ return $recipient->getNom(). " ". $recipient->getPrenom();},
-                "attr" => [
-                    "class" => "form-control"
-                ]
+            ->add('recipients', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'username', // ou une autre propriété
+                'multiple' => true,
+                'expanded' => true,
+                'mapped' => false,
+                'label' => 'Destinataires'
             ])
             ->add('envoyer', SubmitType::class, [
                 "attr" => [

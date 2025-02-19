@@ -141,7 +141,7 @@ class User implements UserInterface
     private $sent;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="recipient", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=MessageRecipient::class, mappedBy="recipient", orphanRemoval=true)
      */
     private $received;
 
@@ -393,6 +393,37 @@ class User implements UserInterface
         return $this;
     }
 
+
+    /**
+     * @return Collection|MessageRecipient[]
+     */
+    public function getReceived(): Collection
+    {
+        return $this->received;
+    }
+
+    public function addReceived(MessageRecipient $received): self
+    {
+        if (!$this->received->contains($received)) {
+            $this->received[] = $received;
+            $received->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceived(MessageRecipient $received): self
+    {
+        if ($this->received->removeElement($received)) {
+            // set the owning side to null (unless already changed)
+            if ($received->getRecipient() === $this) {
+                $received->setRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection|Message[]
      */
@@ -422,37 +453,5 @@ class User implements UserInterface
 
         return $this;
     }
-
-    /**
-     * @return Collection|Message[]
-     */
-    public function getReceived(): Collection
-    {
-        return $this->received;
-    }
-
-    public function addReceived(Message $received): self
-    {
-        if (!$this->received->contains($received)) {
-            $this->received[] = $received;
-            $received->setRecipient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReceived(Message $received): self
-    {
-        if ($this->received->removeElement($received)) {
-            // set the owning side to null (unless already changed)
-            if ($received->getRecipient() === $this) {
-                $received->setRecipient(null);
-            }
-        }
-
-        return $this;
-    }
-
-   
 
 }

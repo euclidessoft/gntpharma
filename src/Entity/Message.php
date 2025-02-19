@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MessageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,25 +34,22 @@ class Message
     private $created_at;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $is_read = 0;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sent")
      * @ORM\JoinColumn(nullable=false)
      */
     private $sender;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="received")
-     * @ORM\JoinColumn(nullable=false)
+     * Destinataires associés (relation avec MessageRecipient).
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\MessageRecipient", mappedBy="message", cascade={"persist", "remove"})
      */
-    private $recipient;
+    private $recipients;
 
     public function __construct()
     {
         $this->created_at = new \DateTime();
+        $this->recipients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,18 +93,6 @@ class Message
         return $this;
     }
 
-    public function getIsRead(): ?bool
-    {
-        return $this->is_read;
-    }
-
-    public function setIsRead(bool $is_read): self
-    {
-        $this->is_read = $is_read;
-
-        return $this;
-    }
-
     public function getSender(): ?User
     {
         return $this->sender;
@@ -118,15 +105,34 @@ class Message
         return $this;
     }
 
-    public function getRecipient(): ?User
+    /**
+     * @return Collection|MessageRecipient[]
+     */
+    public function getRecipients(): Collection
     {
-        return $this->recipient;
+        return $this->recipients;
     }
 
-    public function setRecipient(?User $recipient): self
+    public function addRecipient(MessageRecipient $recipient): self
     {
-        $this->recipient = $recipient;
+        if (!$this->recipients->contains($recipient)) {
+            $this->recipients[] = $recipient;
+            $recipient->setMessage($this);
+        }
 
         return $this;
     }
+
+    public function removeRecipient(MessageRecipient $recipient): self
+    {
+        if ($this->recipients->removeElement($recipient)) {
+            // set the owning side to null (unless already changed)
+            if ($recipient->getMessage() === $this) {
+                $recipient->setMessage(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
