@@ -59,6 +59,11 @@ class Paie
      */
     private $totalRetenue;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $detailsRetenues;
+
     public function __construct()
     {
         $this->retenues = new ArrayCollection();
@@ -186,6 +191,18 @@ class Paie
     public function setTotalRetenue(int $totalRetenue): self
     {
         $this->totalRetenue = $totalRetenue;
+
+        return $this;
+    }
+
+    public function getDetailsRetenues(): ?string
+    {
+        return $this->detailsRetenues;
+    }
+
+    public function setDetailsRetenues(?string $detailsRetenues): self
+    {
+        $this->detailsRetenues = $detailsRetenues;
 
         return $this;
     }

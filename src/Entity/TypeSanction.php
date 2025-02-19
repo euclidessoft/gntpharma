@@ -39,6 +39,11 @@ class TypeSanction
      */
     private $decisions;
 
+    public function __toString(): string
+    {
+        return $this->nom;  // Ou tout autre attribut que tu veux afficher
+    }
+    
     public function __construct()
     {
         $this->sanctions = new ArrayCollection();

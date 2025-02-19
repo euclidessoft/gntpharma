@@ -1,7 +1,7 @@
 {% extends 'rh.html.twig' %}
 
 {% block paie %}active{% endblock %}
-{% block prime %}active{% endblock %}
+{% block fiche %}active{% endblock %}
 
 {% block body %}
 <div class="container mt-4 fond-7 pb-5 pt-3 px-5">
@@ -10,8 +10,8 @@
         {{ 'Liste des fiches de paies'|trans }}
     </h4>
 
-    <a href="{{ path('paie_new') }}" class="btn btn-success mb-4">
-        <i class="fas fa-plus"></i> Nouveau paiement
+    <a href="{{ path('paie_bulletin') }}" class="btn btn-success mb-4">
+        <i class="fas fa-plus"></i> Tous les bulletins
     </a>
 
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
@@ -20,8 +20,6 @@
             <th>Matricule</th>
             <th>Employé(e)</th>
             <th>Salaire De base</th>
-            <th>Net à payé</th>
-            <th>Date paiement</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -31,10 +29,8 @@
                 <td>{{ paies.employe.matricule }}</td>
                 <td>{{ paies.employe.nom~' '~paies.employe.prenom }}</td>
                 <td>{{ paies.salaireBase }}</td>
-                <td>{{ paies.salaireNet }}</td>
-                <td>{{ paies.mois ? paies.mois|date('m/Y'): '' }}</td>
                 <td>
-                    <a href="#" class="btn btn-success">Details</a>
+                    <a href="{{ path('paie_show', {'id': paies.employe.id }) }}" class="btn btn-success">Details</a>
                 </td>
             </tr>
         {% else %}

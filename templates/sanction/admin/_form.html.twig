@@ -1,3 +1,6 @@
+{% extends 'admin.html.twig' %}
+
+{% block body %}
 {{ form_start(form, {'attr': {'id': 'form'}}) }}
 
 <div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
@@ -24,10 +27,32 @@
         <div class="col-12 mb-4">
             {{ form_row(form.typeSanction, {'attr': {'placeholder': 'Type sanction *'}, 'label': false}) }}
         </div>
-        <div class="col-12 mb-4">
-            {{ form_row(form.description, {'attr': {'placeholder': 'Nom de la sanction*'}, 'label': false}) }}
+
+        <div class="col-12 mb-4" id="dateDebut">
+            {{ form_row(form.dateDebut, {'attr': {'title': 'Date debut mis à pied *'}, 'label': false}) }}
         </div>
-        
-    </div>
+        <div class="col-12 mb-4" id="dateFin">
+            {{ form_row(form.dateFin, {'attr': {'title': 'Date fin mis à pied*'}, 'label': false}) }}
+        </div>
+
     {{ form_rest(form) }}
 </div>
+{% endblock %}
+{% block scripts %}
+<script>
+       $(document).ready(function() {
+        $('#dateDebut').hide();
+        $('#dateFin').hide();
+    $('#sanction_typeSanction').on('change', function() {
+        const selectedSanction = $(this).find('option:selected').text().trim();
+        if (selectedSanction === "mis a pied") {
+            $('#dateDebut').show();
+            $('#dateFin').show();
+        } else {
+            $('#dateDebut').hide();
+            $('#dateFin').hide();
+        }
+    });
+       });
+</script>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'rh.html.twig' %}
+
+{% block body %}
+    {% for bulletin in bulletins %}
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                Bulletin de {{ bulletin.employe.nom }} {{ bulletin.employe.prenom }}
+            </div>
+            <div class="card-body">
+                <p><strong>Matricule :</strong> {{ bulletin.employe.matricule }}</p>
+                <p><strong>Poste :</strong> {{ bulletin.employe.poste.nom }}</p>
+                <p><strong>Salaire brut :</strong> {{ bulletin.salaireBase }} FCFA</p>
+
+                <p><strong>Primes :</strong></p>
+                <ul>
+                    {% if bulletin.prime is not empty %}
+                        {% for prime in bulletin.prime %}
+                            <li>Nom prime : {{ prime.montant }} FCFA</li>
+                        {% endfor %}
+                    {% else %}
+                        <li>Aucune prime</li>
+                    {% endif %}
+                </ul>
+
+                <p><strong>Heures supplémentaires :</strong></p>
+                <ul>
+                    {% if bulletin.heureSup is not empty %}
+                        {% for heure in bulletin.heureSup %}
+                            <li>{{ heure.duree }} heures : {{ heure.tauxHoraire }} FCFA</li>
+                        {% endfor %}
+                    {% else %}
+                        <li>Aucune heure supplémentaire</li>
+                    {% endif %}
+                </ul>
+
+                <p><strong>Retenues :</strong></p>
+                <ul>
+                    {% if bulletin.retenues is not empty %}
+                        {% for retenue in bulletin.retenues %}
+                            <li>{{ retenue.type }}  : {{ retenue.montantRetenue }} FCFA</li>
+                        {% endfor %}
+                    {% else %}
+                        <li>Aucune retenue</li>
+                    {% endif %}
+                </ul>
+
+                <p><strong>Net à payer :</strong> <span class="h4 text-success">
+                   Montant en dure     
+                </span></p>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info">Aucun bulletin en attente de validation.</div>
+    {% endfor %}
+
+     <!-- Bouton pour valider tous les bulletins -->
+     <form action="{{ path('paie_new') }}" method="POST">
+        <button type="submit" class="btn btn-primary">Valider tous les bulletins</button>
+    </form>
+{% endblock %}

@@ -49,8 +49,16 @@ class SanctionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-
             $sanction->setDateCreation(new \DateTime());
+            $typeSanction = $sanction->getTypeSanction()->getNom();
+            if($typeSanction === 'mis a pied'){
+                $dateDebut = $sanction->getDateDebut();
+                $dateFin = $sanction->getDateFin();
+                $nombreJours = $dateDebut->diff($dateFin)->days + 1;
+                $sanction->setNombreJours($nombreJours);
+            }elseif($typeSanction === 'ponction salarial'){
+                $sanction->setNombreJours('1');
+            }
 
             $entityManager->persist($sanction);
             $entityManager->flush();

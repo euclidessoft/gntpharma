@@ -42,6 +42,11 @@ class Sanction
      */
     private $dateFin;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nombreJours;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +110,18 @@ class Sanction
     public function setDateFin(?\DateTimeInterface $dateFin): self
     {
         $this->dateFin = $dateFin;
+
+        return $this;
+    }
+
+    public function getNombreJours(): ?int
+    {
+        return $this->nombreJours;
+    }
+
+    public function setNombreJours(?int $nombreJours): self
+    {
+        $this->nombreJours = $nombreJours;
 
         return $this;
     }
