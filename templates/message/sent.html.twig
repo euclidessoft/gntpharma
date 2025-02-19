@@ -19,13 +19,13 @@
 			<div class="col-3">Actions</div>
 			{% for message in app.user.sent %}
 				{% set bold = "" %}
-				{% if message.isRead == 0 %}
-					{% set bold = "fw-bold" %}
-				{% endif %}
+{#				{% if message.isRead == 0 %}#}
+{#					{% set bold = "fw-bold" %}#}
+{#				{% endif %}#}
 
 				<div class="col-3 {{bold}}">{{ message.sender.email }}</div>
 				<div class="col-3 {{bold}}">
-					<a href="{{ path("read", {id: message.id}) }}">{{ message.title }}</a>
+					<a href="{{ path("readSend", {id: message.id}) }}">{{ message.title }}</a>
 				</div>
 				<div class="col-3 {{bold}}">{{ message.createdAt|date }}</div>
 				<div class="col-3">

@@ -8,10 +8,10 @@
 		<div class="row">
 			<div class="col-12">
 				<h1>Messagerie</h1>
-                <h2>{{ message.title }}</h2>
+                <h2>{{ message.message.message }}</h2>
                 <p>Message de {{ message.sender.email }}</p>
-                <p>Le {{ message.createdAt|date }}</p>
-                <div>{{ message.message }}</div>
+                <p>Le {{ message.message.createdAt|date }}</p>
+                <div>{{ message.message.message }}</div>
 				<a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
 					Voir mes dossiers
 				</a>
