@@ -212,7 +212,6 @@ class AbsenceController extends AbstractController
                 $decision->setExplication($demandeExplication);
                 $entityManager->persist($demandeExplication);
             } elseif ($typeDecision == 'Sanction') {
-                
                 $sanction = new Sanction();
                 $sanction->setDateCreation(new \DateTime());
                 $sanction->setTypeSanction($decision->getTypeSanction());
@@ -226,7 +225,8 @@ class AbsenceController extends AbstractController
                     $decision->setDateFin($dateFin);
                     $sanction->setDateDebut($dateDebut);
                     $sanction->setDateFin($dateFin);
-
+                    $nombreJours = $dateDebut->diff($dateFin)->days + 1;
+                    $sanction->setNombreJours($nombreJours);
 
                     $absence = new Absence();
                     $absence->setEmploye($decision->getAbsences()->getEmploye());
@@ -235,6 +235,8 @@ class AbsenceController extends AbstractController
                     $absence->setJustifier(true);
                     $absence->setStatus(1);
                     $entityManager->persist($absence);
+                }elseif($typeSanction === 'ponction salarial'){
+                    $sanction->setNombreJours('1');
                 }
                 
                 $entityManager->persist($sanction);

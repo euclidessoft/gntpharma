@@ -30,12 +30,23 @@ class PaieController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $employes = $entityManager->getRepository(Employe::class)->findAll();
         $paies = [];
+        $currentMonth = (new \DateTime());
 
         foreach ($employes as $employe) {
             //Recuperations des Primes et Heure Supplementaire
-            $primes = $entityManager->getRepository(Prime::class)->findBy(['employe' => $employe]);
-            $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findBy(['employe' => $employe]);
-            $sanctions = $entityManager->getRepository(Sanction::class)->findBy(['employe' => $employe]);
+            $primes = $entityManager->getRepository(Prime::class)->findBy([
+                'employe' => $employe,
+                'createdAt' => $currentMonth,
+            ]);
+            $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findBy([
+                'employe' => $employe,
+                'createdAt' => $currentMonth,
+            ]);
+
+            $sanctions = $entityManager->getRepository(Sanction::class)->findBy([
+                'employe' => $employe,
+                'createdAt' => $currentMonth,
+            ]);
             $salaireDeBase = $employe->getPoste()->getSalaire();
 
             $paies[] = [
@@ -123,13 +134,13 @@ class PaieController extends AbstractController
             $primes = $entityManager->getRepository(Prime::class)->findBy(['employe' => $employe]);
             $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findBy(['employe' => $employe]);
             $sanctions = $entityManager->getRepository(Sanction::class)->findBy(['employe' => $employe]);
-            
+
             //Calcul des retenues
             $totalRetenue = 0;
             $RetenueDetails[] = [];
 
-            foreach($sanctions as $sanction){
-                if($sanction->getTypeSanction()->getNom() === 'ponction salarial'){
+            foreach ($sanctions as $sanction) {
+                if ($sanction->getTypeSanction()->getNom() === 'ponction salarial') {
                     $nombreJours = $sanction->getNombreJours();
                     $montantRetenue = $salaireJournaliere * $nombreJours;
                     $totalRetenue += $montantRetenue;
@@ -140,7 +151,7 @@ class PaieController extends AbstractController
                         'details' => $nombreJours . ' jours de retenue',
                     ];
 
-                }elseif($sanction->getTypeSanction()->getNom() === 'mis a pied'){
+                } elseif ($sanction->getTypeSanction()->getNom() === 'mis a pied') {
                     $dateDebut = $sanction->getDateDebut();
                     $dateFin = $sanction->getDateFin();
                     $nombreJours = $dateDebut->diff($dateFin)->days + 1;
@@ -159,28 +170,35 @@ class PaieController extends AbstractController
             $totalPrimes = $primeRepository->getTotalPrimesByEmploye($employe);
             $totalHeureSup = $heureSuplementaireRepository->getTotalHeuresByEmploye($employe);
             $salaireNet = $salaireDeBase + $totalHeureSup + $totalPrimes - $totalRetenue;
-            
-            
-          
-            // Enregistrement dans la table paie
-             $paie = new Paie();
-             $paie->setSalaireBase($salaireDeBase);
-             $paie->setEmploye($employe);
-             $paie->setMois(new \DateTime());
-             $paie->setTotalPrime($totalPrimes);
-             $paie->setTotalheureSup($totalHeureSup);
-             $paie->setTotalheureSup($totalHeureSup);
-             $paie->setTotalRetenue($totalRetenue);
-             $paie->setSalaireNet($salaireNet);
-        }
-       
-        $entityManager->persist($paie);
-        $entityManager->flush();
 
+            // Enregistrement dans la table paie
+            $paie = new Paie();
+            $paie->setSalaireBase($salaireDeBase);
+            $paie->setEmploye($employe);
+            $paie->setMois(new \DateTime());
+            $paie->setTotalPrime($totalPrimes);
+            $paie->setTotalheureSup($totalHeureSup);
+            $paie->setTotalRetenue($totalRetenue);
+            $paie->setSalaireNet($salaireNet);
+            $entityManager->persist($paie);
+
+        }
+
+        $entityManager->flush();
+        return $this->redirectToRoute('paie_historique');
+    }
+
+    /**
+     * @Route("/Historique", name="paie_historique", methods={"GET"})
+     */
+    public function historique(PaieRepository $paieRepository): Response
+    {
+        $paie = $paieRepository->findAll();
         return $this->render('paie/historique.html.twig', [
             'paie' => $paie,
         ]);
     }
+
 
     /**
      * @Route("/{id}", name="paie_show", methods={"GET"})
@@ -200,4 +218,5 @@ class PaieController extends AbstractController
             'heureSup' => $heureSup,
         ]);
     }
+
 }

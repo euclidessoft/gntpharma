@@ -50,6 +50,7 @@ class SanctionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $sanction->setDateCreation(new \DateTime());
+            $sanction->setCreatedAt(new \DateTime());
             $typeSanction = $sanction->getTypeSanction()->getNom();
             if($typeSanction === 'mis a pied'){
                 $dateDebut = $sanction->getDateDebut();

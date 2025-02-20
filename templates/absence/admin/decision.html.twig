@@ -58,14 +58,10 @@
 {% block scripts %}
 <script>
     $(document).ready(function() {
-        $('#typeSanction').hide();
-        $('#reponse-form').hide();
-        $('#dateDebut').hide();
-        $('#dateFin').hide();
-
+        $('#typeSanction, #reponse-form, #dateDebut, #dateFin').hide();
         $('#decision_type').on('change', function() {
             const selected = $(this).find('option:selected').text().trim();
-    
+
             if (selected === 'Sanction') {
                 $('#typeSanction').show();
                 $('#reponse-form').hide();
@@ -86,6 +82,10 @@
                 $('#dateDebut').hide();
                 $('#dateFin').hide();
             }
+        });
+
+        $('#send').on('click', function() {
+            $('#form').submit();
         });
     });
 </script>

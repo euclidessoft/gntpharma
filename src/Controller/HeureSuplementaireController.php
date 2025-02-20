@@ -36,6 +36,7 @@ class HeureSuplementaireController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $heureSuplementaire->setCreatedAt(new \DateTime());
             $entityManager->persist($heureSuplementaire);
             $entityManager->flush();
 
@@ -83,7 +84,7 @@ class HeureSuplementaireController extends AbstractController
      */
     public function delete(Request $request, HeureSuplementaire $heureSuplementaire): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$heureSuplementaire->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $heureSuplementaire->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($heureSuplementaire);
             $entityManager->flush();

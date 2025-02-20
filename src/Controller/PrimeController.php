@@ -36,6 +36,7 @@ class PrimeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $prime->setCreatedAt(new  \DateTime());
             $entityManager->persist($prime);
             $entityManager->flush();
 
