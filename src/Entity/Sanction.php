@@ -47,6 +47,11 @@ class Sanction
      */
     private $nombreJours;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,6 +127,18 @@ class Sanction
     public function setNombreJours(?int $nombreJours): self
     {
         $this->nombreJours = $nombreJours;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
