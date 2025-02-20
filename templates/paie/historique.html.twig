@@ -1,1 +1,49 @@
-<h1>Historique des bulletin</h1>
+{% extends 'rh.html.twig' %}
+
+{% block body %}
+    {% if paie is empty %}
+        <div class="alert alert-info">Aucun paie enregistrée.</div>
+    {% else %}
+        {% for paie in paie %}
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    paie de {{ paie.employe.nom }} {{ paie.employe.prenom }}
+                </div>
+                <div class="card-body">
+                    <p><strong>Matricule :</strong> {{ paie.employe.matricule }}</p>
+                    <p><strong>Poste :</strong> {{ paie.employe.poste.nom }}</p>
+                    <p><strong>Salaire brut :</strong> {{ paie.salaireBase }} FCFA</p>
+
+                    <!-- Affichage des primes -->
+                    <p><strong>Primes :</strong></p>
+                    <ul>
+                    {{ paie.totalPrime }}
+                    </ul>
+
+                    <!-- Affichage des heures supplémentaires -->
+                    <p><strong>Heures supplémentaires :</strong></p>
+                    <ul>
+                        {{ paie.totalheureSup }}
+                    </ul>
+
+                    <!-- Affichage des retenues -->
+                    <p><strong>Retenues :</strong></p>
+                    <ul>
+                        {{ paie.totalRetenue }}
+                    </ul>
+
+                    <!-- Calcul du salaire net -->
+                    <p><strong>Salaire net à payer :</strong>
+                        <span class="h4 text-success">
+                            {{ paie.salaireBase + paie.totalPrime + paie.totalheureSup - paie.totalRetenue }} FCFA
+                        </span>
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+
+        <!-- Bouton pour valider tous les paie -->
+        <a href="{{ path('paie_index') }}" class="btn btn-success-light">Retour</a>
+        <a href="#" class="btn btn-success">Imprimer</a>
+    {% endif %}
+{% endblock %}

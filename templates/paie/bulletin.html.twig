@@ -21,10 +21,11 @@
                     <!-- Affichage des primes -->
                     <p><strong>Primes :</strong></p>
                     <ul>
-                        {% if bulletin.prime is not empty %}
-                            {% for prime in bulletin.prime %}
+                        {% if bulletin.employe.primes is not empty %}
+                            {% for prime in bulletin.employe.primes %}
                                 <li>Nom prime : {{ prime.montant }} FCFA</li>
                                 {% set totalPrimes = totalPrimes + prime.montant %}
+
                             {% endfor %}
                         {% else %}
                             <li>Aucune prime</li>
@@ -34,8 +35,8 @@
                     <!-- Affichage des heures supplémentaires -->
                     <p><strong>Heures supplémentaires :</strong></p>
                     <ul>
-                        {% if bulletin.heureSup is not empty %}
-                            {% for heure in bulletin.heureSup %}
+                        {% if bulletin.employe.heureSuplementaires is not empty %}
+                            {% for heure in bulletin.employe.heureSuplementaires %}
                                 <li>{{ heure.duree }} heures à {{ heure.tauxHoraire }} FCFA</li>
                                 {% set totalHeuresSup = totalHeuresSup + (heure.duree * heure.tauxHoraire) %}
                             {% endfor %}
@@ -66,10 +67,15 @@
                 </div>
             </div>
         {% endfor %}
-
-        <!-- Bouton pour valider tous les bulletins -->
-        <form action="{{ path('paie_new') }}" method="POST">
-            <button type="submit" class="btn btn-primary">Valider tous les bulletins</button>
-        </form>
+        <div class="d-flex">
+            {% if paieExistante == null %}
+                <!-- Bouton pour valider tous les bulletins -->
+                <form action="{{ path('paie_new') }}" method="POST">
+                    <button type="submit" class="btn btn-primary">Valider tous les bulletins</button>
+                </form>
+            {% else %}
+                <a href="{{ path('paie_index') }}" class="btn btn-success-light">Retour</a>
+            {% endif %}
+        </div>
     {% endif %}
 {% endblock %}
