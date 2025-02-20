@@ -67,6 +67,18 @@ class PaieController extends AbstractController
     public function bulletin(): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
+        $currentMonth = new \DateTime();
+        $currentMonthString = $currentMonth->format('F Y');
+
+        // Vérifier si la paie du mois en cours est déjà validée
+        $paieExistante = $entityManager->getRepository(Paie::class)->findOneBy([
+            'mois' => $currentMonth
+        ]);
+
+        // Si la paie du mois est déjà enregistrée, on ne génère pas les bulletins
+        if ($paieExistante) {
+            return $this->redirectToRoute('historique_paie');
+        }
 
         $employes = $entityManager->getRepository(Employe::class)->findAll();
         $bulletins = [];
@@ -75,10 +87,21 @@ class PaieController extends AbstractController
             $salaireDeBase = $employe->getPoste()->getSalaire();
             $salaireJournaliere = $salaireDeBase / 30;
 
-            //Recuperations des Primes et Heure Supplementaire
-            $primes = $entityManager->getRepository(Prime::class)->findBy(['employe' => $employe]);
-            $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findBy(['employe' => $employe]);
-            $sanctions = $entityManager->getRepository(Sanction::class)->findBy(['employe' => $employe]);
+            // Récupération des primes et heures sup
+            $primes = $entityManager->getRepository(Prime::class)->findBy([
+                'employe' => $employe,
+                'createdAt' => $currentMonth,
+            ]);
+
+            $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findBy([
+                'employe' => $employe,
+                'createdAt' => $currentMonth,
+            ]);
+
+            $sanctions = $entityManager->getRepository(Sanction::class)->findBy([
+                'employe' => $employe,
+                'createdAt' => $currentMonth,
+            ]);
 
             $retenues = [];
             foreach ($sanctions as $sanction) {
@@ -105,14 +128,17 @@ class PaieController extends AbstractController
 
             $bulletins[] = [
                 'employe' => $employe,
+                'mois' => $currentMonthString,
                 'salaireBase' => $salaireDeBase,
                 'prime' => $primes,
                 'heureSup' => $heureSup,
                 'retenues' => $retenues,
             ];
         }
+
         return $this->render('paie/bulletin.html.twig', [
             'bulletins' => $bulletins,
+            'paieExistante' => $paieExistante // On passe cette variable au template
         ]);
     }
 
