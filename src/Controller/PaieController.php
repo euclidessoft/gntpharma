@@ -67,6 +67,7 @@ class PaieController extends AbstractController
         $bulletins = [];
 
         foreach ($employes as $employe) {
+
             $paieExistante = $entityManager->getRepository(Paie::class)->findByDate($employe->getId(),$startOfMonth,$endOfMonth);
             if ($paieExistante) {
                 continue;

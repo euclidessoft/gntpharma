@@ -63,15 +63,12 @@
                 </div>
             </div>
         {% endfor %}
+
         <div class="d-flex">
-            {% if paieExistante == null %}
-                <!-- Bouton pour valider tous les bulletins -->
-                <form action="{{ path('paie_new') }}" method="POST">
-                    <button type="submit" class="btn btn-primary">Valider tous les bulletins</button>
-                </form>
-            {% else %}
-                <a href="{{ path('paie_index') }}" class="btn btn-success-light">Retour</a>
-            {% endif %}
+            <!-- Bouton pour valider tous les bulletins -->
+            <a href="{{ path('paie_new') }}" class="btn btn-success"> Valider tous les bulletins</a>
+            <a href="{{ path('paie_index') }}" class="btn btn-success-light">Retour</a>
+
         </div>
     {% endif %}
 {% endblock %}

@@ -23,16 +23,18 @@ class PaieRepository extends ServiceEntityRepository
     //  * @return Paie[] Returns an array of Paie objects
     //  */
 
-    public function findByDate($date,$id)
+    public function findByDate($id, \DateTime $startOfMonth, \DateTime $endOfDate)
     {
         return $this->createQueryBuilder('p')
-            ->Where('p.mois >= :date')
-            ->setParameter('date', $date)
-            ->andWhere('p.employe = :id')
-            ->setParameter('id', $id)
+            ->where('p.employe = :id')
+            ->andWhere('p.mois BETWEEN :start AND :end')
+            ->setParameters([
+                'id' => $id,
+                'start' => $startOfMonth,
+                'end' => $endOfDate,
+            ])
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
 
