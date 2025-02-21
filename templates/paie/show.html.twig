@@ -1,90 +1,91 @@
 {% extends 'rh.html.twig' %}
-
+{% block paie %}active{% endblock %}
 {% block body %}
-    <div class="container mt-4">
-        <h2 class="mb-4">Détails du Bulletin de Paie de {{ employe.nom }} {{ employe.prenom }}</h2>
+    <div class="container mt-5 p-4 border rounded shadow-sm bg-white">
+        <h2 class="text-center text-uppercase font-weight-bold mb-4">Détails du Bulletin de Paie</h2>
+        <h4 class="text-center mb-5">{{ employe.nom }} {{ employe.prenom }}</h4>
 
-        <div class="card mb-4">
-            <div class="card-header bg-dark text-white">
-                Bulletin de Paie
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-dark text-white font-weight-bold">
+                <i class="fas fa-money-bill-wave mr-2"></i> Bulletin de Paie
             </div>
             <div class="card-body">
-                <!-- Détails de l'employé -->
-                <p><strong>Matricule :</strong> {{ employe.matricule }}</p>
-                <p><strong>Poste :</strong> {{ employe.poste.nom }}</p>
-                <p><strong>Département :</strong> {{ employe.poste.departement.nom }}</p>
-                <p><strong>Salaire de base :</strong> {{ employe.poste.salaire }} FCFA</p>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5 class="font-weight-bold">Informations de l'employé</h5>
+                        <p><strong>Matricule :</strong> {{ employe.matricule }}</p>
+                        <p><strong>Poste :</strong> {{ employe.poste.nom }}</p>
+                        <p><strong>Département :</strong> {{ employe.poste.departement.nom }}</p>
+                        <p><strong>Salaire de base :</strong> {{ employe.poste.salaire|number_format(0, '', ' ') }} FCFA</p>
+                    </div>
+                </div>
 
                 <hr>
 
-                <!-- Détails des primes -->
-                <h5>Primes :</h5>
-                <ul>
+                <h5 class="font-weight-bold">Primes</h5>
+                <ul class="list-group mb-3">
                     {% set totalPrimes = 0 %}
                     {% for prime in employe.primes %}
-                        <li>{{ prime.montant }} FCFA</li>
-                        {% set totalPrimes = totalPrimes + prime.montant %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            Prime : {{ prime.montant|number_format(0, '', ' ') }} FCFA
+                            {% set totalPrimes = totalPrimes + prime.montant %}
+                        </li>
                     {% endfor %}
                     {% if employe.primes is empty %}
-                        <li>Aucune prime</li>
+                        <li class="list-group-item text-muted">Aucune prime</li>
                     {% endif %}
                 </ul>
 
-                <hr>
-
-                <!-- Détails des heures supplémentaires -->
-                <h5>Heures supplémentaires :</h5>
-                <ul>
+                <h5 class="font-weight-bold">Heures supplémentaires</h5>
+                <ul class="list-group mb-3">
                     {% set totalHeuresSup = 0 %}
                     {% for heure in employe.heureSuplementaires %}
-                        <li>{{ heure.duree }} heures à {{ heure.tauxHoraire }} FCFA</li>
-                        {% set totalHeuresSup = totalHeuresSup + (heure.duree * heure.tauxHoraire) %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            {{ heure.duree }} heures à {{ heure.tauxHoraire|number_format(0, '', ' ') }} FCFA
+                            {% set totalHeuresSup = totalHeuresSup + (heure.duree * heure.tauxHoraire) %}
+                        </li>
                     {% endfor %}
                     {% if employe.heureSuplementaires is empty %}
-                        <li>Aucune heure supplémentaire</li>
+                        <li class="list-group-item text-muted">Aucune heure supplémentaire</li>
                     {% endif %}
                 </ul>
 
-                <hr>
-
-                <!-- Détails des retenues -->
-                <h5>Retenues :</h5>
-                <ul>
+                <h5 class="font-weight-bold">Retenues</h5>
+                <ul class="list-group mb-3">
                     {% set totalRetenues = 0 %}
                     {% for retenue in retenues %}
-                        <li>{{ retenue.type }} : {{ retenue.montantRetenue }} FCFA ({{ retenue.details }})</li>
-                        {% set totalRetenues = totalRetenues + retenue.montantRetenue %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            {{ retenue.type }} : {{ retenue.montantRetenue|number_format(0, '', ' ') }} FCFA
+                            {% set totalRetenues = totalRetenues + retenue.montantRetenue %}
+                        </li>
                     {% endfor %}
                     {% if retenues is empty %}
-                        <li>Aucune retenue</li>
+                        <li class="list-group-item text-muted">Aucune retenue</li>
                     {% endif %}
                 </ul>
 
                 <hr>
 
-                <!-- Calcul du salaire net -->
-                <h5>Salaire Net à Payer :</h5>
                 {% set salaireBrut = employe.poste.salaire + totalPrimes + totalHeuresSup %}
                 {% set salaireNet = salaireBrut - totalRetenues %}
 
-                <p><strong>Salaire brut :</strong> {{ salaireBrut }} FCFA</p>
-                <p><strong>Total des primes :</strong> {{ totalPrimes }} FCFA</p>
-                <p><strong>Total des heures supplémentaires :</strong> {{ totalHeuresSup }} FCFA</p>
-                <p><strong>Total des retenues :</strong> {{ totalRetenues }} FCFA</p>
-                <p><strong>Net à payer :</strong> <span class="h4 text-success">{{ salaireNet }} FCFA</span></p>
-
-                <hr>
-
-                <!-- Boutons : Valider et Retour -->
-                <div class="d-flex justify-content-center py-4">
-                    {% if paieExistante == null %}
-                        <a href="{{ path('paie_valider', {'id': employe.id }) }}" class="btn btn-success">Valider</a>
-                    {% else %}
-                        <a href="{{ path('paie_index') }}" class="btn btn-success-light">Retour</a>
-                        <a href="#" class="btn btn-success-light">Imprimer</a>
-                    {% endif %}
+                <div class="alert alert-info p-4">
+                    <h5 class="font-weight-bold">Récapitulatif</h5>
+                    <p><strong>Salaire brut :</strong> {{ salaireBrut|number_format(0, '', ' ') }} FCFA</p>
+                    <p><strong>Total des primes :</strong> {{ totalPrimes|number_format(0, '', ' ') }} FCFA</p>
+                    <p><strong>Total des heures supplémentaires :</strong> {{ totalHeuresSup|number_format(0, '', ' ') }} FCFA</p>
+                    <p><strong>Total des retenues :</strong> {{ totalRetenues|number_format(0, '', ' ') }} FCFA</p>
+                    <p class="h4 text-success font-weight-bold">Net à payer : {{ salaireNet|number_format(0, '', ' ') }} FCFA</p>
                 </div>
 
+                <div class="d-flex justify-content-center mt-4">
+                    {% if paieExistante == null %}
+                        <a href="{{ path('paie_valider', {'id': employe.id }) }}" class="btn btn-success btn-lg">Valider</a>
+                    {% else %}
+                        <a href="{{ path('paie_index') }}" class="btn btn-secondary btn-lg mr-2">Retour</a>
+                        <a href="#" class="btn btn-primary btn-lg">Imprimer</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

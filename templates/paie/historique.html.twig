@@ -1,49 +1,48 @@
-{% extends 'rh.html.twig' %}
+{% extends "rh.html.twig" %}
+{% block title %} {{ "Liste des bulletins"|trans }} - GNT Pharma {% endblock %}
+{% block paie %}active{% endblock %}
+{% block paie_historique %}active{% endblock %}
 
 {% block body %}
-    {% if paie is empty %}
-        <div class="alert alert-info">Aucun paie enregistrée.</div>
-    {% else %}
-        {% for paie in paie %}
-            <div class="card mb-4">
-                <div class="card-header bg-dark text-white">
-                    paie de {{ paie.employe.nom }} {{ paie.employe.prenom }}
-                </div>
-                <div class="card-body">
-                    <p><strong>Matricule :</strong> {{ paie.employe.matricule }}</p>
-                    <p><strong>Poste :</strong> {{ paie.employe.poste.nom }}</p>
-                    <p><strong>Salaire brut :</strong> {{ paie.salaireBase }} FCFA</p>
+    <div class="col-lg-10 mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-money-bill mr-2"></i>
+            {{ "Historique de paiement"|trans }}
+        </h3>
+        <a href="{{ path('paie_historique_bulletin') }}" class="btn btn-success mb-4">
+            <i class="fas fa-plus"></i>
+            Tous les bulletins
+        </a>
 
-                    <!-- Affichage des primes -->
-                    <p><strong>Primes :</strong></p>
-                    <ul>
-                    {{ paie.totalPrime }}
-                    </ul>
-
-                    <!-- Affichage des heures supplémentaires -->
-                    <p><strong>Heures supplémentaires :</strong></p>
-                    <ul>
-                        {{ paie.totalheureSup }}
-                    </ul>
-
-                    <!-- Affichage des retenues -->
-                    <p><strong>Retenues :</strong></p>
-                    <ul>
-                        {{ paie.totalRetenue }}
-                    </ul>
-
-                    <!-- Calcul du salaire net -->
-                    <p><strong>Salaire net à payer :</strong>
-                        <span class="h4 text-success">
-                            {{ paie.salaireBase + paie.totalPrime + paie.totalheureSup - paie.totalRetenue }} FCFA
-                        </span>
-                    </p>
-                </div>
-            </div>
-        {% endfor %}
-
-        <!-- Bouton pour valider tous les paie -->
-        <a href="{{ path('paie_index') }}" class="btn btn-success-light">Retour</a>
-        <a href="#" class="btn btn-success">Imprimer</a>
-    {% endif %}
+        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+            <thead>
+            <tr>
+                <th>{{ 'Matricule'|trans }}</th>
+                <th>{{ 'Employé'|trans }}</th>
+                <th>{{ 'Date paiement'|trans }}</th>
+                <th>{{ 'Salaire de base'|trans }}</th>
+                <th>{{ 'Montant reçu'|trans }}</th>
+                <th>{{ 'Actions'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for paie in paie %}
+                <tr>
+                    <td>{{ paie.employe.matricule }}</td>
+                    <td>{{ paie.employe.nom }} {{ paie.employe.prenom }}</td>
+                    <td>{{ paie.employe.nom }} {{ paie.employe.prenom }}</td>
+                    <td>{{ paie.salaireBase|number_format(0, '' , ' ') }} FCFA</td>
+                    <td>{{ paie.salaireNet|number_format(0, '' , ' ') }} FCFA</td>
+                    <td>
+                        <a href="{{ path('paie_historique_show', {'id': paie.id} ) }}" class="btn btn-success"><i class="fas fa-eye"></i>Details</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucune paiement enregistrée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

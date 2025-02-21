@@ -1,5 +1,5 @@
 {% extends 'rh.html.twig' %}
-
+{% block paie %}active{% endblock %}
 {% block body %}
     {% if bulletins is empty %}
         <div class="alert alert-info">Aucun bulletin en attente de validation pour ce mois.</div>
@@ -18,25 +18,22 @@
                     <p><strong>Poste :</strong> {{ bulletin.employe.poste.nom }}</p>
                     <p><strong>Salaire brut :</strong> {{ bulletin.salaireBase }} FCFA</p>
 
-                    <!-- Affichage des primes -->
                     <p><strong>Primes :</strong></p>
                     <ul>
-                        {% if bulletin.employe.primes is not empty %}
-                            {% for prime in bulletin.employe.primes %}
+                        {% if bulletin.primes is not empty %}
+                            {% for prime in bulletin.primes %}
                                 <li>Nom prime : {{ prime.montant }} FCFA</li>
                                 {% set totalPrimes = totalPrimes + prime.montant %}
-
                             {% endfor %}
                         {% else %}
                             <li>Aucune prime</li>
                         {% endif %}
                     </ul>
 
-                    <!-- Affichage des heures supplémentaires -->
                     <p><strong>Heures supplémentaires :</strong></p>
                     <ul>
-                        {% if bulletin.employe.heureSuplementaires is not empty %}
-                            {% for heure in bulletin.employe.heureSuplementaires %}
+                        {% if bulletin.heureSup is not empty %}
+                            {% for heure in bulletin.heureSup %}
                                 <li>{{ heure.duree }} heures à {{ heure.tauxHoraire }} FCFA</li>
                                 {% set totalHeuresSup = totalHeuresSup + (heure.duree * heure.tauxHoraire) %}
                             {% endfor %}
@@ -45,7 +42,6 @@
                         {% endif %}
                     </ul>
 
-                    <!-- Affichage des retenues -->
                     <p><strong>Retenues :</strong></p>
                     <ul>
                         {% if bulletin.retenues is not empty %}

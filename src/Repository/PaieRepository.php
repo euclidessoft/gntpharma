@@ -22,19 +22,19 @@ class PaieRepository extends ServiceEntityRepository
     // /**
     //  * @return Paie[] Returns an array of Paie objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findByDate($date,$id)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+            ->Where('p.mois >= :date')
+            ->setParameter('date', $date)
+            ->andWhere('p.employe = :id')
+            ->setParameter('id', $id)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Paie
