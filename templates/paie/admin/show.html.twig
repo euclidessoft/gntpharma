@@ -4,7 +4,6 @@
     <div class="container mt-5 p-4 border rounded shadow-sm bg-white">
         <h2 class="text-center text-uppercase font-weight-bold mb-4">Détails du Bulletin de Paie</h2>
         <h4 class="text-center mb-5">{{ employe.nom }} {{ employe.prenom }}</h4>
-
         <div class="card mb-4 shadow-sm">
             <div class="card-header bg-dark text-white font-weight-bold">
                 <i class="fas fa-money-bill-wave mr-2"></i> Bulletin de Paie
@@ -25,13 +24,13 @@
                 <h5 class="font-weight-bold">Primes</h5>
                 <ul class="list-group mb-3">
                     {% set totalPrimes = 0 %}
-                    {% for prime in employe.primes %}
+                    {% for prime in primes %}
                         <li class="list-group-item d-flex justify-content-between">
                             Prime : {{ prime.montant|number_format(0, '', ' ') }} FCFA
                             {% set totalPrimes = totalPrimes + prime.montant %}
                         </li>
                     {% endfor %}
-                    {% if employe.primes is empty %}
+                    {% if primes is empty %}
                         <li class="list-group-item text-muted">Aucune prime</li>
                     {% endif %}
                 </ul>
@@ -39,13 +38,13 @@
                 <h5 class="font-weight-bold">Heures supplémentaires</h5>
                 <ul class="list-group mb-3">
                     {% set totalHeuresSup = 0 %}
-                    {% for heure in employe.heureSuplementaires %}
+                    {% for heure in heureSup %}
                         <li class="list-group-item d-flex justify-content-between">
                             {{ heure.duree }} heures à {{ heure.tauxHoraire|number_format(0, '', ' ') }} FCFA
                             {% set totalHeuresSup = totalHeuresSup + (heure.duree * heure.tauxHoraire) %}
                         </li>
                     {% endfor %}
-                    {% if employe.heureSuplementaires is empty %}
+                    {% if heureSup is empty %}
                         <li class="list-group-item text-muted">Aucune heure supplémentaire</li>
                     {% endif %}
                 </ul>

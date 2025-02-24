@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/{_locale}/Paie")
@@ -30,16 +31,16 @@ class PaieController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $employes = $entityManager->getRepository(Employe::class)->findAll();
         $paies = [];
-        $startOfMonth =  new \DateTime('01-'.date('m').'-'.date('Y'));
+        $startOfMonth = new \DateTime('01-' . date('m') . '-' . date('Y'));
         $endOfMonth = new \DateTime('last day of this month');
         foreach ($employes as $employe) {
             //On verifie si le bulletin est deja enregistrer
-            $bulletinExist = $entityManager->getRepository(Paie::class)->findByDate($employe->getId(),$startOfMonth,$endOfMonth);
+            $bulletinExist = $entityManager->getRepository(Paie::class)->findByDate($employe->getId(), $startOfMonth, $endOfMonth);
             if (!$bulletinExist) {
                 //Recuperations des Primes et Heure Supplementaire
-                $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(),$startOfMonth,$endOfMonth);
-                $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(),$startOfMonth,$endOfMonth);
-                $sanctions = $entityManager->getRepository(Sanction::class)->findByDateRange($employe->getId(),$startOfMonth,$endOfMonth);
+                $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+                $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+                $sanctions = $entityManager->getRepository(Sanction::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
                 $salaireDeBase = $employe->getPoste()->getSalaire();
 
                 $paies[] = [
@@ -50,10 +51,11 @@ class PaieController extends AbstractController
                 ];
             }
         }
-        return $this->render('paie/index.html.twig', [
+        return $this->render('paie/admin/index.html.twig', [
             'paie' => $paies,
         ]);
     }
+
 
     /**
      * @Route("/Bulletin", name="paie_bulletin", methods={"GET"})
@@ -61,23 +63,23 @@ class PaieController extends AbstractController
     public function bulletin(): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $startOfMonth =  new \DateTime('01-'.date('m').'-'.date('Y'));
+        $startOfMonth = new \DateTime('01-' . date('m') . '-' . date('Y'));
         $endOfMonth = new \DateTime('last day of this month');
         $employes = $entityManager->getRepository(Employe::class)->findAll();
         $bulletins = [];
 
         foreach ($employes as $employe) {
 
-            $paieExistante = $entityManager->getRepository(Paie::class)->findByDate($employe->getId(),$startOfMonth,$endOfMonth);
+            $paieExistante = $entityManager->getRepository(Paie::class)->findByDate($employe->getId(), $startOfMonth, $endOfMonth);
             if ($paieExistante) {
                 continue;
             }
             $salaireDeBase = $employe->getPoste()->getSalaire();
             $salaireJournaliere = $salaireDeBase / 30;
 
-            $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(),$startOfMonth,$endOfMonth);
-            $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(),$startOfMonth,$endOfMonth);
-            $sanctions = $entityManager->getRepository(Sanction::class)->findByDateRange($employe->getId(),$startOfMonth,$endOfMonth);
+            $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+            $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+            $sanctions = $entityManager->getRepository(Sanction::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
 
             $retenues = [];
             foreach ($sanctions as $sanction) {
@@ -111,7 +113,7 @@ class PaieController extends AbstractController
             ];
         }
         //dd($employe,$startOfMonth,$salaireDeBase,$primes,$retenues);
-        return $this->render('paie/bulletin.html.twig', [
+        return $this->render('paie/admin/bulletin.html.twig', [
             'bulletins' => $bulletins,
             'paieExistante' => $paieExistante
         ]);
@@ -123,7 +125,7 @@ class PaieController extends AbstractController
     public function new(Request $request, PrimeRepository $primeRepository, HeureSuplementaireRepository $heureSuplementaireRepository, RetenueRepository $retenueRepository): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $startOfMonth =  new \DateTime('01-'.date('m').'-'.date('Y'));
+        $startOfMonth = new \DateTime('01-' . date('m') . '-' . date('Y'));
         $endOfMonth = new \DateTime('last day of this month');
 
         $employes = $entityManager->getRepository(Employe::class)->findAll();
@@ -132,9 +134,9 @@ class PaieController extends AbstractController
             $salaireJournaliere = $salaireDeBase / 30;
 
 
-            $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(),$startOfMonth,$endOfMonth);
-            $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(),$startOfMonth,$endOfMonth);
-            $sanctions = $entityManager->getRepository(Sanction::class)->findByDateRange($employe->getId(),$startOfMonth,$endOfMonth);
+            $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+            $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+            $sanctions = $entityManager->getRepository(Sanction::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
 
             $totalRetenue = 0;
             $RetenueDetails = [];
@@ -179,8 +181,8 @@ class PaieController extends AbstractController
             $paie->setTotalheureSup($totalHeureSup);
             $paie->setTotalRetenue($totalRetenue);
             $paie->setSalaireNet($salaireNet);
+            $paie->setDetailsRetenues(json_encode($detailsRetenues));
             $entityManager->persist($paie);
-
         }
 
         $entityManager->flush();
@@ -193,7 +195,7 @@ class PaieController extends AbstractController
     public function historique(PaieRepository $paieRepository): Response
     {
         $paie = $paieRepository->findAll();
-        return $this->render('paie/historique.html.twig', [
+        return $this->render('paie/admin/historique.html.twig', [
             'paie' => $paie,
         ]);
     }
@@ -204,8 +206,24 @@ class PaieController extends AbstractController
     public function historiqueBulletin(PaieRepository $paieRepository): Response
     {
         $paie = $paieRepository->findAll();
-        return $this->render('paie/historique_bulletin.html.twig', [
+        $detailsRetenues = [];
+
+        foreach ($paie as $singlePaie) {
+            // Si 'detailsRetenues' existe et n'est pas vide
+            $details = json_decode($singlePaie->getDetailsRetenues(), true);
+
+            // Si le JSON est valide et contient des éléments
+            if (is_array($details) && count($details) > 0) {
+                $detailsRetenues[] = $details;
+            } else {
+                // Ajouter un tableau vide si aucune retenue
+                $detailsRetenues[] = [];
+            }
+        }
+
+        return $this->render('paie/admin/historique_bulletin.html.twig', [
             'paie' => $paie,
+            'detailsRetenues' => $detailsRetenues,
         ]);
     }
 
@@ -214,40 +232,29 @@ class PaieController extends AbstractController
      */
     public function historiqueShow(Paie $paie): Response
     {
+        $detailsRetenues = json_decode($paie->getDetailsRetenues(), true); // Si tu as stocké en JSON, décode-le en tableau associatif
 
-        return $this->render('paie/historique_show.html.twig', [
+        return $this->render('paie/admin/historique_show.html.twig', [
             'paie' => $paie,
+            'detailsRetenues' => $detailsRetenues,
         ]);
     }
 
-
     /**
-     * @Route("/{id}", name="paie_show", methods={"GET"})
+     * @Route("Details/{id}", name="paie_show", methods={"GET"})
      */
     public function show(int $id): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
+        $startOfMonth = new \DateTime('01-' . date('m') . ('-') . date('Y'));
+        $endOfMonth = new \DateTime('last day of this month');
         $employe = $entityManager->getRepository(Employe::class)->find($id);
-        $currentMonth = new \DateTime();
-        $currentMonthString = $currentMonth->format('F Y');
 
         // Vérifier si la paie du mois en cours est déjà validée
-        $paieExistante = $entityManager->getRepository(Paie::class)->findOneBy([
-            'employe' => $employe,
-            'mois' => $currentMonth,
-        ]);
-
-        $primes = $entityManager->getRepository(Prime::class)->findBy([
-            'employe' => $employe,
-            'createdAt' => $currentMonth,
-        ]);
-        $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findBy([
-            'employe' => $employe,
-            'createdAt' => $currentMonth,
-        ]);
-        $sanctions = $entityManager->getRepository(Sanction::class)->findBy([
-            'employe' => $employe,
-        ]);
+        $paieExistante = $entityManager->getRepository(Paie::class)->findByDate($employe->getId(), $startOfMonth, $endOfMonth);
+        $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+        $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+        $sanctions = $entityManager->getRepository(Sanction::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
 
         $retenues = [];
         $salaireJournalier = $employe->getPoste()->getSalaire() / 30; // Salaire journalier
@@ -271,7 +278,7 @@ class PaieController extends AbstractController
         }
 
 
-        return $this->render('paie/show.html.twig', [
+        return $this->render('paie/admin/show.html.twig', [
             'employe' => $employe,
             'primes' => $primes,
             'heureSup' => $heureSup,
@@ -326,7 +333,6 @@ class PaieController extends AbstractController
         // Calcul des primes et heures supplémentaires
         $totalPrimes = $primeRepository->getTotalPrimesByEmploye($employe);
         $totalHeureSup = $heureSuplementaireRepository->getTotalHeuresByEmploye($employe);
-
         // Calcul du salaire net
         $salaireNet = $salaireDeBase + $totalHeureSup + $totalPrimes - $totalRetenue;
         // Enregistrement dans la table paie
@@ -338,8 +344,36 @@ class PaieController extends AbstractController
         $paie->setTotalheureSup($totalHeureSup);
         $paie->setTotalRetenue($totalRetenue);
         $paie->setSalaireNet($salaireNet);
+        $paie->setDetailsRetenues(json_encode($detailsRetenues));
         $entityManager->persist($paie);
         $entityManager->flush();
         return $this->redirectToRoute('paie_historique');
+    }
+
+
+    /**
+     * @Route("/Paiement/", name="mes_bulletins", methods={"GET"})
+     */
+    public function paiement(Security $security): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $security->getUser();
+        $bulletin = $entityManager->getRepository(Paie::class)->findBy(['employe' => $employe]);
+        return $this->render("paie/index.html.twig",[
+            'bulletins' => $bulletin,
+        ]);
+    }
+
+    /**
+     * @Route("/Paiement/Details/{id}", name="mes_bulletin_details", methods={"GET"})
+     */
+    public function paimentDetails(Paie $paie): Response
+    {
+        $detailsRetenues = json_decode($paie->getDetailsRetenues(), true); // Si tu as stocké en JSON, décode-le en tableau associatif
+
+        return $this->render("paie/detail_bulletin.html.twig",[
+            'paie' => $paie,
+            'detailsRetenues' => $detailsRetenues,
+        ]);
     }
 }

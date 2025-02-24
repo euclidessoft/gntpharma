@@ -145,6 +145,15 @@
                         </div>
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="paie">
+
+                        <li class="dropdown-item" title="{{ 'Fiche de paie'|trans }}">
+                            <a class="nav-link {% block bulletin %}{% endblock %}"
+                                href="{{ path('mes_bulletins') }}">
+                                <i class="fa-solid fa-money-check-dollar"></i>
+                                {{ 'Mes bulletins'|trans }}
+                            </a>
+                        </li>
+
                         <li class="dropdown-item" title="{{ 'Fiche de paie'|trans }}">
                             <a class="nav-link {% block heure_supplementaire %}{% endblock %}"
                                 href="{{ path('heure_suplementaire_index') }}">

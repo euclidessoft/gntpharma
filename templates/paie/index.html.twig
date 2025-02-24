@@ -1,42 +1,39 @@
 {% extends 'rh.html.twig' %}
-{% block paie %}active{% endblock %}
-{% block fiche %}active{% endblock %}
-
+{% block title %} {{ "Lignes de depenses"|trans }} - GNT Pharma {% endblock %}
+{% block employe %}active{% endblock %}
+{% block formation_index %}active{% endblock %}
+{% block all_formations %}active{% endblock %}
 {% block body %}
-<div class="container mt-4 fond-7 pb-5 pt-3 px-5">
-    <h4 class="text-bold mb-5">
-        <i class="fa-solid fa-gears fa-lg"></i>
-        {{ 'Liste des fiches de paies'|trans }}
-    </h4>
-
-    <a href="{{ path('paie_bulletin') }}" class="btn btn-success mb-4">
-        <i class="fas fa-plus"></i> Tous les bulletins
-    </a>
-
+<div class="col-lg-8 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Bulletins de paies"|trans }}
+    </h3>
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
         <tr>
-            <th>Matricule</th>
-            <th>Employé(e)</th>
-            <th>Salaire De base</th>
-            <th>Actions</th>
+            <th>{{('Date paiement '|trans)}}</th>
+            <th>{{('Salaire de base'|trans)}}</th>
+            <th>{{('Salaire net'|trans)}}</th>
+            <th>{{('actions'|trans)}}</th>
         </tr>
         </thead>
         <tbody>
-        {% for paies in paie %}
+        {% for bulletin in bulletins %}
             <tr>
-                <td>{{ paies.employe.matricule }}</td>
-                <td>{{ paies.employe.nom~' '~paies.employe.prenom }}</td>
-                <td>{{ paies.salaireBase }}</td>
-                <td>
-                    <a href="{{ path('paie_show', {'id': paies.employe.id }) }}" class="btn btn-success">Details</a>
+                <td data-label="Date paiement">{{ bulletin.mois ? bulletin.mois|date('d/m/Y') }}</td>
+                <td data-label="Salaire de base">{{ bulletin.salaireBase|number_format(0,'',' ') }} FCFA</td>
+                <td data-label="Salaire net">{{ bulletin.salaireNet|number_format(0,'',' ') }} FCFA</td>
+                <td data-label="Actions">
+                    <a href="{{ path('mes_bulletin_details', {'id': bulletin.id}) }}" class="btn btn-success">Details</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6" class="text-center">Aucune fiche de paie enregistrée.</td>
+                <td colspan="4" class="text-center">Aucune ligne de dépenses</td>
             </tr>
         {% endfor %}
         </tbody>
-    </table
-{% endblock %}
+    </table>
+
+    {% endblock %}

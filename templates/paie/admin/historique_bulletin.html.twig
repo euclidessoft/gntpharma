@@ -1,14 +1,15 @@
 {% extends 'rh.html.twig' %}
+
 {% block paie %}active{% endblock %}
 
 {% block body %}
     {% if paie is empty %}
         <div class="alert alert-info">Aucun paie enregistrée.</div>
     {% else %}
-        {% for paie in paie %}
+        {% for employe, paie in paie %}
             <div class="card mb-4">
                 <div class="card-header bg-dark text-white">
-                    paie de {{ paie.employe.nom }} {{ paie.employe.prenom }}
+                    Paie de {{ paie.employe.nom }} {{ paie.employe.prenom }}
                 </div>
                 <div class="card-body">
                     <p><strong>Matricule :</strong> {{ paie.employe.matricule }}</p>
@@ -18,25 +19,37 @@
                     <!-- Affichage des primes -->
                     <p><strong>Primes :</strong></p>
                     <ul>
-                        {{ paie.totalPrime }}
+                        <li>{{ paie.totalPrime }}</li>
                     </ul>
 
                     <!-- Affichage des heures supplémentaires -->
                     <p><strong>Heures supplémentaires :</strong></p>
                     <ul>
-                        {{ paie.totalheureSup }}
+                        <li>{{ paie.totalheureSup }}</li>
                     </ul>
 
-                    <!-- Affichage des retenues -->
-                    <p><strong>Retenues :</strong></p>
-                    <ul>
-                        {{ paie.totalRetenue }}
+                    <h5 class="font-weight-bold">Retenues</h5>
+                    <ul class="list-group mb-3">
+                        {% set totalRetenues = 0 %}
+
+                        {# Vérifie si les detailsRetenues sont remplis pour cet employé #}
+                        {% if detailsRetenues[loop.index0] is not empty %}
+                            {% for retenue in detailsRetenues[loop.index0] %}
+                                <li class="list-group-item d-flex justify-content-between">
+                                    {{ retenue.type }} : {{ retenue.montant|number_format(0, '', ' ') }} FCFA
+                                    {% set totalRetenues = totalRetenues + retenue.montant %}
+                                </li>
+                                <li>{{ retenue.details }}</li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="text-muted">Aucune retenue</li>
+                        {% endif %}
                     </ul>
 
                     <!-- Calcul du salaire net -->
                     <p><strong>Salaire net à payer :</strong>
                         <span class="h4 text-success">
-                            {{ paie.salaireBase + paie.totalPrime + paie.totalheureSup - paie.totalRetenue }} FCFA
+                            {{ paie.salaireBase + paie.totalPrime + paie.totalheureSup - totalRetenues }} FCFA
                         </span>
                     </p>
                 </div>
