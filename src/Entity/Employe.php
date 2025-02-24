@@ -196,6 +196,16 @@ class Employe extends User implements UserInterface
      */
     private $retenues;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Calendrier::class, mappedBy="employe")
+     */
+    private $calendriers;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $NombreJoursConges;
+
 
     public function __construct()
     {
@@ -216,6 +226,7 @@ class Employe extends User implements UserInterface
         $this->heureSuplementaires = new ArrayCollection();
         $this->primes = new ArrayCollection();
         $this->retenues = new ArrayCollection();
+        $this->calendriers = new ArrayCollection();
     }
 
 
@@ -886,6 +897,48 @@ class Employe extends User implements UserInterface
                 $retenue->setEmploye(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Calendrier[]
+     */
+    public function getCalendriers(): Collection
+    {
+        return $this->calendriers;
+    }
+
+    public function addCalendrier(Calendrier $calendrier): self
+    {
+        if (!$this->calendriers->contains($calendrier)) {
+            $this->calendriers[] = $calendrier;
+            $calendrier->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCalendrier(Calendrier $calendrier): self
+    {
+        if ($this->calendriers->removeElement($calendrier)) {
+            // set the owning side to null (unless already changed)
+            if ($calendrier->getEmploye() === $this) {
+                $calendrier->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNombreJoursConges(): ?int
+    {
+        return $this->NombreJoursConges;
+    }
+
+    public function setNombreJoursConges(int $NombreJoursConges): self
+    {
+        $this->NombreJoursConges = $NombreJoursConges;
 
         return $this;
     }
