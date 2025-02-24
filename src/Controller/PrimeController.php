@@ -21,7 +21,7 @@ class PrimeController extends AbstractController
      */
     public function index(PrimeRepository $primeRepository): Response
     {
-        return $this->render('prime/index.html.twig', [
+        return $this->render('prime/admin/index.html.twig', [
             'primes' => $primeRepository->findAll(),
         ]);
     }
@@ -57,7 +57,7 @@ class PrimeController extends AbstractController
             return $this->redirectToRoute('prime_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('prime/new.html.twig', [
+        return $this->render('prime/admin/new.html.twig', [
             'prime' => $prime,
             'form' => $form->createView(),
         ]);
@@ -68,7 +68,7 @@ class PrimeController extends AbstractController
      */
     public function show(Prime $prime): Response
     {
-        return $this->render('prime/show.html.twig', [
+        return $this->render('prime/admin/show.html.twig', [
             'prime' => $prime,
         ]);
     }
@@ -87,7 +87,7 @@ class PrimeController extends AbstractController
             return $this->redirectToRoute('prime_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('prime/edit.html.twig', [
+        return $this->render('prime/admin/edit.html.twig', [
             'prime' => $prime,
             'form' => $form->createView(),
         ]);

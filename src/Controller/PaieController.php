@@ -119,6 +119,69 @@ class PaieController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/Imprimer/Bulletin", name="print_bulletin")
+     */
+    public function printBulletin(): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $startOfMonth = new \DateTime('01-' . date('m') . '-' . date('Y'));
+        $endOfMonth = new \DateTime('last day of this month');
+        $employes = $entityManager->getRepository(Employe::class)->findAll();
+        $bulletins = [];
+
+        foreach ($employes as $employe) {
+
+            $paieExistante = $entityManager->getRepository(Paie::class)->findByDate($employe->getId(), $startOfMonth, $endOfMonth);
+            if ($paieExistante) {
+                continue;
+            }
+            $salaireDeBase = $employe->getPoste()->getSalaire();
+            $salaireJournaliere = $salaireDeBase / 30;
+
+            $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+            $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+            $sanctions = $entityManager->getRepository(Sanction::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+
+            $retenues = [];
+            foreach ($sanctions as $sanction) {
+                if ($sanction->getTypeSanction()->getNom() === 'ponction salarial') {
+                    $nombreJours = $sanction->getNombreJours();
+                    $montantRetenue = $salaireJournaliere * $nombreJours;
+                    $retenues[] = [
+                        'type' => $sanction->getTypeSanction()->getNom(),
+                        'montantRetenue' => round($montantRetenue, 2),
+                        'details' => $sanction->getNombreJours() . ' jours',
+                    ];
+                } elseif ($sanction->getTypeSanction()->getNom() === 'mis a pied') {
+                    $dateDebut = $sanction->getDateDebut();
+                    $dateFin = $sanction->getDateFin();
+                    $nombreJours = $dateDebut->diff($dateFin)->days + 1;
+                    $montantRetenue = $salaireJournaliere * $nombreJours;
+                    $retenues[] = [
+                        'type' => $sanction->getTypeSanction()->getNom(),
+                        'montantRetenue' => round($montantRetenue, 2),
+                        'details' => 'Du ' . $dateDebut->format('d/m/Y') . ' au ' . $dateFin->format('d/m/Y'),
+                    ];
+                }
+            }
+            $bulletins[] = [
+                'employe' => $employe,
+                'mois' => $startOfMonth,
+                'salaireBase' => $salaireDeBase,
+                'primes' => $primes,
+                'heureSup' => $heureSup,
+                'retenues' => $retenues,
+            ];
+        }
+        //dd($employe,$startOfMonth,$salaireDeBase,$primes,$retenues);
+        return $this->render('paie/admin/bulletin_print.html.twig', [
+            'bulletins' => $bulletins,
+            'paieExistante' => $paieExistante
+        ]);
+    }
+
     /**
      * @Route("/new", name="paie_new", methods={"POST","GET"})
      */
@@ -133,13 +196,12 @@ class PaieController extends AbstractController
             $salaireDeBase = $employe->getPoste()->getSalaire();
             $salaireJournaliere = $salaireDeBase / 30;
 
-
             $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
             $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
             $sanctions = $entityManager->getRepository(Sanction::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
 
             $totalRetenue = 0;
-            $RetenueDetails = [];
+            $detailsRetenues = [];
 
             foreach ($sanctions as $sanction) {
                 if ($sanction->getTypeSanction()->getNom() === 'ponction salarial') {
