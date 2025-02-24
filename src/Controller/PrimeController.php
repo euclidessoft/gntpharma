@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/{_locale}/Prime")
@@ -22,6 +23,19 @@ class PrimeController extends AbstractController
     {
         return $this->render('prime/index.html.twig', [
             'primes' => $primeRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/Suivi", name="prime_suivi", methods={"GET"})
+     */
+    public function suivi(Security $security): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $security->getUser();
+        $primes = $entityManager->getRepository(Prime::class)->findBy(['employe' => $employe]);
+        return $this->render('prime/index.html.twig', [
+            'primes' => $primes,
         ]);
     }
 
