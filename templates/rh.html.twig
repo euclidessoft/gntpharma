@@ -162,6 +162,13 @@
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Fiche de paie'|trans }}">
+                            <a class="nav-link {% block heure %}{% endblock %}"
+                                href="{{ path('heure_suivi') }}">
+                                <i class="fa-solid fa-money-check-dollar"></i>
+                                {{ 'Mes heures'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item" title="{{ 'Fiche de paie'|trans }}">
                             <a class="nav-link {% block fiche %}{% endblock %}"
                                 href="{{ path('paie_index') }}">
                                 <i class="fa-solid fa-money-check-dollar"></i>

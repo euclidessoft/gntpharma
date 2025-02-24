@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/{_locale}/HeureSuplementaire")
@@ -20,8 +21,21 @@ class HeureSuplementaireController extends AbstractController
      */
     public function index(HeureSuplementaireRepository $heureSuplementaireRepository): Response
     {
-        return $this->render('heure_suplementaire/index.html.twig', [
+        return $this->render('heure_suplementaire/admin/index.html.twig', [
             'heure_suplementaires' => $heureSuplementaireRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/Suivi", name="heure_suivi", methods={"GET"})
+     */
+    public function suivi(Security $security): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $security->getUser();
+        $heures = $entityManager->getRepository(HeureSuplementaire::class)->findBy(['employe' => $employe]);
+        return $this->render('heure_suplementaire/index.html.twig', [
+            'heures' => $heures,
         ]);
     }
 
@@ -43,7 +57,7 @@ class HeureSuplementaireController extends AbstractController
             return $this->redirectToRoute('heure_suplementaire_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('heure_suplementaire/new.html.twig', [
+        return $this->render('heure_suplementaire/admin/new.html.twig', [
             'heure_suplementaire' => $heureSuplementaire,
             'form' => $form->createView(),
         ]);
@@ -54,7 +68,7 @@ class HeureSuplementaireController extends AbstractController
      */
     public function show(HeureSuplementaire $heureSuplementaire): Response
     {
-        return $this->render('heure_suplementaire/show.html.twig', [
+        return $this->render('heure_suplementaire/admin/show.html.twig', [
             'heure_suplementaire' => $heureSuplementaire,
         ]);
     }
@@ -73,7 +87,7 @@ class HeureSuplementaireController extends AbstractController
             return $this->redirectToRoute('heure_suplementaire_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('heure_suplementaire/edit.html.twig', [
+        return $this->render('heure_suplementaire/admin/edit.html.twig', [
             'heure_suplementaire' => $heureSuplementaire,
             'form' => $form->createView(),
         ]);
@@ -92,4 +106,6 @@ class HeureSuplementaireController extends AbstractController
 
         return $this->redirectToRoute('heure_suplementaire_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }
