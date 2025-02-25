@@ -1,0 +1,17 @@
+<div class="col-3 mb-5">
+    <a href="{{ path("send") }}" class="btn btn-success mb-5">
+        <i class="fa fa-edit"></i>
+        {{ "Nouveau message"|trans }}
+    </a>
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <a href="{{ path("received") }}" class="nav-link {{ recus }}">
+            {{ "Boîte de réception"|trans }} ({{ app.user.received|length }})
+        </a>
+        <a href="{{ path("sent") }}" class="nav-link {{ envoyes }}">
+            {{ "Messages envoyés"|trans }} ({{ app.user.sent|length }})
+        </a>
+        <a href="#" class="nav-link {{ corbeille }}">
+            {{ "Corbeille"|trans }}
+        </a>
+    </div>
+</div>

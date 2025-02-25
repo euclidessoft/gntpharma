@@ -223,28 +223,28 @@
                     <ul class=" dropdown-menu" aria-labelledby="communication">
                         <li class="dropdown-item" title="{{ 'Messagerie interne'|trans }}">
                             <a class="nav-link {% block messagerie %}{% endblock %}"
-                                href="{{ path('stock_index') }}">
+                                href="{{ path('message') }}">
                                 <i class="fa-solid fa-comments"></i>
                                 {{ 'Messagerie interne'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Notes de service'|trans }}">
                             <a class="nav-link {% block note %}{% endblock %}"
-                                href="{{ path('stock_index') }}">
+                                href="{#{{ path('stock_index') }}#}">
                                 <i class="fa-regular fa-note-sticky"></i>
                                 {{ 'Notes de service'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Événements'|trans }}">
                             <a class="nav-link {% block evenement %}{% endblock %}"
-                                href="{{ path('stock_index') }}">
+                                href="{#{{ path('stock_index') }}#}">
                                 <i class="fa-solid fa-mug-saucer"></i>
                                 {{ 'Événements'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Enquêtes'|trans }}">
                             <a class="nav-link {% block enquetes %}{% endblock %}"
-                                href="{{ path('stock_index') }}">
+                                href="{#{{ path('stock_index') }}#}">
                                 <i class="fa-solid fa-file-circle-question"></i>
                                 {{ 'Enquêtes'|trans }}
                             </a>

@@ -1,35 +1,52 @@
 {% extends 'rh.html.twig' %}
-
-{% block title %}Messagerie
-{% endblock %}
+{% block communication %} active {% endblock %}
+{% block messagerie %} active {% endblock %}
+{% block title %}{{ "Nouveaux message"|trans }} - GNT Pharma {% endblock %}
 
 {% block body %}
-	<section class="container">
-		<div class="row">
-			<div class="col">
-				<h1>Envoyer un message</h1>
-                {{ form(form) }}
-				<a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-					Voir mes dossiers
-				</a>
-			</div>
-		</div>
-	</section>
-	<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-		<div class="offcanvas-header">
-			<h2 class="offcanvas-title" id="offcanvasExampleLabel">Mes dossiers</h2>
-			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body">
-            <div class="list-group">
-                <a href="{{ path("message") }}" class="list-group-item list-group-item-action">Accueil</a>
+
+    <div class="container mt-5 mb-5 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-comments"></i>
+            {{ "Messagerie"|trans }}
+        </h3>
+        <div class="row">
+            {% set recus = '' %}
+            {% set envoyes = '' %}
+            {% set corbeille = '' %}
+            {{ include('message/menu.html.twig') }}
+            <div class="col-9 p-5" style="border-top: 2px solid var(--vert);border-left: 2px solid var(--vert);">
+                <div class="tab-content" id="v-pills-tabContent">
+                    {{ form_start(form) }}
+                    <div class="col-12 mb-4">
+                        {{ form_row(form.title, {'attr': {'placeholder': 'Objet *'}, 'label': false}) }}
+                    </div>
+                    <div class="col-12 mb-4">
+                        {{ form_row(form.message, {'attr': {'placeholder': 'Ecrivez votre message ici *', 'rows': '10'}, 'label': false}) }}
+                    </div>
+                    <div class="col-12 mb-4">
+                        {{ form_row(form.recipients, {'label': 'Choisir destinataire(s)'}) }}
+                    </div>
+                    <div class="col-md-3 offset-md-3 mt-4 pt-3 fond-7 d-table">
+                        <div class="centrer">
+                            <button type="submit" class="btn btn-shadow btn-green btn-normal mb-3 mr-3" id="send"
+                                    onclick="envoie()">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                {{ 'Envoyer'|trans }}
+                            </button>
+
+                            <a href="{{ path("received") }}" class="btn btn-shadow btn-success-light btn-normal mb-3">
+                                <i class="fa fa-undo"></i>
+                                {{ 'Annuler'|trans }}
+                            </a>
+                            {{ form_rest(form) }}
+                        </div>
+                    </div>
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+                </div>
             </div>
-            <div class="list-group">
-                <a href="{{ path("message") }}" class="list-group-item list-group-item-action">Boîte de réception</a>
-            </div>
-            <div class="list-group">
-                <a href="{{ path("message") }}" class="list-group-item list-group-item-action">Eléments envoyés</a>
-            </div>
-		</div>
-	</div>
+        </div>
+    </div>
+
 {% endblock %}
