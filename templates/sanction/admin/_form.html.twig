@@ -45,7 +45,7 @@
         $('#dateFin').hide();
     $('#sanction_typeSanction').on('change', function() {
         const selectedSanction = $(this).find('option:selected').text().trim();
-        if (selectedSanction === "mis a pied") {
+        if (selectedSanction === "mis a pied" || selectedSanction === "Retenue sur les congés") {
             $('#dateDebut').show();
             $('#dateFin').show();
         } else {
