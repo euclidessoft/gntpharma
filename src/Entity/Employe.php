@@ -206,6 +206,10 @@ class Employe extends User implements UserInterface
      */
     private $NombreJoursConges;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Contrat::class, cascade={"persist", "remove"})
+     */
+    private $contrat;
 
     public function __construct()
     {
@@ -939,6 +943,18 @@ class Employe extends User implements UserInterface
     public function setNombreJoursConges(int $NombreJoursConges): self
     {
         $this->NombreJoursConges = $NombreJoursConges;
+
+        return $this;
+    }
+
+    public function getContrat(): ?Contrat
+    {
+        return $this->contrat;
+    }
+
+    public function setContrat(?Contrat $contrat): self
+    {
+        $this->contrat = $contrat;
 
         return $this;
     }

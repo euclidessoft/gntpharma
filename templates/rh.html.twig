@@ -77,8 +77,8 @@
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Planning des congés'|trans }}">
-                            <a class="nav-link {% block conges %}{% endblock %}"
-                               href="#">
+                            <a class="nav-link {% block planning %}{% endblock %}"
+                               href="{{ path('calendrier_index') }}">
                                 <i class="fa-solid fa-calendar-days"></i>
                                 {{ 'Planning des congés'|trans }}
                             </a>

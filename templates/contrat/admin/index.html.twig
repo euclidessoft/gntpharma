@@ -1,0 +1,48 @@
+{% extends 'rh.html.twig' %}
+{% block body %}
+    <div class="col-lg-10 mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-money-bill mr-2"></i>
+            {{ "Liste des contrats"|trans }}
+        </h3>
+        <a href="{{ path('contrat_new') }}" class="btn btn-success my-4"><i class="fas fa-plus"></i>Nouveau contrat</a>
+        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+            <thead>
+            <tr>
+                <th>Matricule</th>
+                <th>Employe</th>
+                <th>Type de contrat</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+                <th>Salaire</th>
+                <th>Status</th>
+                <th>Date de création</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for contrat in contrats %}
+                <tr>
+                    <td>{{ contrat.employe.matricule }}</td>
+                    <td>{{ contrat.employe.nom~' '~contrat.employe.prenom }}</td>
+                    <td>{{ contrat.type }}</td>
+                    <td>{{ contrat.dateDebut ? contrat.dateDebut|date('d/m/Y') : '' }}</td>
+                    <td>{{ contrat.dateFin ? contrat.dateFin|date('d/m/Y') : '' }}</td>
+                    <td>{{ contrat.salaire|number_format(0,'',' ') }} FCFA</td>
+                    <td>{{ contrat.status ? 'Yes' : 'No' }}</td>
+                    <td>{{ contrat.createdAt ? contrat.createdAt|date('d/m/Y') : '' }}</td>
+                    <td>
+                        <a href="{{ path('contrat_show', {'id': contrat.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
+                        <a href="{{ path('contrat_edit', {'id': contrat.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
+                        {{ include('contrat/_delete_form.html.twig') }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
