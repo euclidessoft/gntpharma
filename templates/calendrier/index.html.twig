@@ -1,0 +1,40 @@
+{% extends 'rh.html.twig' %}
+{% block administration %}active{% endblock %}
+{% block planning %}active{% endblock %}
+{% block body %}
+<div class="col-lg-8 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Planning des congés"|trans }}
+    </h3>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+        <tr>
+            <th>Matricule</th>
+            <th>Employé</th>
+            <th>Date Debut</th>
+            <th>Date Fin</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for calendrier in calendriers %}
+            <tr>
+                <td>{{ calendrier.employe.matricule }}</td>
+                <td>{{ calendrier.employe.nom~' '~calendrier.employe.prenom }}</td>
+                <td>{{ calendrier.dateDebut ? calendrier.dateDebut|date('d/m/Y') : '' }}</td>
+                <td>{{ calendrier.dateFin ? calendrier.dateFin|date('d/m/Y') : '' }}</td>
+                <td>
+                    <a href="{{ path('calendrier_edit', {'id': calendrier.id}) }}" class="btn btn-success-light"><i
+                                class="fas fa-edit"></i></a>
+                    {{ include('calendrier/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endblock %}

@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/{_locale}/Prime")
@@ -20,8 +21,21 @@ class PrimeController extends AbstractController
      */
     public function index(PrimeRepository $primeRepository): Response
     {
-        return $this->render('prime/index.html.twig', [
+        return $this->render('prime/admin/index.html.twig', [
             'primes' => $primeRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/Suivi", name="prime_suivi", methods={"GET"})
+     */
+    public function suivi(Security $security): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $security->getUser();
+        $primes = $entityManager->getRepository(Prime::class)->findBy(['employe' => $employe]);
+        return $this->render('prime/index.html.twig', [
+            'primes' => $primes,
         ]);
     }
 
@@ -43,7 +57,7 @@ class PrimeController extends AbstractController
             return $this->redirectToRoute('prime_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('prime/new.html.twig', [
+        return $this->render('prime/admin/new.html.twig', [
             'prime' => $prime,
             'form' => $form->createView(),
         ]);
@@ -54,7 +68,7 @@ class PrimeController extends AbstractController
      */
     public function show(Prime $prime): Response
     {
-        return $this->render('prime/show.html.twig', [
+        return $this->render('prime/admin/show.html.twig', [
             'prime' => $prime,
         ]);
     }
@@ -73,7 +87,7 @@ class PrimeController extends AbstractController
             return $this->redirectToRoute('prime_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('prime/edit.html.twig', [
+        return $this->render('prime/admin/edit.html.twig', [
             'prime' => $prime,
             'form' => $form->createView(),
         ]);

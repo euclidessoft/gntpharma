@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Calendrier;
 use App\Entity\Employe;
 use App\Entity\PosteEmploye;
 use App\Form\EmployeType;
@@ -55,7 +56,6 @@ class EmployeController extends AbstractController
                     return $this->redirectToRoute('employe_new');
                 }
             }
-
             $posteEmploye = new PosteEmploye();
             $hashpass = $encoder->encodePassword($employe, 'Passer2023');
             $employe->setPassword($hashpass);
@@ -95,14 +95,27 @@ class EmployeController extends AbstractController
             $employe->setFonction("Employé");
             $employe->setStatus(false);
             $employe->setHireDate($employe->getHireDate());
+            $employe->setNombreJoursConges(30);
 
             $posteEmploye->setDatedebut(new \DateTime());
             $posteEmploye->setDatefin(null);
             $posteEmploye->setPoste($employe->getPoste());
             $posteEmploye->setEmploye($employe);
 
+            //Calcul de la date debut de conges
+            $nbreJoursConges = $employe->getNombreJoursConges();
+            $dateDebutConges = (clone $employe->getHireDate())->modify('+11 months');
+            $dateFinConges = (clone $dateDebutConges)->modify('+' .$nbreJoursConges. ' days');
+            $calendrier = new Calendrier();
+            $calendrier->setEmploye($employe);
+            $calendrier->setDateDebut($dateDebutConges);
+            $calendrier->setDateFin($dateFinConges);
+//            dd($calendrier,$dateDebutConges,$dateFinConges,$nbreJoursConges);
+
+
             $entityManager->persist($posteEmploye);
             $entityManager->persist($employe);
+            $entityManager->persist($calendrier);
             $entityManager->flush();
 
             $this->addFlash('notice', 'Employé créé avec succès');

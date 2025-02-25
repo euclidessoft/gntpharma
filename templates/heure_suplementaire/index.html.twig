@@ -2,40 +2,32 @@
 {% block paie %}active{% endblock %}
 {% block heure_supplementaire %}active{% endblock %}
 {% block body %}
-<div class="container mt-4 fond-7 pb-5 pt-3 px-5">
-    <h4 class="text-bold mb-5">
-        <i class="fa-solid fa-gears fa-lg"></i>
-        {{ 'Liste des heures supplementaire'|trans }}
-    </h4>
-    <a href="{{ path('heure_suplementaire_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouvelle</a>
-    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
-    <thead>
+    <div class="container mt-4 fond-7 pb-5 pt-3 px-5">
+        <h4 class="text-bold mb-5">
+            <i class="fa-solid fa-gears fa-lg"></i>
+            {{ 'Liste des heures supplementaire'|trans }}
+        </h4>
+       <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+            <thead>
             <tr>
                 <th>Matricule</th>
-                <th>Employé(e)</th>
-                <th>Duree</th>
-                <th>TauxHoraire</th>
-                <th>actions</th>
+                <th>Durée</th>
+                <th>Taux Horaire</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for heure_suplementaire in heure_suplementaires %}
-            <tr>
-                <td>{{ heure_suplementaire.employe.matricule }}</td>
-                <td>{{ heure_suplementaire.employe.nom~' '~heure_suplementaire.employe.prenom }}</td>
-                <td>{{ heure_suplementaire.duree }}</td>
-                <td>{{ heure_suplementaire.tauxHoraire }}</td>
-                <td>
-                    <a href="{{ path('heure_suplementaire_show', {'id': heure_suplementaire.id}) }}">show</a>
-                    <a href="{{ path('heure_suplementaire_edit', {'id': heure_suplementaire.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+            {% for heure in heures %}
+                <tr>
+                    <td>{{ heure.employe.matricule }}</td>
+                     <td>{{ heure.duree }}</td>
+                    <td>{{ heure.tauxHoraire|number_format(0,'',' ') }} FCFA</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

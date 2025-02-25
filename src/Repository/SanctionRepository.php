@@ -19,6 +19,20 @@ class SanctionRepository extends ServiceEntityRepository
         parent::__construct($registry, Sanction::class);
     }
 
+    public function findByDateRange($id, \DateTime $startOfMonth, \DateTime $endOfDate)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.employe = :id')
+            ->andWhere('p.createdAt BETWEEN :start AND :end')
+            ->setParameters([
+                'id' => $id,
+                'start' => $startOfMonth,
+                'end' => $endOfDate,
+            ])
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Sanction[] Returns an array of Sanction objects
     //  */

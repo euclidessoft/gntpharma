@@ -36,6 +36,21 @@ class HeureSuplementaireRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByDateRange($id, \DateTime $startOfMonth, \DateTime $endOfDate)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.employe = :id')
+            ->andWhere('p.createdAt BETWEEN :start AND :end')
+            ->setParameters([
+                'id' => $id,
+                'start' => $startOfMonth,
+                'end' => $endOfDate,
+            ])
+            ->getQuery()
+            ->getResult();
+    }
+
     public function getTotalHeuresByEmploye(Employe $employe): float
     {
         return (float) $this->createQueryBuilder('h')

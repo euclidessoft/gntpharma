@@ -119,7 +119,7 @@ class AbsenceController extends AbstractController
             'absences' => $absences,
         ]);
     }
-    
+
     /**
      * @Route("/justifier/{id}", name="absence_justifier", methods={"GET", "POST"})
      */
@@ -156,7 +156,7 @@ class AbsenceController extends AbstractController
     }
 
     /**
-     *@Route("/{id}/confirmer", name="absence_confirmer", methods={"GET", "POST"})
+     * @Route("/{id}/confirmer", name="absence_confirmer", methods={"GET", "POST"})
      */
     public function confirmer(Request $request, Absence $absence, Security $security)
     {
@@ -212,13 +212,16 @@ class AbsenceController extends AbstractController
                 $decision->setExplication($demandeExplication);
                 $entityManager->persist($demandeExplication);
             } elseif ($typeDecision == 'Sanction') {
+                $employe = $decision->getAbsences()->getEmploye();
+                $nbreJoursConges = $employe->getNombreJoursConges();
                 $sanction = new Sanction();
                 $sanction->setDateCreation(new \DateTime());
+                $sanction->setCreatedAt(new \DateTime());
                 $sanction->setTypeSanction($decision->getTypeSanction());
-                $sanction->setEmploye($decision->getAbsences()->getEmploye());
+                $sanction->setEmploye($employe);
                 $typeSanction = $decision->getTypeSanction()->getNom();
 
-                if($typeSanction === 'mis a pied'){
+                if ($typeSanction === 'mis a pied') {
                     $dateDebut = $decision->getDateDebut();
                     $dateFin = $decision->getDateFin();
                     $decision->setDateDebut($dateDebut);
@@ -235,10 +238,29 @@ class AbsenceController extends AbstractController
                     $absence->setJustifier(true);
                     $absence->setStatus(1);
                     $entityManager->persist($absence);
-                }elseif($typeSanction === 'ponction salarial'){
+                } elseif ($typeSanction === 'Retenue sur les congés') {
+                    $dateDebut = $decision->getDateDebut();
+                    $dateFin = $decision->getDateFin();
+                    $sanction->setDateDebut($dateDebut);
+                    $sanction->setDateFin($dateFin);
+                    $nombreJours = $dateDebut->diff($dateFin)->days + 1;
+                    $sanction->setNombreJours($nombreJours);
+
+                    if ($nbreJoursConges >= $nombreJours) {
+                        $nbreJourRestant = $nbreJoursConges - $nombreJours;
+                        $employe->setNombreJoursConges($nbreJourRestant);
+                        //Defalquer les conges
+                        $calendar = $employe->getCalendriers();
+                        foreach ($calendar as $calendrier) {
+                            $dateFinConges = (clone $calendrier->getDateDebut())->modify('+' . $nbreJourRestant . ' days');
+                            $calendrier->setDateFin($dateFinConges);
+                            $entityManager->persist($calendrier);
+                        }
+                    }
+                } elseif ($typeSanction === 'ponction salarial') {
                     $sanction->setNombreJours('1');
                 }
-                
+
                 $entityManager->persist($sanction);
             }
 

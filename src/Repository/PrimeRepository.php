@@ -23,22 +23,25 @@ class PrimeRepository extends ServiceEntityRepository
     // /**
     //  * @return Prime[] Returns an array of Prime objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findByDateRange($id, \DateTime $startOfMonth, \DateTime $endOfDate)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+            ->where('p.employe = :id')
+            ->andWhere('p.createdAt BETWEEN :start AND :end')
+            ->setParameters([
+                'id' => $id,
+                'start' => $startOfMonth,
+                'end' => $endOfDate,
+            ])
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
+
+
     public function getTotalPrimesByEmploye(Employe $employe): float
     {
-        return (float) $this->createQueryBuilder('p')
+        return (float)$this->createQueryBuilder('p')
             ->select('SUM(p.montant)')
             ->where('p.employe = :employe')
             ->setParameter('employe', $employe)

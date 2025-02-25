@@ -77,8 +77,8 @@
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Planning des congés'|trans }}">
-                            <a class="nav-link {% block conges %}{% endblock %}"
-                               href="#">
+                            <a class="nav-link {% block planning %}{% endblock %}"
+                               href="{{ path('calendrier_index') }}">
                                 <i class="fa-solid fa-calendar-days"></i>
                                 {{ 'Planning des congés'|trans }}
                             </a>
@@ -145,11 +145,27 @@
                         </div>
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="paie">
+
+                        <li class="dropdown-item" title="{{ 'Fiche de paie'|trans }}">
+                            <a class="nav-link {% block bulletin %}{% endblock %}"
+                                href="{{ path('mes_bulletins') }}">
+                                <i class="fa-solid fa-money-check-dollar"></i>
+                                {{ 'Mes bulletins'|trans }}
+                            </a>
+                        </li>
+
                         <li class="dropdown-item" title="{{ 'Fiche de paie'|trans }}">
                             <a class="nav-link {% block heure_supplementaire %}{% endblock %}"
                                 href="{{ path('heure_suplementaire_index') }}">
                                 <i class="fa-solid fa-money-check-dollar"></i>
                                 {{ 'Heure Supplementaire'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item" title="{{ 'Fiche de paie'|trans }}">
+                            <a class="nav-link {% block heure %}{% endblock %}"
+                                href="{{ path('heure_suivi') }}">
+                                <i class="fa-solid fa-money-check-dollar"></i>
+                                {{ 'Mes heures'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Fiche de paie'|trans }}">
@@ -168,7 +184,7 @@
                         </li>
 
                         <li class="dropdown-item" title="{{ 'Historique des paiements'|trans }}">
-                            <a class="nav-link {% block arrivage %}{% endblock %}"
+                            <a class="nav-link {% block paie_historique %}{% endblock %}"
                                 href="{{ path('paie_historique') }}">
                                 <i class="fa-solid fa-rectangle-list"></i>
                                 {{ 'Historique des paiements'|trans }}

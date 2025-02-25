@@ -7,20 +7,28 @@
             <i class="fa-solid fa-gears fa-lg"></i>
             {{ 'Liste des primes'|trans }}
         </h4>
+        <a href="{{ path('prime_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouveau prime</a>
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
             <thead>
             <tr>
-                <th>Date prime</th>
+                <th>Matricule</th>
+                <th>Employé(e)</th>
                 <th>Montant</th>
                 <th>Description</th>
+                <th>actions</th>
             </tr>
             </thead>
             <tbody>
             {% for prime in primes %}
                 <tr>
-                    <td>{{ prime.createdAt ? prime.createdAt|date('d/m/Y') }}</td>
-                    <td>{{ prime.montant|number_format(0,'',' ') }} FCFA</td>
+                    <td>{{ prime.employe.matricule }}</td>
+                    <td>{{ prime.employe.nom~' '~prime.employe.prenom }}</td>
+                    <td>{{ prime.montant }}</td>
                     <td>{{ prime.description }}</td>
+                    <td>
+                        <a href="{{ path('prime_show', {'id': prime.id}) }}">show</a>
+                        <a href="{{ path('prime_edit', {'id': prime.id}) }}">edit</a>
+                    </td>
                 </tr>
             {% else %}
                 <tr>

@@ -29,7 +29,7 @@ class SanctionController extends AbstractController
     /**
      * @Route("/Suivi/", name="sanction_suivi", methods={"GET"})
      */
-    public function suivi(Security $security):Response
+    public function suivi(Security $security): Response
     {
         $employe = $security->getUser();
         $sanction = $this->getDoctrine()->getRepository(Sanction::class)->findBy(['employe' => $employe]);
@@ -51,17 +51,34 @@ class SanctionController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $sanction->setDateCreation(new \DateTime());
             $sanction->setCreatedAt(new \DateTime());
+            $employe = $sanction->getEmploye();
+            $nbreJoursConges = $employe->getNombreJoursConges();
             $typeSanction = $sanction->getTypeSanction()->getNom();
-            if($typeSanction === 'mis a pied'){
+            if ($typeSanction === 'mis a pied') {
                 $dateDebut = $sanction->getDateDebut();
                 $dateFin = $sanction->getDateFin();
                 $nombreJours = $dateDebut->diff($dateFin)->days + 1;
                 $sanction->setNombreJours($nombreJours);
-            }elseif($typeSanction === 'ponction salarial'){
+            } elseif ($typeSanction === 'ponction salarial') {
                 $sanction->setNombreJours('1');
+            } elseif ($typeSanction === 'Retenue sur les congés') {
+                $dateDebut = $sanction->getDateDebut();
+                $dateFin = $sanction->getDateFin();
+                $nombreJours = $dateDebut->diff($dateFin)->days + 1;
+                if ($nbreJoursConges >= $nombreJours) {
+                    $nbreJourRestant = $nbreJoursConges - $nombreJours;
+                    $employe->setNombreJoursConges($nbreJourRestant);
+                    $sanction->setNombreJours($nombreJours);
+                    $calendar = $employe->getCalendriers();
+                    foreach ($calendar as $calendrier) {
+                        $dateFinConges = (clone $calendrier->getDateDebut())->modify('+' . $nbreJourRestant . ' days');
+                        $calendrier->setDateFin($dateFinConges);
+                        $entityManager->persist($calendrier);
+                    }
+                }
             }
-
             $entityManager->persist($sanction);
+            $entityManager->persist($employe);
             $entityManager->flush();
 
             return $this->redirectToRoute('sanction_index', [], Response::HTTP_SEE_OTHER);
