@@ -211,6 +211,11 @@ class Employe extends User implements UserInterface
      */
     private $contrat;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Document::class, mappedBy="employe")
+     */
+    private $documents;
+
     public function __construct()
     {
         parent::__construct();
@@ -231,6 +236,7 @@ class Employe extends User implements UserInterface
         $this->primes = new ArrayCollection();
         $this->retenues = new ArrayCollection();
         $this->calendriers = new ArrayCollection();
+        $this->documents = new ArrayCollection();
     }
 
 
@@ -955,6 +961,36 @@ class Employe extends User implements UserInterface
     public function setContrat(?Contrat $contrat): self
     {
         $this->contrat = $contrat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Document[]
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(Document $document): self
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents[] = $document;
+            $document->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): self
+    {
+        if ($this->documents->removeElement($document)) {
+            // set the owning side to null (unless already changed)
+            if ($document->getEmploye() === $this) {
+                $document->setEmploye(null);
+            }
+        }
 
         return $this;
     }
