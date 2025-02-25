@@ -1,39 +1,65 @@
 {% extends 'rh.html.twig' %}
-
-{% block title %}Messagerie
-{% endblock %}
+{% block communication %} active {% endblock %}
+{% block messagerie %} active {% endblock %}
+{% block title %}{{ "Message de"|trans }} {{ message.sender.nom }} {{ message.sender.prenom }} - GNT Pharma {% endblock %}
 
 {% block body %}
-	<section class="container">
-		<div class="row">
-			<div class="col-12">
-				<h1>Messagerie</h1>
-                <h2>{{ message.message.message }}</h2>
-                <p>Message de {{ message.sender.email }}</p>
-                <p>Le {{ message.message.createdAt|date }}</p>
-                <div>{{ message.message.message }}</div>
-				<a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-					Voir mes dossiers
-				</a>
-                <a href="{{path("received")}}" class="btn btn-primary">Retour à la boite de réception</a>
-			</div>
-		</div>
-	</section>
-	<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-		<div class="offcanvas-header">
-			<h2 class="offcanvas-title" id="offcanvasExampleLabel">Mes dossiers</h2>
-			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body">
-            <div class="list-group">
-                <a href="{{ path("message") }}" class="list-group-item list-group-item-action">Accueil</a>
+
+    <div class="container mt-5 mb-5 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-comments"></i>
+            {{ "Messagerie"|trans }}
+        </h3>
+        <div class="row">
+            {% set recus = 'active' %}
+            {% set envoyes = '' %}
+            {% set corbeille = '' %}
+            {{ include('message/menu.html.twig') }}
+            <div class="col-9 p-5" style="border-top: 2px solid var(--vert);border-left: 2px solid var(--vert);">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="row bg-success-light p-2 radius-10 shadow-black">
+                        <div class="col-2 centrer">
+                            <a href="{{ path("received") }}" class="btn btn-success-light"
+                               title="{{ 'Retour à la boîte de réception'|trans }}">
+                                <i class="fa-solid fa-chevron-left fa-lg"></i>
+                                {{ "Retour"|trans }}
+                            </a>
+                        </div>
+                        <div class="col-md-5 col-4">
+                            <div class="row">
+                                <div class="col-3">
+                                    <img src="{{ asset('images/avatar-homme.avif') }}" alt="photo"
+                                         class="w-80 rounded-circle">
+                                </div>
+                                <div class="col-9">
+                                    {{ message.sender.nom }}
+                                    {{ message.sender.prenom }}
+                                    <br>
+                                    <small>
+                                        {{ "A moi"|trans }}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-4 centrer">
+                            {{ message.message.createdAt|date('d/m/Y H:i:s') }}
+                        </div>
+                        <div class="col-md-2 col-3 centrer">
+                            <a href="#" class="text-green mr-5" title="{{ 'Répondre'|trans }}">
+                                <i class="fa-solid fa-reply fa-lg"></i>
+                            </a>
+                            <a href="{{ path("delete", {id: message.id}) }}" class="text-danger"
+                               title="{{ 'Supprimer'|trans }}">
+                                <i class="fa-solid fa-trash-can fa-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row border border-green mt-5 p-5 radius-10 shadow">
+                        {{ message.message.message }}
+                    </div>
+                </div>
             </div>
-            <div class="list-group">
-                <a href="{{ path("received") }}" class="list-group-item list-group-item-action active">Boîte de réception</a>
-            </div>
-            <div class="list-group">
-                <a href="{{ path("message") }}" class="list-group-item list-group-item-action">Eléments envoyés</a>
-            </div>
-		</div>
-	</div>
+        </div>
+    </div>
+
 {% endblock %}

@@ -10,7 +10,20 @@
             <i class="fa fa-user mr-2"></i>
             {{ 'Profil utilisateur'|trans }}
         </h4>
+
         <div class="row">
+            {% set employe = app.user %}
+            <div class="col-md-10 pt-5">
+                <p class="">{{ employe.matricule }}</p>
+                <p class="text-bold">{{ employe.prenom }} {{ employe.nom }}</p>
+                <p class="font-italic">{{ employe.poste.nom }}</p>
+                <p class="">{{ employe.poste.departement.nom }}</p>
+            </div>
+            <div class="col-md-2">
+                <img src="{{asset('images/avatar-homme.avif') }}" width="50" alt="Photo" class="rounded-circle" />
+            </div>
+        </div>
+{#        <div class="row">#}
             {% for message in app.flashes('notice') %}
                 <div class="col-lg-12 mt-4 alert alert-success alert-dismissible fade show radius-10 shadow-black"
                      role="alert">
@@ -71,6 +84,6 @@
                     <div class="col-lg-9 ml-n4">{{ user.adresse }}</div>
                 </div>
             </div>#}
-        </div>
+{#        </div>#}
     </div>
 {% endblock %}

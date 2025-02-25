@@ -35,11 +35,11 @@ class MessageType extends AbstractType
                 'mapped' => false,
                 'label' => 'Destinataires'
             ])
-            ->add('envoyer', SubmitType::class, [
-                "attr" => [
-                    "class" => "btn btn-primary"
-                ]
-            ])
+            //->add('envoyer', SubmitType::class, [
+              //  "attr" => [
+                //    "class" => "btn btn-green"
+              //  ]
+            //])
         ;
     }
 
