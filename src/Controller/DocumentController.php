@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Document;
+use App\Entity\Employe;
 use App\Form\DocumentType;
 use App\Repository\DocumentRepository;
+use App\Repository\EmployeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,10 +21,11 @@ class DocumentController extends AbstractController
     /**
      * @Route("/", name="document_index", methods={"GET"})
      */
-    public function index(DocumentRepository $documentRepository): Response
+    public function index(EmployeRepository $employeRepository): Response
     {
+        $employeDocument = $employeRepository->findByEmployeWithDocument();
         return $this->render('document/index.html.twig', [
-            'documents' => $documentRepository->findAll(),
+            'employes' => $employeDocument,
         ]);
     }
 
@@ -37,6 +40,7 @@ class DocumentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $employe = $document->getEmploye();
+            $fileName = $form->get('fileName')->getData();
             $files = $form->get('filePath')->getData();
             if ($files) {
                 $entityManager = $this->getDoctrine()->getManager();
@@ -45,7 +49,7 @@ class DocumentController extends AbstractController
                     $newFilename = uniqid() . '.' . $file->guessExtension();
                     try {
                         $file->move(
-                            $this->getParameter('justificatifs_directory'),
+                            $this->getParameter('documents_directory'),
                             $newFilename
                         );
                     } catch (FileException $e) {
@@ -56,10 +60,13 @@ class DocumentController extends AbstractController
                     $document = new Document();
                     $document->setEmploye($employe);
                     $document->setFilePath($newFilename);
+                    $document->setCreatedAt(new \DateTime());
+                    $document->setFileName($fileName);
+
+                    $entityManager->persist($document);
                 }
             }
 
-            $entityManager->persist($document);
             $entityManager->flush();
 
             return $this->redirectToRoute('document_index', [], Response::HTTP_SEE_OTHER);
@@ -74,12 +81,14 @@ class DocumentController extends AbstractController
     /**
      * @Route("/{id}", name="document_show", methods={"GET"})
      */
-    public function show(Document $document): Response
+    public function show(Employe $employe): Response
     {
         return $this->render('document/show.html.twig', [
-            'document' => $document,
+            'employe' => $employe,
+            'documents' => $employe->getDocuments(), // Récupérer tous les documents de l'employé
         ]);
     }
+
 
     /**
      * @Route("/{id}/edit", name="document_edit", methods={"GET","POST"})

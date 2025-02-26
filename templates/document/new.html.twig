@@ -1,11 +1,34 @@
-<!DOCTYPE html>
-
-<title>New Document</title>
+{% extends 'rh.html.twig' %}
+{% block title %} {{ "Nouveau documenté"|trans }} - GNT Pharma {% endblock %}
+{% block paie %}active{% endblock %}
+{% block document %}active{% endblock %}
+{% block new_document %}active{% endblock %}
 
 {% block body %}
-    <h1>Create new Document</h1>
+    <div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
+    <h4 class="mb-5">
+        <i class="fa fa-plus mr-2"></i>
+        {{ 'Nouveau document'|trans }}
+    </h4>
 
     {{ include('document/_form.html.twig') }}
 
-    <a href="{{ path('document_index') }}">back to list</a>
+    <div class="col-md-3 offset-md-3 mt-4 pt-3 fond-7">
+        <div class="centrer">
+            {#                <div class="row">#}
+            <button type="button" class="btn btn-shadow btn-green btn-normal mb-3 mr-3" id="send"
+                    onclick="envoie()">
+                <i class="fa fa-save"></i>
+                {{ 'Enregistrer'|trans }}
+            </button>
+
+            <button type="reset" class="btn btn-shadow btn-danger btn-normal mb-3">
+                <i class="fa fa-delete-left"></i>
+                {{ 'Effacer'|trans }}
+            </button>
+            {{ form_rest(form) }}
+            {#                </div>#}
+        </div>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

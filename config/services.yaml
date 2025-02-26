@@ -7,6 +7,7 @@ parameters:
     locale: 'fr'
     app_locales: fr|en
     justificatifs_directory: '%kernel.project_dir%/public/uploads/justificatifs'
+    documents_directory: '%kernel.project_dir%/public/uploads/documents'
 services:
     # default configuration for services in *this* file
     _defaults:

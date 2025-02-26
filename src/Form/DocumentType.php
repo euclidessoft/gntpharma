@@ -21,6 +21,7 @@ class DocumentType extends AbstractType
                 'multiple' => true,
                 'mapped' => false,
             ])
+            ->add('fileName')
             ->add('employe',EntityType::class, [
                 'class' => Employe::class,
                 'choice_label' => function(Employe $employe){
