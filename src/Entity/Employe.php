@@ -212,6 +212,11 @@ class Employe extends User implements UserInterface
     private $contrat;
 
     /**
+     * @ORM\OneToMany(targetEntity=MessageReply::class, mappedBy="sender")
+     */
+    private $messageReplies;
+
+    /**
      * @ORM\OneToMany(targetEntity=Document::class, mappedBy="employe")
      */
     private $documents;
@@ -236,6 +241,7 @@ class Employe extends User implements UserInterface
         $this->primes = new ArrayCollection();
         $this->retenues = new ArrayCollection();
         $this->calendriers = new ArrayCollection();
+        $this->messageReplies = new ArrayCollection();
         $this->documents = new ArrayCollection();
     }
 
@@ -966,6 +972,23 @@ class Employe extends User implements UserInterface
     }
 
     /**
+     * @return Collection|MessageReply[]
+     */
+    public function getMessageReplies(): Collection
+    {
+        return $this->messageReplies;
+    }
+
+    public function addMessageReply(MessageReply $messageReply): self
+    {
+        if (!$this->messageReplies->contains($messageReply)) {
+            $this->messageReplies[] = $messageReply;
+            $messageReply->setSender($this);
+        }
+        return $this;
+    }
+
+    /**
      * @return Collection|Document[]
      */
     public function getDocuments(): Collection
@@ -983,6 +1006,17 @@ class Employe extends User implements UserInterface
         return $this;
     }
 
+
+    public function removeMessageReply(MessageReply $messageReply): self
+    {
+        if ($this->messageReplies->removeElement($messageReply)) {
+            // set the owning side to null (unless already changed)
+            if ($messageReply->getSender() === $this) {
+                $messageReply->setSender(null);
+            }
+        }
+        return $this;
+    }
     public function removeDocument(Document $document): self
     {
         if ($this->documents->removeElement($document)) {

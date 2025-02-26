@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MessageRecipientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,7 +30,7 @@ class MessageRecipient
     /**
      * Le destinataire du message.
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Employe", inversedBy="sent")
      * @ORM\JoinColumn(nullable=false)
      */
     private $sender;
@@ -36,7 +38,7 @@ class MessageRecipient
     /**
      * Le destinataire du message.
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="received")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Employe", inversedBy="received")
      * @ORM\JoinColumn(nullable=false)
      */
     private $recipient;
@@ -47,6 +49,16 @@ class MessageRecipient
      * @ORM\Column(type="boolean")
      */
     private $isRead = false;
+
+    /**
+     * @ORM\OneToMany(targetEntity=MessageReply::class, mappedBy="message")
+     */
+    private $messageReplies;
+
+    public function __construct()
+    {
+        $this->messageReplies = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -77,26 +89,56 @@ class MessageRecipient
         return $this;
     }
 
-    public function getRecipient(): ?User
+    public function getRecipient(): ?Employe
     {
         return $this->recipient;
     }
 
-    public function setRecipient(?User $recipient): self
+    public function setRecipient(?Employe $recipient): self
     {
         $this->recipient = $recipient;
 
         return $this;
     }
 
-    public function getSender(): ?User
+    public function getSender(): ?Employe
     {
         return $this->sender;
     }
 
-    public function setSender(?User $sender): self
+    public function setSender(?Employe $sender): self
     {
         $this->sender = $sender;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MessageReply[]
+     */
+    public function getMessageReplies(): Collection
+    {
+        return $this->messageReplies;
+    }
+
+    public function addMessageReply(MessageReply $messageReply): self
+    {
+        if (!$this->messageReplies->contains($messageReply)) {
+            $this->messageReplies[] = $messageReply;
+            $messageReply->setMessage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessageReply(MessageReply $messageReply): self
+    {
+        if ($this->messageReplies->removeElement($messageReply)) {
+            // set the owning side to null (unless already changed)
+            if ($messageReply->getMessage() === $this) {
+                $messageReply->setMessage(null);
+            }
+        }
 
         return $this;
     }

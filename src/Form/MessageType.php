@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Message;
-use App\Entity\User;
+use App\Entity\Employe;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -28,7 +28,7 @@ class MessageType extends AbstractType
                 ]
             ])
             ->add('recipients', EntityType::class, [
-                'class' => User::class,
+                'class' => Employe::class,
                 'choice_label' => 'username', // ou une autre propriété
                 'multiple' => true,
                 'expanded' => true,

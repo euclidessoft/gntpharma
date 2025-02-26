@@ -34,7 +34,7 @@ class Message
     private $created_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sent")
+     * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="sent")
      * @ORM\JoinColumn(nullable=false)
      */
     private $sender;
@@ -93,12 +93,12 @@ class Message
         return $this;
     }
 
-    public function getSender(): ?User
+    public function getSender(): ?Employe
     {
         return $this->sender;
     }
 
-    public function setSender(?User $sender): self
+    public function setSender(?Employe $sender): self
     {
         $this->sender = $sender;
 

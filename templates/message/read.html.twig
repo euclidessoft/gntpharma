@@ -45,7 +45,7 @@
                             {{ message.message.createdAt|date('d/m/Y H:i:s') }}
                         </div>
                         <div class="col-md-2 col-3 centrer">
-                            <a href="#" class="text-green mr-5" title="{{ 'Répondre'|trans }}">
+                            <a href="{{ path('reply',{ 'id' : message.id}) }}" class="text-green mr-5" title="{{ 'Répondre'|trans }}">
                                 <i class="fa-solid fa-reply fa-lg"></i>
                             </a>
                             <a href="{{ path("delete", {id: message.id}) }}" class="text-danger"
@@ -57,6 +57,14 @@
                     <div class="row border border-green mt-5 p-5 radius-10 shadow">
                         {{ message.message.message }}
                     </div>
+                    {% for reply in message.messagereplies %}
+                        <div class="row border border-green mt-5 p-5 radius-10 shadow">
+                            {{ reply.content }}
+                        </div>
+                    {% else %}
+
+                    {% endfor %}
+
                 </div>
             </div>
         </div>
