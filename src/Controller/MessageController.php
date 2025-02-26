@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Message;
 use App\Entity\MessageRecipient;
+use App\Entity\MessageReply;
+use App\Form\MessageReplyType;
 use App\Form\MessageType;
 use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -106,6 +108,42 @@ class MessageController extends AbstractController
 //        $em->flush();
 
         return $this->render('message/readsend.html.twig', compact("message"));
+    }
+
+    /**
+     * @Route("/Replay/{id}", name="reply")
+     */
+    public function reply(MessageRecipient $message, Request $request, EntityManagerInterface $em): Response
+    {
+        $messagereply = new MessageReply();
+        $form = $this->createForm(MessageReplyType::class, $messagereply);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $messagereply->setSender($this->getUser());
+            $messagereply->setMessage($message);
+
+//            $recipients = $form->get('recipients')->getData();
+//
+//            foreach ($recipients as $userRecipient) {
+//                $messageRecipient = new MessageRecipient();
+//                $messageRecipient->setRecipient($userRecipient);
+//                $messageRecipient->setIsRead(false);
+//                $messageRecipient->setSender($this->getUser());
+//                $messagereply->addRecipient($messageRecipient);
+//            }
+            $em->persist($messagereply);
+            $em->flush();
+
+            $this->addFlash("message", "Message envoyé avec succès.");
+            return $this->redirectToRoute("message");
+        }
+
+        return $this->render('message/reply.html.twig' ,[
+        "form" => $form->createView(),
+            "message" => $message,
+        ]);
     }
 
     /**

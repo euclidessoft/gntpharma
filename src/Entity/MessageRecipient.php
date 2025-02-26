@@ -30,7 +30,7 @@ class MessageRecipient
     /**
      * Le destinataire du message.
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Employe", inversedBy="sent")
      * @ORM\JoinColumn(nullable=false)
      */
     private $sender;
@@ -38,7 +38,7 @@ class MessageRecipient
     /**
      * Le destinataire du message.
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="received")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Employe", inversedBy="received")
      * @ORM\JoinColumn(nullable=false)
      */
     private $recipient;
@@ -89,24 +89,24 @@ class MessageRecipient
         return $this;
     }
 
-    public function getRecipient(): ?User
+    public function getRecipient(): ?Employe
     {
         return $this->recipient;
     }
 
-    public function setRecipient(?User $recipient): self
+    public function setRecipient(?Employe $recipient): self
     {
         $this->recipient = $recipient;
 
         return $this;
     }
 
-    public function getSender(): ?User
+    public function getSender(): ?Employe
     {
         return $this->sender;
     }
 
-    public function setSender(?User $sender): self
+    public function setSender(?Employe $sender): self
     {
         $this->sender = $sender;
 

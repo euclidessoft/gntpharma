@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MessageReplyRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,7 +30,7 @@ class MessageReply
     private $sender;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
      */
     private $sentAt;
 
@@ -37,6 +38,11 @@ class MessageReply
      * @ORM\ManyToOne(targetEntity=MessageRecipient::class, inversedBy="messageReplies")
      */
     private $message;
+
+    public function __construct()
+    {
+        $this->sentAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -67,12 +73,12 @@ class MessageReply
         return $this;
     }
 
-    public function getSentAt(): ?\DateTimeImmutable
+    public function getSentAt(): ?\DateTime
     {
         return $this->sentAt;
     }
 
-    public function setSentAt(\DateTimeImmutable $sentAt): self
+    public function setSentAt(\DateTime $sentAt): self
     {
         $this->sentAt = $sentAt;
 

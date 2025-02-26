@@ -19,13 +19,7 @@
                 <div class="tab-content" id="v-pills-tabContent">
                     {{ form_start(form) }}
                     <div class="col-12 mb-4">
-                        {{ form_row(form.title, {'attr': {'placeholder': 'Objet *'}, 'label': false}) }}
-                    </div>
-                    <div class="col-12 mb-4">
-                        {{ form_row(form.message, {'attr': {'placeholder': 'Ecrivez votre message ici *', 'rows': '10'}, 'label': false}) }}
-                    </div>
-                    <div class="col-12 mb-4">
-                        {{ form_row(form.recipients, {'label': 'Choisir destinataire(s)'}) }}
+                        {{ form_row(form.content, {'attr': {'placeholder': 'Ecrivez votre message ici *', 'rows': '10'}, 'label': false}) }}
                     </div>
                     <div class="col-md-3 offset-md-3 mt-4 pt-3 fond-7 d-table">
                         <div class="centrer">
