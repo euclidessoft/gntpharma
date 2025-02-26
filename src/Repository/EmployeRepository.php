@@ -33,6 +33,17 @@ class EmployeRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByEmployeWithForUser(Employe $employe)
+    {
+        return $this->createQueryBuilder('e')
+            ->select('e')
+            ->innerJoin('e.documents', 'd')
+            ->groupBy('e.id')
+            ->where('e = :employe')
+            ->setParameter('employe', $employe)
+            ->getQuery()
+            ->getResult();
+    }
 
     /*
     public function findOneBySomeField($value): ?Employe

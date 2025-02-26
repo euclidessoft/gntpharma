@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("{_locale}/Document")
@@ -24,10 +25,24 @@ class DocumentController extends AbstractController
     public function index(EmployeRepository $employeRepository): Response
     {
         $employeDocument = $employeRepository->findByEmployeWithDocument();
+        return $this->render('document/admin/index.html.twig', [
+            'employes' => $employeDocument,
+        ]);
+    }
+
+    /**
+     * @Route("/Suivi", name="document_suivi", methods={"GET"})
+     */
+    public function suivi(Security $security,EmployeRepository $employeRepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $security->getUser();
+        $employeDocument = $employeRepository->findByEmployeWithForUser($employe);
         return $this->render('document/index.html.twig', [
             'employes' => $employeDocument,
         ]);
     }
+
 
     /**
      * @Route("/new", name="document_new", methods={"GET","POST"})
@@ -72,7 +87,7 @@ class DocumentController extends AbstractController
             return $this->redirectToRoute('document_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('document/new.html.twig', [
+        return $this->render('document/admin/new.html.twig', [
             'document' => $document,
             'form' => $form->createView(),
         ]);
@@ -83,12 +98,23 @@ class DocumentController extends AbstractController
      */
     public function show(Employe $employe): Response
     {
-        return $this->render('document/show.html.twig', [
+        return $this->render('document/admin/show.html.twig', [
             'employe' => $employe,
             'documents' => $employe->getDocuments(), // Récupérer tous les documents de l'employé
         ]);
     }
 
+    /**
+     * @Route("Suivi/Show/{id}", name="document_suivi_show", methods={"GET"})
+     */
+    public function suiviShow(Document $document)
+    {
+        $employe = $document->getEmploye();
+        return $this->render('document/show.html.twig', [
+            'employe' => $employe,
+            'documents' => $employe->getDocuments(),
+        ]);
+    }
 
     /**
      * @Route("/{id}/edit", name="document_edit", methods={"GET","POST"})
@@ -104,7 +130,7 @@ class DocumentController extends AbstractController
             return $this->redirectToRoute('document_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('document/edit.html.twig', [
+        return $this->render('document/admin/edit.html.twig', [
             'document' => $document,
             'form' => $form->createView(),
         ]);

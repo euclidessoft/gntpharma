@@ -1,0 +1,42 @@
+{% extends 'rh.html.twig' %}
+
+{% block body %}
+    <div class="col-lg-6 mt-4 fond-7">
+        <h3 class="mt-4 mb-3 text-bold">
+            <i class="fa fa-file mr-2"></i>
+            Document(s)
+        </h3>
+        <p><strong>Matricule: </strong> {{ employe.matricule }}</p>
+        <p><strong>Nom complet: </strong> {{ employe.nom ~' '~ employe.prenom }}</p>
+        <p><strong>Département: </strong> {{ employe.poste.departement.nom }}</p>
+        <p><strong>Poste: </strong> {{ employe.poste.nom }}</p>
+        <table class="table table-success-light table-bordered table-hover table-striped w-100">
+            <thead>
+            <tr>
+                <th>Nom du fichier</th>
+                <th>Date d'ajout</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for document in documents %}
+                <tr>
+                    <td>{{ document.fileName }}</td>
+                    <td>{{ document.createdAt|date('d/m/Y') }}</td>
+                    <td>
+                        <a href="{{ asset('uploads/documents/' ~ document.filePath) }}" class="btn btn-success"
+                           target="_blank">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">Aucun document trouvé.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
