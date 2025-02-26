@@ -39,6 +39,9 @@ class MessageController extends AbstractController
     public function send(Request $request, EntityManagerInterface $em): Response
     {
         $message = new Message;
+        $unread = $em->getRepository(MessageRecipient::class)
+            ->findBy(['deletedAt' => null], ['id' => 'DESC']);
+
         $form = $this->createForm(MessageType::class, $message);
 
         $form->handleRequest($request);
@@ -63,51 +66,77 @@ class MessageController extends AbstractController
         }
 
         return $this->render("message/send.html.twig", [
-            "form" => $form->createView()
+            "form" => $form->createView(),
+            'unread' => $unread,
         ]);
     }
 
     /**
      * @Route("/received", name="received")
      */
-    public function received(): Response
+    public function received(EntityManagerInterface $em): Response
     {
-        return $this->render('message/received.html.twig');
+        $user = $this->getUser();
+        $messageRecipients = $em->getRepository(MessageRecipient::class)
+            ->findBy(['recipient' => $user], ['id' => 'DESC']);
+        $unread = $em->getRepository(MessageRecipient::class)
+            ->findBy(['deletedAt' => null], ['id' => 'DESC']);
+
+        return $this->render('message/received.html.twig', [
+            'messages' => $messageRecipients,
+            'unread' => $unread,
+        ]);
     }
 
 
     /**
      * @Route("/sent", name="sent")
      */
-    public function sent(): Response
+    public function sent(EntityManagerInterface $em): Response
     {
-        return $this->render('message/sent.html.twig');
+        $user = $this->getUser();
+        $messageRecipients = $em->getRepository(MessageRecipient::class)
+            ->findBy(['sender' => $user], ['id' => 'DESC']);
+        $unread = $em->getRepository(MessageRecipient::class)
+            ->findBy(['deletedAt' => null], ['id' => 'DESC']);
+
+
+
+        return $this->render('message/sent.html.twig', [
+            'messages' => $messageRecipients,
+            'unread' => $unread,
+        ]);
     }
 
     /**
      * @Route("/read/{id}", name="read")
      */
-    public function read(MessageRecipient $message): Response
+    public function read(MessageRecipient $message, EntityManagerInterface $em): Response
     {
+        $unread = $em->getRepository(MessageRecipient::class)
+            ->findBy(['deletedAt' => null], ['id' => 'DESC']);
+
         $message->setIsRead(true);
         $em = $this->getDoctrine()->getManager();
         $em->persist($message);
         $em->flush();
 
-        return $this->render('message/read.html.twig', compact("message"));
+        return $this->render('message/read.html.twig', ["message" => $message,  'unread' => $unread,]);
     }
 
     /**
      * @Route("/readSend/{id}", name="readSend")
      */
-    public function readsend(Message $message): Response
+    public function readsend(Message $message, EntityManagerInterface $em): Response
     {
+        $unread = $em->getRepository(MessageRecipient::class)
+            ->findBy(['deletedAt' => null], ['id' => 'DESC']);
 //        $message->setIsRead(true);
 //        $em = $this->getDoctrine()->getManager();
 //        $em->persist($message);
 //        $em->flush();
 
-        return $this->render('message/readsend.html.twig', compact("message"));
+        return $this->render('message/readsend.html.twig', ["message" => $message,  'unread' => $unread,]);
     }
 
     /**
@@ -115,6 +144,8 @@ class MessageController extends AbstractController
      */
     public function reply(MessageRecipient $message, Request $request, EntityManagerInterface $em): Response
     {
+        $unread = $em->getRepository(MessageRecipient::class)
+            ->findBy(['deletedAt' => null], ['id' => 'DESC']);
         $messagereply = new MessageReply();
         $form = $this->createForm(MessageReplyType::class, $messagereply);
 
@@ -143,18 +174,53 @@ class MessageController extends AbstractController
         return $this->render('message/reply.html.twig' ,[
         "form" => $form->createView(),
             "message" => $message,
+            'unread' => $unread,
+        ]);
+    }
+// suppression message cote destinatataire
+    /**
+     * @Route("/{id}/delete", name="delete")
+     */
+    public function delete(MessageRecipient $message, EntityManagerInterface $em): Response
+    {
+        if ($message->getRecipient() !== $this->getUser()) {
+            $this->addFlash("Vous ne pouvez pas supprimer ce message.");
+        }
+
+        $message->delete();
+        $em->flush();
+
+        return $this->redirectToRoute('received');
+    }
+
+    /**
+     * @Route("/trash", name="trash")
+     */
+    public function trash(EntityManagerInterface $em): Response
+    {
+        $messages = $em->getRepository(MessageRecipient::class)->findBy(['deletedAt' => null]);
+        $unread = $em->getRepository(MessageRecipient::class)
+            ->findBy(['deletedAt' => null], ['id' => 'DESC']);
+        dd($messages);
+        return $this->render('message/trash.html.twig', [
+            'messages' => $messages,
+            'unread' => $unread,
         ]);
     }
 
     /**
-     * @Route("/delete/{id}", name="delete")
+     * @Route("/{id}/restore", name="restore")
      */
-    public function delete(Message $message): Response
+    public function restore(Message $message, EntityManagerInterface $em): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($message);
+        if (!$message->isDeleted()) {
+            return $this->redirectToRoute('trash');
+        }
+
+        $message->restore();
         $em->flush();
 
-        return $this->redirectToRoute("received");
+        return $this->redirectToRoute('inbox');
     }
+    // fin destinataire
 }
