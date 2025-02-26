@@ -216,6 +216,11 @@ class Employe extends User implements UserInterface
      */
     private $messageReplies;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Document::class, mappedBy="employe")
+     */
+    private $documents;
+
     public function __construct()
     {
         parent::__construct();
@@ -237,6 +242,7 @@ class Employe extends User implements UserInterface
         $this->retenues = new ArrayCollection();
         $this->calendriers = new ArrayCollection();
         $this->messageReplies = new ArrayCollection();
+        $this->documents = new ArrayCollection();
     }
 
 
@@ -979,9 +985,27 @@ class Employe extends User implements UserInterface
             $this->messageReplies[] = $messageReply;
             $messageReply->setSender($this);
         }
+        return $this;
+    }
+
+    /**
+     * @return Collection|Document[]
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(Document $document): self
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents[] = $document;
+            $document->setEmploye($this);
+        }
 
         return $this;
     }
+
 
     public function removeMessageReply(MessageReply $messageReply): self
     {
@@ -989,6 +1013,16 @@ class Employe extends User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($messageReply->getSender() === $this) {
                 $messageReply->setSender(null);
+            }
+        }
+        return $this;
+    }
+    public function removeDocument(Document $document): self
+    {
+        if ($this->documents->removeElement($document)) {
+            // set the owning side to null (unless already changed)
+            if ($document->getEmploye() === $this) {
+                $document->setEmploye(null);
             }
         }
 
