@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MessageRecipientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,6 +49,16 @@ class MessageRecipient
      * @ORM\Column(type="boolean")
      */
     private $isRead = false;
+
+    /**
+     * @ORM\OneToMany(targetEntity=MessageReply::class, mappedBy="message")
+     */
+    private $messageReplies;
+
+    public function __construct()
+    {
+        $this->messageReplies = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -97,6 +109,36 @@ class MessageRecipient
     public function setSender(?User $sender): self
     {
         $this->sender = $sender;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MessageReply[]
+     */
+    public function getMessageReplies(): Collection
+    {
+        return $this->messageReplies;
+    }
+
+    public function addMessageReply(MessageReply $messageReply): self
+    {
+        if (!$this->messageReplies->contains($messageReply)) {
+            $this->messageReplies[] = $messageReply;
+            $messageReply->setMessage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessageReply(MessageReply $messageReply): self
+    {
+        if ($this->messageReplies->removeElement($messageReply)) {
+            // set the owning side to null (unless already changed)
+            if ($messageReply->getMessage() === $this) {
+                $messageReply->setMessage(null);
+            }
+        }
 
         return $this;
     }

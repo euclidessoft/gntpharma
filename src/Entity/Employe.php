@@ -211,6 +211,11 @@ class Employe extends User implements UserInterface
      */
     private $contrat;
 
+    /**
+     * @ORM\OneToMany(targetEntity=MessageReply::class, mappedBy="sender")
+     */
+    private $messageReplies;
+
     public function __construct()
     {
         parent::__construct();
@@ -231,6 +236,7 @@ class Employe extends User implements UserInterface
         $this->primes = new ArrayCollection();
         $this->retenues = new ArrayCollection();
         $this->calendriers = new ArrayCollection();
+        $this->messageReplies = new ArrayCollection();
     }
 
 
@@ -955,6 +961,36 @@ class Employe extends User implements UserInterface
     public function setContrat(?Contrat $contrat): self
     {
         $this->contrat = $contrat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MessageReply[]
+     */
+    public function getMessageReplies(): Collection
+    {
+        return $this->messageReplies;
+    }
+
+    public function addMessageReply(MessageReply $messageReply): self
+    {
+        if (!$this->messageReplies->contains($messageReply)) {
+            $this->messageReplies[] = $messageReply;
+            $messageReply->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessageReply(MessageReply $messageReply): self
+    {
+        if ($this->messageReplies->removeElement($messageReply)) {
+            // set the owning side to null (unless already changed)
+            if ($messageReply->getSender() === $this) {
+                $messageReply->setSender(null);
+            }
+        }
 
         return $this;
     }
