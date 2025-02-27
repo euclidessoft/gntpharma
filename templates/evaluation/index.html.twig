@@ -1,0 +1,41 @@
+{% extends 'rh.html.twig' %}
+{% block body %}
+    <div class="col-lg-10 mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-money-bill mr-2"></i>
+            {{ "Liste des évaluations de performance"|trans }}
+        </h3>
+        <a href="{{ path('evaluation_new') }}" class="btn btn-success m-3"><i class="fas fa-plus"></i>Evalution</a>
+        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+
+            <thead>
+            <tr>
+                <th>Matricule</th>
+                <th>Employé(s)</th>
+                <th>Date évaluation</th>
+                <th>Score Total</th>
+                <th>Commentaire</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for evaluation in evaluations %}
+                <tr>
+                    <td>{{ evaluation.employe.matricule }}</td>
+                    <td>{{ evaluation.dateEvaluation ? evaluation.dateEvaluation|date('Y-m-d') : '' }}</td>
+                    <td>{{ evaluation.scoreTotal }}</td>
+                    <td>{{ evaluation.commentaire }}</td>
+                    <td>
+                        <a href="{{ path('evaluation_show', {'id': evaluation.id}) }}">show</a>
+                        <a href="{{ path('evaluation_edit', {'id': evaluation.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
