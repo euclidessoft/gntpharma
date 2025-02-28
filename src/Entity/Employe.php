@@ -226,6 +226,7 @@ class Employe extends User implements UserInterface
      */
     private $evaluations;
 
+
     public function __construct()
     {
         parent::__construct();
@@ -1064,6 +1065,7 @@ class Employe extends User implements UserInterface
 
         return $this;
     }
+
 
 }
 

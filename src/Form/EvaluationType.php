@@ -15,15 +15,17 @@ class EvaluationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('employe',EntityType::class, [
-                'class' => Employe::class,
-                'choice_label' => function(){
-                }
-            ])
-            ->add('dateEvaluation',DateType::class,[
+            ->add('dateEvaluation',DateType::class ,[
                 'widget' => 'single_text',
             ])
-            ->add('commentaire')
+            ->add('employe',EntityType::class, [
+                'class' => Employe::class,
+                'choice_label' => function(Employe $employe){
+                    return $employe->getNom().''.$employe->getPrenom();
+                },
+                'placeholder' => 'Selectionnez un employé',
+                'required' => true,
+            ])
         ;
     }
 
