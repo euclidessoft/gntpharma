@@ -28,7 +28,6 @@ class User implements UserInterface
     const jobs = [
 
         'Administrateur' => 'Administrateur',
-        'Client' => 'Client' ,
         'Financier' => 'Financier' ,
         'RH' => 'RH' ,
         'Gestionnaire de stock' => 'Gestionnaire de stock' ,
@@ -93,11 +92,11 @@ class User implements UserInterface
      * @Assert\NotBlank(message="champ obligatoire")
      */
     private $adresse;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $fonction;
+//
+//    /**
+//     * @ORM\Column(type="string", length=255)
+//     */
+//    private $fonction;
 
     /**
      * @ORM\Column(type="array", nullable=true)
@@ -241,17 +240,17 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getFonction(): ?string
-    {
-        return $this->fonction;
-    }
-
-    public function setFonction(?string $fonction): self
-    {
-        $this->fonction = $fonction;
-
-        return $this;
-    }
+//    public function getFonction(): ?string
+//    {
+//        return $this->fonction;
+//    }
+//
+//    public function setFonction(?string $fonction): self
+//    {
+//        $this->fonction = $fonction;
+//
+//        return $this;
+//    }
 
     public function getsalt(): ?array
     {

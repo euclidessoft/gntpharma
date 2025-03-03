@@ -76,7 +76,7 @@ class Message
 
     public function setMessage(string $message): self
     {
-        $this->message = $message;
+        $this->message = strip_tags($message);
 
         return $this;
     }

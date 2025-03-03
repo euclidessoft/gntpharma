@@ -60,14 +60,9 @@ class EmployeController extends AbstractController
             $hashpass = $encoder->encodePassword($employe, 'Passer2023');
             $employe->setPassword($hashpass);
             $employe->setUsername($employe->getNom());
-            switch ($employe->getFonction()) {
+            switch ($employe->getPoste()->getNom()) {
                 case 'Administrateur': {
                     $employe->setRoles(['ROLE_ADMIN']);
-                    break;
-                }
-                case 'Client': {
-                    $employe->setRoles(['ROLE_CLIENT']);
-                    $employe->setClient(true);
                     break;
                 }
                 case 'Financier': {
@@ -78,7 +73,7 @@ class EmployeController extends AbstractController
                     $employe->setRoles(['ROLE_RH']);
                     break;
                 }
-                case 'EMPLOYER': {
+                case 'EMPLOYER SIMPLE': {
                     $employe->setRoles(['ROLE_EMPLOYER']);
                     break;
                 }
@@ -92,7 +87,6 @@ class EmployeController extends AbstractController
                     break;
                 }
             }
-            $employe->setFonction("Employé");
             $employe->setStatus(false);
             $employe->setHireDate($employe->getHireDate());
             $employe->setNombreJoursConges(30);

@@ -40,7 +40,7 @@ class MessageController extends AbstractController
     {
         $message = new Message;
         $unread = $em->getRepository(MessageRecipient::class)
-            ->findBy(['deletedAt' => null], ['id' => 'DESC']);
+            ->findBy(['isRead' => false], ['id' => 'DESC']);
 
         $form = $this->createForm(MessageType::class, $message);
 
@@ -80,7 +80,7 @@ class MessageController extends AbstractController
         $messageRecipients = $em->getRepository(MessageRecipient::class)
             ->findBy(['recipient' => $user], ['id' => 'DESC']);
         $unread = $em->getRepository(MessageRecipient::class)
-            ->findBy(['deletedAt' => null], ['id' => 'DESC']);
+            ->findBy(['isRead' => false], ['id' => 'DESC']);
 
         return $this->render('message/received.html.twig', [
             'messages' => $messageRecipients,
@@ -98,7 +98,7 @@ class MessageController extends AbstractController
         $messageRecipients = $em->getRepository(MessageRecipient::class)
             ->findBy(['sender' => $user], ['id' => 'DESC']);
         $unread = $em->getRepository(MessageRecipient::class)
-            ->findBy(['deletedAt' => null], ['id' => 'DESC']);
+            ->findBy(['isRead' => false], ['id' => 'DESC']);
 
 
 
@@ -114,7 +114,7 @@ class MessageController extends AbstractController
     public function read(MessageRecipient $message, EntityManagerInterface $em): Response
     {
         $unread = $em->getRepository(MessageRecipient::class)
-            ->findBy(['deletedAt' => null], ['id' => 'DESC']);
+            ->findBy(['isRead' => false], ['id' => 'DESC']);
 
         $message->setIsRead(true);
         $em = $this->getDoctrine()->getManager();
@@ -130,7 +130,7 @@ class MessageController extends AbstractController
     public function readsend(Message $message, EntityManagerInterface $em): Response
     {
         $unread = $em->getRepository(MessageRecipient::class)
-            ->findBy(['deletedAt' => null], ['id' => 'DESC']);
+            ->findBy(['isRead' => false], ['id' => 'DESC']);
 //        $message->setIsRead(true);
 //        $em = $this->getDoctrine()->getManager();
 //        $em->persist($message);
@@ -145,7 +145,7 @@ class MessageController extends AbstractController
     public function reply(MessageRecipient $message, Request $request, EntityManagerInterface $em): Response
     {
         $unread = $em->getRepository(MessageRecipient::class)
-            ->findBy(['deletedAt' => null], ['id' => 'DESC']);
+            ->findBy(['isRead' => false], ['id' => 'DESC']);
         $messagereply = new MessageReply();
         $form = $this->createForm(MessageReplyType::class, $messagereply);
 
@@ -200,7 +200,7 @@ class MessageController extends AbstractController
     {
         $messages = $em->getRepository(MessageRecipient::class)->findBy(['deletedAt' => null]);
         $unread = $em->getRepository(MessageRecipient::class)
-            ->findBy(['deletedAt' => null], ['id' => 'DESC']);
+            ->findBy(['isRead' => false], ['id' => 'DESC']);
         dd($messages);
         return $this->render('message/trash.html.twig', [
             'messages' => $messages,
