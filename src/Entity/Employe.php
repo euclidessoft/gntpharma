@@ -221,6 +221,12 @@ class Employe extends User implements UserInterface
      */
     private $documents;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Evaluation::class, mappedBy="employe")
+     */
+    private $evaluations;
+
+
     public function __construct()
     {
         parent::__construct();
@@ -243,6 +249,7 @@ class Employe extends User implements UserInterface
         $this->calendriers = new ArrayCollection();
         $this->messageReplies = new ArrayCollection();
         $this->documents = new ArrayCollection();
+        $this->evaluations = new ArrayCollection();
     }
 
 
@@ -1028,6 +1035,37 @@ class Employe extends User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|Evaluation[]
+     */
+    public function getEvaluations(): Collection
+    {
+        return $this->evaluations;
+    }
+
+    public function addEvaluation(Evaluation $evaluation): self
+    {
+        if (!$this->evaluations->contains($evaluation)) {
+            $this->evaluations[] = $evaluation;
+            $evaluation->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvaluation(Evaluation $evaluation): self
+    {
+        if ($this->evaluations->removeElement($evaluation)) {
+            // set the owning side to null (unless already changed)
+            if ($evaluation->getEmploye() === $this) {
+                $evaluation->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
 
 }
 

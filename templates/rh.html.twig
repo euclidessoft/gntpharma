@@ -92,6 +92,34 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item dropright" title="{{ 'Evaluation'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block evaluation %} {% endblock %}" href="#" id="administration"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fas fa-users fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Evaluation'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="administration">
+                        <li class="dropdown-item" title="{{ 'Performance'|trans }}">
+                            <a class="nav-link {% block crite %}{% endblock %}"
+                                href="{{ path('critere_evaluation_index') }}">
+                                <i class="fa-solid fa-chart-line"></i>
+                                {{ 'Critere'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item" title="{{ 'Performance'|trans }}">
+                            <a class="nav-link {% block evl %}{% endblock %}"
+                                href="">
+                                <i class="fa-solid fa-chart-line"></i>
+                                {{ 'Performance'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item dropright" title="{{ 'Discipline'|trans }}">
                     <a class="nav-link dropdown-toggle {% block discipline %} {% endblock %}" href="#" id="conges"
                         data-toggle="dropdown"
