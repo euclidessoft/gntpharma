@@ -55,6 +55,16 @@ class MessageRecipient
      */
     private $messageReplies;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deletedAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $destDeletedAt;
+
     public function __construct()
     {
         $this->messageReplies = new ArrayCollection();
@@ -141,5 +151,44 @@ class MessageRecipient
         }
 
         return $this;
+    }
+
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(\DateTimeInterface $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function getDestDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->destDeletedAt;
+    }
+
+    public function setDestDeletedAt(?\DateTimeInterface $destDeletedAt): self
+    {
+        $this->destDeletedAt = $destDeletedAt;
+
+        return $this;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->deletedAt !== null;
+    }
+
+    public function delete(): void
+    {
+        $this->deletedAt = new \DateTime();
+    }
+
+    public function restore(): void
+    {
+        $this->deletedAt = null;
     }
 }
