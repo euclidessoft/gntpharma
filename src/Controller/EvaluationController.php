@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\CritereEvaluation;
 use App\Entity\Evaluation;
 use App\Form\EvaluationType;
-use App\Repository\CritereEvaluationRepository;
 use App\Repository\EvaluationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,14 +29,16 @@ class EvaluationController extends AbstractController
     /**
      * @Route("/new", name="evaluation_new", methods={"GET","POST"})
      */
-    public function new(Request $request,CritereEvaluationRepository $critere): Response
+    public function new(Request $request): Response
     {
         $evaluation = new Evaluation();
         $form = $this->createForm(EvaluationType::class, $evaluation);
         $form->handleRequest($request);
-        $criteres = $critere->findAll();
+        $criteres = $this->getDoctrine()->getRepository(CritereEvaluation::class)->findAll();
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            
+            dd($request->request->all());
             $entityManager->persist($evaluation);
             $entityManager->flush();
 
@@ -45,7 +47,7 @@ class EvaluationController extends AbstractController
         return $this->render('evaluation/new.html.twig', [
             'evaluation' => $evaluation,
             'form' => $form->createView(),
-            'criteres' => $critere,
+            'criteres' => $criteres,
         ]);
     }
 
