@@ -87,32 +87,32 @@ class Employe extends User implements UserInterface
     private $famillyphone;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $bloodgroup;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $diabete;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $handicap;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $hypo;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $hyper;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $epilepsie;
 
@@ -130,7 +130,6 @@ class Employe extends User implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private $status;
-
     /**
      * @ORM\OneToMany(targetEntity=Conges::class, mappedBy="employe")
      */
