@@ -71,7 +71,7 @@
                         </li>
                         <li class="dropdown-item" title="{{ 'Performance'|trans }}">
                             <a class="nav-link {% block performance %}{% endblock %}"
-                                href="#">
+                                href="{{ path('evaluation_index') }}">
                                 <i class="fa-solid fa-chart-line"></i>
                                 {{ 'Performance'|trans }}
                             </a>
@@ -97,7 +97,7 @@
                         data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
-                            <i class="fas fa-users fa-lg"></i>
+                            <i class="fa-solid fa-chart-line fa-lg"></i>
                         </div>
                         <div class="title">
                             {{ 'Evaluation'|trans }}
