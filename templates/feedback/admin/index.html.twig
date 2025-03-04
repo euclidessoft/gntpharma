@@ -1,0 +1,41 @@
+{% extends 'rh.html.twig' %}
+{% block body %}
+<div class="col-lg-10 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Liste des feedback"|trans }}
+    </h3>
+    <a href="{{ path('feedback_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouvel feedback</a>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>Matricule</th>
+                <th>Employé(e)</th>
+                <th>Poste</th>
+                <th>Commentaire</th>
+                <th>Date du feedback</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for feedback in feedback %}
+            <tr>
+                <td>{{ feedback.employe.matricule }}</td>
+                <td>{{ feedback.employe.nom~' '~feedback.employe.prenom }}</td>
+                <td>{{ feedback.employe.poste.nom }}</td>
+                <td>{{ feedback.commentaire }}</td>
+                <td>{{ feedback.createdAt ? feedback.createdAt|date('d/m/Y') : '' }}</td>
+                <td>
+                    <a href="{{ path('feedback_show', {'id': feedback.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('feedback_edit', {'id': feedback.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
+                    {{ include('feedback/admin/_delete_form.html.twig') }}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endblock %}

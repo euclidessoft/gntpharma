@@ -105,17 +105,24 @@
                     </a>
                     <ul class=" dropdown-menu" aria-labelledby="administration">
                         <li class="dropdown-item" title="{{ 'Performance'|trans }}">
-                            <a class="nav-link {% block crite %}{% endblock %}"
+                            <a class="nav-link {% block critere %}{% endblock %}"
                                 href="{{ path('critere_evaluation_index') }}">
                                 <i class="fa-solid fa-chart-line"></i>
                                 {{ 'Critere'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Performance'|trans }}">
-                            <a class="nav-link {% block evl %}{% endblock %}"
+                            <a class="nav-link {% block evaluat %}{% endblock %}"
                                 href="">
                                 <i class="fa-solid fa-chart-line"></i>
                                 {{ 'Performance'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item" title="{{ 'Performance'|trans }}">
+                            <a class="nav-link {% block feedback %}{% endblock %}"
+                                href="{{ path('feedback_index') }}">
+                                <i class="fa-solid fa-chart-line"></i>
+                                {{ 'Feedback'|trans }}
                             </a>
                         </li>
                     </ul>
