@@ -186,7 +186,7 @@
                                 <div class="form-group mt-2">
                                     {{ form_errors(form.montant) }}
                                     <div class="input-group">
-                                        {{ form_widget(form.montant, {'label':false, 'attr' : {'id' : 'nombre', 'placeholder':'Montant', 'value': total+ tva -reduction}}) }}
+                                        {{ form_widget(form.montant, {'label':false, 'attr' : {'id' : 'nombre', 'placeholder':'Montant', 'value': (total+ tva -reduction)|number_format(0, '' , '')}}) }}
                                         <input type="hidden" id="tamp"/>
                                         <input type="hidden" id="tamp1"/>
                                         <div class="input-group-append">
