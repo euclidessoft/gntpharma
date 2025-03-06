@@ -1,0 +1,30 @@
+{% extends 'rh.html.twig' %}
+
+{% block body %}
+    <div class="container mt-4 fond-7">
+        <div class="card shadow-sm border-0">
+            <div class="card-header text-white">
+                <h4 class="mb-0"><i class="fa fa-comment-alt mr-2"></i>Feedback de l'employé</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong><i class="fa fa-id-badge mr-2"></i>Matricule :</strong> {{ feedback.employe.matricule }}</p>
+                        <p><strong><i class="fa fa-user mr-2"></i>Employé(e) :</strong> {{ feedback.employe.nom~' '~feedback.employe.prenom }}</p>
+                        <p><strong><i class="fa fa-building mr-2"></i>Département :</strong> {{ feedback.employe.poste.departement.nom }}</p>
+                  
+                        <p><strong><i class="fa fa-briefcase mr-2"></i>Poste :</strong> {{ feedback.employe.poste.nom }}</p>
+                        <p><strong><i class="fa fa-calendar-alt mr-2"></i>Date du Feedback :</strong> {{ feedback.createdAt ? feedback.createdAt|date('d/m/Y') : '' }}</p>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-3 bg-light border rounded">
+                    <h5 class="text-dark"><i class="fa fa-comments mr-2"></i> Commentaire :</h5>
+                    <p class="text-muted">{{ feedback.commentaire }}</p>
+                </div>
+            </div>
+        </div>
+    <a href="{{ path('feedback_index') }}" class="btn btn-success m-3">Retour</a>
+
+    </div>
+{% endblock %}
