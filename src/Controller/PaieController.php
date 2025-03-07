@@ -12,6 +12,7 @@ use App\Repository\HeureSuplementaireRepository;
 use App\Repository\PaieRepository;
 use App\Repository\PrimeRepository;
 use App\Repository\RetenueRepository;
+use App\Service\PaieService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,12 @@ use Symfony\Component\Security\Core\Security;
  */
 class PaieController extends AbstractController
 {
+    private $paieService;
+    public function __construct(PaieService $paieService)
+    {
+        $this->paieService = $paieService;
+    }
+
     /**
      * @Route("/", name="paie_index")
      */
@@ -62,60 +69,11 @@ class PaieController extends AbstractController
      */
     public function bulletin(): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $startOfMonth = new \DateTime('01-' . date('m') . '-' . date('Y'));
-        $endOfMonth = new \DateTime('last day of this month');
-        $employes = $entityManager->getRepository(Employe::class)->findAll();
-        $bulletins = [];
+        $bulletins = $this->paieService->bulletin();
 
-        foreach ($employes as $employe) {
-
-            $paieExistante = $entityManager->getRepository(Paie::class)->findByDate($employe->getId(), $startOfMonth, $endOfMonth);
-            if ($paieExistante) {
-                continue;
-            }
-            $salaireDeBase = $employe->getPoste()->getSalaire();
-            $salaireJournaliere = $salaireDeBase / 30;
-
-            $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
-            $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
-            $sanctions = $entityManager->getRepository(Sanction::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
-
-            $retenues = [];
-            foreach ($sanctions as $sanction) {
-                if ($sanction->getTypeSanction()->getNom() === 'ponction salarial') {
-                    $nombreJours = $sanction->getNombreJours();
-                    $montantRetenue = $salaireJournaliere * $nombreJours;
-                    $retenues[] = [
-                        'type' => $sanction->getTypeSanction()->getNom(),
-                        'montantRetenue' => round($montantRetenue, 2),
-                        'details' => $sanction->getNombreJours() . ' jours',
-                    ];
-                } elseif ($sanction->getTypeSanction()->getNom() === 'mis a pied') {
-                    $dateDebut = $sanction->getDateDebut();
-                    $dateFin = $sanction->getDateFin();
-                    $nombreJours = $dateDebut->diff($dateFin)->days + 1;
-                    $montantRetenue = $salaireJournaliere * $nombreJours;
-                    $retenues[] = [
-                        'type' => $sanction->getTypeSanction()->getNom(),
-                        'montantRetenue' => round($montantRetenue, 2),
-                        'details' => 'Du ' . $dateDebut->format('d/m/Y') . ' au ' . $dateFin->format('d/m/Y'),
-                    ];
-                }
-            }
-            $bulletins[] = [
-                'employe' => $employe,
-                'mois' => $startOfMonth,
-                'salaireBase' => $salaireDeBase,
-                'primes' => $primes,
-                'heureSup' => $heureSup,
-                'retenues' => $retenues,
-            ];
-        }
         //dd($employe,$startOfMonth,$salaireDeBase,$primes,$retenues);
         return $this->render('paie/admin/bulletin.html.twig', [
             'bulletins' => $bulletins,
-            'paieExistante' => $paieExistante
         ]);
     }
 
@@ -125,60 +83,9 @@ class PaieController extends AbstractController
      */
     public function printBulletin(): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $startOfMonth = new \DateTime('01-' . date('m') . '-' . date('Y'));
-        $endOfMonth = new \DateTime('last day of this month');
-        $employes = $entityManager->getRepository(Employe::class)->findAll();
-        $bulletins = [];
-
-        foreach ($employes as $employe) {
-
-            $paieExistante = $entityManager->getRepository(Paie::class)->findByDate($employe->getId(), $startOfMonth, $endOfMonth);
-            if ($paieExistante) {
-                continue;
-            }
-            $salaireDeBase = $employe->getPoste()->getSalaire();
-            $salaireJournaliere = $salaireDeBase / 30;
-
-            $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
-            $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
-            $sanctions = $entityManager->getRepository(Sanction::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
-
-            $retenues = [];
-            foreach ($sanctions as $sanction) {
-                if ($sanction->getTypeSanction()->getNom() === 'ponction salarial') {
-                    $nombreJours = $sanction->getNombreJours();
-                    $montantRetenue = $salaireJournaliere * $nombreJours;
-                    $retenues[] = [
-                        'type' => $sanction->getTypeSanction()->getNom(),
-                        'montantRetenue' => round($montantRetenue, 2),
-                        'details' => $sanction->getNombreJours() . ' jours',
-                    ];
-                } elseif ($sanction->getTypeSanction()->getNom() === 'mis a pied') {
-                    $dateDebut = $sanction->getDateDebut();
-                    $dateFin = $sanction->getDateFin();
-                    $nombreJours = $dateDebut->diff($dateFin)->days + 1;
-                    $montantRetenue = $salaireJournaliere * $nombreJours;
-                    $retenues[] = [
-                        'type' => $sanction->getTypeSanction()->getNom(),
-                        'montantRetenue' => round($montantRetenue, 2),
-                        'details' => 'Du ' . $dateDebut->format('d/m/Y') . ' au ' . $dateFin->format('d/m/Y'),
-                    ];
-                }
-            }
-            $bulletins[] = [
-                'employe' => $employe,
-                'mois' => $startOfMonth,
-                'salaireBase' => $salaireDeBase,
-                'primes' => $primes,
-                'heureSup' => $heureSup,
-                'retenues' => $retenues,
-            ];
-        }
-        //dd($employe,$startOfMonth,$salaireDeBase,$primes,$retenues);
+       $bulletins = $this->paieService->bulletin();
         return $this->render('paie/admin/bulletin_print.html.twig', [
             'bulletins' => $bulletins,
-            'paieExistante' => $paieExistante
         ]);
     }
 
