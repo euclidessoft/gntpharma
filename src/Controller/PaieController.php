@@ -155,7 +155,7 @@ class PaieController extends AbstractController
         }
 
         $entityManager->flush();
-        return $this->redirectToRoute('paie_historique');
+        return $this->redirectToRoute('print_bulletin');
     }
 
     /**
