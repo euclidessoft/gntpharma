@@ -192,6 +192,7 @@ class CommandeController extends AbstractController
                     $montant = $montant + $product['produit']->getQuantite() * $produit->getPrix();
 
                     $commandeproduit = new CommandeProduit($produit, $commande, $produit->getPrix(), $produit->getPrixpublic(), $product['produit']->getQuantite());
+                    $commandeproduit->setTva(ceil($tva));
                     if (!empty($produit->getPromotion())) {
 
                         $commandeproduit->setPromotion($produit->getPromotion());
@@ -199,7 +200,7 @@ class CommandeController extends AbstractController
                     $em->persist($commandeproduit);
                 }
                 $montant = $montant + $tva - $reduction;
-                $commande->setMontant($montant);
+                $commande->setMontant(ceil($montant));
                 $commande->setTva($tva);
                 $commande->setReduction($reduction);
                 $em->persist($commande);
@@ -274,6 +275,7 @@ class CommandeController extends AbstractController
                     $montant = $montant + $product['produit']->getQuantite() * $produit->getPrix();
 
                     $commandeproduit = new CommandeProduit($produit, $commande, $produit->getPrix(), $produit->getPrixpublic(), $product['produit']->getQuantite());
+                    $commandeproduit->setTva(ceil($tva));
                     if (!empty($produit->getPromotion())) {
 
                         $commandeproduit->setPromotion($produit->getPromotion());
@@ -281,7 +283,7 @@ class CommandeController extends AbstractController
                     $em->persist($commandeproduit);
                 }
                 $montant = $montant + $tva - $reduction;
-                $commande->setMontant($montant);
+                $commande->setMontant(ceil($montant));
                 $commande->setTva($tva);
                 $commande->setReduction($reduction);
                 $em->persist($commande);
