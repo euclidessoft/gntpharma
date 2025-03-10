@@ -24,9 +24,22 @@ class DepenseController extends AbstractController
      */
     public function index(DepenseRepository $depenseRepository): Response
     {
-        return $this->render('depense/index.html.twig', [
-            'depenses' => $depenseRepository->findAll(),
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            return $this->render('depense/index.html.twig', [
+                'depenses' => $depenseRepository->findAll(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -34,63 +47,75 @@ class DepenseController extends AbstractController
      */
     public function new(Request $request, Solde $solde): Response
     {
-        $depense = new Depense();
-        $debit = new Debit();
-        $ecriture = new Ecriture();
-        $form = $this->createForm(DepenseType::class, $depense);
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $depense = new Depense();
+            $debit = new Debit();
+            $ecriture = new Ecriture();
+            $form = $this->createForm(DepenseType::class, $depense);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $depense->setUser($this->getUser());
-            $montant = 0;
-            if($depense->getType() == 'Espece'){
-                $montant = $solde->montantcaisse($entityManager, 54);
-                $depense->setCompte($depense->getCategorie()->getCompte());
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $depense->setUser($this->getUser());
+                $montant = 0;
+                if ($depense->getType() == 'Espece') {
+                    $montant = $solde->montantcaisse($entityManager, 54);
+                    $depense->setCompte($depense->getCategorie()->getCompte());
 
-                $debit->setType('Espece');
-                $debit->setCompte(54);
+                    $debit->setType('Espece');
+                    $debit->setCompte(54);
 
-                $ecriture->setType('Espece');
-                $ecriture->setComptecredit($depense->getCategorie()->getCompte());
-                $ecriture->setComptedebit(54);
+                    $ecriture->setType('Espece');
+                    $ecriture->setComptecredit($depense->getCategorie()->getCompte());
+                    $ecriture->setComptedebit(54);
+                } else {
+                    $montant = $solde->montantbanque($entityManager, $depense->getBanque()->getCompte());
+                    $depense->setType('Banque');
+                    $depense->setCompte($depense->getCategorie()->getCompte());
+
+                    $debit->setType('Banque');
+                    $debit->setCompte($depense->getBanque()->getCompte());
+
+                    $ecriture->setType('Banque');
+                    $ecriture->setComptecredit($depense->getCategorie()->getCompte());
+                    $ecriture->setComptedebit($depense->getBanque()->getCompte());
+                }
+                if ($depense->getMontant() <= $montant) {
+                    $debit->setDepense($depense);
+                    $debit->setMontant($depense->getMontant());
+
+                    $ecriture->setDebit($debit);
+                    $ecriture->setSolde(-$depense->getMontant());
+                    $ecriture->setMontant($depense->getMontant());
+                    $ecriture->setLibelle($depense->getLibelle());
+
+                    $entityManager->persist($depense);
+                    $entityManager->persist($debit);
+                    $entityManager->persist($ecriture);
+                    $entityManager->flush();
+
+                    return $this->redirectToRoute('depense_index', [], Response::HTTP_SEE_OTHER);
+                } else {
+                    $this->addFlash('notice', 'Montant non disponible');
+                }
             }
-            else{
-                $montant = $solde->montantbanque($entityManager, $depense->getBanque()->getCompte());
-                $depense->setType('Banque');
-                $depense->setCompte($depense->getCategorie()->getCompte());
 
-                $debit->setType('Banque');
-                $debit->setCompte($depense->getBanque()->getCompte());
-
-                $ecriture->setType('Banque');
-                $ecriture->setComptecredit($depense->getCategorie()->getCompte());
-                $ecriture->setComptedebit($depense->getBanque()->getCompte());
-            }
-            if($depense->getMontant() <= $montant){
-            $debit->setDepense($depense);
-            $debit->setMontant($depense->getMontant());
-
-            $ecriture->setDebit($debit);
-            $ecriture->setSolde(-$depense->getMontant());
-            $ecriture->setMontant($depense->getMontant());
-            $ecriture->setLibelle($depense->getLibelle());
-
-            $entityManager->persist($depense);
-            $entityManager->persist($debit);
-            $entityManager->persist($ecriture);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('depense_index', [], Response::HTTP_SEE_OTHER);
-            }else{
-                $this->addFlash('notice', 'Montant non disponible');
-            }
+            return $this->render('depense/new.html.twig', [
+                'depense' => $depense,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('depense/new.html.twig', [
-            'depense' => $depense,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -98,9 +123,22 @@ class DepenseController extends AbstractController
      */
     public function show(Depense $depense): Response
     {
-        return $this->render('depense/show.html.twig', [
-            'depense' => $depense,
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            return $this->render('depense/show.html.twig', [
+                'depense' => $depense,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -108,19 +146,32 @@ class DepenseController extends AbstractController
      */
     public function edit(Request $request, Depense $depense): Response
     {
-        $form = $this->createForm(DepenseType::class, $depense);
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $form = $this->createForm(DepenseType::class, $depense);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('depense_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('depense_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('depense/edit.html.twig', [
+                'depense' => $depense,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('depense/edit.html.twig', [
-            'depense' => $depense,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -128,12 +179,25 @@ class DepenseController extends AbstractController
      */
     public function delete(Request $request, Depense $depense): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$depense->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($depense);
-            $entityManager->flush();
-        }
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            if ($this->isCsrfTokenValid('delete' . $depense->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($depense);
+                $entityManager->flush();
+            }
 
-        return $this->redirectToRoute('depense_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('depense_index', [], Response::HTTP_SEE_OTHER);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 }

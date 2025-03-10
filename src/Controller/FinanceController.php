@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+
 /**
  * @Route("/{_locale}/finance", name="finance_")
  */
@@ -20,36 +21,48 @@ class FinanceController extends AbstractController
      */
     public function index(EcritureRepository $repository): Response
     {
-        $ecritures = $repository->findAll();
-        $caisse = 0;
-        $banque = 0;
-        $debitbanque = 0;
-        $debitcaisse = 0;
-        foreach($ecritures as $ecriture)
-        {
-            $credit= null;
-            $debit= null;
-            if($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $credit->getType() == 'Espece' ?
-                    $caisse = $caisse + $credit->getMontant() :
-                    $banque = $banque + $credit->getMontant();
-            } else {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $ecritures = $repository->findAll();
+            $caisse = 0;
+            $banque = 0;
+            $debitbanque = 0;
+            $debitcaisse = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $credit->getType() == 'Espece' ?
+                        $caisse = $caisse + $credit->getMontant() :
+                        $banque = $banque + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debit->getType() == 'Espece' ?
-                    $debitcaisse = $debitcaisse + $debit->getMontant() :
-                    $debitbanque = $debitbanque + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debit->getType() == 'Espece' ?
+                        $debitcaisse = $debitcaisse + $debit->getMontant() :
+                        $debitbanque = $debitbanque + $debit->getMontant();
+
+                }
 
             }
 
+            return $this->render('finance/index.html.twig', [
+                'caisse' => $caisse - $debitcaisse,
+                'banque' => $banque - $debitbanque,
+                'ecritures' => $ecritures,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('finance/index.html.twig',[
-            'caisse' => $caisse - $debitcaisse,
-            'banque' => $banque - $debitbanque,
-            'ecritures' => $ecritures,
-        ]);
     }
 
     /**
@@ -57,41 +70,53 @@ class FinanceController extends AbstractController
      */
     public function journalbanque(EcritureRepository $repository, Banque $banque, Solde $solde): Response
     {
-        $ecritures = $repository->findAll();
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $ecritures = $repository->findAll();
 
-        $caisse = 0;
-        $bank = 0;
-        $debitbanque = 0;
-        $debitcaisse = 0;
-        $ecrit = [];
-        foreach($ecritures as $ecriture)
-        {
-            if($banque->getCompte() == $ecriture->getComptecredit() || $banque->getCompte() == $ecriture->getComptedebit()) {
-                $credit = null;
-                $debit = null;
-                if ($ecriture->getCredit() != null) {
-                    $credit = $ecriture->getCredit();
+            $caisse = 0;
+            $bank = 0;
+            $debitbanque = 0;
+            $debitcaisse = 0;
+            $ecrit = [];
+            foreach ($ecritures as $ecriture) {
+                if ($banque->getCompte() == $ecriture->getComptecredit() || $banque->getCompte() == $ecriture->getComptedebit()) {
+                    $credit = null;
+                    $debit = null;
+                    if ($ecriture->getCredit() != null) {
+                        $credit = $ecriture->getCredit();
 
                         $bank = $bank + $credit->getMontant();
-                } else {
+                    } else {
 
-                    $debit = $ecriture->getDebit();
+                        $debit = $ecriture->getDebit();
 
                         $debitbanque = $debitbanque + $debit->getMontant();
 
+                    }
+                    $ecrit[] = $ecriture;
                 }
-                $ecrit[] = $ecriture;
+
             }
 
+            return $this->render('banque/journal_banque.html.twig', [
+                'soldecaisse' => $caisse - $debitcaisse,
+                'soldebanque' => $bank - $debitbanque,
+                'banque' => $banque,
+                'ecritures' => $ecrit,
+                'solde' => $solde->montantbanque($this->getDoctrine()->getManager(), $banque->getCompte()),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('banque/journal_banque.html.twig',[
-            'soldecaisse' => $caisse - $debitcaisse,
-            'soldebanque' => $bank - $debitbanque,
-            'banque' => $banque,
-            'ecritures' => $ecrit,
-            'solde' => $solde->montantbanque($this->getDoctrine()->getManager(), $banque->getCompte()),
-        ]);
     }
 
     /**
@@ -99,40 +124,52 @@ class FinanceController extends AbstractController
      */
     public function journalCompte(EcritureRepository $repository, $compte): Response
     {
-        $ecritures = $repository->findAll();
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $ecritures = $repository->findAll();
 
-        $caisse = 0;
-        $bank = 0;
-        $debitbanque = 0;
-        $debitcaisse = 0;
-        $ecrit = [];
-        foreach($ecritures as $ecriture)
-        {
-            if($compte == $ecriture->getComptecredit() || $compte == $ecriture->getComptedebit()) {
-                $credit = null;
-                $debit = null;
-                if ($ecriture->getCredit() != null) {
-                    $credit = $ecriture->getCredit();
+            $caisse = 0;
+            $bank = 0;
+            $debitbanque = 0;
+            $debitcaisse = 0;
+            $ecrit = [];
+            foreach ($ecritures as $ecriture) {
+                if ($compte == $ecriture->getComptecredit() || $compte == $ecriture->getComptedebit()) {
+                    $credit = null;
+                    $debit = null;
+                    if ($ecriture->getCredit() != null) {
+                        $credit = $ecriture->getCredit();
 
                         $bank = $bank + $credit->getMontant();
-                } else {
+                    } else {
 
-                    $debit = $ecriture->getDebit();
+                        $debit = $ecriture->getDebit();
 
                         $debitbanque = $debitbanque + $debit->getMontant();
 
+                    }
+                    $ecrit[] = $ecriture;
                 }
-                $ecrit[] = $ecriture;
+
             }
 
+            return $this->render('finance/journal_compte.html.twig', [
+                'caisse' => $caisse - $debitcaisse,
+                'banque' => $bank - $debitbanque,
+                'ecritures' => $ecrit,
+                'compte' => $compte,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('finance/journal_compte.html.twig',[
-            'caisse' => $caisse - $debitcaisse,
-            'banque' => $bank - $debitbanque,
-            'ecritures' => $ecrit,
-            'compte' => $compte,
-        ]);
     }
 
     /**
@@ -140,62 +177,73 @@ class FinanceController extends AbstractController
      */
     public function brouyard(EcritureRepository $repository): Response
     {
-        $ecritures = $repository->brouyard();
-        $ouverture = $repository->ouverture();
-        $caisse = 0;
-        $caisseouv = 0;
-        $banque = 0;
-        $banqueouv = 0;
-        $debitbanque = 0;
-        $debitbanqueouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach($ecritures as $ecriture)
-        {
-            $credit= null;
-            $debit= null;
-            if($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $credit->getType() == 'Espece' ?
-                    $caisse = $caisse + $credit->getMontant() :
-                    $banque = $banque + $credit->getMontant();
-            } else {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $ecritures = $repository->brouyard();
+            $ouverture = $repository->ouverture();
+            $caisse = 0;
+            $caisseouv = 0;
+            $banque = 0;
+            $banqueouv = 0;
+            $debitbanque = 0;
+            $debitbanqueouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $credit->getType() == 'Espece' ?
+                        $caisse = $caisse + $credit->getMontant() :
+                        $banque = $banque + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debit->getType() == 'Espece' ?
-                    $debitcaisse = $debitcaisse + $debit->getMontant() :
-                    $debitbanque = $debitbanque + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debit->getType() == 'Espece' ?
+                        $debitcaisse = $debitcaisse + $debit->getMontant() :
+                        $debitbanque = $debitbanque + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach($ouverture as $ecriture)
-        {
-            $credit= null;
-            $debit= null;
-            if($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $credit->getType() == 'Espece' ?
-                    $caisseouv = $caisseouv + $credit->getMontant() :
-                    $banqueouv = $banqueouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debit->getType() == 'Espece' ?
-                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
-                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $credit->getType() == 'Espece' ?
+                        $caisseouv = $caisseouv + $credit->getMontant() :
+                        $banqueouv = $banqueouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard.html.twig',[
-            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
-            'banque' => $banque - $debitbanque + $banqueouv- $debitbanqueouv,
-            'ecritures' => $ecritures,
-            'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv- $debitbanqueouv)
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debit->getType() == 'Espece' ?
+                        $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
+                        $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard.html.twig', [
+                'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+                'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+                'ecritures' => $ecritures,
+                'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv - $debitbanqueouv)
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -203,62 +251,73 @@ class FinanceController extends AbstractController
      */
     public function brouyard_print(EcritureRepository $repository): Response
     {
-        $ecritures = $repository->brouyard();
-        $ouverture = $repository->ouverture();
-        $caisse = 0;
-        $caisseouv = 0;
-        $banque = 0;
-        $banqueouv = 0;
-        $debitbanque = 0;
-        $debitbanqueouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach($ecritures as $ecriture)
-        {
-            $credit= null;
-            $debit= null;
-            if($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $credit->getType() == 'Espece' ?
-                    $caisse = $caisse + $credit->getMontant() :
-                    $banque = $banque + $credit->getMontant();
-            } else {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $ecritures = $repository->brouyard();
+            $ouverture = $repository->ouverture();
+            $caisse = 0;
+            $caisseouv = 0;
+            $banque = 0;
+            $banqueouv = 0;
+            $debitbanque = 0;
+            $debitbanqueouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $credit->getType() == 'Espece' ?
+                        $caisse = $caisse + $credit->getMontant() :
+                        $banque = $banque + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debit->getType() == 'Espece' ?
-                    $debitcaisse = $debitcaisse + $debit->getMontant() :
-                    $debitbanque = $debitbanque + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debit->getType() == 'Espece' ?
+                        $debitcaisse = $debitcaisse + $debit->getMontant() :
+                        $debitbanque = $debitbanque + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach($ouverture as $ecriture)
-        {
-            $credit= null;
-            $debit= null;
-            if($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $credit->getType() == 'Espece' ?
-                    $caisseouv = $caisseouv + $credit->getMontant() :
-                    $banqueouv = $banqueouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debit->getType() == 'Espece' ?
-                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
-                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $credit->getType() == 'Espece' ?
+                        $caisseouv = $caisseouv + $credit->getMontant() :
+                        $banqueouv = $banqueouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_print.html.twig',[
-            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
-            'banque' => $banque - $debitbanque + $banqueouv- $debitbanqueouv,
-            'ecritures' => $ecritures,
-            'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv- $debitbanqueouv)
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debit->getType() == 'Espece' ?
+                        $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
+                        $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_print.html.twig', [
+                'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+                'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+                'ecritures' => $ecritures,
+                'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv - $debitbanqueouv)
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -266,98 +325,121 @@ class FinanceController extends AbstractController
      */
     public function brouyardCaisse(EcritureRepository $repository): Response
     {
-        $ecritures = $repository->brouyardcaisse();
-        $ouverture = $repository->ouverturecaisse();
-        $caisse = 0;
-        $caisseouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach($ecritures as $ecriture)
-        {
-            $credit= null;
-            $debit= null;
-            if($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $caisse = $caisse + $credit->getMontant();
-            } else {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $ecritures = $repository->brouyardcaisse();
+            $ouverture = $repository->ouverturecaisse();
+            $caisse = 0;
+            $caisseouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $caisse = $caisse + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debitcaisse = $debitcaisse + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debitcaisse = $debitcaisse + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach($ouverture as $ecriture)
-        {
-            $credit= null;
-            $debit= null;
-            if($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $caisseouv = $caisseouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $caisseouv = $caisseouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_caisse.html.twig',[
-            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
-            'ecritures' => $ecritures,
-            'ouverture' => $caisseouv - $debitcaisseouv,
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_caisse.html.twig', [
+                'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+                'ecritures' => $ecritures,
+                'ouverture' => $caisseouv - $debitcaisseouv,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
+
     /**
      * @Route("/BrouillardCaisse_print", name="brouyard_caisse_print")
      */
     public function brouyardCaisse_print(EcritureRepository $repository): Response
     {
-        $ecritures = $repository->brouyardcaisse();
-        $ouverture = $repository->ouverturecaisse();
-        $caisse = 0;
-        $caisseouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach($ecritures as $ecriture)
-        {
-            $credit= null;
-            $debit= null;
-            if($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $caisse = $caisse + $credit->getMontant();
-            } else {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $ecritures = $repository->brouyardcaisse();
+            $ouverture = $repository->ouverturecaisse();
+            $caisse = 0;
+            $caisseouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $caisse = $caisse + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debitcaisse = $debitcaisse + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debitcaisse = $debitcaisse + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach($ouverture as $ecriture)
-        {
-            $credit= null;
-            $debit= null;
-            if($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $caisseouv = $caisseouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $caisseouv = $caisseouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_caisse_print.html.twig',[
-            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
-            'ecritures' => $ecritures,
-            'ouverture' => $caisseouv - $debitcaisseouv,
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_caisse_print.html.twig', [
+                'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+                'ecritures' => $ecritures,
+                'ouverture' => $caisseouv - $debitcaisseouv,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -365,102 +447,125 @@ class FinanceController extends AbstractController
      */
     public function brouyardBanque(EcritureRepository $repository): Response
     {
-        $ecritures = $repository->brouyardbanque();
-        $ouverture = $repository->ouverturebanque();
-        $banque = 0;
-        $banqueouv = 0;
-        $debitbanque = 0;
-        $debitbanqueouv = 0;
-        foreach($ecritures as $ecriture)
-        {
-            $credit= null;
-            $debit= null;
-            if($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $ecritures = $repository->brouyardbanque();
+            $ouverture = $repository->ouverturebanque();
+            $banque = 0;
+            $banqueouv = 0;
+            $debitbanque = 0;
+            $debitbanqueouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
                     $banque = $banque + $credit->getMontant();
-            } else {
+                } else {
 
-                $debit = $ecriture->getDebit();
+                    $debit = $ecriture->getDebit();
                     $debitbanque = $debitbanque + $debit->getMontant();
+
+                }
 
             }
 
-        }
-
-        foreach($ouverture as $ecriture)
-        {
-            $credit= null;
-            $debit= null;
-            if($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
 
                     $banqueouv = $banqueouv + $credit->getMontant();
-            } else {
+                } else {
 
-                $debit = $ecriture->getDebit();
+                    $debit = $ecriture->getDebit();
 
                     $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
 
+                }
+
             }
 
+            return $this->render('finance/brouyard_banque.html.twig', [
+                'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+                'ecritures' => $ecritures,
+                'ouverture' => $banqueouv - $debitbanqueouv,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('finance/brouyard_banque.html.twig',[
-            'banque' => $banque - $debitbanque + $banqueouv- $debitbanqueouv,
-            'ecritures' => $ecritures,
-            'ouverture' => $banqueouv- $debitbanqueouv,
-        ]);
     }
+
     /**
      * @Route("/BrouillardBanque_print", name="brouyard_banque_print")
      */
     public function brouyardBanque_print(EcritureRepository $repository): Response
     {
-        $ecritures = $repository->brouyardbanque();
-        $ouverture = $repository->ouverturebanque();
-        $banque = 0;
-        $banqueouv = 0;
-        $debitbanque = 0;
-        $debitbanqueouv = 0;
-        foreach($ecritures as $ecriture)
-        {
-            $credit= null;
-            $debit= null;
-            if($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $ecritures = $repository->brouyardbanque();
+            $ouverture = $repository->ouverturebanque();
+            $banque = 0;
+            $banqueouv = 0;
+            $debitbanque = 0;
+            $debitbanqueouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
                     $banque = $banque + $credit->getMontant();
-            } else {
+                } else {
 
-                $debit = $ecriture->getDebit();
+                    $debit = $ecriture->getDebit();
                     $debitbanque = $debitbanque + $debit->getMontant();
+
+                }
 
             }
 
-        }
-
-        foreach($ouverture as $ecriture)
-        {
-            $credit= null;
-            $debit= null;
-            if($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
 
                     $banqueouv = $banqueouv + $credit->getMontant();
-            } else {
+                } else {
 
-                $debit = $ecriture->getDebit();
+                    $debit = $ecriture->getDebit();
 
                     $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
 
+                }
+
             }
 
+            return $this->render('finance/brouyard_banque_print.html.twig', [
+                'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+                'ecritures' => $ecritures,
+                'ouverture' => $banqueouv - $debitbanqueouv,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('finance/brouyard_banque_print.html.twig',[
-            'banque' => $banque - $debitbanque + $banqueouv- $debitbanqueouv,
-            'ecritures' => $ecritures,
-            'ouverture' => $banqueouv- $debitbanqueouv,
-        ]);
     }
 
     /**
@@ -468,14 +573,27 @@ class FinanceController extends AbstractController
      */
     public function liendaybrouyard(Request $request)
     {
-        $date1= $request->get('date1');
-        $lien = $this->generateUrl('finance_day_brouyard', ['jour' => $date1]);
-        $res['ok']= $lien;
-        $response = new Response();
-        $response->headers->set('content-type','application/json');
-        $re = json_encode($res);
-        $response->setContent($re);
-        return $response;
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $date1 = $request->get('date1');
+            $lien = $this->generateUrl('finance_day_brouyard', ['jour' => $date1]);
+            $res['ok'] = $lien;
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
 
     }
 
@@ -484,8 +602,21 @@ class FinanceController extends AbstractController
      */
     public function rapportdate()
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
-        return $this->render('finance/rapport_date.html.twig');
+            return $this->render('finance/rapport_date.html.twig');
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -493,124 +624,151 @@ class FinanceController extends AbstractController
      */
     public function daybrouyard(Request $request, $jour)
     {
-        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
-        $ecritures = $repository->daybrouyard($jour);
-        $ouverture = $repository->ouvertureplace($jour);
-        $caisse = 0;
-        $caisseouv = 0;
-        $banque = 0;
-        $banqueouv = 0;
-        $debitbanque = 0;
-        $debitbanqueouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach ($ecritures as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $credit->getType() == 'Espece' ?
-                    $caisse = $caisse + $credit->getMontant() :
-                    $banque = $banque + $credit->getMontant();
-            } else {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+            $ecritures = $repository->daybrouyard($jour);
+            $ouverture = $repository->ouvertureplace($jour);
+            $caisse = 0;
+            $caisseouv = 0;
+            $banque = 0;
+            $banqueouv = 0;
+            $debitbanque = 0;
+            $debitbanqueouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $credit->getType() == 'Espece' ?
+                        $caisse = $caisse + $credit->getMontant() :
+                        $banque = $banque + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debit->getType() == 'Espece' ?
-                    $debitcaisse = $debitcaisse + $debit->getMontant() :
-                    $debitbanque = $debitbanque + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debit->getType() == 'Espece' ?
+                        $debitcaisse = $debitcaisse + $debit->getMontant() :
+                        $debitbanque = $debitbanque + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach ($ouverture as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $credit->getType() == 'Espece' ?
-                    $caisseouv = $caisseouv + $credit->getMontant() :
-                    $banqueouv = $banqueouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debit->getType() == 'Espece' ?
-                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
-                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $credit->getType() == 'Espece' ?
+                        $caisseouv = $caisseouv + $credit->getMontant() :
+                        $banqueouv = $banqueouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_date.html.twig', [
-            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
-            'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
-            'ecritures' => $ecritures,
-            'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv - $debitbanqueouv),
-            'day' => $jour,
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debit->getType() == 'Espece' ?
+                        $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
+                        $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_date.html.twig', [
+                'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+                'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+                'ecritures' => $ecritures,
+                'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv - $debitbanqueouv),
+                'day' => $jour,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
+
     /**
      * @Route("/DayBrouyard_print/{jour}", name="day_brouyard_print")
      */
     public function daybrouyard_print(Request $request, $jour)
     {
-        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
-        $ecritures = $repository->daybrouyard($jour);
-        $ouverture = $repository->ouvertureplace($jour);
-        $caisse = 0;
-        $caisseouv = 0;
-        $banque = 0;
-        $banqueouv = 0;
-        $debitbanque = 0;
-        $debitbanqueouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach ($ecritures as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $credit->getType() == 'Espece' ?
-                    $caisse = $caisse + $credit->getMontant() :
-                    $banque = $banque + $credit->getMontant();
-            } else {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+            $ecritures = $repository->daybrouyard($jour);
+            $ouverture = $repository->ouvertureplace($jour);
+            $caisse = 0;
+            $caisseouv = 0;
+            $banque = 0;
+            $banqueouv = 0;
+            $debitbanque = 0;
+            $debitbanqueouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $credit->getType() == 'Espece' ?
+                        $caisse = $caisse + $credit->getMontant() :
+                        $banque = $banque + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debit->getType() == 'Espece' ?
-                    $debitcaisse = $debitcaisse + $debit->getMontant() :
-                    $debitbanque = $debitbanque + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debit->getType() == 'Espece' ?
+                        $debitcaisse = $debitcaisse + $debit->getMontant() :
+                        $debitbanque = $debitbanque + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach ($ouverture as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $credit->getType() == 'Espece' ?
-                    $caisseouv = $caisseouv + $credit->getMontant() :
-                    $banqueouv = $banqueouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debit->getType() == 'Espece' ?
-                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
-                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $credit->getType() == 'Espece' ?
+                        $caisseouv = $caisseouv + $credit->getMontant() :
+                        $banqueouv = $banqueouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_date_print.html.twig', [
-            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
-            'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
-            'ecritures' => $ecritures,
-            'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv - $debitbanqueouv),
-            'day' => $jour,
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debit->getType() == 'Espece' ?
+                        $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
+                        $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_date_print.html.twig', [
+                'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+                'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+                'ecritures' => $ecritures,
+                'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv - $debitbanqueouv),
+                'day' => $jour,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -618,14 +776,27 @@ class FinanceController extends AbstractController
      */
     public function liendaybrouyardaisse(Request $request)
     {
-        $date1= $request->get('date1');
-        $lien = $this->generateUrl('finance_day_brouyard_caisse', ['jour' => $date1]);
-        $res['ok']= $lien;
-        $response = new Response();
-        $response->headers->set('content-type','application/json');
-        $re = json_encode($res);
-        $response->setContent($re);
-        return $response;
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $date1 = $request->get('date1');
+            $lien = $this->generateUrl('finance_day_brouyard_caisse', ['jour' => $date1]);
+            $res['ok'] = $lien;
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
 
     }
 
@@ -634,106 +805,133 @@ class FinanceController extends AbstractController
      */
     public function daybrouyardcaisse(Request $request, $jour)
     {
-        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
-        $ecritures = $repository->daybrouyardcaisse($jour);
-        $ouverture = $repository->ouvertureplacecaisse($jour);
-        $caisse = 0;
-        $caisseouv = 0;
-        $banque = 0;
-        $banqueouv = 0;
-        $debitbanque = 0;
-        $debitbanqueouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach ($ecritures as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-               $caisse = $caisse + $credit->getMontant();
-            } else {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+            $ecritures = $repository->daybrouyardcaisse($jour);
+            $ouverture = $repository->ouvertureplacecaisse($jour);
+            $caisse = 0;
+            $caisseouv = 0;
+            $banque = 0;
+            $banqueouv = 0;
+            $debitbanque = 0;
+            $debitbanqueouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $caisse = $caisse + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-               $debitcaisse = $debitcaisse + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debitcaisse = $debitcaisse + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach ($ouverture as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $caisseouv = $caisseouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $caisseouv = $caisseouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_date_caisse.html.twig', [
-            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
-            'ecritures' => $ecritures,
-            'ouverture' => $caisseouv - $debitcaisseouv,
-            'day' => $jour,
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_date_caisse.html.twig', [
+                'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+                'ecritures' => $ecritures,
+                'ouverture' => $caisseouv - $debitcaisseouv,
+                'day' => $jour,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
+
     /**
      * @Route("/DayBrouyardCaisse_print/{jour}", name="day_brouyard_caisse_print")
      */
     public function daybrouyardcaisse_print(Request $request, $jour)
     {
-        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
-        $ecritures = $repository->daybrouyardcaisse($jour);
-        $ouverture = $repository->ouvertureplacecaisse($jour);
-        $caisse = 0;
-        $caisseouv = 0;
-        $banque = 0;
-        $banqueouv = 0;
-        $debitbanque = 0;
-        $debitbanqueouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach ($ecritures as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-               $caisse = $caisse + $credit->getMontant();
-            } else {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+            $ecritures = $repository->daybrouyardcaisse($jour);
+            $ouverture = $repository->ouvertureplacecaisse($jour);
+            $caisse = 0;
+            $caisseouv = 0;
+            $banque = 0;
+            $banqueouv = 0;
+            $debitbanque = 0;
+            $debitbanqueouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $caisse = $caisse + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-               $debitcaisse = $debitcaisse + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debitcaisse = $debitcaisse + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach ($ouverture as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $caisseouv = $caisseouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $caisseouv = $caisseouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_date_caisse_print.html.twig', [
-            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
-            'ecritures' => $ecritures,
-            'ouverture' => $caisseouv - $debitcaisseouv,
-            'day' => $jour,
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_date_caisse_print.html.twig', [
+                'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+                'ecritures' => $ecritures,
+                'ouverture' => $caisseouv - $debitcaisseouv,
+                'day' => $jour,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -741,14 +939,27 @@ class FinanceController extends AbstractController
      */
     public function liendaybrouyarbanque(Request $request)
     {
-        $date1= $request->get('date1');
-        $lien = $this->generateUrl('finance_day_brouyard_banque', ['jour' => $date1]);
-        $res['ok']= $lien;
-        $response = new Response();
-        $response->headers->set('content-type','application/json');
-        $re = json_encode($res);
-        $response->setContent($re);
-        return $response;
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $date1 = $request->get('date1');
+            $lien = $this->generateUrl('finance_day_brouyard_banque', ['jour' => $date1]);
+            $res['ok'] = $lien;
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
 
     }
 
@@ -758,53 +969,66 @@ class FinanceController extends AbstractController
      */
     public function daybrouyardbanque(Request $request, $jour)
     {
-        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
-        $ecritures = $repository->daybrouyardbanque($jour);
-        $ouverture = $repository->ouvertureplacebanque($jour);
-        $caisse = 0;
-        $caisseouv = 0;
-        $banque = 0;
-        $banqueouv = 0;
-        $debitbanque = 0;
-        $debitbanqueouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach ($ecritures as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $banque = $banque + $credit->getMontant();
-            } else {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+            $ecritures = $repository->daybrouyardbanque($jour);
+            $ouverture = $repository->ouvertureplacebanque($jour);
+            $caisse = 0;
+            $caisseouv = 0;
+            $banque = 0;
+            $banqueouv = 0;
+            $debitbanque = 0;
+            $debitbanqueouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $banque = $banque + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debitbanque = $debitbanque + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debitbanque = $debitbanque + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach ($ouverture as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $banqueouv = $banqueouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $banqueouv = $banqueouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_date_banque.html.twig', [
-            'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
-            'ecritures' => $ecritures,
-            'ouverture' => $banqueouv - $debitbanqueouv,
-            'day' => $jour,
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_date_banque.html.twig', [
+                'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+                'ecritures' => $ecritures,
+                'ouverture' => $banqueouv - $debitbanqueouv,
+                'day' => $jour,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -812,53 +1036,66 @@ class FinanceController extends AbstractController
      */
     public function daybrouyardbanque_print(Request $request, $jour)
     {
-        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
-        $ecritures = $repository->daybrouyardbanque($jour);
-        $ouverture = $repository->ouvertureplacebanque($jour);
-        $caisse = 0;
-        $caisseouv = 0;
-        $banque = 0;
-        $banqueouv = 0;
-        $debitbanque = 0;
-        $debitbanqueouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach ($ecritures as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $banque = $banque + $credit->getMontant();
-            } else {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+            $ecritures = $repository->daybrouyardbanque($jour);
+            $ouverture = $repository->ouvertureplacebanque($jour);
+            $caisse = 0;
+            $caisseouv = 0;
+            $banque = 0;
+            $banqueouv = 0;
+            $debitbanque = 0;
+            $debitbanqueouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $banque = $banque + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debitbanque = $debitbanque + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debitbanque = $debitbanque + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach ($ouverture as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $banqueouv = $banqueouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $banqueouv = $banqueouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_date_banque_print.html.twig', [
-            'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
-            'ecritures' => $ecritures,
-            'ouverture' => $banqueouv - $debitbanqueouv,
-            'day' => $jour,
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_date_banque_print.html.twig', [
+                'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+                'ecritures' => $ecritures,
+                'ouverture' => $banqueouv - $debitbanqueouv,
+                'day' => $jour,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
 
@@ -867,8 +1104,21 @@ class FinanceController extends AbstractController
      */
     public function rapportinterval()
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
-        return $this->render('finance/rapport_interval.html.twig');
+            return $this->render('finance/rapport_interval.html.twig');
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -876,15 +1126,28 @@ class FinanceController extends AbstractController
      */
     public function liendaysbrouyard(Request $request)
     {
-        $date1= $request->get('date1');
-        $date2= $request->get('date2');
-        $lien = $this->generateUrl('finance_days_brouyard', ['date1' => $date1,'date2' => $date2]);
-        $res['ok']= $lien;
-        $response = new Response();
-        $response->headers->set('content-type','application/json');
-        $re = json_encode($res);
-        $response->setContent($re);
-        return $response;
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $date1 = $request->get('date1');
+            $date2 = $request->get('date2');
+            $lien = $this->generateUrl('finance_days_brouyard', ['date1' => $date1, 'date2' => $date2]);
+            $res['ok'] = $lien;
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
 
     }
 
@@ -892,130 +1155,157 @@ class FinanceController extends AbstractController
     /**
      * @Route("/DaysBrouyard/{date1}/{date2}", name="days_brouyard")
      */
-    public function daysbrouyard(Request $request,$date1, $date2)
+    public function daysbrouyard(Request $request, $date1, $date2)
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
-        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
-        $ecritures = $repository->plage($date1,$date2);
-        $ouverture = $repository->ouvertureplace($date1);
-        $caisse = 0;
-        $caisseouv = 0;
-        $banque = 0;
-        $banqueouv = 0;
-        $debitbanque = 0;
-        $debitbanqueouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach ($ecritures as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $credit->getType() == 'Espece' ?
-                    $caisse = $caisse + $credit->getMontant() :
-                    $banque = $banque + $credit->getMontant();
-            } else {
+            $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+            $ecritures = $repository->plage($date1, $date2);
+            $ouverture = $repository->ouvertureplace($date1);
+            $caisse = 0;
+            $caisseouv = 0;
+            $banque = 0;
+            $banqueouv = 0;
+            $debitbanque = 0;
+            $debitbanqueouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $credit->getType() == 'Espece' ?
+                        $caisse = $caisse + $credit->getMontant() :
+                        $banque = $banque + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debit->getType() == 'Espece' ?
-                    $debitcaisse = $debitcaisse + $debit->getMontant() :
-                    $debitbanque = $debitbanque + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debit->getType() == 'Espece' ?
+                        $debitcaisse = $debitcaisse + $debit->getMontant() :
+                        $debitbanque = $debitbanque + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach ($ouverture as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $credit->getType() == 'Espece' ?
-                    $caisseouv = $caisseouv + $credit->getMontant() :
-                    $banqueouv = $banqueouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debit->getType() == 'Espece' ?
-                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
-                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $credit->getType() == 'Espece' ?
+                        $caisseouv = $caisseouv + $credit->getMontant() :
+                        $banqueouv = $banqueouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_interval.html.twig', [
-            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
-            'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
-            'ecritures' => $ecritures,
-            'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv - $debitbanqueouv),
-            'day1' => $date1,
-            'day2' => $date2,
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debit->getType() == 'Espece' ?
+                        $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
+                        $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_interval.html.twig', [
+                'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+                'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+                'ecritures' => $ecritures,
+                'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv - $debitbanqueouv),
+                'day1' => $date1,
+                'day2' => $date2,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
+
     /**
      * @Route("/DaysBrouyard_print/{date1}/{date2}", name="days_brouyard_print")
      */
-    public function daysbrouyard_print(Request $request,$date1, $date2)
+    public function daysbrouyard_print(Request $request, $date1, $date2)
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
-        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
-        $ecritures = $repository->plage($date1,$date2);
-        $ouverture = $repository->ouvertureplace($date1);
-        $caisse = 0;
-        $caisseouv = 0;
-        $banque = 0;
-        $banqueouv = 0;
-        $debitbanque = 0;
-        $debitbanqueouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach ($ecritures as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $credit->getType() == 'Espece' ?
-                    $caisse = $caisse + $credit->getMontant() :
-                    $banque = $banque + $credit->getMontant();
-            } else {
+            $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+            $ecritures = $repository->plage($date1, $date2);
+            $ouverture = $repository->ouvertureplace($date1);
+            $caisse = 0;
+            $caisseouv = 0;
+            $banque = 0;
+            $banqueouv = 0;
+            $debitbanque = 0;
+            $debitbanqueouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $credit->getType() == 'Espece' ?
+                        $caisse = $caisse + $credit->getMontant() :
+                        $banque = $banque + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debit->getType() == 'Espece' ?
-                    $debitcaisse = $debitcaisse + $debit->getMontant() :
-                    $debitbanque = $debitbanque + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debit->getType() == 'Espece' ?
+                        $debitcaisse = $debitcaisse + $debit->getMontant() :
+                        $debitbanque = $debitbanque + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach ($ouverture as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $credit->getType() == 'Espece' ?
-                    $caisseouv = $caisseouv + $credit->getMontant() :
-                    $banqueouv = $banqueouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debit->getType() == 'Espece' ?
-                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
-                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $credit->getType() == 'Espece' ?
+                        $caisseouv = $caisseouv + $credit->getMontant() :
+                        $banqueouv = $banqueouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_interval_print.html.twig', [
-            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
-            'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
-            'ecritures' => $ecritures,
-            'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv - $debitbanqueouv),
-            'day1' => $date1,
-            'day2' => $date2,
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debit->getType() == 'Espece' ?
+                        $debitcaisseouv = $debitcaisseouv + $debit->getMontant() :
+                        $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_interval_print.html.twig', [
+                'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+                'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+                'ecritures' => $ecritures,
+                'ouverture' => ($caisseouv - $debitcaisseouv) + ($banqueouv - $debitbanqueouv),
+                'day1' => $date1,
+                'day2' => $date2,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -1023,15 +1313,28 @@ class FinanceController extends AbstractController
      */
     public function liendaysbrouyardcaisse(Request $request)
     {
-        $date1= $request->get('date1');
-        $date2= $request->get('date2');
-        $lien = $this->generateUrl('finance_days_brouyard_caisse', ['date1' => $date1,'date2' => $date2]);
-        $res['ok']= $lien;
-        $response = new Response();
-        $response->headers->set('content-type','application/json');
-        $re = json_encode($res);
-        $response->setContent($re);
-        return $response;
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $date1 = $request->get('date1');
+            $date2 = $request->get('date2');
+            $lien = $this->generateUrl('finance_days_brouyard_caisse', ['date1' => $date1, 'date2' => $date2]);
+            $res['ok'] = $lien;
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
 
     }
 
@@ -1039,105 +1342,131 @@ class FinanceController extends AbstractController
     /**
      * @Route("/DaysBrouyardCaisse/{date1}/{date2}", name="days_brouyard_caisse")
      */
-    public function daysbrouyardcaisse(Request $request,$date1, $date2)
+    public function daysbrouyardcaisse(Request $request, $date1, $date2)
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
-        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
-        $ecritures = $repository->plagecaisse($date1,$date2);
-        $ouverture = $repository->ouvertureplacecaisse($date1);
-        $caisse = 0;
-        $caisseouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach ($ecritures as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $caisse = $caisse + $credit->getMontant();
-            } else {
+            $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+            $ecritures = $repository->plagecaisse($date1, $date2);
+            $ouverture = $repository->ouvertureplacecaisse($date1);
+            $caisse = 0;
+            $caisseouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $caisse = $caisse + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debitcaisse = $debitcaisse + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debitcaisse = $debitcaisse + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach ($ouverture as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-               $caisseouv = $caisseouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $caisseouv = $caisseouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_interval_caisse.html.twig', [
-            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
-            'ecritures' => $ecritures,
-            'ouverture' => $caisseouv - $debitcaisseouv,
-            'day1' => $date1,
-            'day2' => $date2,
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_interval_caisse.html.twig', [
+                'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+                'ecritures' => $ecritures,
+                'ouverture' => $caisseouv - $debitcaisseouv,
+                'day1' => $date1,
+                'day2' => $date2,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
      * @Route("/DaysBrouyardCaisse_print/{date1}/{date2}", name="days_brouyard_caisse_print")
      */
-    public function daysbrouyardcaisse_print(Request $request,$date1, $date2)
+    public function daysbrouyardcaisse_print(Request $request, $date1, $date2)
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
-        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
-        $ecritures = $repository->plagecaisse($date1,$date2);
-        $ouverture = $repository->ouvertureplacecaisse($date1);
-        $caisse = 0;
-        $caisseouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach ($ecritures as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $caisse = $caisse + $credit->getMontant();
-            } else {
+            $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+            $ecritures = $repository->plagecaisse($date1, $date2);
+            $ouverture = $repository->ouvertureplacecaisse($date1);
+            $caisse = 0;
+            $caisseouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $caisse = $caisse + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debitcaisse = $debitcaisse + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debitcaisse = $debitcaisse + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach ($ouverture as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-               $caisseouv = $caisseouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $caisseouv = $caisseouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_interval_caisse_print.html.twig', [
-            'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
-            'ecritures' => $ecritures,
-            'ouverture' => $caisseouv - $debitcaisseouv,
-            'day1' => $date1,
-            'day2' => $date2,
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debitcaisseouv = $debitcaisseouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_interval_caisse_print.html.twig', [
+                'caisse' => $caisse - $debitcaisse + $caisseouv - $debitcaisseouv,
+                'ecritures' => $ecritures,
+                'ouverture' => $caisseouv - $debitcaisseouv,
+                'day1' => $date1,
+                'day2' => $date2,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
 
@@ -1146,15 +1475,28 @@ class FinanceController extends AbstractController
      */
     public function liendaysbrouyardbanque(Request $request)
     {
-        $date1= $request->get('date1');
-        $date2= $request->get('date2');
-        $lien = $this->generateUrl('finance_days_brouyard_banque', ['date1' => $date1,'date2' => $date2]);
-        $res['ok']= $lien;
-        $response = new Response();
-        $response->headers->set('content-type','application/json');
-        $re = json_encode($res);
-        $response->setContent($re);
-        return $response;
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $date1 = $request->get('date1');
+            $date2 = $request->get('date2');
+            $lien = $this->generateUrl('finance_days_brouyard_banque', ['date1' => $date1, 'date2' => $date2]);
+            $res['ok'] = $lien;
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
 
     }
 
@@ -1162,113 +1504,139 @@ class FinanceController extends AbstractController
     /**
      * @Route("/DaysBrouyardBanque/{date1}/{date2}", name="days_brouyard_banque")
      */
-    public function daysbrouyardbanque(Request $request,$date1, $date2)
+    public function daysbrouyardbanque(Request $request, $date1, $date2)
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
-        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
-        $ecritures = $repository->plagebanque($date1,$date2);
-        $ouverture = $repository->ouvertureplacebanque($date1);
-        $caisse = 0;
-        $caisseouv = 0;
-        $banque = 0;
-        $banqueouv = 0;
-        $debitbanque = 0;
-        $debitbanqueouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach ($ecritures as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $banque = $banque + $credit->getMontant();
-            } else {
+            $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+            $ecritures = $repository->plagebanque($date1, $date2);
+            $ouverture = $repository->ouvertureplacebanque($date1);
+            $caisse = 0;
+            $caisseouv = 0;
+            $banque = 0;
+            $banqueouv = 0;
+            $debitbanque = 0;
+            $debitbanqueouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $banque = $banque + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debitbanque = $debitbanque + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debitbanque = $debitbanque + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach ($ouverture as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $banqueouv = $banqueouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $banqueouv = $banqueouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_interval_banque.html.twig', [
-            'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
-            'ecritures' => $ecritures,
-            'ouverture' => $banqueouv - $debitbanqueouv,
-            'day1' => $date1,
-            'day2' => $date2,
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_interval_banque.html.twig', [
+                'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+                'ecritures' => $ecritures,
+                'ouverture' => $banqueouv - $debitbanqueouv,
+                'day1' => $date1,
+                'day2' => $date2,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
      * @Route("/DaysBrouyardBanque_print/{date1}/{date2}", name="days_brouyard_banque_print")
      */
-    public function daysbrouyardbanque_print(Request $request,$date1, $date2)
+    public function daysbrouyardbanque_print(Request $request, $date1, $date2)
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
-        $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
-        $ecritures = $repository->plagebanque($date1,$date2);
-        $ouverture = $repository->ouvertureplacebanque($date1);
-        $caisse = 0;
-        $caisseouv = 0;
-        $banque = 0;
-        $banqueouv = 0;
-        $debitbanque = 0;
-        $debitbanqueouv = 0;
-        $debitcaisse = 0;
-        $debitcaisseouv = 0;
-        foreach ($ecritures as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $banque = $banque + $credit->getMontant();
-            } else {
+            $repository = $this->getDoctrine()->getManager()->getRepository(Ecriture::class);
+            $ecritures = $repository->plagebanque($date1, $date2);
+            $ouverture = $repository->ouvertureplacebanque($date1);
+            $caisse = 0;
+            $caisseouv = 0;
+            $banque = 0;
+            $banqueouv = 0;
+            $debitbanque = 0;
+            $debitbanqueouv = 0;
+            $debitcaisse = 0;
+            $debitcaisseouv = 0;
+            foreach ($ecritures as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $banque = $banque + $credit->getMontant();
+                } else {
 
-                $debit = $ecriture->getDebit();
-                $debitbanque = $debitbanque + $debit->getMontant();
+                    $debit = $ecriture->getDebit();
+                    $debitbanque = $debitbanque + $debit->getMontant();
 
-            }
-
-        }
-
-        foreach ($ouverture as $ecriture) {
-            $credit = null;
-            $debit = null;
-            if ($ecriture->getCredit() != null) {
-                $credit = $ecriture->getCredit();
-                $banqueouv = $banqueouv + $credit->getMontant();
-            } else {
-
-                $debit = $ecriture->getDebit();
-                $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+                }
 
             }
 
-        }
+            foreach ($ouverture as $ecriture) {
+                $credit = null;
+                $debit = null;
+                if ($ecriture->getCredit() != null) {
+                    $credit = $ecriture->getCredit();
+                    $banqueouv = $banqueouv + $credit->getMontant();
+                } else {
 
-        return $this->render('finance/brouyard_interval_banque_print.html.twig', [
-            'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
-            'ecritures' => $ecritures,
-            'ouverture' => $banqueouv - $debitbanqueouv,
-            'day1' => $date1,
-            'day2' => $date2,
-        ]);
+                    $debit = $ecriture->getDebit();
+                    $debitbanqueouv = $debitbanqueouv + $debit->getMontant();
+
+                }
+
+            }
+
+            return $this->render('finance/brouyard_interval_banque_print.html.twig', [
+                'banque' => $banque - $debitbanque + $banqueouv - $debitbanqueouv,
+                'ecritures' => $ecritures,
+                'ouverture' => $banqueouv - $debitbanqueouv,
+                'day1' => $date1,
+                'day2' => $date2,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
 

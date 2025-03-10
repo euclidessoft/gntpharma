@@ -26,12 +26,24 @@ class EmployeController extends AbstractController
      */
     public function index(EntityManagerInterface $entityManager)
     {
-        $employe = $entityManager->getRepository(Employe::class)->findAll();
-        return $this->render('employe/index.html.twig', [
-            'employe' => $employe,
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $employe = $entityManager->getRepository(Employe::class)->findAll();
+            return $this->render('employe/index.html.twig', [
+                'employe' => $employe,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
-
 
 
     /**
@@ -39,85 +51,104 @@ class EmployeController extends AbstractController
      */
     public function new(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
 
-        $employe = new Employe();
-        $form = $this->createForm(EmployeType::class, $employe);
-        $form->handleRequest($request);
+            $employe = new Employe();
+            $form = $this->createForm(EmployeType::class, $employe);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
 
-            $poste = $employe->getPoste();
-            if ($poste->getType() == true) {
-                //on cherche si le pose est deja attribue
-                $userposte = $entityManager->getRepository(PosteEmploye::class)->findOneBy(['poste' => $poste, 'datefin' => null]);
-                if ($userposte) {
-                    $this->addFlash('notice', 'Ce poste est unique et est déjà attribué à un employé.');
-                    return $this->redirectToRoute('employe_new');
+                $poste = $employe->getPoste();
+                if ($poste->getType() == true) {
+                    //on cherche si le pose est deja attribue
+                    $userposte = $entityManager->getRepository(PosteEmploye::class)->findOneBy(['poste' => $poste, 'datefin' => null]);
+                    if ($userposte) {
+                        $this->addFlash('notice', 'Ce poste est unique et est déjà attribué à un employé.');
+                        return $this->redirectToRoute('employe_new');
+                    }
                 }
-            }
-            $posteEmploye = new PosteEmploye();
-            $hashpass = $encoder->encodePassword($employe, 'Passer2023');
-            $employe->setPassword($hashpass);
-            $employe->setUsername($employe->getNom());
-            switch ($employe->getPoste()->getNom()) {
-                case 'Administrateur': {
-                    $employe->setRoles(['ROLE_ADMIN']);
-                    break;
+                $posteEmploye = new PosteEmploye();
+                $hashpass = $encoder->encodePassword($employe, 'Passer2023');
+                $employe->setPassword($hashpass);
+                $employe->setUsername($employe->getNom());
+                switch ($employe->getPoste()->getNom()) {
+                    case 'Administrateur':
+                    {
+                        $employe->setRoles(['ROLE_ADMIN']);
+                        break;
+                    }
+                    case 'Financier':
+                    {
+                        $employe->setRoles(['ROLE_FINANCE']);
+                        break;
+                    }
+                    case 'RH':
+                    {
+                        $employe->setRoles(['ROLE_RH']);
+                        break;
+                    }
+                    case 'EMPLOYER SIMPLE':
+                    {
+                        $employe->setRoles(['ROLE_EMPLOYER']);
+                        break;
+                    }
+                    case 'Gestionnaire de stock':
+                    {
+                        $employe->setRoles(['ROLE_STOCK']);
+                        break;
+                    }
+                    case 'Livreur':
+                    {
+                        $employe->setRoles(['ROLE_LIVREUR']);
+                        $employe->setLivreur(true);
+                        break;
+                    }
                 }
-                case 'Financier': {
-                    $employe->setRoles(['ROLE_FINANCE']);
-                    break;
-                }
-                case 'RH': {
-                    $employe->setRoles(['ROLE_RH']);
-                    break;
-                }
-                case 'EMPLOYER SIMPLE': {
-                    $employe->setRoles(['ROLE_EMPLOYER']);
-                    break;
-                }
-                case 'Gestionnaire de stock': {
-                    $employe->setRoles(['ROLE_STOCK']);
-                    break;
-                }
-                case 'Livreur': {
-                    $employe->setRoles(['ROLE_LIVREUR']);
-                    $employe->setLivreur(true);
-                    break;
-                }
-            }
-            $employe->setStatus(false);
-            $employe->setHireDate($employe->getHireDate());
-            $employe->setNombreJoursConges(30);
+                $employe->setStatus(false);
+                $employe->setHireDate($employe->getHireDate());
+                $employe->setNombreJoursConges(30);
 
-            $posteEmploye->setDatedebut(new \DateTime());
-            $posteEmploye->setDatefin(null);
-            $posteEmploye->setPoste($employe->getPoste());
-            $posteEmploye->setEmploye($employe);
+                $posteEmploye->setDatedebut(new \DateTime());
+                $posteEmploye->setDatefin(null);
+                $posteEmploye->setPoste($employe->getPoste());
+                $posteEmploye->setEmploye($employe);
 
-            //Calcul de la date debut de conges
-            $nbreJoursConges = $employe->getNombreJoursConges();
-            $dateDebutConges = (clone $employe->getHireDate())->modify('+11 months');
-            $dateFinConges = (clone $dateDebutConges)->modify('+' .$nbreJoursConges. ' days');
-            $calendrier = new Calendrier();
-            $calendrier->setEmploye($employe);
-            $calendrier->setDateDebut($dateDebutConges);
-            $calendrier->setDateFin($dateFinConges);
+                //Calcul de la date debut de conges
+                $nbreJoursConges = $employe->getNombreJoursConges();
+                $dateDebutConges = (clone $employe->getHireDate())->modify('+11 months');
+                $dateFinConges = (clone $dateDebutConges)->modify('+' . $nbreJoursConges . ' days');
+                $calendrier = new Calendrier();
+                $calendrier->setEmploye($employe);
+                $calendrier->setDateDebut($dateDebutConges);
+                $calendrier->setDateFin($dateFinConges);
 //            dd($calendrier,$dateDebutConges,$dateFinConges,$nbreJoursConges);
 
 
-            $entityManager->persist($posteEmploye);
-            $entityManager->persist($employe);
-            $entityManager->persist($calendrier);
-            $entityManager->flush();
+                $entityManager->persist($posteEmploye);
+                $entityManager->persist($employe);
+                $entityManager->persist($calendrier);
+                $entityManager->flush();
 
-            $this->addFlash('notice', 'Employé créé avec succès');
-            return $this->redirectToRoute("employe_index");
+                $this->addFlash('notice', 'Employé créé avec succès');
+                return $this->redirectToRoute("employe_index");
+            }
+            return $this->render('employe/new.html.twig', [
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-        return $this->render('employe/new.html.twig', [
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -125,23 +156,36 @@ class EmployeController extends AbstractController
      */
     public function toggleStatus(Request $request, Employe $employe, EntityManagerInterface $entityManager): Response
     {
-        //verification du token csrf
-        if (!$this->isCsrfTokenValid('toggle' . $employe->getId(), $request->request->get('_token'))) {
-            $this->addFlash('notice', 'Token CSRF invalide');
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            //verification du token csrf
+            if (!$this->isCsrfTokenValid('toggle' . $employe->getId(), $request->request->get('_token'))) {
+                $this->addFlash('notice', 'Token CSRF invalide');
+                return $this->redirectToRoute('employe_index');
+            }
+
+            if ($employe->getStatus()) {
+                $employe->setStatus(false);
+                $this->addFlash('notice', 'Employé désativé');
+            } else {
+                $employe->setStatus(true);
+                $this->addFlash('notice', 'Employé activé');
+            }
+
+            $entityManager->persist($employe);
+            $entityManager->flush();
             return $this->redirectToRoute('employe_index');
-        }
-
-        if ($employe->getStatus()) {
-            $employe->setStatus(false);
-            $this->addFlash('notice', 'Employé désativé');
         } else {
-            $employe->setStatus(true);
-            $this->addFlash('notice', 'Employé activé');
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        $entityManager->persist($employe);
-        $entityManager->flush();
-        return $this->redirectToRoute('employe_index');
     }
 
     /**
@@ -149,8 +193,21 @@ class EmployeController extends AbstractController
      */
     public function config()
     {
-        return $this->render('employe/config.html.twig');
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            return $this->render('employe/config.html.twig');
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
- 
+
 }

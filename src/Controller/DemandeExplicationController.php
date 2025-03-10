@@ -24,10 +24,23 @@ class DemandeExplicationController extends AbstractController
      */
     public function index(DemandeExplicationRepository $demandeExplicationRepository): Response
     {
+         if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
         $demandes = $demandeExplicationRepository->findAll();
         return $this->render('demande_explication/admin/index.html.twig', [
             'demandes' => $demandes,
         ]);
+         } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -35,6 +48,7 @@ class DemandeExplicationController extends AbstractController
      */
     public function new(Request $request,Security $security): Response
     {
+         if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
         $demande = new DemandeExplication();
         $form = $this->createForm(DemandeExplicationType::class, $demande);
         $form->handleRequest($request);
@@ -64,6 +78,18 @@ class DemandeExplicationController extends AbstractController
             'form' => $form->createView(),
             'employes' => $employes,
         ]);
+         } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -72,6 +98,7 @@ class DemandeExplicationController extends AbstractController
     public function show(DemandeExplication $demandeExplications): Response
     {
 
+         if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
         $reponses = $demandeExplications->getReponseExplications();
         $status = [];
         foreach ($demandeExplications->getEmploye() as $employe) {
@@ -88,6 +115,18 @@ class DemandeExplicationController extends AbstractController
             'demandeExplications' => $demandeExplications,
             'statuts' => $statuts,
         ]);
+         } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
 
@@ -96,6 +135,7 @@ class DemandeExplicationController extends AbstractController
      */
     public function reponse(DemandeExplication $demandeExplication, $employeId): Response
     {
+         if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
         $employe = null;
         foreach ($demandeExplication->getEmploye() as $emp) {
             if ($emp->getId() == $employeId) {
@@ -117,6 +157,18 @@ class DemandeExplicationController extends AbstractController
             'employe' => $employe,
             'reponse' => $reponse,
         ]);
+         } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
 
@@ -127,6 +179,7 @@ class DemandeExplicationController extends AbstractController
      */
     public function suivi(Security $security, DemandeExplicationRepository $demandeExplicationRepository): Response
     {
+         if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
         $entityManager = $this->getDoctrine()->getManager();
         $employe = $security->getUser();
         $demandes = $demandeExplicationRepository->findByEmploye($employe);
@@ -152,6 +205,18 @@ class DemandeExplicationController extends AbstractController
         return $this->render("demande_explication/index.html.twig", [
             'demandeStatus' => $demandeStatus,
         ]);
+         } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -159,6 +224,7 @@ class DemandeExplicationController extends AbstractController
      */
     public function details(Security $security, DemandeExplication $demandeExplication, Request $request): Response
     {
+         if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
         $employe = $security->getUser();
         $reponse = new ReponseExplication();
         $form = $this->createForm(ReponseExplicationType::class);
@@ -187,5 +253,17 @@ class DemandeExplicationController extends AbstractController
             'reponses' => $reponseFilter,
             'form' => $form->createView(),
         ]);
+         } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 }

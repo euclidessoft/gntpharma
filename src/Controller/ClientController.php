@@ -22,53 +22,78 @@ class ClientController extends AbstractController
      */
     public function index(EntityManagerInterface $entityManager): Response
     {
-        $client = $entityManager->getRepository(Client::class)->findAll();
-        return $this->render('client/index.html.twig', [
-            'client' => $client,
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $client = $entityManager->getRepository(Client::class)->findAll();
+            return $this->render('client/index.html.twig', [
+                'client' => $client,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
 
     /**
      * @Route("/new", name="client_new", methods={"GET","POST"} )
      */
-    public function new(Request $request, UserPasswordEncoderInterface $encoder,TokenGeneratorInterface $tokenGenerator): Response
+    public function new(Request $request, UserPasswordEncoderInterface $encoder, TokenGeneratorInterface $tokenGenerator): Response
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $client = new Client();
+            $form = $this->createForm(ClientType::class, $client);
+            $form->handleRequest($request);
 
-        $client = new Client();
-        $form = $this->createForm(ClientType::class, $client);
-        $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+                $hashpass = $encoder->encodePassword($client, "Passer2023");
 
-            $hashpass = $encoder->encodePassword($client, "Passer2023");
+                $client->setPassword($hashpass);
+                $client->setUsername($client->getNom());
+                $client->setRoles(["ROLE_CLIENT"]);
+                $client->setClient(true);
+                $client->setFonction('Client');
+                $token = $tokenGenerator->generateToken();
+                $client->setResetToken($token);
 
-            $client->setPassword($hashpass);
-            $client->setUsername($client->getNom());
-            $client->setRoles(["ROLE_CLIENT"]);
-            $client->setClient(true);
-            $client->setFonction('Client');
-            $token = $tokenGenerator->generateToken();
-            $client->setResetToken($token);
+                $entityManager->persist($client);
+                $entityManager->flush();
+                $compte = '411' . str_pad($client->getId() + 1, 4, '0', STR_PAD_LEFT);
+                $client->setCompte($compte);
 
-            $entityManager->persist($client);
-            $entityManager->flush();
-            $compte = '411' . str_pad($client->getId() + 1, 4, '0', STR_PAD_LEFT);
-            $client->setCompte($compte);
+                $entityManager->persist($client);
+                $entityManager->flush();
 
-            $entityManager->persist($client);
-            $entityManager->flush();
+                $this->addFlash('notice', "Compte client crée avec succée");
+                return $this->redirectToRoute("client_index");
 
-            $this->addFlash('notice', "Compte client crée avec succée");
-            return $this->redirectToRoute("client_index");
+            }
 
+
+            return $this->render('client/new.html.twig', [
+                'form' => $form->createView(),
+                'client' => $client
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-
-        return $this->render('client/new.html.twig', [
-            'form' => $form->createView(),
-            'client' => $client
-        ]);
     }
 }

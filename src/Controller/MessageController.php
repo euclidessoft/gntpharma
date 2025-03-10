@@ -24,13 +24,26 @@ class MessageController extends AbstractController
      */
     public function index(EntityManagerInterface $em): Response
     {
-        $user = $this->getUser();
-        $messageRecipients = $em->getRepository(MessageRecipient::class)
-            ->findBy(['recipient' => $user], ['id' => 'DESC']);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $user = $this->getUser();
+            $messageRecipients = $em->getRepository(MessageRecipient::class)
+                ->findBy(['recipient' => $user], ['id' => 'DESC']);
 
-        return $this->render('message/index.html.twig', [
-            'messageRecipients' => $messageRecipients,
-        ]);
+            return $this->render('message/index.html.twig', [
+                'messageRecipients' => $messageRecipients,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -38,37 +51,50 @@ class MessageController extends AbstractController
      */
     public function send(Request $request, EntityManagerInterface $em): Response
     {
-        $message = new Message;
-        $unread = $em->getRepository(MessageRecipient::class)
-            ->findBy(['isRead' => false], ['id' => 'DESC']);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $message = new Message;
+            $unread = $em->getRepository(MessageRecipient::class)
+                ->findBy(['isRead' => false], ['id' => 'DESC']);
 
-        $form = $this->createForm(MessageType::class, $message);
+            $form = $this->createForm(MessageType::class, $message);
 
-        $form->handleRequest($request);
+            $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $message->setSender($this->getUser());
+            if ($form->isSubmitted() && $form->isValid()) {
+                $message->setSender($this->getUser());
 
-            $recipients = $form->get('recipients')->getData();
+                $recipients = $form->get('recipients')->getData();
 
-            foreach ($recipients as $userRecipient) {
-                $messageRecipient = new MessageRecipient();
-                $messageRecipient->setRecipient($userRecipient);
-                $messageRecipient->setIsRead(false);
-                $messageRecipient->setSender($this->getUser());
-                $message->addRecipient($messageRecipient);
+                foreach ($recipients as $userRecipient) {
+                    $messageRecipient = new MessageRecipient();
+                    $messageRecipient->setRecipient($userRecipient);
+                    $messageRecipient->setIsRead(false);
+                    $messageRecipient->setSender($this->getUser());
+                    $message->addRecipient($messageRecipient);
+                }
+                $em->persist($message);
+                $em->flush();
+
+                $this->addFlash("message", "Message envoyé avec succès.");
+                return $this->redirectToRoute("message");
             }
-            $em->persist($message);
-            $em->flush();
 
-            $this->addFlash("message", "Message envoyé avec succès.");
-            return $this->redirectToRoute("message");
+            return $this->render("message/send.html.twig", [
+                "form" => $form->createView(),
+                'unread' => $unread,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render("message/send.html.twig", [
-            "form" => $form->createView(),
-            'unread' => $unread,
-        ]);
     }
 
     /**
@@ -76,16 +102,29 @@ class MessageController extends AbstractController
      */
     public function received(EntityManagerInterface $em): Response
     {
-        $user = $this->getUser();
-        $messageRecipients = $em->getRepository(MessageRecipient::class)
-            ->findBy(['recipient' => $user], ['id' => 'DESC']);
-        $unread = $em->getRepository(MessageRecipient::class)
-            ->findBy(['isRead' => false], ['id' => 'DESC']);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $user = $this->getUser();
+            $messageRecipients = $em->getRepository(MessageRecipient::class)
+                ->findBy(['recipient' => $user], ['id' => 'DESC']);
+            $unread = $em->getRepository(MessageRecipient::class)
+                ->findBy(['isRead' => false], ['id' => 'DESC']);
 
-        return $this->render('message/received.html.twig', [
-            'messages' => $messageRecipients,
-            'unread' => $unread,
-        ]);
+            return $this->render('message/received.html.twig', [
+                'messages' => $messageRecipients,
+                'unread' => $unread,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
 
@@ -94,18 +133,30 @@ class MessageController extends AbstractController
      */
     public function sent(EntityManagerInterface $em): Response
     {
-        $user = $this->getUser();
-        $messageRecipients = $em->getRepository(MessageRecipient::class)
-            ->findBy(['sender' => $user], ['id' => 'DESC']);
-        $unread = $em->getRepository(MessageRecipient::class)
-            ->findBy(['isRead' => false], ['id' => 'DESC']);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $user = $this->getUser();
+            $messageRecipients = $em->getRepository(MessageRecipient::class)
+                ->findBy(['sender' => $user], ['id' => 'DESC']);
+            $unread = $em->getRepository(MessageRecipient::class)
+                ->findBy(['isRead' => false], ['id' => 'DESC']);
 
 
-
-        return $this->render('message/sent.html.twig', [
-            'messages' => $messageRecipients,
-            'unread' => $unread,
-        ]);
+            return $this->render('message/sent.html.twig', [
+                'messages' => $messageRecipients,
+                'unread' => $unread,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -113,15 +164,28 @@ class MessageController extends AbstractController
      */
     public function read(MessageRecipient $message, EntityManagerInterface $em): Response
     {
-        $unread = $em->getRepository(MessageRecipient::class)
-            ->findBy(['isRead' => false], ['id' => 'DESC']);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $unread = $em->getRepository(MessageRecipient::class)
+                ->findBy(['isRead' => false], ['id' => 'DESC']);
 
-        $message->setIsRead(true);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($message);
-        $em->flush();
+            $message->setIsRead(true);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($message);
+            $em->flush();
 
-        return $this->render('message/read.html.twig', ["message" => $message,  'unread' => $unread,]);
+            return $this->render('message/read.html.twig', ["message" => $message, 'unread' => $unread,]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -129,14 +193,27 @@ class MessageController extends AbstractController
      */
     public function readsend(Message $message, EntityManagerInterface $em): Response
     {
-        $unread = $em->getRepository(MessageRecipient::class)
-            ->findBy(['isRead' => false], ['id' => 'DESC']);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $unread = $em->getRepository(MessageRecipient::class)
+                ->findBy(['isRead' => false], ['id' => 'DESC']);
 //        $message->setIsRead(true);
 //        $em = $this->getDoctrine()->getManager();
 //        $em->persist($message);
 //        $em->flush();
 
-        return $this->render('message/readsend.html.twig', ["message" => $message,  'unread' => $unread,]);
+            return $this->render('message/readsend.html.twig', ["message" => $message, 'unread' => $unread,]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -144,16 +221,17 @@ class MessageController extends AbstractController
      */
     public function reply(MessageRecipient $message, Request $request, EntityManagerInterface $em): Response
     {
-        $unread = $em->getRepository(MessageRecipient::class)
-            ->findBy(['isRead' => false], ['id' => 'DESC']);
-        $messagereply = new MessageReply();
-        $form = $this->createForm(MessageReplyType::class, $messagereply);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $unread = $em->getRepository(MessageRecipient::class)
+                ->findBy(['isRead' => false], ['id' => 'DESC']);
+            $messagereply = new MessageReply();
+            $form = $this->createForm(MessageReplyType::class, $messagereply);
 
-        $form->handleRequest($request);
+            $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $messagereply->setSender($this->getUser());
-            $messagereply->setMessage($message);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $messagereply->setSender($this->getUser());
+                $messagereply->setMessage($message);
 
 //            $recipients = $form->get('recipients')->getData();
 //
@@ -164,33 +242,59 @@ class MessageController extends AbstractController
 //                $messageRecipient->setSender($this->getUser());
 //                $messagereply->addRecipient($messageRecipient);
 //            }
-            $em->persist($messagereply);
-            $em->flush();
+                $em->persist($messagereply);
+                $em->flush();
 
-            $this->addFlash("message", "Message envoyé avec succès.");
-            return $this->redirectToRoute("message");
+                $this->addFlash("message", "Message envoyé avec succès.");
+                return $this->redirectToRoute("message");
+            }
+
+            return $this->render('message/reply.html.twig', [
+                "form" => $form->createView(),
+                "message" => $message,
+                'unread' => $unread,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('message/reply.html.twig' ,[
-        "form" => $form->createView(),
-            "message" => $message,
-            'unread' => $unread,
-        ]);
     }
 // suppression message cote destinatataire
+
     /**
      * @Route("/{id}/delete", name="delete")
      */
     public function delete(MessageRecipient $message, EntityManagerInterface $em): Response
     {
-        if ($message->getRecipient() !== $this->getUser()) {
-            $this->addFlash("Vous ne pouvez pas supprimer ce message.");
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            if ($message->getRecipient() !== $this->getUser()) {
+                $this->addFlash("Vous ne pouvez pas supprimer ce message.");
+            }
+
+            $message->delete();
+            $em->flush();
+
+            return $this->redirectToRoute('received');
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        $message->delete();
-        $em->flush();
-
-        return $this->redirectToRoute('received');
     }
 
     /**
@@ -198,14 +302,27 @@ class MessageController extends AbstractController
      */
     public function trash(EntityManagerInterface $em): Response
     {
-        $messages = $em->getRepository(MessageRecipient::class)->findBy(['deletedAt' => null]);
-        $unread = $em->getRepository(MessageRecipient::class)
-            ->findBy(['isRead' => false], ['id' => 'DESC']);
-        dd($messages);
-        return $this->render('message/trash.html.twig', [
-            'messages' => $messages,
-            'unread' => $unread,
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $messages = $em->getRepository(MessageRecipient::class)->findBy(['deletedAt' => null]);
+            $unread = $em->getRepository(MessageRecipient::class)
+                ->findBy(['isRead' => false], ['id' => 'DESC']);
+            dd($messages);
+            return $this->render('message/trash.html.twig', [
+                'messages' => $messages,
+                'unread' => $unread,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -213,14 +330,27 @@ class MessageController extends AbstractController
      */
     public function restore(Message $message, EntityManagerInterface $em): Response
     {
-        if (!$message->isDeleted()) {
-            return $this->redirectToRoute('trash');
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            if (!$message->isDeleted()) {
+                return $this->redirectToRoute('trash');
+            }
+
+            $message->restore();
+            $em->flush();
+
+            return $this->redirectToRoute('inbox');
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        $message->restore();
-        $em->flush();
-
-        return $this->redirectToRoute('inbox');
     }
     // fin destinataire
 }

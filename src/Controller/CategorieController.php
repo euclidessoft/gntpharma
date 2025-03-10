@@ -20,9 +20,22 @@ class CategorieController extends AbstractController
      */
     public function index(CategorieRepository $categorieRepository): Response
     {
+         if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
         return $this->render('categorie/index.html.twig', [
             'categories' => $categorieRepository->findAll(),
         ]);
+    } else {
+$response = $this->redirectToRoute('security_logout');
+$response->setSharedMaxAge(0);
+$response->headers->addCacheControlDirective('no-cache', true);
+$response->headers->addCacheControlDirective('no-store', true);
+$response->headers->addCacheControlDirective('must-revalidate', true);
+$response->setCache([
+'max_age' => 0,
+'private' => true,
+]);
+return $response;
+}
     }
 
     /**
@@ -30,6 +43,7 @@ class CategorieController extends AbstractController
      */
     public function new(Request $request): Response
     {
+         if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
         $categorie = new Categorie();
         $form = $this->createForm(CategorieType::class, $categorie);
         $form->handleRequest($request);
@@ -47,6 +61,18 @@ class CategorieController extends AbstractController
             'categorie' => $categorie,
             'form' => $form->createView(),
         ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -54,9 +80,22 @@ class CategorieController extends AbstractController
      */
     public function show(Categorie $categorie): Response
     {
+         if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
         return $this->render('categorie/show.html.twig', [
             'categorie' => $categorie,
         ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -64,6 +103,7 @@ class CategorieController extends AbstractController
      */
     public function edit(Request $request, Categorie $categorie): Response
     {
+         if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
         $form = $this->createForm(CategorieType::class, $categorie);
         $form->remove('compte');
         $form->handleRequest($request);
@@ -78,6 +118,18 @@ class CategorieController extends AbstractController
             'categorie' => $categorie,
             'form' => $form->createView(),
         ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -85,6 +137,7 @@ class CategorieController extends AbstractController
      */
     public function delete(Request $request, Categorie $categorie): Response
     {
+         if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
         if ($this->isCsrfTokenValid('delete'.$categorie->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($categorie);
@@ -92,5 +145,17 @@ class CategorieController extends AbstractController
         }
 
         return $this->redirectToRoute('categorie_index', [], Response::HTTP_SEE_OTHER);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 }

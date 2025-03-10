@@ -21,9 +21,22 @@ class PrimeController extends AbstractController
      */
     public function index(PrimeRepository $primeRepository): Response
     {
-        return $this->render('prime/admin/index.html.twig', [
-            'primes' => $primeRepository->findAll(),
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            return $this->render('prime/admin/index.html.twig', [
+                'primes' => $primeRepository->findAll(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -31,12 +44,25 @@ class PrimeController extends AbstractController
      */
     public function suivi(Security $security): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $employe = $security->getUser();
-        $primes = $entityManager->getRepository(Prime::class)->findBy(['employe' => $employe]);
-        return $this->render('prime/index.html.twig', [
-            'primes' => $primes,
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $employe = $security->getUser();
+            $primes = $entityManager->getRepository(Prime::class)->findBy(['employe' => $employe]);
+            return $this->render('prime/index.html.twig', [
+                'primes' => $primes,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -44,23 +70,36 @@ class PrimeController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $prime = new Prime();
-        $form = $this->createForm(PrimeType::class, $prime);
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $prime = new Prime();
+            $form = $this->createForm(PrimeType::class, $prime);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $prime->setCreatedAt(new  \DateTime());
-            $entityManager->persist($prime);
-            $entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $prime->setCreatedAt(new  \DateTime());
+                $entityManager->persist($prime);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('prime_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('prime_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('prime/admin/new.html.twig', [
+                'prime' => $prime,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('prime/admin/new.html.twig', [
-            'prime' => $prime,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -68,9 +107,22 @@ class PrimeController extends AbstractController
      */
     public function show(Prime $prime): Response
     {
-        return $this->render('prime/admin/show.html.twig', [
-            'prime' => $prime,
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            return $this->render('prime/admin/show.html.twig', [
+                'prime' => $prime,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -78,19 +130,32 @@ class PrimeController extends AbstractController
      */
     public function edit(Request $request, Prime $prime): Response
     {
-        $form = $this->createForm(PrimeType::class, $prime);
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $form = $this->createForm(PrimeType::class, $prime);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('prime_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('prime_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('prime/admin/edit.html.twig', [
+                'prime' => $prime,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('prime/admin/edit.html.twig', [
-            'prime' => $prime,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -98,12 +163,25 @@ class PrimeController extends AbstractController
      */
     public function delete(Request $request, Prime $prime): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$prime->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($prime);
-            $entityManager->flush();
-        }
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            if ($this->isCsrfTokenValid('delete' . $prime->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($prime);
+                $entityManager->flush();
+            }
 
-        return $this->redirectToRoute('prime_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('prime_index', [], Response::HTTP_SEE_OTHER);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 }
