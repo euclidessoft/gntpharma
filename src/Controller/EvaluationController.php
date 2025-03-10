@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/{_locale}/Evaluation")
@@ -49,7 +50,7 @@ class EvaluationController extends AbstractController
 
             $evaluation->setDateEvaluation($dateEvaluation);
             $evaluation->setEmploye($employe);
-          
+
             $totalNotes = 0;
             $nbNotes = 0;
 
@@ -65,11 +66,11 @@ class EvaluationController extends AbstractController
                 $evaluation->addEvaluationDetail($evaluationDetail);
                 $entityManager->persist($evaluationDetail);
 
-                $totalNotes+=(int)$note;
-                $nbNotes ++;
+                $totalNotes += (int)$note;
+                $nbNotes++;
             }
 
-            $moyenne = ($nbNotes > 0) ? ($totalNotes / $nbNotes): 0;
+            $moyenne = ($nbNotes > 0) ? ($totalNotes / $nbNotes) : 0;
             $evaluation->setMoyenne($moyenne);
             $evaluation->addEvaluationDetail($evaluationDetail);
             $entityManager->persist($evaluation);
@@ -93,6 +94,20 @@ class EvaluationController extends AbstractController
             'evaluation' => $evaluation,
         ]);
     }
+
+
+    /**
+     * @Route("/Suivi", name="evaluation_suivi", methods={"GET"})
+     */
+    public function suivi(Security $security): Response
+    {
+        $employe = $security->getUser();
+        $evaluation = $this->getDoctrine()->getRepository(Evaluation::class)->findBy(['employe' => $employe]);
+        return $this->render('evaluation/suivi.html.twig', [
+            'evaluation' => $evaluation,
+        ]);
+    }
+
 
     /**
      * @Route("/{id}/edit", name="evaluation_edit", methods={"GET","POST"})
