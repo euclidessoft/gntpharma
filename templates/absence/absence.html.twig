@@ -3,11 +3,28 @@
 {% block conges %}active{% endblock %}
 {% block absence %}active{% endblock %}
 {% block body %}
-<div class="col-lg-10 mt-4 fond-7">
+<div class="container mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
-        <i class="fa fa-money-bill mr-2"></i>
+        <i class="fas fa-calendar-alt me-2"></i>
         {{ "Mes absences"|trans }}
     </h3>
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('absence_suivi') }}">
+                {{'En attente de justification'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                {{ 'Accepter'|trans }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('absence_suivi') }}">
+                {{ 'Toutes les absences'|trans }}
+            </a>
+        </li>
+    </ul>
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>

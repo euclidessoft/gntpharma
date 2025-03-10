@@ -12,6 +12,7 @@ use App\Repository\HeureSuplementaireRepository;
 use App\Repository\PaieRepository;
 use App\Repository\PrimeRepository;
 use App\Repository\RetenueRepository;
+use App\Service\PaieService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,12 @@ use Symfony\Component\Security\Core\Security;
  */
 class PaieController extends AbstractController
 {
+    private $paieService;
+    public function __construct(PaieService $paieService)
+    {
+        $this->paieService = $paieService;
+    }
+
     /**
      * @Route("/", name="paie_index")
      */
@@ -143,6 +150,12 @@ class PaieController extends AbstractController
             ]);
             return $response;
         }
+//        $bulletins = $this->paieService->bulletin();
+//
+//        //dd($employe,$startOfMonth,$salaireDeBase,$primes,$retenues);
+//        return $this->render('paie/admin/bulletin.html.twig', [
+//            'bulletins' => $bulletins,
+//        ]);
     }
 
 
@@ -219,6 +232,10 @@ class PaieController extends AbstractController
             ]);
             return $response;
         }
+//       $bulletins = $this->paieService->bulletin();
+//        return $this->render('paie/admin/bulletin_print.html.twig', [
+//            'bulletins' => $bulletins,
+//        ]);
     }
 
     /**
@@ -527,6 +544,169 @@ class PaieController extends AbstractController
             ]);
             return $response;
         }
+//        $entityManager->flush();
+//        return $this->redirectToRoute('print_bulletin');
+    }
+
+    /**
+     * @Route("/Historique", name="paie_historique", methods={"GET"})
+     */
+    public function historique(PaieRepository $paieRepository): Response
+    {
+        $paie = $paieRepository->findAll();
+        return $this->render('paie/admin/historique.html.twig', [
+            'paie' => $paie,
+        ]);
+    }
+
+    /**
+     * @Route("/Historique/Bulletin", name="paie_historique_bulletin", methods={"GET"})
+     */
+    public function historiqueBulletin(PaieRepository $paieRepository): Response
+    {
+        $paie = $paieRepository->findAll();
+        $detailsRetenues = [];
+
+        foreach ($paie as $singlePaie) {
+            // Si 'detailsRetenues' existe et n'est pas vide
+            $details = json_decode($singlePaie->getDetailsRetenues(), true);
+
+            // Si le JSON est valide et contient des éléments
+            if (is_array($details) && count($details) > 0) {
+                $detailsRetenues[] = $details;
+            } else {
+                // Ajouter un tableau vide si aucune retenue
+                $detailsRetenues[] = [];
+            }
+        }
+
+        return $this->render('paie/admin/historique_bulletin.html.twig', [
+            'paie' => $paie,
+            'detailsRetenues' => $detailsRetenues,
+        ]);
+    }
+
+    /**
+     * @Route("/Historique/{id}", name="paie_historique_show", methods={"GET"})
+     */
+    public function historiqueShow(Paie $paie): Response
+    {
+        $detailsRetenues = json_decode($paie->getDetailsRetenues(), true); // Si tu as stocké en JSON, décode-le en tableau associatif
+
+        return $this->render('paie/admin/historique_show.html.twig', [
+            'paie' => $paie,
+            'detailsRetenues' => $detailsRetenues,
+        ]);
+    }
+
+    /**
+     * @Route("Details/{id}", name="paie_show", methods={"GET"})
+     */
+    public function show(int $id): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $startOfMonth = new \DateTime('01-' . date('m') . ('-') . date('Y'));
+        $endOfMonth = new \DateTime('last day of this month');
+        $employe = $entityManager->getRepository(Employe::class)->find($id);
+
+        // Vérifier si la paie du mois en cours est déjà validée
+        $paieExistante = $entityManager->getRepository(Paie::class)->findByDate($employe->getId(), $startOfMonth, $endOfMonth);
+        $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+        $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+        $sanctions = $entityManager->getRepository(Sanction::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+
+        $retenues = [];
+        $salaireJournalier = $employe->getPoste()->getSalaire() / 30; // Salaire journalier
+        foreach ($sanctions as $sanction) {
+            $montantRetenue = 0;
+            if ($sanction->getTypeSanction()->getNom() === 'ponction salarial') {
+                $nombreJours = $sanction->getNombreJours();
+                $montantRetenue = $salaireJournalier * $nombreJours;
+            } elseif ($sanction->getTypeSanction()->getNom() === 'mis a pied') {
+                $dateDebut = $sanction->getDateDebut();
+                $dateFin = $sanction->getDateFin();
+                $nombreJours = $dateDebut->diff($dateFin)->days + 1;
+                $montantRetenue = $salaireJournalier * $nombreJours;
+            }
+
+            $retenues[] = [
+                'type' => $sanction->getTypeSanction()->getNom(),
+                'montantRetenue' => round($montantRetenue, 2),
+                'details' => isset($nombreJours) ? "{$nombreJours} jours" : 'Période inconnue',
+            ];
+        }
+
+
+        return $this->render('paie/admin/show.html.twig', [
+            'employe' => $employe,
+            'primes' => $primes,
+            'heureSup' => $heureSup,
+            'retenues' => $retenues,
+            'paieExistante' => $paieExistante,
+        ]);
+    }
+
+    /**
+     * @Route("/valider/{id}", name="paie_valider", methods={"POST","GET"})
+     */
+    public function valider(int $id, PrimeRepository $primeRepository, HeureSuplementaireRepository $heureSuplementaireRepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $entityManager->getRepository(Employe::class)->find($id);
+
+        $salaireDeBase = $employe->getPoste()->getSalaire();
+        $salaireJournaliere = $salaireDeBase / 30; // Calcul du salaire journalier (par défaut 30 jours)
+
+        $totalRetenue = 0;
+        $detailsRetenues = [];
+
+        $sanctions = $entityManager->getRepository(Sanction::class)->findBy(['employe' => $employe]);
+
+        foreach ($sanctions as $sanction) {
+            if ($sanction->getTypeSanction()->getNom() === 'ponction salarial') {
+                $nombreJours = $sanction->getNombreJours();
+                $montantRetenue = $salaireJournaliere * $nombreJours;
+                $totalRetenue += $montantRetenue;
+
+                $detailsRetenues[] = [
+                    'type' => 'Ponction salariale',
+                    'montant' => round($montantRetenue, 2),
+                    'details' => $nombreJours . ' jours de retenue',
+                ];
+
+            } elseif ($sanction->getTypeSanction()->getNom() === 'mis a pied') {
+                $dateDebut = $sanction->getDateDebut();
+                $dateFin = $sanction->getDateFin();
+                $nombreJours = $dateDebut->diff($dateFin)->days + 1;
+                $montantRetenue = $salaireJournaliere * $nombreJours;
+                $totalRetenue += $montantRetenue;
+
+                $detailsRetenues[] = [
+                    'type' => 'Mise à pied',
+                    'montant' => round($montantRetenue, 2),
+                    'details' => 'Du ' . $dateDebut->format('d/m/Y') . ' au ' . $dateFin->format('d/m/Y'),
+                ];
+            }
+        }
+
+        // Calcul des primes et heures supplémentaires
+        $totalPrimes = $primeRepository->getTotalPrimesByEmploye($employe);
+        $totalHeureSup = $heureSuplementaireRepository->getTotalHeuresByEmploye($employe);
+        // Calcul du salaire net
+        $salaireNet = $salaireDeBase + $totalHeureSup + $totalPrimes - $totalRetenue;
+        // Enregistrement dans la table paie
+        $paie = new Paie();
+        $paie->setSalaireBase($salaireDeBase);
+        $paie->setEmploye($employe);
+        $paie->setMois(new \DateTime());
+        $paie->setTotalPrime($totalPrimes);
+        $paie->setTotalheureSup($totalHeureSup);
+        $paie->setTotalRetenue($totalRetenue);
+        $paie->setSalaireNet($salaireNet);
+        $paie->setDetailsRetenues(json_encode($detailsRetenues));
+        $entityManager->persist($paie);
+        $entityManager->flush();
+        return $this->redirectToRoute('paie_historique');
     }
 
 
