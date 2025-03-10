@@ -64,11 +64,6 @@ class EvaluationController extends AbstractController
 
                 $evaluation->setDateEvaluation($dateEvaluation);
                 $evaluation->setEmploye($employe);
-            $evaluation->setDateEvaluation($dateEvaluation);
-            $evaluation->setEmploye($employe);
-
-            $totalNotes = 0;
-            $nbNotes = 0;
 
                 $totalNotes = 0;
                 $nbNotes = 0;
@@ -94,6 +89,7 @@ class EvaluationController extends AbstractController
                 $evaluation->addEvaluationDetail($evaluationDetail);
                 $entityManager->persist($evaluation);
                 $entityManager->flush();
+
                 return $this->redirectToRoute('evaluation_index', [], Response::HTTP_SEE_OTHER);
             }
             return $this->render('evaluation/evaluation.html.twig', [
@@ -112,17 +108,6 @@ class EvaluationController extends AbstractController
                 'private' => true,
             ]);
             return $response;
-                $totalNotes += (int)$note;
-                $nbNotes++;
-            }
-
-            $moyenne = ($nbNotes > 0) ? ($totalNotes / $nbNotes) : 0;
-            $evaluation->setMoyenne($moyenne);
-            $evaluation->addEvaluationDetail($evaluationDetail);
-            $entityManager->persist($evaluation);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('evaluation_index', [], Response::HTTP_SEE_OTHER);
         }
     }
 
@@ -155,11 +140,24 @@ class EvaluationController extends AbstractController
      */
     public function suivi(Security $security): Response
     {
-        $employe = $security->getUser();
-        $evaluation = $this->getDoctrine()->getRepository(Evaluation::class)->findBy(['employe' => $employe]);
-        return $this->render('evaluation/suivi.html.twig', [
-            'evaluation' => $evaluation,
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $employe = $security->getUser();
+            $evaluation = $this->getDoctrine()->getRepository(Evaluation::class)->findBy(['employe' => $employe]);
+            return $this->render('evaluation/suivi.html.twig', [
+                'evaluation' => $evaluation,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
 
