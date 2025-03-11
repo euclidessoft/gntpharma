@@ -39,6 +39,11 @@ class Evaluation
      */
     private $evaluationDetails;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $moyenne;
+
     public function __construct()
     {
         $this->evaluationDetails = new ArrayCollection();
@@ -112,6 +117,18 @@ class Evaluation
                 $evaluationDetail->setEvaluation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMoyenne(): ?float
+    {
+        return $this->moyenne;
+    }
+
+    public function setMoyenne(float $moyenne): self
+    {
+        $this->moyenne = $moyenne;
 
         return $this;
     }

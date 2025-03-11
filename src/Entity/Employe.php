@@ -87,32 +87,32 @@ class Employe extends User implements UserInterface
     private $famillyphone;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $bloodgroup;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $diabete;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $handicap;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $hypo;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $hyper;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $epilepsie;
 
@@ -130,7 +130,6 @@ class Employe extends User implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private $status;
-
     /**
      * @ORM\OneToMany(targetEntity=Conges::class, mappedBy="employe")
      */
@@ -226,6 +225,11 @@ class Employe extends User implements UserInterface
      */
     private $evaluations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Feedback::class, mappedBy="employe")
+     */
+    private $feedback;
+
 
     public function __construct()
     {
@@ -250,6 +254,7 @@ class Employe extends User implements UserInterface
         $this->messageReplies = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->evaluations = new ArrayCollection();
+        $this->feedback = new ArrayCollection();
     }
 
 
@@ -1060,6 +1065,36 @@ class Employe extends User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($evaluation->getEmploye() === $this) {
                 $evaluation->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Feedback[]
+     */
+    public function getFeedback(): Collection
+    {
+        return $this->feedback;
+    }
+
+    public function addFeedback(Feedback $feedback): self
+    {
+        if (!$this->feedback->contains($feedback)) {
+            $this->feedback[] = $feedback;
+            $feedback->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeedback(Feedback $feedback): self
+    {
+        if ($this->feedback->removeElement($feedback)) {
+            // set the owning side to null (unless already changed)
+            if ($feedback->getEmploye() === $this) {
+                $feedback->setEmploye(null);
             }
         }
 

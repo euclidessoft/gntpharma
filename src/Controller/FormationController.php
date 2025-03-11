@@ -21,9 +21,23 @@ class FormationController extends AbstractController
      */
     public function index(FormationRepository $formationRepository): Response
     {
-        return $this->render('formation/index.html.twig', [
-            'formations' => $formationRepository->findAll(),
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            return $this->render('formation/index.html.twig', [
+                'formations' => $formationRepository->findAll(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+
     }
 
     /**
@@ -31,22 +45,35 @@ class FormationController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $formation = new Formation();
-        $form = $this->createForm(FormationType::class, $formation);
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $formation = new Formation();
+            $form = $this->createForm(FormationType::class, $formation);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($formation);
-            $entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($formation);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('formation_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('formation_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('formation/new.html.twig', [
+                'formation' => $formation,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('formation/new.html.twig', [
-            'formation' => $formation,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -54,9 +81,22 @@ class FormationController extends AbstractController
      */
     public function show(Formation $formation): Response
     {
-        return $this->render('formation/show.html.twig', [
-            'formation' => $formation,
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            return $this->render('formation/show.html.twig', [
+                'formation' => $formation,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -64,19 +104,32 @@ class FormationController extends AbstractController
      */
     public function edit(Request $request, Formation $formation): Response
     {
-        $form = $this->createForm(FormationType::class, $formation);
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $form = $this->createForm(FormationType::class, $formation);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('formation_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('formation_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('formation/edit.html.twig', [
+                'formation' => $formation,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('formation/edit.html.twig', [
-            'formation' => $formation,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -84,12 +137,25 @@ class FormationController extends AbstractController
      */
     public function delete(Request $request, Formation $formation): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$formation->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($formation);
-            $entityManager->flush();
-        }
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            if ($this->isCsrfTokenValid('delete' . $formation->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($formation);
+                $entityManager->flush();
+            }
 
-        return $this->redirectToRoute('formation_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('formation_index', [], Response::HTTP_SEE_OTHER);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\CritereEvaluation;
 use App\Entity\Employe;
 use App\Entity\Evaluation;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

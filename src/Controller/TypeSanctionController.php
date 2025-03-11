@@ -20,9 +20,22 @@ class TypeSanctionController extends AbstractController
      */
     public function index(TypeSanctionRepository $typeSanctionRepository): Response
     {
-        return $this->render('type_sanction/index.html.twig', [
-            'type_sanctions' => $typeSanctionRepository->findAll(),
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            return $this->render('type_sanction/index.html.twig', [
+                'type_sanctions' => $typeSanctionRepository->findAll(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -30,22 +43,35 @@ class TypeSanctionController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $typeSanction = new TypeSanction();
-        $form = $this->createForm(TypeSanctionType::class, $typeSanction);
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $typeSanction = new TypeSanction();
+            $form = $this->createForm(TypeSanctionType::class, $typeSanction);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($typeSanction);
-            $entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($typeSanction);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('type_sanction_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('type_sanction_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('type_sanction/new.html.twig', [
+                'type_sanction' => $typeSanction,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('type_sanction/new.html.twig', [
-            'type_sanction' => $typeSanction,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -53,9 +79,22 @@ class TypeSanctionController extends AbstractController
      */
     public function show(TypeSanction $typeSanction): Response
     {
-        return $this->render('type_sanction/show.html.twig', [
-            'type_sanction' => $typeSanction,
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            return $this->render('type_sanction/show.html.twig', [
+                'type_sanction' => $typeSanction,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -63,19 +102,32 @@ class TypeSanctionController extends AbstractController
      */
     public function edit(Request $request, TypeSanction $typeSanction): Response
     {
-        $form = $this->createForm(TypeSanctionType::class, $typeSanction);
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $form = $this->createForm(TypeSanctionType::class, $typeSanction);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('type_sanction_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('type_sanction_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('type_sanction/edit.html.twig', [
+                'type_sanction' => $typeSanction,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('type_sanction/edit.html.twig', [
-            'type_sanction' => $typeSanction,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -83,12 +135,25 @@ class TypeSanctionController extends AbstractController
      */
     public function delete(Request $request, TypeSanction $typeSanction): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$typeSanction->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($typeSanction);
-            $entityManager->flush();
-        }
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            if ($this->isCsrfTokenValid('delete' . $typeSanction->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($typeSanction);
+                $entityManager->flush();
+            }
 
-        return $this->redirectToRoute('type_sanction_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('type_sanction_index', [], Response::HTTP_SEE_OTHER);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 }

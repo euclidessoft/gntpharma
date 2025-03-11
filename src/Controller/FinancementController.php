@@ -23,9 +23,22 @@ class FinancementController extends AbstractController
      */
     public function index(FinancementRepository $financementRepository): Response
     {
-        return $this->render('financement/index.html.twig', [
-            'financements' => $financementRepository->findAll(),
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            return $this->render('financement/index.html.twig', [
+                'financements' => $financementRepository->findAll(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -33,7 +46,20 @@ class FinancementController extends AbstractController
      */
     public function choix(): Response
     {
-        return $this->render('financement/choix_financement.html.twig');
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            return $this->render('financement/choix_financement.html.twig');
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -41,59 +67,72 @@ class FinancementController extends AbstractController
      */
     public function apport(Request $request): Response
     {
-        $financement = new Financement();
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $financement = new Financement();
 
-        $form = $this->createForm(FinancementType::class, $financement);
-        $form->handleRequest($request);
+            $form = $this->createForm(FinancementType::class, $financement);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
 
-            $credit = new Credit();
-            $ecriture = new Ecriture();
-            $credit->setFinancement($financement);// ecriture comptable
-            $credit->setMontant($financement->getMontant());
+                $credit = new Credit();
+                $ecriture = new Ecriture();
+                $credit->setFinancement($financement);// ecriture comptable
+                $credit->setMontant($financement->getMontant());
 
-            $financement->setCompte('1651'. str_pad($financement->getCompte(), 2, '0', STR_PAD_LEFT));
-            if($financement->getType() == 'Espece'){
-                $credit->setCompte(54);
-                $credit->setType('Espece');
-
-
-                $ecriture->setCredit($credit);
-                $ecriture->setType('Espece');
-                $ecriture->setComptecredit(54);
-                $ecriture->setComptedebit($financement->getCompte());
-
-            }else{
-                $financement->setType('Banque');
-                $credit->setCompte($financement->getBanque()->getCompte());
-                $credit->setType('Banque');
+                $financement->setCompte('1651' . str_pad($financement->getCompte(), 2, '0', STR_PAD_LEFT));
+                if ($financement->getType() == 'Espece') {
+                    $credit->setCompte(54);
+                    $credit->setType('Espece');
 
 
-                $ecriture->setCredit($credit);
-                $ecriture->setType('Banque');
-                $ecriture->setComptecredit($financement->getBanque()->getCompte());
-                $ecriture->setComptedebit($financement->getCompte());
+                    $ecriture->setCredit($credit);
+                    $ecriture->setType('Espece');
+                    $ecriture->setComptecredit(54);
+                    $ecriture->setComptedebit($financement->getCompte());
+
+                } else {
+                    $financement->setType('Banque');
+                    $credit->setCompte($financement->getBanque()->getCompte());
+                    $credit->setType('Banque');
+
+
+                    $ecriture->setCredit($credit);
+                    $ecriture->setType('Banque');
+                    $ecriture->setComptecredit($financement->getBanque()->getCompte());
+                    $ecriture->setComptedebit($financement->getCompte());
+                }
+
+
+                $ecriture->setMontant($financement->getMontant());
+                $ecriture->setLibelle($financement->getMotif());
+                $ecriture->setSolde($financement->getMontant());
+
+                $entityManager->persist($financement);
+                $entityManager->persist($credit);
+                $entityManager->persist($ecriture);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('financement_index', [], Response::HTTP_SEE_OTHER);
             }
 
-
-            $ecriture->setMontant($financement->getMontant());
-            $ecriture->setLibelle($financement->getMotif());
-            $ecriture->setSolde($financement->getMontant());
-
-            $entityManager->persist($financement);
-            $entityManager->persist($credit);
-            $entityManager->persist($ecriture);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('financement_index', [], Response::HTTP_SEE_OTHER);
+            return $this->render('financement/new.html.twig', [
+                'financement' => $financement,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('financement/new.html.twig', [
-            'financement' => $financement,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -101,52 +140,63 @@ class FinancementController extends AbstractController
      */
     public function pret(Request $request): Response
     {
-        $financement = new Financement();
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $financement = new Financement();
 
-        $form = $this->createForm(FinancementBanqueType::class, $financement);
-        $form->handleRequest($request);
+            $form = $this->createForm(FinancementBanqueType::class, $financement);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
 
-            $credit = new Credit();
-            $credit->setFinancement($financement);// ecriture comptable
-            $credit->setMontant($financement->getMontant());
-            $num = $financement->getCompte();
-            $financement->setCompte('162'. str_pad($num, 2, '0', STR_PAD_LEFT));
-            $financement->setCompteinteret('674'. str_pad($num, 2, '0', STR_PAD_LEFT));
-            $financement->setApport(false);
-            $financement->setType('Banque');
+                $credit = new Credit();
+                $credit->setFinancement($financement);// ecriture comptable
+                $credit->setMontant($financement->getMontant());
+                $num = $financement->getCompte();
+                $financement->setCompte('162' . str_pad($num, 2, '0', STR_PAD_LEFT));
+                $financement->setCompteinteret('674' . str_pad($num, 2, '0', STR_PAD_LEFT));
+                $financement->setApport(false);
+                $financement->setType('Banque');
 
-            $credit->setCompte($financement->getBanque()->getCompte());
-            $credit->setType('Banque');
-
-
-
-            $ecriture = new Ecriture();
-            $ecriture->setCredit($credit);
-            $ecriture->setType('Banque');
-            $ecriture->setComptecredit($financement->getBanque()->getCompte());
-            $ecriture->setComptedebit($financement->getCompte());
+                $credit->setCompte($financement->getBanque()->getCompte());
+                $credit->setType('Banque');
 
 
+                $ecriture = new Ecriture();
+                $ecriture->setCredit($credit);
+                $ecriture->setType('Banque');
+                $ecriture->setComptecredit($financement->getBanque()->getCompte());
+                $ecriture->setComptedebit($financement->getCompte());
 
-            $ecriture->setMontant($financement->getMontant());
-            $ecriture->setLibelle($financement->getMotif());
-            $ecriture->setSolde($financement->getMontant());
 
-            $entityManager->persist($financement);
-            $entityManager->persist($credit);
-            $entityManager->persist($ecriture);
-            $entityManager->flush();
+                $ecriture->setMontant($financement->getMontant());
+                $ecriture->setLibelle($financement->getMotif());
+                $ecriture->setSolde($financement->getMontant());
 
-            return $this->redirectToRoute('financement_index', [], Response::HTTP_SEE_OTHER);
+                $entityManager->persist($financement);
+                $entityManager->persist($credit);
+                $entityManager->persist($ecriture);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('financement_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('financement/financement_bancaire.html.twig', [
+                'financement' => $financement,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('financement/financement_bancaire.html.twig', [
-            'financement' => $financement,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -154,9 +204,22 @@ class FinancementController extends AbstractController
      */
     public function show(Financement $financement): Response
     {
-        return $this->render('financement/show.html.twig', [
-            'financement' => $financement,
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            return $this->render('financement/show.html.twig', [
+                'financement' => $financement,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -164,19 +227,32 @@ class FinancementController extends AbstractController
      */
     public function edit(Request $request, Financement $financement): Response
     {
-        $form = $this->createForm(FinancementType::class, $financement);
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $form = $this->createForm(FinancementType::class, $financement);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('financement_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('financement_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('financement/edit.html.twig', [
+                'financement' => $financement,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('financement/edit.html.twig', [
-            'financement' => $financement,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -184,12 +260,25 @@ class FinancementController extends AbstractController
      */
     public function delete(Request $request, Financement $financement): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$financement->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($financement);
-            $entityManager->flush();
-        }
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            if ($this->isCsrfTokenValid('delete' . $financement->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($financement);
+                $entityManager->flush();
+            }
 
-        return $this->redirectToRoute('financement_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('financement_index', [], Response::HTTP_SEE_OTHER);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 }

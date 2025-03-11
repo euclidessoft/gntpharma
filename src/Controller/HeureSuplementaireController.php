@@ -21,9 +21,22 @@ class HeureSuplementaireController extends AbstractController
      */
     public function index(HeureSuplementaireRepository $heureSuplementaireRepository): Response
     {
-        return $this->render('heure_suplementaire/admin/index.html.twig', [
-            'heure_suplementaires' => $heureSuplementaireRepository->findAll(),
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            return $this->render('heure_suplementaire/admin/index.html.twig', [
+                'heure_suplementaires' => $heureSuplementaireRepository->findAll(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -31,12 +44,25 @@ class HeureSuplementaireController extends AbstractController
      */
     public function suivi(Security $security): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $employe = $security->getUser();
-        $heures = $entityManager->getRepository(HeureSuplementaire::class)->findBy(['employe' => $employe]);
-        return $this->render('heure_suplementaire/index.html.twig', [
-            'heures' => $heures,
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $employe = $security->getUser();
+            $heures = $entityManager->getRepository(HeureSuplementaire::class)->findBy(['employe' => $employe]);
+            return $this->render('heure_suplementaire/index.html.twig', [
+                'heures' => $heures,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -44,23 +70,36 @@ class HeureSuplementaireController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $heureSuplementaire = new HeureSuplementaire();
-        $form = $this->createForm(HeureSuplementaireType::class, $heureSuplementaire);
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $heureSuplementaire = new HeureSuplementaire();
+            $form = $this->createForm(HeureSuplementaireType::class, $heureSuplementaire);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $heureSuplementaire->setCreatedAt(new \DateTime());
-            $entityManager->persist($heureSuplementaire);
-            $entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $heureSuplementaire->setCreatedAt(new \DateTime());
+                $entityManager->persist($heureSuplementaire);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('heure_suplementaire_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('heure_suplementaire_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('heure_suplementaire/admin/new.html.twig', [
+                'heure_suplementaire' => $heureSuplementaire,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('heure_suplementaire/admin/new.html.twig', [
-            'heure_suplementaire' => $heureSuplementaire,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -68,9 +107,22 @@ class HeureSuplementaireController extends AbstractController
      */
     public function show(HeureSuplementaire $heureSuplementaire): Response
     {
-        return $this->render('heure_suplementaire/admin/show.html.twig', [
-            'heure_suplementaire' => $heureSuplementaire,
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            return $this->render('heure_suplementaire/admin/show.html.twig', [
+                'heure_suplementaire' => $heureSuplementaire,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -78,19 +130,32 @@ class HeureSuplementaireController extends AbstractController
      */
     public function edit(Request $request, HeureSuplementaire $heureSuplementaire): Response
     {
-        $form = $this->createForm(HeureSuplementaireType::class, $heureSuplementaire);
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $form = $this->createForm(HeureSuplementaireType::class, $heureSuplementaire);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('heure_suplementaire_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('heure_suplementaire_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('heure_suplementaire/admin/edit.html.twig', [
+                'heure_suplementaire' => $heureSuplementaire,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('heure_suplementaire/admin/edit.html.twig', [
-            'heure_suplementaire' => $heureSuplementaire,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -98,13 +163,26 @@ class HeureSuplementaireController extends AbstractController
      */
     public function delete(Request $request, HeureSuplementaire $heureSuplementaire): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $heureSuplementaire->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($heureSuplementaire);
-            $entityManager->flush();
-        }
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            if ($this->isCsrfTokenValid('delete' . $heureSuplementaire->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($heureSuplementaire);
+                $entityManager->flush();
+            }
 
-        return $this->redirectToRoute('heure_suplementaire_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('heure_suplementaire_index', [], Response::HTTP_SEE_OTHER);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
 

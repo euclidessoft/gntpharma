@@ -1,27 +1,12 @@
-//valider l'enregistrement d'un pelerin
-function envoieadd() {
-    if ($('#tamp').val() != '') {
-        if (($('#mecquebundle_pelerin_numpassport').val() != '' && $('#mecquebundle_pelerin_expiredate').val() != '') || ($('#mecquebundle_pelerin_numpassport').val() == '' && $('#mecquebundle_pelerin_expiredate').val() == '')) {
-            $('#send').addClass("disabled");
-            $('#send').html("<div class='ajax-loader'></div>");
-            $('#form').submit();
-        } else alert("{{ 'Vérifiez le numéro du passeport ou la date d expiration'|trans }}");
-    } else alert("{{ 'Selectionnez une agence pour le pèlerin !'|trans }}");
-}
-
-
-//ajouter une remarque
+// Ajouter une remarque
 function autretext() {
-   
     if ($('#autre').is(':checked')) {
         $('#employe_remark').show();
-        $('#employe_remark').val();
     } else {
-        $('#employe_remark').hide();
-        $('#employe_remark').val();
+        $('#employe_remark').hide().val('');
     }
-
 }
+
 
 //enregistrer numero passeport
 function Passeport() {

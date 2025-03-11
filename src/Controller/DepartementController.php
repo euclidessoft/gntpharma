@@ -20,9 +20,22 @@ class DepartementController extends AbstractController
      */
     public function index(DepartementRepository $departementRepository): Response
     {
-        return $this->render('departement/index.html.twig', [
-            'departements' => $departementRepository->findAll(),
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            return $this->render('departement/index.html.twig', [
+                'departements' => $departementRepository->findAll(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -30,22 +43,35 @@ class DepartementController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $departement = new Departement();
-        $form = $this->createForm(DepartementType::class, $departement);
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $departement = new Departement();
+            $form = $this->createForm(DepartementType::class, $departement);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($departement);
-            $entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($departement);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('departement_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('departement_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('departement/new.html.twig', [
+                'departement' => $departement,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('departement/new.html.twig', [
-            'departement' => $departement,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -53,9 +79,22 @@ class DepartementController extends AbstractController
      */
     public function show(Departement $departement): Response
     {
-        return $this->render('departement/show.html.twig', [
-            'departement' => $departement,
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            return $this->render('departement/show.html.twig', [
+                'departement' => $departement,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -63,19 +102,32 @@ class DepartementController extends AbstractController
      */
     public function edit(Request $request, Departement $departement): Response
     {
-        $form = $this->createForm(DepartementType::class, $departement);
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $form = $this->createForm(DepartementType::class, $departement);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('departement_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('departement_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('departement/edit.html.twig', [
+                'departement' => $departement,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('departement/edit.html.twig', [
-            'departement' => $departement,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -83,12 +135,25 @@ class DepartementController extends AbstractController
      */
     public function delete(Request $request, Departement $departement): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$departement->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($departement);
-            $entityManager->flush();
-        }
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            if ($this->isCsrfTokenValid('delete' . $departement->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($departement);
+                $entityManager->flush();
+            }
 
-        return $this->redirectToRoute('departement_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('departement_index', [], Response::HTTP_SEE_OTHER);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 }

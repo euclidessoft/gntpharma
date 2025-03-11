@@ -21,9 +21,22 @@ class FournisseurController extends AbstractController
      */
     public function index(FournisseurRepository $fournisseurRepository): Response
     {
-        return $this->render('fournisseur/index.html.twig', [
-            'fournisseurs' => $fournisseurRepository->findAll(),
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            return $this->render('fournisseur/index.html.twig', [
+                'fournisseurs' => $fournisseurRepository->findAll(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -31,28 +44,41 @@ class FournisseurController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $fournisseur = new Fournisseur();
-        $form = $this->createForm(FournisseurType::class, $fournisseur);
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $fournisseur = new Fournisseur();
+            $form = $this->createForm(FournisseurType::class, $fournisseur);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            
-            $entityManager->persist($fournisseur);
-            $entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
 
-            $compte = '401'.str_pad($fournisseur->getId(), 4, '0', STR_PAD_LEFT);
-            $fournisseur->setCompte($compte);
-            $entityManager->persist($fournisseur);
-            $entityManager->flush();
+                $entityManager->persist($fournisseur);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('fournisseur_index', [], Response::HTTP_SEE_OTHER);
+                $compte = '401' . str_pad($fournisseur->getId(), 4, '0', STR_PAD_LEFT);
+                $fournisseur->setCompte($compte);
+                $entityManager->persist($fournisseur);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('fournisseur_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('fournisseur/new.html.twig', [
+                'fournisseur' => $fournisseur,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('fournisseur/new.html.twig', [
-            'fournisseur' => $fournisseur,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -60,9 +86,22 @@ class FournisseurController extends AbstractController
      */
     public function show(Fournisseur $fournisseur): Response
     {
-        return $this->render('fournisseur/show.html.twig', [
-            'fournisseur' => $fournisseur,
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            return $this->render('fournisseur/show.html.twig', [
+                'fournisseur' => $fournisseur,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -70,20 +109,33 @@ class FournisseurController extends AbstractController
      */
     public function edit(Request $request, Fournisseur $fournisseur): Response
     {
-        $form = $this->createForm(FournisseurType::class, $fournisseur);
-        $form->remove('compte');
-        $form->handleRequest($request);
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $form = $this->createForm(FournisseurType::class, $fournisseur);
+            $form->remove('compte');
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('fournisseur_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('fournisseur_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('fournisseur/edit.html.twig', [
+                'fournisseur' => $fournisseur,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
-
-        return $this->render('fournisseur/edit.html.twig', [
-            'fournisseur' => $fournisseur,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -91,12 +143,25 @@ class FournisseurController extends AbstractController
      */
     public function delete(Request $request, Fournisseur $fournisseur): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$fournisseur->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($fournisseur);
-            $entityManager->flush();
-        }
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            if ($this->isCsrfTokenValid('delete' . $fournisseur->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($fournisseur);
+                $entityManager->flush();
+            }
 
-        return $this->redirectToRoute('fournisseur_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('fournisseur_index', [], Response::HTTP_SEE_OTHER);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 }

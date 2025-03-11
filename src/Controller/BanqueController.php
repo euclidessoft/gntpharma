@@ -20,9 +20,22 @@ class BanqueController extends AbstractController
      */
     public function index(BanqueRepository $banqueRepository): Response
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
         return $this->render('banque/index.html.twig', [
             'banques' => $banqueRepository->findAll(),
         ]);
+         } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -30,6 +43,7 @@ class BanqueController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
         $banque = new Banque();
         $form = $this->createForm(BanqueType::class, $banque);
         $form->handleRequest($request);
@@ -49,6 +63,18 @@ class BanqueController extends AbstractController
             'banque' => $banque,
             'form' => $form->createView(),
         ]);
+         } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -56,9 +82,22 @@ class BanqueController extends AbstractController
      */
     public function show(Banque $banque): Response
     {
+       if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
         return $this->render('banque/show.html.twig', [
             'banque' => $banque,
         ]);
+         } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -66,6 +105,7 @@ class BanqueController extends AbstractController
      */
     public function edit(Request $request, Banque $banque): Response
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
         $form = $this->createForm(BanqueType::class, $banque);
         $form->remove('compte');
         $form->handleRequest($request);
@@ -80,6 +120,18 @@ class BanqueController extends AbstractController
             'banque' => $banque,
             'form' => $form->createView(),
         ]);
+         } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 
     /**
@@ -87,6 +139,7 @@ class BanqueController extends AbstractController
      */
     public function delete(Request $request, Banque $banque): Response
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
         if ($this->isCsrfTokenValid('delete'.$banque->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($banque);
@@ -94,5 +147,17 @@ class BanqueController extends AbstractController
         }
 
         return $this->redirectToRoute('banque_index', [], Response::HTTP_SEE_OTHER);
+         } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
     }
 }

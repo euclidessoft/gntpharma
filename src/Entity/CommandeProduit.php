@@ -50,6 +50,10 @@ class CommandeProduit
 
 
     private $stock;
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $tva;
 
     /**
      * Constructor
@@ -156,6 +160,18 @@ class CommandeProduit
     public function setPromotion(?Promotion $promotion): self
     {
         $this->promotion = $promotion;
+
+        return $this;
+    }
+
+    public function getTva(): ?float
+    {
+        return $this->tva;
+    }
+
+    public function setTva(float $tva): self
+    {
+        $this->tva = $tva;
 
         return $this;
     }
