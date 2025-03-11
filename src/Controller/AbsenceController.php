@@ -154,7 +154,7 @@ class AbsenceController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
             $employe = $this->getUser();
-            $absences = $this->getDoctrine()->getRepository(Absence::class)->findBy(['employe' => $employe]);
+            $absences = $this->getDoctrine()->getRepository(Absence::class)->findAbsenceAll($employe);
             return $this->render('absence/absence.html.twig', [
                 'absences' => $absences,
             ]);
@@ -386,4 +386,85 @@ class AbsenceController extends AbstractController
             return $response;
         }
     }
+
+    /**
+     * @Route("/Suivi/Attente", name="absence_employe_attente")
+     */
+    public function accepter(Security $security, AbsenceRepository $absenceRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $employe = $security->getUser();
+            $absences = $absenceRepository->findAbsenceAttente($employe);
+            return $this->render('absence/attente.html.twig', [
+                'absences' => $absences,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/Suivi/Refuser", name="absence_employe_refuser")
+     */
+    public function RefuserAbsence(Security $security, AbsenceRepository $absenceRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $employe = $security->getUser();
+            $absences = $absenceRepository->findAbsenceRefuser($employe);
+            return $this->render('absence/refuser.html.twig', [
+                'absences' => $absences,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+
+    /**
+     * @Route("/Suivi/Accepter", name="absence_employe_accepter")
+     */
+    public function AccepterAbsence(Security $security, AbsenceRepository $absenceRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $employe = $security->getUser();
+            $absences = $absenceRepository->findAbsenceAccepeter($employe);
+            return $this->render('absence/accepter.html.twig', [
+                'absences' => $absences,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+
 }

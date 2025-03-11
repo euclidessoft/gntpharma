@@ -48,7 +48,57 @@ class AbsenceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAbsenceAll($employe): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.employe = :employe')
+            ->andWhere('(a.status != :status OR a.justifier != :justifier)')
+            ->setParameter('employe', $employe)
+            ->setParameter('status', '0')
+            ->setParameter('justifier', '0')
+            ->getQuery()
+            ->getResult();
+    }
 
+
+    public function findAbsenceAttente($employe): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.employe = :employe')
+            ->andWhere('a.status = :status')
+            ->andWhere('a.justifier = :justifier')
+            ->setParameter('employe', $employe)
+            ->setParameter('status', '0')
+            ->setParameter('justifier', '0')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAbsenceRefuser($employe): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.employe = :employe')
+            ->andWhere('a.status = :status')
+            ->andWhere('a.justifier = :justifier')
+            ->setParameter('employe', $employe)
+            ->setParameter('status', '0')
+            ->setParameter('justifier', '1')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAbsenceAccepeter($employe): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.employe = :employe')
+            ->andWhere('a.status = :status')
+            ->andWhere('a.justifier = :justifier')
+            ->setParameter('employe', $employe)
+            ->setParameter('status', '1')
+            ->setParameter('justifier', '1')
+            ->getQuery()
+            ->getResult();
+    }
 
     /*
     public function findOneBySomeField($value): ?Absence
