@@ -27,13 +27,14 @@
                         <div class="col-md-3 col-4 bg-success-light p-1 shadow-5 mb-2">
                             {{ "Date"|trans }}
                         </div>
-                        {% for message in messages %}
-                            {% if not message.isDeleted %}
-                                {% set bold = "" %}
-                                {% if message.isRead == 0 %}
-                                    {% set bold = "text-bold" %}
-                                {% endif %}
-
+                    </div>
+                    {% for message in messages %}
+                        {% if not message.isDeleted %}
+                            {% set bold = "" %}
+                            {% if message.isRead == 0 %}
+                                {% set bold = "text-bold" %}
+                            {% endif %}
+                            <div class="row message">
                                 <div class="col-md-3 col-4 {{ bold }}">
                                     <a href="{{ path("read", {id: message.id}) }}">
                                         {{ message.sender.nom }} {{ message.sender.prenom }}
@@ -48,12 +49,14 @@
                                     <a href="{{ path("read", {id: message.id}) }}">
                                         {{ message.message.createdAt|date('d/m/Y H:i:s') }}
                                     </a>
-                                    <a href="{{ path('delete', {'id': message.id}) }}">🗑 Supprimer</a>
                                 </div>
-                            {% endif %}
-                        {% else %}
-                        {% endfor %}
-                    </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="col-12 text-center shadow-5 p-1">
+                            {{ "Aucun message reçu"|trans }}
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

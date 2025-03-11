@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <div class="row border border-green mt-5 p-5 radius-10 shadow">
-                        {{ message.message.message }}
+                        {{ message.message.message|nl2br }}
                     </div>
                     {% for reply in message.messagereplies %}
                         <div class="row border border-green mt-5 p-5 radius-10 shadow">

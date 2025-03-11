@@ -957,6 +957,15 @@ select#transfert_date_time_minute {
     flex: 1;
 }
 
+.message {
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+    padding: 0.25rem !important;
+}
+
+.message:hover {
+    background: var(--vert-clair);
+}
+
 @media screen and (max-width: 768px) {
 
     body {

@@ -5,7 +5,7 @@
     </a>
     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
         <a href="{{ path("received") }}" class="nav-link {{ recus }}">
-            {{ "Boîte de réception"|trans }} ({{ app.user.received|length }})
+            {{ "Boîte de réception"|trans }} ({{ unread|length }})
         </a>
         <a href="{{ path("sent") }}" class="nav-link {{ envoyes }}">
             {{ "Messages envoyés"|trans }} ({{ app.user.sent|length }})
