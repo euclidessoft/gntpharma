@@ -268,6 +268,7 @@ tr {
     white-space: nowrap;
     font-weight: bold;
 }
+
 /*
 .nav-item > .nav-link:focus,
 .nav-item > .nav-link:active {
@@ -289,6 +290,7 @@ tr {
     color: var(--blanc);
     padding: 5px 20px;
 }
+
 /*
 .dropdown-item > .nav-link:active,
 .dropdown-item > .nav-link:focus,
@@ -462,6 +464,7 @@ td[data-label="colspan"] {
     border: 1px solid var(--vert);
     border-radius: 10px;
 }
+
 /*
 .dropright.active > a,
 .active a:active {
@@ -957,13 +960,21 @@ select#transfert_date_time_minute {
     flex: 1;
 }
 
-.message {
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
-    padding: 0.25rem !important;
+.nav-pills .nav-link:hover {
+    background: var(--vert-clair);
 }
 
-.message:hover {
+#message tbody tr {
+    /*box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);*/
+    /*padding: 0.25rem !important;*/
+}
+
+#message tbody tr:hover {
     background: var(--vert-clair);
+}
+
+#message td {
+    padding: 0.35rem;
 }
 
 @media screen and (max-width: 768px) {
@@ -989,6 +1000,7 @@ select#transfert_date_time_minute {
         -o-background-size: cover;
         background-size: cover;
     }
+
     h3 {
         font-size: 20px;
     }
@@ -1077,7 +1089,6 @@ select#transfert_date_time_minute {
         margin: 20px auto;
         width: 80%;
     }*/
-
     .btn {
         font-size: 12px;
     }
@@ -1402,16 +1413,16 @@ select#transfert_date_time_minute {
     0 18px 36px -6px rgba(0, 0, 0, 0.1);
 }
 
-.container_paiement  .title {
+.container_paiement .title {
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.container_paiement  form input {
+.container_paiement form input {
     display: none;
 }
 
-.container_paiement  form .category {
+.container_paiement form .category {
     margin-top: 10px;
     padding-top: 20px;
     display: grid;
@@ -1439,12 +1450,12 @@ select#transfert_date_time_minute {
 #AMEX:checked ~ .category .amexMethod {
     box-shadow: 0 0 0 1px var(--vert-hover);
 }
+
 #carte:checked ~ .category .cartebancaire .check,
 #mobil:checked ~ .category .mobilMoney .check,
 #credit:checked ~ .category .creditMoney .check,
 #virement:checked ~ .category .virementMethod .check,
-#AMEX:checked ~ .category .amexMethod .check
-{
+#AMEX:checked ~ .category .amexMethod .check {
     display: block;
 }
 
@@ -1504,10 +1515,12 @@ select#transfert_date_time_minute {
     color: var(--vert-hover);
     font-size: 20px;
 }
-.container_paiement  .avoir:hover{
+
+.container_paiement .avoir:hover {
     background-color: #c5fbae !important;
     transition: 0.7s ease-in-out;
 }
+
 /*************Paiement***********/
 
 .user-image {

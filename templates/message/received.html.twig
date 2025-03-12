@@ -17,46 +17,92 @@
             {{ include('message/menu.html.twig') }}
             <div class="col-9 p-5" style="border-top: 2px solid var(--vert);border-left: 2px solid var(--vert);">
                 <div class="tab-content" id="v-pills-tabContent">
-                    <div class="row">
-                        <div class="col-md-3 col-4 bg-success-light p-1 shadow-5 mb-2">
-                            {{ "De"|trans }}
-                        </div>
-                        <div class="col-md-6 col-4 bg-success-light p-1 shadow-5 mb-2">
-                            {{ "Objet"|trans }}
-                        </div>
-                        <div class="col-md-3 col-4 bg-success-light p-1 shadow-5 mb-2">
-                            {{ "Date"|trans }}
-                        </div>
-                    </div>
-                    {% for message in messages %}
+                    <table class="table table-success-light w-100 shadow-5" id="message">
+                        <thead>
+                        <tr>
+                            <th class="w-30 shadow">{{ ('De'|trans) }}</th>
+                            <th class="w-40">{{ ('Objet'|trans) }}</th>
+                            <th class="w-30 shadow">{{ ('Date'|trans) }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for message in messages %}
                         {% if not message.isDeleted %}
-                            {% set bold = "" %}
-                            {% if message.isRead == 0 %}
-                                {% set bold = "text-bold" %}
-                            {% endif %}
-                            <div class="row message">
-                                <div class="col-md-3 col-4 {{ bold }}">
-                                    <a href="{{ path("read", {id: message.id}) }}">
-                                        {{ message.sender.nom }} {{ message.sender.prenom }}
-                                    </a>
-                                </div>
-                                <div class="col-md-6 col-4 {{ bold }}">
-                                    <a href="{{ path("read", {id: message.id}) }}">
-                                        {{ message.message.title }}
-                                    </a>
-                                </div>
-                                <div class="col-md-3 col-4 {{ bold }}">
-                                    <a href="{{ path("read", {id: message.id}) }}">
-                                        {{ message.message.createdAt|date('d/m/Y H:i:s') }}
-                                    </a>
-                                </div>
-                            </div>
+                        {% set bold = "" %}
+                        {% if message.isRead == 0 %}
+                            {% set bold = "text-bold" %}
                         {% endif %}
-                    {% else %}
-                        <div class="col-12 text-center shadow-5 p-1">
-                            {{ "Aucun message reçu"|trans }}
+                        <tr class="{{ bold }}">
+                            <td data-label="De">
+                                <a href="{{ path("read", {id: message.id}) }}">
+                                    {{ message.sender.nom }} {{ message.sender.prenom }}
+                                </a>
+                            </td>
+                            <td data-label="Objet">
+                                <a href="{{ path("read", {id: message.id}) }}">
+                                    {{ message.message.title }}
+                                </a>
+                            </td>
+                            <td data-label="Date">
+                                <a href="{{ path("read", {id: message.id}) }}">
+                                    {{ message.message.createdAt|date('d/m/Y H:i:s') }}
+                                </a>
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    {{ "Aucun message reçu"|trans }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+{#
+                        <p class="text-bold text-green mb-4">
+                            {{ "Nombre total de messages reçu"|trans }} : {{ messages|length }}
+                        </p>
+                        <div class="row">
+                            <div class="col-md-3 col-4 bg-success-light p-1 shadow-5 mb-2">
+                                {{ "De"|trans }}
+                            </div>
+                            <div class="col-md-6 col-4 bg-success-light p-1 shadow-5 mb-2">
+                                {{ "Objet"|trans }}
+                            </div>
+                            <div class="col-md-3 col-4 bg-success-light p-1 shadow-5 mb-2">
+                                {{ "Date"|trans }}
+                            </div>
                         </div>
-                    {% endfor %}
+                        {% for message in messages %}
+                            {% if not message.isDeleted %}
+                                {% set bold = "" %}
+                                {% if message.isRead == 0 %}
+                                    {% set bold = "text-bold" %}
+                                {% endif %}
+                                <div class="row message">
+                                    <div class="col-md-3 col-4 {{ bold }}">
+                                        <a href="{{ path("read", {id: message.id}) }}">
+                                            {{ message.sender.nom }} {{ message.sender.prenom }}
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 col-4 {{ bold }}">
+                                        <a href="{{ path("read", {id: message.id}) }}">
+                                            {{ message.message.title }}
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3 col-4 {{ bold }}">
+                                        <a href="{{ path("read", {id: message.id}) }}">
+                                            {{ message.message.createdAt|date('d/m/Y H:i:s') }}
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="col-12 text-center shadow-5 p-1">
+                                {{ "Aucun message reçu"|trans }}
+                            </div>
+                        {% endfor %}#}
                 </div>
             </div>
         </div>
