@@ -47,4 +47,14 @@ class MessageRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function trash($user)
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.deletedAt IS NOT NULL')
+            ->AndWhere('m.sender = :val')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

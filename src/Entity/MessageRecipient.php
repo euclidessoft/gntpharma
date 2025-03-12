@@ -61,11 +61,6 @@ class MessageRecipient
     private $deletedAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $destDeletedAt;
-
-    /**
      *
      * @ORM\Column(type="boolean")
      */
@@ -171,17 +166,6 @@ class MessageRecipient
         return $this;
     }
 
-    public function getDestDeletedAt(): ?\DateTimeInterface
-    {
-        return $this->destDeletedAt;
-    }
-
-    public function setDestDeletedAt(?\DateTimeInterface $destDeletedAt): self
-    {
-        $this->destDeletedAt = $destDeletedAt;
-
-        return $this;
-    }
 
     public function isDeleted(): bool
     {
@@ -196,17 +180,5 @@ class MessageRecipient
     public function restore(): void
     {
         $this->deletedAt = null;
-    }
-
-    public function getDelete(): ?bool
-    {
-        return $this->delete;
-    }
-
-    public function setDelete(bool $delete): self
-    {
-        $this->delete = $delete;
-
-        return $this;
     }
 }

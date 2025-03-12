@@ -277,11 +277,41 @@ class MessageController extends AbstractController
         if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
             if ($message->getRecipient() !== $this->getUser()) {
                 $this->addFlash('notice',"Vous ne pouvez pas supprimer ce message.");
+                return $this->redirectToRoute('received');
             }
 
             $message->delete();
             $em->flush();
+            $this->addFlash('notice',"message supprimé.");
+            return $this->redirectToRoute('received');
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
 
+    /**
+     * @Route("/{id}/destdelete", name="destdelete")
+     */
+    public function destdelete(Message $message, EntityManagerInterface $em): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            if ($message->getSender() !== $this->getUser()) {
+                $this->addFlash('notice',"Vous ne pouvez pas supprimer ce message.");
+                return $this->redirectToRoute('received');
+            }
+
+            $message->delete();
+            $em->flush();
+            $this->addFlash('notice',"message supprimé.");
             return $this->redirectToRoute('received');
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -304,11 +334,13 @@ class MessageController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
             $messages = $em->getRepository(MessageRecipient::class)->trash($this->getUser()->getId());
+            $messagesent = $em->getRepository(Message::class)->trash($this->getUser()->getId());
 
             $unread = $em->getRepository(MessageRecipient::class)
                 ->findBy(['isRead' => false, 'recipient' => $this->getUser()], ['id' => 'DESC']);
             return $this->render('message/trash.html.twig', [
                 'messages' => $messages,
+                'messagesent' => $messagesent,
                 'unread' => $unread,
             ]);
         } else {
