@@ -65,6 +65,12 @@ class MessageRecipient
      */
     private $destDeletedAt;
 
+    /**
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $delete = false;
+
     public function __construct()
     {
         $this->messageReplies = new ArrayCollection();
@@ -190,5 +196,17 @@ class MessageRecipient
     public function restore(): void
     {
         $this->deletedAt = null;
+    }
+
+    public function getDelete(): ?bool
+    {
+        return $this->delete;
+    }
+
+    public function setDelete(bool $delete): self
+    {
+        $this->delete = $delete;
+
+        return $this;
     }
 }
