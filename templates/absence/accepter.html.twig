@@ -16,7 +16,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('absence_employe_accepter') }}">
+            <a class="nav-link active" href="{{ path('absence_employe_accepter') }}">
                 {{ 'Accepter'|trans }}
             </a>
         </li>
@@ -26,61 +26,62 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="{{ path('absence_suivi') }}">
+            <a class="nav-link" href="{{ path('absence_suivi') }}">
                 {{ 'Toutes les absences'|trans }}
             </a>
         </li>
     </ul>
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
-            <tr>
-                <th>{{ ('Date absence'|trans) }}</th>
-                <th>{{ ('Status'|trans) }}</th>
-                <th>{{ ('Décision'|trans) }}</th>
-                <th>{{ ('Actions'|trans) }}</th>
-            </tr>
+        <tr>
+            <th>{{ ('Date absence'|trans) }}</th>
+            <th>{{ ('Status'|trans) }}</th>
+            <th>{{ ('Décision'|trans) }}</th>
+            <th>{{ ('Actions'|trans) }}</th>
+        </tr>
         </thead>
         <tbody>
-            {% for absence in absences %}
+        {% for absence in absences %}
             <tr>
                 <td data-label="Date absence">
                     {{ absence.dateAbsence|date('d/m/Y') }}
                     {% if absence.dateAbsence != absence.dateFin %}
-                    au {{ absence.dateFin|date('d/m/Y') }}
+                        au {{ absence.dateFin|date('d/m/Y') }}
                     {% endif %}
                 </td>
                 <td>
                     {% if absence.status == 0 and absence.justifier == 0 %}
-                    <span class="badge badge-warning">En attente de justification</span>
+                        <span class="badge badge-warning">En attente de justification</span>
                     {% elseif absence.justifier == 0 and absence.status == 1 %}
-                    <span class="badge badge-info">En attente de validation</span>
+                        <span class="badge badge-info">En attente de validation</span>
                     {% elseif absence.status == 1 and absence.justifier == 1 %}
-                    <span class="badge badge-success">Absence justifiée</span>
+                        <span class="badge badge-success">Absence justifiée</span>
                     {% elseif absence.status == 0 and absence.justifier == 1 %}
-                    <span class="badge badge-danger">Non justifiée</span>
+                        <span class="badge badge-danger">Non justifiée</span>
                     {% else %}
-                    <span class="badge badge-secondary">Statut inconnu</span>
+                        <span class="badge badge-secondary">Statut inconnu</span>
                     {% endif %}
                 </td>
                 <td data-label="decision">
                     {% for decision in absence.decisions %}
-                    <span>{{ decision.type }}</span><br>
+                        <span>{{ decision.type }}</span><br>
                     {% endfor %}
                 </td>
                 <td>
                     {% if absence.status == 0 and absence.justifier == 0 %}
-                    <a href="{{ path('absence_justifier' ,{'id': absence.id} ) }}" class="btn btn-success">Justifier</a>
+                        <a href="{{ path('absence_justifier' ,{'id': absence.id} ) }}" class="btn btn-success">Justifier</a>
                     {% else %}
-                    <a href="{{ path('absence_detail', {'id': absence.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i>Details</a>
+                        <a href="{{ path('absence_detail', {'id': absence.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i>Details</a>
                     {% endif %}
                 </td>
             </tr>
-            {% else %}
+        {% else %}
             <tr>
                 <td colspan="4" class="text-center">Aucune absence enrégistré</td>
             </tr>
-            {% endfor %}
+        {% endfor %}
         </tbody>
     </table>
 
-    {% endblock %}
+</div>
+{% endblock %}
