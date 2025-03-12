@@ -435,6 +435,49 @@
     });
     table.buttons().container().appendTo('#exporter');
 
+    var messagerie = $('#message').DataTable({
+
+        responsive: true,
+        "pageLength": 25,
+        buttons: [{
+            extend: 'excelHtml5',
+            text: '<i class="fa fa-file-excel"></i> {{ "Exporter vers Excel"|trans }}',
+            attr: {
+                class: 'btn btn-shadow btn-green mx-3'
+            },
+        },
+            {
+                extend: 'pdfHtml5',
+                text: '<i class="fa fa-file-pdf"></i> {{ "Exporter vers PDF"|trans }}',
+                attr: {
+                    class: 'btn btn-shadow btn-danger'
+                },
+            }],
+        language: {
+            processing: "{{ 'Traitement en cours...'|trans }}",
+            search: "{{ 'Rechercher'|trans }} :",
+            lengthMenu: "{{ 'Afficher'|trans }} _MENU_ {{'élèments'|trans}}",
+            info: "{{'Affichage de l\'élement'|trans}} _START_ {{'à'|trans}} _END_ {{ 'sur'|trans }} _TOTAL_ {{'élèments'|trans}}",
+            infoEmpty: "{{'Affichage de l\'élèment 0 à 0 sur 0 élèments'|trans}}",
+            infoFiltered: "({{'filtré de'|trans}} _MAX_ {{'élèment au total'|trans}})",
+            infoPostFix: "",
+            loadingRecords: "{{ 'Chargement en cours...'|trans }}",
+            zeroRecords: "{{'Aucun élèment à afficher'|trans}}",
+            emptyTable: "{{'Aucune donnée disponible dans le tableau'|trans}}",
+            paginate: {
+                first: "{{ 'Premier'|trans }}",
+                previous: "{{'Précédent'|trans}}",
+                next: "{{ 'Suivant'|trans }}",
+                last: "{{ 'Dernier'|trans }}"
+            },
+            aria: {
+                sortAscending: ": {{ 'activer pour trier la colonne par ordre croissant'|trans }}",
+                sortDescending: ": {{'activer pour trier la colonne par ordre décroissant'|trans}}"
+            }
+        }
+
+    });
+
     //gestion des tableaux multiples
     function reponse() {
         var table = $('table').DataTable({

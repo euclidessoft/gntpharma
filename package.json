@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "mercure": "^0.1.0",
     "waypoints": "^4.0.1",
     "yuicompressor": "^2.4.8"
   }

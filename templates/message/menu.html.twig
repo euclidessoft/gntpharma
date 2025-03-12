@@ -8,9 +8,9 @@
             {{ "Boîte de réception"|trans }} ({{ unread|length }})
         </a>
         <a href="{{ path("sent") }}" class="nav-link {{ envoyes }}">
-            {{ "Messages envoyés"|trans }} ({{ app.user.sent|length }})
+            {{ "Messages envoyés"|trans }}
         </a>
-        <a href="#" class="nav-link {{ corbeille }}">
+        <a href="{{ path("trash") }}" class="nav-link {{ corbeille }}">
             {{ "Corbeille"|trans }}
         </a>
     </div>

@@ -306,7 +306,6 @@ class MessageController extends AbstractController
             $messages = $em->getRepository(MessageRecipient::class)->findBy(['deletedAt' => null]);
             $unread = $em->getRepository(MessageRecipient::class)
                 ->findBy(['isRead' => false], ['id' => 'DESC']);
-            dd($messages);
             return $this->render('message/trash.html.twig', [
                 'messages' => $messages,
                 'unread' => $unread,
