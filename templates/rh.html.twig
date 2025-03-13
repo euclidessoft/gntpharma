@@ -95,37 +95,6 @@
                         </ul>
                     </li>
                 {% endif %}
-                <li class="nav-item dropright" title="{{ 'Evaluation'|trans }}">
-                    <a class="nav-link dropdown-toggle {% block evaluation %} {% endblock %}" href="#"
-                       id="administration"
-                       data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        <div class="icone">
-                            <i class="fa-solid fa-chart-line fa-lg"></i>
-                        </div>
-                        <div class="title">
-                            {{ 'Evaluation'|trans }}
-                        </div>
-                    </a>
-                    <ul class=" dropdown-menu" aria-labelledby="administration">
-                        {% if is_granted('ROLE_RH') %}
-                        <li class="dropdown-item" title="{{ 'Performance'|trans }}">
-                            <a class="nav-link {% block critere %}{% endblock %}"
-                               href="{{ path('critere_evaluation_index') }}">
-                                <i class="fa-solid fa-chart-line"></i>
-                                {{ 'Critere'|trans }}
-                            </a>
-                        </li>
-                        {% endif %}
-                        <li class="dropdown-item" title="{{ 'Performance'|trans }}">
-                            <a class="nav-link {% block evaluat %}{% endblock %}"
-                               href="">
-                                <i class="fa-solid fa-chart-line"></i>
-                                {{ 'Performance'|trans }}
-                            </a>
-                        </li>
-                    </ul>
-                </li>
                 <li class="nav-item dropright" title="{{ 'Discipline'|trans }}">
                     <a class="nav-link dropdown-toggle {% block discipline %} {% endblock %}" href="#" id="conges"
                        data-toggle="dropdown"
@@ -164,6 +133,37 @@
                                href="{{ path('sanction_suivi') }}">
                                 <i class="fa-solid fa-user-xmark"></i>
                                 {{ 'Sanctions'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropright" title="{{ 'Evaluation'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block evaluation %} {% endblock %}" href="#"
+                       id="administration"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fa-solid fa-chart-line fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Evaluation'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="administration">
+                        {% if is_granted('ROLE_RH') %}
+                            <li class="dropdown-item" title="{{ 'Performance'|trans }}">
+                                <a class="nav-link {% block critere %}{% endblock %}"
+                                   href="{{ path('critere_evaluation_index') }}">
+                                    <i class="fa-solid fa-chart-line"></i>
+                                    {{ 'Critere'|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="dropdown-item" title="{{ 'Performance'|trans }}">
+                            <a class="nav-link {% block evaluat %}{% endblock %}"
+                               href="">
+                                <i class="fa-solid fa-chart-line"></i>
+                                {{ 'Performance'|trans }}
                             </a>
                         </li>
                     </ul>
@@ -277,7 +277,7 @@
                     <ul class=" dropdown-menu" aria-labelledby="communication">
                         <li class="dropdown-item" title="{{ 'Messagerie interne'|trans }}">
                             <a class="nav-link {% block messagerie %}{% endblock %}"
-                               href="{{ path('message') }}">
+                               href="{{ path('received') }}">
                                 <i class="fa-solid fa-comments"></i>
                                 {{ 'Messagerie interne'|trans }}
                             </a>
@@ -296,13 +296,6 @@
                                 {{ 'Événements'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item" title="{{ 'Enquêtes'|trans }}">
-                            <a class="nav-link {% block enquetes %}{% endblock %}"
-                               href="{#{{ path('stock_index') }}#}">
-                                <i class="fa-solid fa-file-circle-question"></i>
-                                {{ 'Enquêtes'|trans }}
-                            </a>
-                        </li>
                     </ul>
                 </li>
                 <li class="nav-item" title="{{ 'Réclamation'|trans }}">
@@ -313,17 +306,6 @@
                         </div>
                         <div class="title">
                             {{ 'Réclamations'|trans }}
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item" title="{{ 'Feedback'|trans }}">
-                    <a class="nav-link {% block feedback %} {% endblock %}"
-                       href="{{ path('feedback_index') }}">
-                        <div class="icone">
-                            <i class="fa-solid fa-user-clock fa-lg"></i>
-                        </div>
-                        <div class="title">
-                            {{ 'Feedback'|trans }}
                         </div>
                     </a>
                 </li>
@@ -347,7 +329,7 @@
                         </li>
                         <li class="dropdown-item" title="{{ 'Suggestions à l’entreprise'|trans }}">
                             <a class="nav-link {% block suggestion %}{% endblock %}"
-                               href="{{ path('suggestion_index') }}">
+                               href="{{ path('feedback_index') }}">
                                 <i class="fas fa-comments"></i>
                                 {{ 'Suggestions à l’entreprise'|trans }}
                             </a>

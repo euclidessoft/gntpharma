@@ -16,9 +16,6 @@
             {% set corbeille = '' %}
             {{ include('message/menu.html.twig') }}
             <div class="col-9 p-5" style="border-top: 2px solid var(--vert);border-left: 2px solid var(--vert);">
-                {#<p class="text-bold text-green mb-4">
-                    {{ "Nombre total de messages envoyés"|trans }} : {{ app.user.sent|length }}
-                </p>#}
                 <div class="tab-content" id="v-pills-tabContent">
                     <table class="table table-success-light w-100 shadow-5" id="message">
                         <thead>
@@ -50,7 +47,7 @@
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="4" class="text-center">
+                                <td colspan="3" class="text-center">
                                     {{ "Aucun message envoyé"|trans }}
                                 </td>
                             </tr>
