@@ -17,7 +17,7 @@
             {{ include('message/menu.html.twig') }}
             <div class="col-9 p-5" style="border-top: 2px solid var(--vert);border-left: 2px solid var(--vert);">
                 <div class="tab-content" id="v-pills-tabContent">
-                    <div class="row bg-success-light p-2 radius-10 shadow-black">
+                    <div class="row bg-success-light p-2 radius-10 shadow-black mb-5">
                         <div class="col-2 centrer">
                             <a href="{{ path("received") }}" class="btn btn-success-light"
                                title="{{ 'Retour à la boîte de réception'|trans }}">
@@ -25,7 +25,7 @@
                                 {{ "Retour"|trans }}
                             </a>
                         </div>
-                        <div class="col-md-5 col-4">
+                        <div class="col-4">
                             <div class="row">
                                 <div class="col-3">
                                     <img src="{{ asset('images/avatar-homme.avif') }}" alt="photo"
@@ -41,25 +41,64 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-4 centrer">
-                            {{ message.message.createdAt|date('d/m/Y H:i:s') }}
+                        <div class="col-5 centrer">
+                            {{ message.message.title }}
                         </div>
-                        <div class="col-md-2 col-3 centrer">
-                            <a href="{{ path('reply',{ 'id' : message.id}) }}" class="text-green mr-5" title="{{ 'Répondre'|trans }}">
-                                <i class="fa-solid fa-reply fa-lg"></i>
-                            </a>
+                        <div class="col-1 centrer">
                             <a href="{{ path("delete", {id: message.id}) }}" class="text-danger"
                                title="{{ 'Supprimer'|trans }}">
                                 <i class="fa-solid fa-trash-can fa-lg"></i>
                             </a>
                         </div>
                     </div>
-                    <div class="row border border-green mt-5 p-5 radius-10 shadow">
-                        {{ message.message.message|nl2br }}
+                    <div class="row">
+                        <div class="col-11">
+                            <div class="card border-green shadow mb-5">
+                                <div class="card-header bg-success-light bb-green">
+                                    <div class="row">
+                                        <div class="col-11">
+                                            {{ message.message.createdAt|date('d/m/Y H:i:s') }}
+                                        </div>
+                                        <div class="col-1">
+                                            <a href="{{ path('reply',{ 'id' : message.id}) }}" class="text-green mr-5"
+                                               title="{{ 'Répondre'|trans }}">
+                                                <i class="fa-solid fa-reply fa-lg"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body p-4">
+                                    {{ message.message.message|nl2br }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-1"></div>
                     </div>
+
                     {% for reply in message.messagereplies %}
-                        <div class="row border border-green mt-5 p-5 radius-10 shadow">
-                            {{ reply.content }}
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-11">
+                                <div class="card border-green shadow mb-5">
+                                    <div class="card-header bg-success-light bb-green">
+                                        <div class="row">
+                                            <div class="col-11">
+                                                {{ reply.sentAt|date('d/m/Y H:i:s') }}
+                                            </div>
+                                            <div class="col-1">
+                                                <a href="{{ path('reply',{ 'id' : message.id}) }}"
+                                                   class="text-green mr-5"
+                                                   title="{{ 'Répondre'|trans }}">
+                                                    <i class="fa-solid fa-reply fa-lg"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        {{ reply.content|nl2br }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     {% else %}
 
