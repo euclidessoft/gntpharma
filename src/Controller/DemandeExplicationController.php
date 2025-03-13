@@ -77,7 +77,6 @@ class DemandeExplicationController extends AbstractController
                         $notification->setCreatedAt(new \DateTime());
                         $notification->setIsRead(false);
                         $notification->setLien($this->generateUrl('demande_explication_index'));
-
                         $entityManager->persist($notification);
                     }
                 }
