@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<title>NoteService</title>
+
+{% block body %}
+    <h1>NoteService</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ note_service.id }}</td>
+            </tr>
+            <tr>
+                <th>Objet</th>
+                <td>{{ note_service.objet }}</td>
+            </tr>
+            <tr>
+                <th>Detail</th>
+                <td>{{ note_service.detail }}</td>
+            </tr>
+            <tr>
+                <th>DateDebut</th>
+                <td>{{ note_service.dateDebut ? note_service.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateFin</th>
+                <td>{{ note_service.dateFin ? note_service.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ note_service.status }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('note_service_index') }}">back to list</a>
+
+    <a href="{{ path('note_service_edit', {'id': note_service.id}) }}">edit</a>
+
+    {{ include('note_service/_delete_form.html.twig') }}
+{% endblock %}

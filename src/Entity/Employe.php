@@ -235,6 +235,16 @@ class Employe extends User implements UserInterface
      */
     private $notifications;
 
+    /**
+     * @ORM\OneToMany(targetEntity=NoteService::class, mappedBy="responsable")
+     */
+    private $noteServices;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=NoteService::class, mappedBy="employe")
+     */
+    private $noteService;
+
 
     public function __construct()
     {
@@ -261,6 +271,8 @@ class Employe extends User implements UserInterface
         $this->evaluations = new ArrayCollection();
         $this->feedback = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->noteServices = new ArrayCollection();
+        $this->noteService = new ArrayCollection();
     }
 
 
@@ -1135,6 +1147,44 @@ class Employe extends User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|NoteService[]
+     */
+    public function getNoteServices(): Collection
+    {
+        return $this->noteServices;
+    }
+
+    public function addNoteService(NoteService $noteService): self
+    {
+        if (!$this->noteServices->contains($noteService)) {
+            $this->noteServices[] = $noteService;
+            $noteService->setResponsable($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNoteService(NoteService $noteService): self
+    {
+        if ($this->noteServices->removeElement($noteService)) {
+            // set the owning side to null (unless already changed)
+            if ($noteService->getResponsable() === $this) {
+                $noteService->setResponsable(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|NoteService[]
+     */
+    public function getNoteService(): Collection
+    {
+        return $this->noteService;
     }
 
 

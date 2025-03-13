@@ -8,7 +8,6 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nom</th>
                 <th>Description</th>
                 <th>actions</th>
@@ -17,7 +16,6 @@
         <tbody>
         {% for critere_evaluation in critere_evaluations %}
             <tr>
-                <td>{{ critere_evaluation.id }}</td>
                 <td>{{ critere_evaluation.nom }}</td>
                 <td>{{ critere_evaluation.description }}</td>
                 <td>
