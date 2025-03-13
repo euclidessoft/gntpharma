@@ -28,7 +28,6 @@
                         </thead>
                         <tbody>
                         {% for message in messages %}
-                            {% if not message.isDeleted %}
                                 {% set bold = "" %}
                                 <tr>
                                     <td data-label="De">
@@ -47,7 +46,6 @@
                                         </a>
                                     </td>
                                 </tr>
-                            {% endif %}
                         {% else %}
                             <tr>
                                 <td colspan="4" class="text-center">

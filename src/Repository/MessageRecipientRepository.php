@@ -22,19 +22,18 @@ class MessageRecipientRepository extends ServiceEntityRepository
     // /**
     //  * @return MessageRecipient[] Returns an array of MessageRecipient objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function trash($user)
     {
         return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
+            ->where('m.deletedAt IS NOT NULL')
+            ->AndWhere('m.recipient = :val')
+            ->setParameter('val', $user)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?MessageRecipient

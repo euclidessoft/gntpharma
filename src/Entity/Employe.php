@@ -230,6 +230,11 @@ class Employe extends User implements UserInterface
      */
     private $feedback;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="employe")
+     */
+    private $notifications;
+
 
     public function __construct()
     {
@@ -255,6 +260,7 @@ class Employe extends User implements UserInterface
         $this->documents = new ArrayCollection();
         $this->evaluations = new ArrayCollection();
         $this->feedback = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
 
@@ -1095,6 +1101,36 @@ class Employe extends User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($feedback->getEmploye() === $this) {
                 $feedback->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getEmploye() === $this) {
+                $notification->setEmploye(null);
             }
         }
 

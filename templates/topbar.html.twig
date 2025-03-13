@@ -8,31 +8,43 @@
         <div class="topbar-item">
             <div class="row">
                 <div class="col-lg-5 col-md-2 col-6 text-nowrap">
-                        <span class="history-box">
-                            <i class="fa fa-arrow-circle-left history-btn" title="Page précédente"
-                               onclick="window.history.back()"></i>
-                            <i class="fa fa-arrow-circle-right history-btn ml-3" title="Page suivante"
-                               onclick="window.history.forward()"></i>
-                            <i class="fa fa-redo-alt fa-rotate-270 history-btn ml-3" title="Actualiser la page"
-                               onclick="window.location.reload()"></i>
-                        </span>
+                    <span class="history-box">
+                        <i class="fa fa-arrow-circle-left history-btn" title="Page précédente"
+                           onclick="window.history.back()"></i>
+                        <i class="fa fa-arrow-circle-right history-btn ml-3" title="Page suivante"
+                           onclick="window.history.forward()"></i>
+                        <i class="fa fa-redo-alt fa-rotate-270 history-btn ml-3" title="Actualiser la page"
+                           onclick="window.location.reload()"></i>
+                    </span>
 
                     <button type="button" id="install_button" onclick="installApp()" hidden></button>
                 </div>
-                <div class="col-lg-2 col-md-1 col-6 text-nowrap">
 
+                <div class="col-lg-2 col-md-1 col-6 text-nowrap">
+                    <!-- Empty column for spacing or other content -->
+                    <div class="text-right">
+                        <div class="dropdown">
+                            <a href="#" class="d-flex align-items-center" data-toggle="dropdown">
+                                <i class="fa fa-bell fa-2x mr-2"></i> <!-- Icône des notifications -->
+                                <span id="notification-count" class="badge badge-danger"></span>
+                                <!-- Badge pour le nombre de notifications -->
+                            </a>
+                            <div class="dropdown-menu" id="notifications-menu">
+                                <!-- Les notifications seront affichées ici -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-6 text-nowrap">
                     <div class="row">
                         <div class="col-3">
                             <div class="dropdown">
                                 <a class="panier" href="{{ path('commande_panier_panier') }}">
-                    <span id="gest_panier" class="badge badge-danger panierNombre">
-{#                            {{ panier|length }}#}
-                    </span><i class="fa fa-cart-shopping fa-2x"></i>
+                                    <span id="gest_panier" class="badge badge-danger panierNombre">
+                                    {# {{ panier|length }} #}
+                                    </span><i class="fa fa-cart-shopping fa-2x"></i>
                                 </a>
                                 <div class="dropdown-menu">
-
                                 </div>
                             </div>
                         </div>
@@ -47,13 +59,13 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-3 col-md-3 col-6 text-nowrap">
                     <div class="text-right">
                         <div class="dropdown">
                             <a href="#" class="" data-toggle="dropdown">
                                 {{ app.user.username }}
-                                <img src="{{ asset('images/avatar-homme.avif') }}" class="user-image"
-                                     alt="User Image">
+                                <img src="{{ asset('images/avatar-homme.avif') }}" class="user-image" alt="User Image">
                             </a>
                             <div class="dropdown-menu">
                                 <div class="row">
@@ -76,7 +88,7 @@
                                         </div>
                                         {% if is_granted('ROLE_ADMIN') %}
                                             <div class="mt-2">
-                                                <a href="{{ path('security_users') }}" {% block admin %}{% endblock %}>
+                                                <a href="{{ path('security_users') }}">
                                                     <i class="fa-solid fa-users-gear"></i>
                                                     {{ 'Gestion utilisateurs'|trans }}
                                                 </a>
@@ -100,25 +112,21 @@
     </div>
 </div>
 
-<div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="deconnexion"
-     aria-hidden="true">
+<div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="deconnexion" aria-hidden="true">
     <div class="modal-dialog text-center">
-        <div class="modal-content ">
+        <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title fs-5" id="deconnexion">
                     <i class="fa-solid fa-triangle-exclamation"></i>
                     {{ 'Déconnexion'|trans }}
                 </h4>
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body px-5 pb-5">
                 <p class="">
-                    <b>
-                        {{ 'Voulez-vous vraiment vous déconnecter ?'|trans }}
-                    </b>
+                    <b>{{ 'Voulez-vous vraiment vous déconnecter ?'|trans }}</b>
                 </p>
                 <button type="button" id="oui" onclick="deconnexion()" class="btn btn-danger mr-2">
                     Oui
@@ -146,49 +154,30 @@
                              class="img-fluid mt-n4 mb-4 align-center">
                     </div>
                     <div class="col-lg-6">
-                        <h3 class="text-center text-bold">
-                            GNT PHARMA v{{ include('version.html.twig') }}
-                        </h3>
+                        <h3 class="text-center text-bold">GNT PHARMA v{{ include('version.html.twig') }}</h3>
                         <p class="text-center mt-3">
-                            Copyright &copy; 2023-{{ 'now'|date('Y') }}
-                            <b>
-                                <a class="text-green" href="http://euclideservices.com" target="_blank">EUCLIDES</a>
-                            </b>
-                            <br>
-                            {{ 'Tous droits réservés'|trans }}
+                            Copyright &copy; 2023-{{ 'now'|date('Y') }} <b><a class="text-green"
+                                                                              href="http://euclideservices.com"
+                                                                              target="_blank">EUCLIDES</a></b>
+                            <br>{{ 'Tous droits réservés'|trans }}
                         </p>
                         <p class="text-center mt-n2">
                             {{ 'Protégée par'|trans }} :
-                            <br>
-                            - {{ 'La loi sur les droits d\'auteurs'|trans }}
-                            <br>
-                            - {{ 'La loi sur la propriété intellectuelle'|trans }}
+                            <br>- {{ 'La loi sur les droits d\'auteurs'|trans }}
+                            <br>- {{ 'La loi sur la propriété intellectuelle'|trans }}
                         </p>
                         <span class="row mt-n2">
                             <span class="col-5 text-right">Contact :</span>
-                            <span class="col-7 ml-n4">
-                                <a class="text-green" href="tel:+221754443384"{# target="_blank"#}>
-                                    (+221) 75 444 33 84
-                                </a>
-                            </span>
+                            <span class="col-7 ml-n4"><a class="text-green"
+                                                         href="tel:+221754443384">(+221) 75 444 33 84</a></span>
                             <span class="col-5 text-right"></span>
-                            <span class="col-7 ml-n4">
-                                <a class="text-green" href="tel:+221775423500"{# target="_blank"#}>
-                                    (+221) 77 542 35 00
-                                </a>
-                            </span>
+                            <span class="col-7 ml-n4"><a class="text-green"
+                                                         href="tel:+221775423500">(+221) 77 542 35 00</a></span>
                             <span class="col-5 text-right"></span>
-                            <span class="col-7 ml-n4">
-                                <a class="text-green" href="tel:+221777333434"{# target="_blank"#}>
-                                    (+221) 77 733 34 34
-                                </a>
-                            </span>
-                            <span class="col-12 text-center">
-                                Email :
-                                <a class="text-green" href="mailto:hajjalbayt@euclideservices.com"{# target="_blank"#}>
-                                    infos@euclideservices.com
-                                </a>
-                            </span>
+                            <span class="col-7 ml-n4"><a class="text-green"
+                                                         href="tel:+221777333434">(+221) 77 733 34 34</a></span>
+                            <span class="col-12 text-center">Email : <a class="text-green"
+                                                                        href="mailto:hajjalbayt@euclideservices.com">infos@euclideservices.com</a></span>
                         </span>
                     </div>
                 </div>
@@ -196,3 +185,69 @@
         </div>
     </div>
 </div>
+
+{% block javascripts %}
+    <script>
+        const locale = 'fr';
+        let isFetching = false; // Éviter les requêtes multiples
+
+        // Fonction pour récupérer les notifications
+        function fetchNotifications() {
+            if (isFetching) return; // Empêche les requêtes multiples
+            isFetching = true;
+
+            fetch(`/${locale}/notifications/check`)
+                .then(response => response.json())
+                .then(data => {
+                    const notificationCount = document.getElementById('notification-count');
+                    const notificationsMenu = document.getElementById('notifications-menu');
+
+                    if (notificationCount && notificationsMenu) {
+                        if (data.count > 0) {
+                            notificationCount.textContent = data.count;
+
+                            // Vérifier et ajouter seulement les nouvelles notifications
+                            data.notifications.forEach(notification => {
+                                if (!document.querySelector(`[data-id='${notification.id}']`)) {
+                                    const li = document.createElement('a');
+                                    li.classList.add('dropdown-item');
+                                    li.textContent = notification.message;
+                                    li.href = notification.lien;
+                                    li.dataset.id = notification.id;
+                                    li.style.cursor = 'pointer';
+                                    li.addEventListener('click', () => markAsRead(notification.id, li));
+                                    notificationsMenu.appendChild(li);
+                                }
+                            });
+                        } else {
+                            notificationCount.textContent = '';
+                            notificationsMenu.innerHTML = '<li class="dropdown-item">Aucune nouvelle notification</li>';
+                        }
+                    }
+                })
+                .catch(error => console.error('Erreur récupération notifications:', error))
+                .finally(() => isFetching = false);
+        }
+
+        // Fonction pour marquer une notification comme lue
+        function markAsRead(notificationId, notificationElement) {
+            fetch(`/${locale}/notifications/Read/${notificationId}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        notificationElement.style.textDecoration = 'line-through';
+                        notificationElement.style.color = 'gray';
+                        notificationElement.removeEventListener('click', () => markAsRead(notificationId, notificationElement));
+                    }
+                })
+                .catch(error => console.error('Erreur lors de la mise à jour de la notification:', error));
+        }
+
+        // Lancer le chargement des notifications
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchNotifications();
+            setInterval(fetchNotifications, 60000); // Vérifie toutes les 60 secondes
+        });
+
+    </script>
+{% endblock %}

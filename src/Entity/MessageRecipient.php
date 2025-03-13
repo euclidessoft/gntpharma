@@ -61,9 +61,10 @@ class MessageRecipient
     private $deletedAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @ORM\Column(type="boolean")
      */
-    private $destDeletedAt;
+    private $delete = false;
 
     public function __construct()
     {
@@ -165,17 +166,6 @@ class MessageRecipient
         return $this;
     }
 
-    public function getDestDeletedAt(): ?\DateTimeInterface
-    {
-        return $this->destDeletedAt;
-    }
-
-    public function setDestDeletedAt(?\DateTimeInterface $destDeletedAt): self
-    {
-        $this->destDeletedAt = $destDeletedAt;
-
-        return $this;
-    }
 
     public function isDeleted(): bool
     {

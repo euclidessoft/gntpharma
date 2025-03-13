@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Absence;
 use App\Entity\Decision;
 use App\Entity\DemandeExplication;
+use App\Entity\Notification;
 use App\Entity\ReponseAbsence;
 use App\Entity\Sanction;
 use App\Form\AbsenceType;
@@ -101,6 +102,17 @@ class AbsenceController extends AbstractController
                 $absence->setStatus(0);
                 $entityManager->persist($absence);
                 $entityManager->flush();
+
+                // **Ajout de la notification**
+                $notification = new Notification();
+                $notification->setEmploye($employe);
+                $notification->setMessage("Nouvelle absence enregistrée du " .$dateFin->format('d/m/Y') . " au " .$dateFin->format('d/m/Y'));
+                $notification->setCreatedAt(new \DateTime());
+                $notification->setIsRead(false);
+                $notification->setLien($this->generateUrl('absence_detail', ['id' => $absence->getId()]));
+                $entityManager->persist($notification);
+                $entityManager->flush();
+
 
                 return $this->redirectToRoute('absence_index', [], Response::HTTP_SEE_OTHER);
             }

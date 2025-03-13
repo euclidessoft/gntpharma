@@ -46,6 +46,11 @@ class Message
      */
     private $recipients;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deletedAt;
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
@@ -133,6 +138,33 @@ class Message
         }
 
         return $this;
+    }
+
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(\DateTimeInterface $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->deletedAt !== null;
+    }
+
+    public function delete(): void
+    {
+        $this->deletedAt = new \DateTime();
+    }
+
+    public function restore(): void
+    {
+        $this->deletedAt = null;
     }
 
 }
