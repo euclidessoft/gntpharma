@@ -185,34 +185,39 @@
         </div>
     </div>
 </div>
+
 {% block javascripts %}
     <script>
         const locale = 'fr';
+        let isFetching = false; // Éviter les requêtes multiples
 
         // Fonction pour récupérer les notifications
         function fetchNotifications() {
-            fetch(`/${locale}/notifications/check`)  // Vérifie si l'URL est correcte
+            if (isFetching) return; // Empêche les requêtes multiples
+            isFetching = true;
+
+            fetch(`/${locale}/notifications/check`)
                 .then(response => response.json())
                 .then(data => {
                     const notificationCount = document.getElementById('notification-count');
                     const notificationsMenu = document.getElementById('notifications-menu');
 
-                    if (notificationCount) {
+                    if (notificationCount && notificationsMenu) {
                         if (data.count > 0) {
                             notificationCount.textContent = data.count;
-                            notificationsMenu.innerHTML = ''; // On vide les anciennes notifications
 
+                            // Vérifier et ajouter seulement les nouvelles notifications
                             data.notifications.forEach(notification => {
-                                const li = document.createElement('a');
-                                li.classList.add('dropdown-item');
-                                li.textContent = notification.message;
-                                li.href = notification.lien;
-                                li.dataset.id = notification.id;
-                                li.style.cursor = 'pointer';
-                                li.addEventListener('click', function () {
-                                    markAsRead(notification.id, li); // Appel à la fonction markAsRead avec l'id et l'élément
-                                });
-                                notificationsMenu.appendChild(li);
+                                if (!document.querySelector(`[data-id='${notification.id}']`)) {
+                                    const li = document.createElement('a');
+                                    li.classList.add('dropdown-item');
+                                    li.textContent = notification.message;
+                                    li.href = notification.lien;
+                                    li.dataset.id = notification.id;
+                                    li.style.cursor = 'pointer';
+                                    li.addEventListener('click', () => markAsRead(notification.id, li));
+                                    notificationsMenu.appendChild(li);
+                                }
                             });
                         } else {
                             notificationCount.textContent = '';
@@ -220,28 +225,29 @@
                         }
                     }
                 })
-                .catch(error => {
-                    console.error('Erreur lors de la récupération des notifications:', error);
-                });
+                .catch(error => console.error('Erreur récupération notifications:', error))
+                .finally(() => isFetching = false);
         }
 
-        // Fonction pour marquer la notification comme lue
+        // Fonction pour marquer une notification comme lue
         function markAsRead(notificationId, notificationElement) {
-            fetch(`/${locale}/notifications/Read/${notificationId}`, {
-                method: 'POST',
-            })
+            fetch(`/${locale}/notifications/Read/${notificationId}`, { method: 'POST' })
                 .then(response => response.json())
                 .then(data => {
                     if (data.message) {
-                        notificationElement.style.textDecoration = 'line-through';  // Par exemple, une ligne traversant la notification
-                        notificationElement.style.color = 'gray';  // Optionnel : changer la couleur de la notification
+                        notificationElement.style.textDecoration = 'line-through';
+                        notificationElement.style.color = 'gray';
+                        notificationElement.removeEventListener('click', () => markAsRead(notificationId, notificationElement));
                     }
                 })
+                .catch(error => console.error('Erreur lors de la mise à jour de la notification:', error));
         }
 
+        // Lancer le chargement des notifications
         document.addEventListener('DOMContentLoaded', function () {
             fetchNotifications();
-            setInterval(fetchNotifications, 30000);  // Vérifie les notifications toutes les 5 secondes
+            setInterval(fetchNotifications, 60000); // Vérifie toutes les 60 secondes
         });
+
     </script>
 {% endblock %}

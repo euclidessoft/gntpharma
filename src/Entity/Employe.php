@@ -92,27 +92,27 @@ class Employe extends User implements UserInterface
     private $bloodgroup;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $diabete;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $handicap;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $hypo;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $hyper;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $epilepsie;
 
@@ -235,6 +235,16 @@ class Employe extends User implements UserInterface
      */
     private $notifications;
 
+    /**
+     * @ORM\OneToMany(targetEntity=NoteService::class, mappedBy="responsable")
+     */
+    private $noteServices;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=NoteService::class, mappedBy="employe")
+     */
+    private $noteService;
+
 
     public function __construct()
     {
@@ -261,6 +271,8 @@ class Employe extends User implements UserInterface
         $this->evaluations = new ArrayCollection();
         $this->feedback = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->noteServices = new ArrayCollection();
+        $this->noteService = new ArrayCollection();
     }
 
 
@@ -496,60 +508,60 @@ class Employe extends User implements UserInterface
         return $this;
     }
 
-    public function getDiabete(): ?string
+    public function getDiabete(): ?bool
     {
         return $this->diabete;
     }
 
-    public function setDiabete(string $diabete): self
+    public function setDiabete(bool $diabete): self
     {
         $this->diabete = $diabete;
 
         return $this;
     }
 
-    public function getHandicap(): ?string
+    public function getHandicap(): ?bool
     {
         return $this->handicap;
     }
 
-    public function setHandicap(string $handicap): self
+    public function setHandicap(bool $handicap): self
     {
         $this->handicap = $handicap;
 
         return $this;
     }
 
-    public function getHypo(): ?string
+    public function getHypo(): ?bool
     {
         return $this->hypo;
     }
 
-    public function setHypo(string $hypo): self
+    public function setHypo(bool $hypo): self
     {
         $this->hypo = $hypo;
 
         return $this;
     }
 
-    public function getHyper(): ?string
+    public function getHyper(): ?bool
     {
         return $this->hyper;
     }
 
-    public function setHyper(string $hyper): self
+    public function setHyper(bool $hyper): self
     {
         $this->hyper = $hyper;
 
         return $this;
     }
 
-    public function getEpilepsie(): ?string
+    public function getEpilepsie(): ?bool
     {
         return $this->epilepsie;
     }
 
-    public function setEpilepsie(string $epilepsie): self
+    public function setEpilepsie(bool $epilepsie): self
     {
         $this->epilepsie = $epilepsie;
 
@@ -1135,6 +1147,44 @@ class Employe extends User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|NoteService[]
+     */
+    public function getNoteServices(): Collection
+    {
+        return $this->noteServices;
+    }
+
+    public function addNoteService(NoteService $noteService): self
+    {
+        if (!$this->noteServices->contains($noteService)) {
+            $this->noteServices[] = $noteService;
+            $noteService->setResponsable($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNoteService(NoteService $noteService): self
+    {
+        if ($this->noteServices->removeElement($noteService)) {
+            // set the owning side to null (unless already changed)
+            if ($noteService->getResponsable() === $this) {
+                $noteService->setResponsable(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|NoteService[]
+     */
+    public function getNoteService(): Collection
+    {
+        return $this->noteService;
     }
 
 

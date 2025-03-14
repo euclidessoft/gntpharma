@@ -74,37 +74,31 @@ class EmployeController extends AbstractController
                 $employe->setPassword($hashpass);
                 $employe->setUsername($employe->getNom());
                 switch ($employe->getPoste()->getNom()) {
-                    case 'Administrateur':
-                    {
-                        $employe->setRoles(['ROLE_ADMIN']);
-                        break;
-                    }
-                    case 'Financier':
-                    {
-                        $employe->setRoles(['ROLE_FINANCE']);
-                        break;
-                    }
-                    case 'RH':
-                    {
-                        $employe->setRoles(['ROLE_RH']);
-                        break;
-                    }
-                    case 'EMPLOYER SIMPLE':
-                    {
-                        $employe->setRoles(['ROLE_EMPLOYER']);
-                        break;
-                    }
-                    case 'Gestionnaire de stock':
-                    {
-                        $employe->setRoles(['ROLE_STOCK']);
-                        break;
-                    }
-                    case 'Livreur':
-                    {
-                        $employe->setRoles(['ROLE_LIVREUR']);
-                        $employe->setLivreur(true);
-                        break;
-                    }
+                    case 'Administrateur': {
+                            $employe->setRoles(['ROLE_ADMIN']);
+                            break;
+                        }
+                    case 'Financier': {
+                            $employe->setRoles(['ROLE_FINANCE']);
+                            break;
+                        }
+                    case 'RH': {
+                            $employe->setRoles(['ROLE_RH']);
+                            break;
+                        }
+                    case 'EMPLOYER SIMPLE': {
+                            $employe->setRoles(['ROLE_EMPLOYER']);
+                            break;
+                        }
+                    case 'Gestionnaire de stock': {
+                            $employe->setRoles(['ROLE_STOCK']);
+                            break;
+                        }
+                    case 'Livreur': {
+                            $employe->setRoles(['ROLE_LIVREUR']);
+                            $employe->setLivreur(true);
+                            break;
+                        }
                 }
                 $employe->setStatus(false);
                 $employe->setHireDate($employe->getHireDate());
@@ -123,7 +117,7 @@ class EmployeController extends AbstractController
                 $calendrier->setEmploye($employe);
                 $calendrier->setDateDebut($dateDebutConges);
                 $calendrier->setDateFin($dateFinConges);
-//            dd($calendrier,$dateDebutConges,$dateFinConges,$nbreJoursConges);
+                //            dd($calendrier,$dateDebutConges,$dateFinConges,$nbreJoursConges);
 
 
                 $entityManager->persist($posteEmploye);
@@ -152,6 +146,24 @@ class EmployeController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/edit", name="employe_edit", methods={"POST","GET"})
+     */
+    public function edit(Request $request, Employe $employe): Response
+    {
+        $form = $this->createForm(EmployeType::class, $employe);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('employe_index', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->render('employe/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+
+    /**
      * @Route("/{id}/toggle-status", name="employe_toggle_status", methods={"POST"})
      */
     public function toggleStatus(Request $request, Employe $employe, EntityManagerInterface $entityManager): Response
@@ -165,9 +177,11 @@ class EmployeController extends AbstractController
 
             if ($employe->getStatus()) {
                 $employe->setStatus(false);
+                $employe->setEnabled(false);
                 $this->addFlash('notice', 'Employé désativé');
             } else {
                 $employe->setStatus(true);
+                $employe->setEnabled(true);
                 $this->addFlash('notice', 'Employé activé');
             }
 
@@ -208,6 +222,4 @@ class EmployeController extends AbstractController
             return $response;
         }
     }
-
-
 }

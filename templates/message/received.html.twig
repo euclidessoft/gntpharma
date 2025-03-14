@@ -16,6 +16,14 @@
             {% set corbeille = '' %}
             {{ include('message/menu.html.twig') }}
             <div class="col-9 p-5" style="border-top: 2px solid var(--vert);border-left: 2px solid var(--vert);">
+                {% for message in app.flashes('message') %}
+                    <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black mb-5">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                            &times;
+                        </button>
+                        {{ message|trans }}
+                    </div>
+                {% endfor %}
                 <div class="tab-content" id="v-pills-tabContent">
                     <table class="table table-success-light w-100 shadow-5" id="message">
                         <thead>
@@ -52,7 +60,7 @@
                         {% endif %}
                         {% else %}
                             <tr>
-                                <td colspan="4" class="text-center">
+                                <td colspan="3" class="text-center">
                                     {{ "Aucun message reçu"|trans }}
                                 </td>
                             </tr>
