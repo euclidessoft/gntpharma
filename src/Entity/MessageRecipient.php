@@ -64,11 +64,12 @@ class MessageRecipient
      *
      * @ORM\Column(type="boolean")
      */
-    private $delete = false;
+    private $deletedest = false;
 
     public function __construct()
     {
         $this->messageReplies = new ArrayCollection();
+        $this->delete = false;
     }
 
     public function getId(): ?int
@@ -180,5 +181,17 @@ class MessageRecipient
     public function restore(): void
     {
         $this->deletedAt = null;
+    }
+
+    public function getDeletedest(): ?bool
+    {
+        return $this->deletedest;
+    }
+
+    public function setDeletedest(bool $deletedest): self
+    {
+        $this->deletedest = $deletedest;
+
+        return $this;
     }
 }

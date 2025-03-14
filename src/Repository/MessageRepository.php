@@ -47,6 +47,7 @@ class MessageRepository extends ServiceEntityRepository
         ;
     }
     */
+
     public function trash($user)
     {
         return $this->createQueryBuilder('m')
