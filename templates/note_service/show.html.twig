@@ -1,0 +1,52 @@
+{% extends 'rh.html.twig' %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="col-lg-10 fond-7 shadow rounded">
+        <div class="card">
+            <div class="card-header text-white text-center">
+                <h4><i class="fa-solid fa-info-circle"></i> Details de la note de service</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="mb-4 text-bold"><i class="fa-solid fa-user"></i> Détails de la note de service</h5>
+                <ul class="list-group mb-4">
+                    <li class="list-group-item"><strong>Objet :</strong> {{ note_service.objet }}</li>
+
+                    <li class="list-group-item"><strong>Date de debut de la note :</strong> {{ note_service.dateDebut ? note_service.dateDebut|date('d/m/Y') : 'N/A' }}</li>
+
+                    {# Afficher la date de fin uniquement si elle existe #}
+                    {% if note_service.dateFin %}
+                    <li class="list-group-item"><strong>Date de fin de la note :</strong> {{ note_service.dateFin|date('d/m/Y') }}</li>
+                    {% endif %}
+
+                    <li class="list-group-item">
+                        <p class="mt-2">{{ note_service.detail }}</p>
+
+                        <p class="text-right mt-5">
+                            <strong>{{ note_service.responsable.nom ~ ' ' ~ note_service.responsable.prenom }}</strong><br>
+                            {{ note_service.responsable.poste.nom }}<br>
+                            {{ note_service.responsable.phone }} <br>
+                            {{ note_service.responsable.email }}
+                        </p>
+                    </li>
+                </ul>
+
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="text-center mt-4">
+                <a href="{{ path('note_service_index') }}" class="btn btn-success-light mx-2">
+                    <i class="fa fa-undo"></i> Retour à la liste
+                </a>
+                <!-- Afficher le bouton "Modifier" uniquement si l'utilisateur est RH -->
+                {% if is_granted('ROLE_RH') %}
+                <a href="{{ path('note_service_edit', {'id': note_service.id}) }}" class="btn btn-success mx-2">
+                    <i class="fa fa-edit"></i> Modifier
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
