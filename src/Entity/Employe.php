@@ -92,27 +92,27 @@ class Employe extends User implements UserInterface
     private $bloodgroup;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $diabete;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $handicap;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $hypo;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $hyper;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $epilepsie;
 
@@ -508,60 +508,60 @@ class Employe extends User implements UserInterface
         return $this;
     }
 
-    public function getDiabete(): ?string
+    public function getDiabete(): ?bool
     {
         return $this->diabete;
     }
 
-    public function setDiabete(string $diabete): self
+    public function setDiabete(bool $diabete): self
     {
         $this->diabete = $diabete;
 
         return $this;
     }
 
-    public function getHandicap(): ?string
+    public function getHandicap(): ?bool
     {
         return $this->handicap;
     }
 
-    public function setHandicap(string $handicap): self
+    public function setHandicap(bool $handicap): self
     {
         $this->handicap = $handicap;
 
         return $this;
     }
 
-    public function getHypo(): ?string
+    public function getHypo(): ?bool
     {
         return $this->hypo;
     }
 
-    public function setHypo(string $hypo): self
+    public function setHypo(bool $hypo): self
     {
         $this->hypo = $hypo;
 
         return $this;
     }
 
-    public function getHyper(): ?string
+    public function getHyper(): ?bool
     {
         return $this->hyper;
     }
 
-    public function setHyper(string $hyper): self
+    public function setHyper(bool $hyper): self
     {
         $this->hyper = $hyper;
 
         return $this;
     }
 
-    public function getEpilepsie(): ?string
+    public function getEpilepsie(): ?bool
     {
         return $this->epilepsie;
     }
 
-    public function setEpilepsie(string $epilepsie): self
+    public function setEpilepsie(bool $epilepsie): self
     {
         $this->epilepsie = $epilepsie;
 

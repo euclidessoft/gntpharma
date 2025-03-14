@@ -78,7 +78,7 @@ class EmployeType extends AbstractType
             ->add('password', PasswordType::class, ['label' => 'Mot de password'])
             ->add('bloodgroup', BloodGroupType::class,array('placeholder' => 'Sélectionnez le groupe sanguin'))
             ->add('diabete', CheckboxType::class, [
-                'label' => 'Handicap',
+                'label' => 'diabete',
                 'required' => false,
             ])
             ->add('handicap', CheckboxType::class, [
