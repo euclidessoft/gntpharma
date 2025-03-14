@@ -28,24 +28,24 @@
                         </thead>
                         <tbody>
                         {% for message in messages %}
-                                {% set bold = "" %}
-                                <tr>
-                                    <td data-label="De">
-                                        <a href="{{ path("read", {id: message.id}) }}">
-                                            {{ message.sender.nom }} {{ message.sender.prenom }}
-                                        </a>
-                                    </td>
-                                    <td data-label="Objet">
-                                        <a href="{{ path("read", {id: message.id}) }}">
-                                            {{ message.message.title }}
-                                        </a>
-                                    </td>
-                                    <td data-label="Date">
-                                        <a href="{{ path("read", {id: message.id}) }}">
-                                            {{ message.message.createdAt|date('d/m/Y H:i:s') }}
-                                        </a>
-                                    </td>
-                                </tr>
+                            {% set bold = "" %}
+                            <tr>
+                                <td data-label="De">
+                                    <a href="{{ path("read", {id: message.id}) }}">
+                                        {{ message.sender.nom }} {{ message.sender.prenom }}
+                                    </a>
+                                </td>
+                                <td data-label="Objet">
+                                    <a href="{{ path("read", {id: message.id}) }}">
+                                        {{ message.message.title }}
+                                    </a>
+                                </td>
+                                <td data-label="Date">
+                                    <a href="{{ path("read", {id: message.id}) }}">
+                                        {{ message.message.createdAt|date('d/m/Y H:i:s') }}
+                                    </a>
+                                </td>
+                            </tr>
                         {% else %}
                             <tr>
                                 <td colspan="4" class="text-center">
@@ -53,52 +53,27 @@
                                 </td>
                             </tr>
                         {% endfor %}
-                        </tbody>
-                    </table>
-
-
-                    {#<div class="row">
-                        <div class="col-md-3 col-4 bg-success-light p-1 shadow-5 mb-2">
-                            {{ "De"|trans }}
-                        </div>
-                        <div class="col-md-6 col-4 bg-success-light p-1 shadow-5 mb-2">
-                            {{ "Objet"|trans }}
-                        </div>
-                        <div class="col-md-3 col-4 bg-success-light p-1 shadow-5 mb-2">
-                            {{ "Date"|trans }}
-                        </div>
-                    </div>
-                    {% for message in messages %}
-                        {% if not message.isDeleted %}
-                            {% set bold = "" %}
-                            {% if message.isRead == 0 %}
-                                {% set bold = "text-bold" %}
-                            {% endif %}
-                            <div class="row message">
-                                <div class="col-md-3 col-4 {{ bold }}">
-                                    <a href="{{ path("read", {id: message.id}) }}">
+                        {% for message in messagesent %}
+                            <tr>
+                                <td data-label="A">
+                                    <a href="{{ path("readSend", {id: message.id}) }}">
                                         {{ message.sender.nom }} {{ message.sender.prenom }}
                                     </a>
-                                </div>
-                                <div class="col-md-6 col-4 {{ bold }}">
-                                    <a href="{{ path("read", {id: message.id}) }}">
-                                        {{ message.message.title }}
+                                </td>
+                                <td data-label="Objet">
+                                    <a href="{{ path("readSend", {id: message.id}) }}">
+                                        {{ message.title }}
                                     </a>
-                                </div>
-                                <div class="col-md-3 col-4 {{ bold }}">
-                                    <a href="{{ path("read", {id: message.id}) }}">
-                                        {{ message.message.createdAt|date('d/m/Y H:i:s') }}
+                                </td>
+                                <td data-label="Date">
+                                    <a href="{{ path("readSend", {id: message.id}) }}">
+                                        {{ message.createdAt|date('d/m/Y H:i:s') }}
                                     </a>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% else %}
-                        <div class="col-12 text-center shadow-5 p-1">
-                            {{ "Aucun message supprimé"|trans }}
-                        </div>
-                    {% endfor %}#}
-
-
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

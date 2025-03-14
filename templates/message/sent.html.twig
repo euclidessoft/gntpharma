@@ -54,42 +54,6 @@
                         {% endfor %}
                         </tbody>
                     </table>
-
-                    {#<div class="row">
-                        <div class="col-md-3 col-4 bg-success-light p-1 shadow-5 mb-2">
-                            {{ "De"|trans }}
-                        </div>
-                        <div class="col-md-6 col-4 bg-success-light p-1 shadow-5 mb-2">
-                            {{ "Objet"|trans }}
-                        </div>
-                        <div class="col-md-3 col-4 bg-success-light p-1 shadow-5 mb-2">
-                            {{ "Date"|trans }}
-                        </div>
-                    </div>
-                    {% for message in app.user.sent %}
-                        {% set bold = "" %}
-                        <div class="row message">
-                            <div class="col-md-3 col-4 {{ bold }}">
-                                <a href="{{ path("readSend", {id: message.id}) }}">
-                                    {{ message.sender.nom }} {{ message.sender.prenom }}
-                                </a>
-                            </div>
-                            <div class="col-md-6 col-4 {{ bold }}">
-                                <a href="{{ path("readSend", {id: message.id}) }}">
-                                    {{ message.title }}
-                                </a>
-                            </div>
-                            <div class="col-md-3 col-4 {{ bold }}">
-                                <a href="{{ path("readSend", {id: message.id}) }}">
-                                    {{ message.createdAt|date('d/m/Y H:i:s') }}
-                                </a>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div class="col-12 text-center shadow-5 p-1">
-                            {{ "Aucun message envoyé"|trans }}
-                        </div>
-                    {% endfor %}#}
                 </div>
             </div>
         </div>

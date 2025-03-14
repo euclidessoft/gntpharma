@@ -1,0 +1,98 @@
+{% extends 'rh.html.twig' %}
+{% block communication %} active {% endblock %}
+{% block messagerie %} active {% endblock %}
+{% block title %}{{ "Message de"|trans }} {{ message.sender.nom }} {{ message.sender.prenom }} - GNT Pharma {% endblock %}
+
+{% block body %}
+
+    <div class="container mt-5 mb-5 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-comments"></i>
+            {{ "Messagerie"|trans }}
+        </h3>
+        <div class="row">
+            {% set recus = 'active' %}
+            {% set envoyes = '' %}
+            {% set corbeille = '' %}
+            {{ include('message/menu.html.twig') }}
+            <div class="col-9 p-5" style="border-top: 2px solid var(--vert);border-left: 2px solid var(--vert);">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="row bg-success-light p-2 radius-10 shadow-black mb-5">
+                        <div class="col-2 centrer">
+                            <a href="{{ path("received") }}" class="btn btn-success-light"
+                               title="{{ 'Retour à la boîte de réception'|trans }}">
+                                <i class="fa-solid fa-chevron-left fa-lg"></i>
+                                {{ "Retour"|trans }}
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-3">
+                                    <img src="{{ asset('images/avatar-homme.avif') }}" alt="photo"
+                                         class="w-80 rounded-circle">
+                                </div>
+                                <div class="col-9">
+                                    {{ message.sender.nom }}
+                                    {{ message.sender.prenom }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-5 centrer">
+                            {{ message.message.title }}
+                        </div>
+                        <div class="col-1 centrer">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-11">
+                            <div class="card border-green shadow mb-5">
+                                <div class="card-header bg-success-light bb-green">
+                                    <div class="row">
+                                        <div class="col-11">
+                                            {{ message.message.createdAt|date('d/m/Y H:i:s') }}
+                                        </div>
+                                        <div class="col-1">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body p-4">
+                                    {{ message.message.message|nl2br }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+
+                    {% for reply in message.messagereplies %}
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-11">
+                                <div class="card border-green shadow mb-5">
+                                    <div class="card-header bg-success-light bb-green">
+                                        <div class="row">
+                                            <div class="col-11">
+                                                {{ reply.sentAt|date('d/m/Y H:i:s') }}
+                                            </div>
+                                            <div class="col-1">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        {{ reply.content|nl2br }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

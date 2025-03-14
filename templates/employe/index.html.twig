@@ -3,7 +3,7 @@
 {% block employe %}active{% endblock %}
 {% block all_employe %}active{% endblock %}
 {% block body %}
-<div class="container-fluid mt-4 fond-7">
+    <div class="container-fluid mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fa fa-users mr-2"></i>
         {{ "Tous les employes"|trans }}
@@ -14,44 +14,59 @@
     </a>
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
-            <tr>
-                <th>{{ 'Matricule'|trans }}</th>
-                <th>{{ 'Prénom'|trans }}</th>
-                <th>{{ 'Nom'|trans }}</th>
-                <th>{{ 'Age'|trans }}</th>
-                <th>{{ 'Sexe'|trans }}</th>
-                <th>{{ 'Téléphone'|trans }}</th>
-                <th>{{ 'Email'|trans }}</th>
-                <th>{{ 'Adresse'|trans }}</th>
-                <th>{{ 'Poste'|trans }}</th>
-                <th>{{ 'Status'|trans }}</th>
-            </tr>
+        <tr>
+            <th>{{ 'Matricule'|trans }}</th>
+            <th>{{ 'Prénom'|trans }}</th>
+            <th>{{ 'Nom'|trans }}</th>
+            <th>{{ 'Age'|trans }}</th>
+            <th>{{ 'Sexe'|trans }}</th>
+            <th>{{ 'Téléphone'|trans }}</th>
+            <th>{{ 'Email'|trans }}</th>
+            <th>{{ 'Adresse'|trans }}</th>
+            <th>{{ 'Poste'|trans }}</th>
+            <th>{{ 'Statut'|trans }}</th>
+            <th>{{ 'Action'|trans }}</th>
+        </tr>
         </thead>
         <tbody>
-            {% for employe in employe %}
+        {% for employe in employe %}
             <tr>
-                <td data-label="{{ 'Matricule'|trans }}">{{ employe.matricule }}</td>
-                <td data-label="{{ 'Prénom'|trans }}">{{ employe.prenom }}</td>
-                <td data-label="{{ 'Nom'|trans }}">{{ employe.nom }}</td>
-                <td data-label="{{ 'Age'|trans }}"> </td>
-                <td data-label="{{ 'Sexe'|trans }}">{{ employe.sexe }}</td>
-                <td data-label="{{ 'Téléphone'|trans }}">{{ employe.phone }}</td>
-                <td data-label="{{ 'Email'|trans }}">{{ employe.email }}</td>
-                <td data-label="{{ 'Adresse'|trans }}">{{ employe.adresse }}</td>
-                <td data-label="{{ 'Poste'|trans }}">{{ employe.poste ? employe.poste.departement.nom }}</td>
-                <td data-label="{{ 'Statut'|trans }}">
-                    <form action="{{ path('employe_toggle_status', { 'id': employe.id }) }}" method="post" class="d-inline">
-                        <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ employe.id) }}">
-                        <button type="submit" class="btn btn-{% if employe.status %}danger{% else %}success{% endif %}">
-                            {% if employe.status %} Désactiver {% else %} Activer {% endif %}
-                        </button>
-                    </form>
-                </td>
+            <td data-label="{{ 'Matricule'|trans }}">{{ employe.matricule }}</td>
+            <td data-label="{{ 'Prénom'|trans }}">{{ employe.prenom }}</td>
+            <td data-label="{{ 'Nom'|trans }}">{{ employe.nom }}</td>
+            <td data-label="{{ 'Age'|trans }}"></td>
+            <td data-label="{{ 'Sexe'|trans }}">{{ employe.sexe }}</td>
+            <td data-label="{{ 'Téléphone'|trans }}">{{ employe.phone }}</td>
+            <td data-label="{{ 'Email'|trans }}">{{ employe.email }}</td>
+            <td data-label="{{ 'Adresse'|trans }}">{{ employe.adresse }}</td>
+            <td data-label="{{ 'Poste'|trans }}">{{ employe.poste ? employe.poste.nom }}</td>
+            <td data-label="{{ 'Statut'|trans }}" class="text-center">
+                {% if employe.status %}
+                    {{ "Actif "|trans }}
                 {% else %}
+                    {{ "Inactif"|trans }}
+                {% endif %}
+            </td>
+            <td data-label="{{ 'Action'|trans }}" class="text-center px-1">
+                <a href="{{ path('employe_edit', {'id': employe.id}) }}" class="btn btn-success-light mr-2" title="{{ "Modifier"|trans }}">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <form action="{{ path('employe_toggle_status', { 'id': employe.id }) }}" method="post" class="d-inline">
+                    <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ employe.id) }}">
+                    <button type="submit" class="btn btn-{% if employe.status %}danger{% else %}success{% endif %}">
+                        {% if employe.status %}
+                            <i class="fa fa-user-lock" title="{{ "Désactiver "|trans }}"></i>
+                        {% else %}
+                            <i class="fa-solid fa-user-check" title="{{ "Activer"|trans }}"></i>
+                        {% endif %}
+                    </button>
+                </form>
+            </td>
+        {% else %}
             <tr>
                 <td class="text-center" colspan="10">{{ 'Aucun employé enregistré'|trans }}</td>
             </tr>
-            {% endfor %}
+        {% endfor %}
         </tbody>
     </table>
-    {% endblock %}
+{% endblock %}
