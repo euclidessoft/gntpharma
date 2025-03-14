@@ -1,0 +1,42 @@
+{% extends 'rh.html.twig' %}
+{% block title %} {{ "Liste des notes de service"|trans }} - GNT Pharma {% endblock %}
+{% block employe %}active{% endblock %}
+{% block body %}
+<div class="col-lg-8 mt-4 fond-7">
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fa fa-money-bill mr-2"></i>
+        {{ "Liste des notes de service"|trans }}
+    </h3>
+    <a href="{{ path('note_service_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouvelle note de service</a>
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+        <tr>
+            <th>Objet</th>
+            <th>Date debut</th>
+            <th>Date fin</th>
+            <th>Status</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for note_service in note_services %}
+            <tr>
+                <td>{{ note_service.objet }}</td>
+                <td>{{ note_service.dateDebut ? note_service.dateDebut|date('Y/m/d') : '' }}</td>
+                <td>{{ note_service.dateFin ? note_service.dateFin|date('Y/m/d') : '' }}</td>
+                <td>yyy</td>
+                <td>
+                    <a href="{{ path('note_service_show', {'id': note_service.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('note_service_edit', {'id': note_service.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
+                    {{ include('note_service/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% endblock %}

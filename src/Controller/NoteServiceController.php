@@ -49,21 +49,22 @@ class NoteServiceController extends AbstractController
                 // Ajouter tous les employés sauf le responsable
                 if ($employe != $responsable) {
                     $noteService->addEmploye($employe);
+
+                    // **Ajout de la notification**
+                    $notification = new Notification();
+                    $notification->setEmploye($employe);
+                    $notification->setMessage("Nouvelle note de service enregistrée");
+                    $notification->setCreatedAt(new \DateTime());
+                    $notification->setIsRead(false);
+                    $notification->setLien($this->generateUrl('note_service_suivi', ['id' => $noteService->getId()]));
+                    $entityManager->persist($notification);
+                    $entityManager->flush();
                 }
             }
             $entityManager->persist($noteService);
             $entityManager->flush();
 
-            // **Ajout de la notification**
-            $notification = new Notification();
-            $notification->setEmploye($employe);
-            $notification->setMessage("Nouvelle note de service enregistrée");
-            $notification->setCreatedAt(new \DateTime());
-            $notification->setIsRead(false);
-            $notification->setLien($this->generateUrl('note_service_suivi', ['id' => $noteService->getId()]));
-            $entityManager->persist($notification);
-            $entityManager->flush();
-            dd($noteService, $employes, $notification);
+
 
             return $this->redirectToRoute('note_service_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -73,6 +74,21 @@ class NoteServiceController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/SuiviNote", name="note_service_suivi", methods={"GET"})
+     */
+    public function suiviNote(Security $security,NoteServiceRepository $noteServiceRepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $employe = $security->getUser();
+        $noteService = $noteServiceRepository->findNotesByEmployes($employe);
+
+        return $this->render('note_service/suivi.html.twig', [
+            'note_services' => $noteService,
+        ]);
+    }
+
 
     /**
      * @Route("/{id}", name="note_service_show", methods={"GET"})
@@ -117,5 +133,4 @@ class NoteServiceController extends AbstractController
 
         return $this->redirectToRoute('note_service_index', [], Response::HTTP_SEE_OTHER);
     }
-
 }

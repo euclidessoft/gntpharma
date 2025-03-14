@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Employe;
 use App\Entity\NoteService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,6 +18,16 @@ class NoteServiceRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, NoteService::class);
+    }
+
+    public function findNotesByEmployes(Employe $employe)
+    {
+        return $this->createQueryBuilder('n')
+        ->innerJoin('n.employe', 'e')
+        ->where('e.id = :employeId')
+        ->setParameter('employeId', $employe->getId())
+        ->getQuery()
+        ->getResult();
     }
 
     // /**
