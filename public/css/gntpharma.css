@@ -178,7 +178,7 @@ tr {
 }
 
 .topbar {
-    /* height: 35px; */
+    height: 35px;
     position: fixed;
     top: 0;
     left: 0;
@@ -1525,14 +1525,22 @@ select#transfert_date_time_minute {
 /*************Paiement***********/
 
 .user-image {
-    width: 30px;
-    height: 30px;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.user-thumb {
+    width: 25px;
+    height: 25px;
     margin: 0;
     object-fit: cover;
     border-radius: 50%;
 }
 
 .topbar .dropdown-menu {
-    top: 100% !important;
-    transform: translate3d(0, 0, 0) !important;
+    top: 5px !important;
+    /*background-color: var(--vert-clair);*/
 }

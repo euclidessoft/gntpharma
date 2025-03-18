@@ -25,11 +25,11 @@
                     <div class="text-right">
                         <div class="dropdown">
                             <a href="#" class="d-flex align-items-center" data-toggle="dropdown">
-                                <i class="fa fa-bell fa-2x mr-2"></i> <!-- Icône des notifications -->
+                                <i class="fa fa-bell fa-lg"></i> <!-- Icône des notifications -->
                                 <span id="notification-count" class="badge badge-danger"></span>
                                 <!-- Badge pour le nombre de notifications -->
                             </a>
-                            <div class="dropdown-menu" id="notifications-menu">
+                            <div class="dropdown-menu p-4" id="notifications-menu">
                                 <!-- Les notifications seront affichées ici -->
                             </div>
                         </div>
@@ -42,7 +42,7 @@
                                 <a class="panier" href="{{ path('commande_panier_panier') }}">
                                     <span id="gest_panier" class="badge badge-danger panierNombre">
                                     {# {{ panier|length }} #}
-                                    </span><i class="fa fa-cart-shopping fa-2x"></i>
+                                    </span><i class="fa fa-cart-shopping fa-lg"></i>
                                 </a>
                                 <div class="dropdown-menu">
                                 </div>
@@ -65,7 +65,7 @@
                         <div class="dropdown">
                             <a href="#" class="" data-toggle="dropdown">
                                 {{ app.user.username }}
-                                <img src="{{ asset('images/avatar-homme.avif') }}" class="user-image" alt="User Image">
+                                <img src="{{ asset('images/avatar-homme.avif') }}" class="user-thumb" alt="User Image">
                             </a>
                             <div class="dropdown-menu">
                                 <div class="row">
@@ -88,7 +88,7 @@
                                         </div>
                                         {% if is_granted('ROLE_ADMIN') %}
                                             <div class="mt-2">
-                                                <a href="{{ path('security_users') }}">
+                                                <a href="{{ path('employe_index') }}">
                                                     <i class="fa-solid fa-users-gear"></i>
                                                     {{ 'Gestion utilisateurs'|trans }}
                                                 </a>
