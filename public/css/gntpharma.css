@@ -757,12 +757,12 @@ select:required {
     font-size: 18px;
     white-space: nowrap;
     padding: 10px;
+    border-width: 2px;
 }
 
 .nav-tabs .nav-link:hover,
 .nav-tabs .nav-link:focus {
     border-color: var(--vert) var(--vert) transparent var(--vert) !important;
-    border-width: 2px;
 }
 
 /*
