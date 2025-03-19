@@ -1,0 +1,66 @@
+{% extends 'rh.html.twig' %}
+{% block title %} {{ "Tous les utilisateurs"|trans }} - GNT Pharma {% endblock %}
+{% block employe %}active{% endblock %}
+{% block all_employe %}active{% endblock %}
+{% block body %}
+    <div class="container-fluid mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-users mr-2"></i>
+            {{ "Tous les utilisateurs"|trans }}
+        </h3>
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black mb-5">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    &times;
+                </button>
+                {{ message|trans }}
+            </div>
+        {% endfor %}
+
+        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+            <thead>
+            <tr>
+                <th>{{ 'Utilisateur'|trans }}</th>
+                <th>{{ 'Département'|trans }}</th>
+                <th class="text-center">{{ 'Téléphone'|trans }}</th>
+                <th>{{ 'Email'|trans }}</th>
+                <th class="text-center">{{ 'Statut'|trans }}</th>
+                <th>{{ 'Action'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for employe in employes %}
+                <tr>
+                <td data-label="{{ 'Utilisateur'|trans }}">{{ employe.nom }} {{ employe.prenom }}</td>
+                <td data-label="{{ 'Département'|trans }}">{{ employe.poste ? employe.poste.departement.nom: '' }}</td>
+                <td class="text-center" data-label="{{ 'Téléphone'|trans }}">{{ employe.phone }}</td>
+                <td data-label="{{ 'Email'|trans }}">{{ employe.email }}</td>
+                <td data-label="{{ 'Statut'|trans }}" class="text-center">
+                    {% if employe.status %}
+                        {{ "Actif "|trans }}
+                    {% else %}
+                        {{ "Inactif"|trans }}
+                    {% endif %}
+                </td>
+                <td data-label="{{ 'Action'|trans }}" class="text-center px-1">
+                    <form action="{{ path('employe_toggle_status', { 'id': employe.id }) }}" method="post"
+                          class="d-inline">
+                        <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ employe.id) }}">
+                        <button type="submit" class="btn btn-{% if employe.status %}danger{% else %}success{% endif %}">
+                            {% if employe.status %}
+                                <i class="fa fa-user-lock" title="{{ "Désactiver "|trans }}"></i>
+                            {% else %}
+                                <i class="fa-solid fa-user-check" title="{{ "Activer"|trans }}"></i>
+                            {% endif %}
+                        </button>
+                    </form>
+                </td>
+            {% else %}
+                <tr>
+                    <td class="text-center" colspan="6">{{ 'Aucun utilisateur enregistré'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

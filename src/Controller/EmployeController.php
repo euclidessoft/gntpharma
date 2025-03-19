@@ -26,10 +26,35 @@ class EmployeController extends AbstractController
      */
     public function index(EntityManagerInterface $entityManager)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
             $employe = $entityManager->getRepository(Employe::class)->findAll();
             return $this->render('employe/index.html.twig', [
-                'employe' => $employe,
+                'employes' => $employe,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+
+    /**
+     * @Route("/manage", name="employe_manage", methods={"GET"})
+     */
+    public function manage(EntityManagerInterface $entityManager)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $employe = $entityManager->getRepository(Employe::class)->findAll();
+            return $this->render('employe/manage.html.twig', [
+                'employes' => $employe,
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -51,7 +76,7 @@ class EmployeController extends AbstractController
      */
     public function new(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
 
             $employe = new Employe();
             $form = $this->createForm(EmployeType::class, $employe);
@@ -62,7 +87,7 @@ class EmployeController extends AbstractController
 
                 $poste = $employe->getPoste();
                 if ($poste->getType() == true) {
-                    //on cherche si le pose est deja attribue
+                    //on cherche si le poste est deja attribue
                     $userposte = $entityManager->getRepository(PosteEmploye::class)->findOneBy(['poste' => $poste, 'datefin' => null]);
                     if ($userposte) {
                         $this->addFlash('notice', 'Ce poste est unique et est déjà attribué à un employé.');
@@ -151,9 +176,11 @@ class EmployeController extends AbstractController
     public function edit(Request $request, Employe $employe): Response
     {
         $form = $this->createForm(EmployeType::class, $employe);
+        $form->remove('password');
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('notice', 'Employé modifié avec succès');
             return $this->redirectToRoute('employe_index', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render('employe/edit.html.twig', [
@@ -168,26 +195,26 @@ class EmployeController extends AbstractController
      */
     public function toggleStatus(Request $request, Employe $employe, EntityManagerInterface $entityManager): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
             //verification du token csrf
             if (!$this->isCsrfTokenValid('toggle' . $employe->getId(), $request->request->get('_token'))) {
                 $this->addFlash('notice', 'Token CSRF invalide');
-                return $this->redirectToRoute('employe_index');
+                return $this->redirectToRoute('employe_manage');
             }
 
             if ($employe->getStatus()) {
                 $employe->setStatus(false);
                 $employe->setEnabled(false);
-                $this->addFlash('notice', 'Employé désativé');
+                $this->addFlash('notice', 'Utilisateur désativé');
             } else {
                 $employe->setStatus(true);
                 $employe->setEnabled(true);
-                $this->addFlash('notice', 'Employé activé');
+                $this->addFlash('notice', 'Utilisateur activé');
             }
 
             $entityManager->persist($employe);
             $entityManager->flush();
-            return $this->redirectToRoute('employe_index');
+            return $this->redirectToRoute('employe_manage');
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
@@ -207,7 +234,7 @@ class EmployeController extends AbstractController
      */
     public function config()
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
             return $this->render('employe/config.html.twig');
         } else {
             $response = $this->redirectToRoute('security_logout');
