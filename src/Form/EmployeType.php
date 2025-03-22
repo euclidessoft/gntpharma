@@ -69,12 +69,12 @@ class EmployeType extends AbstractType
             ->add('hiredate', DateType::class, [
                 'widget' => 'single_text',
             ])
-//            ->add('fonction', ChoiceType::class, [
-//                'choices' => User::jobs,
-//                'placeholder' => 'Types d\'utilisateur *',
-//                'label' => false,
-//                'required' => true
-//            ])
+            ->add('fonction', ChoiceType::class, [
+                'choices' => User::jobs,
+                'placeholder' => 'Niveau d\'accès *',
+                'label' => false,
+                'required' => true
+            ])
             ->add('password', PasswordType::class, ['label' => 'Mot de password'])
             ->add('bloodgroup', BloodGroupType::class,array('placeholder' => 'Sélectionnez le groupe sanguin'))
             ->add('diabete', CheckboxType::class, [
@@ -101,6 +101,7 @@ class EmployeType extends AbstractType
             ->add('famillyname')
             ->add('famillylink',LinkType::class,array('placeholder' => 'Lien de parenté'))
             ->add('famillyphone')
+            ->add('sursalaire')
         ;
     }
 

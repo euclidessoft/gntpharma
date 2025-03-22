@@ -6,6 +6,7 @@ use App\Complement\Solde;
 use App\Entity\Banque;
 use App\Entity\Ecriture;
 use App\Repository\EcritureRepository;
+use App\Repository\PaieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -1638,6 +1639,32 @@ class FinanceController extends AbstractController
             return $response;
         }
     }
+
+
+    /**
+     * @Route("/Salaire", name="salaire", methods={"GET"})
+     */
+    public function historique(PaieRepository $paieRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $paie = $paieRepository->findAll();
+            return $this->render('finance/salaire.html.twig', [
+                'paie' => $paie,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
 
 
 }

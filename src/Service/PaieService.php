@@ -50,7 +50,7 @@ class PaieService
             }
 
             // Récupération du salaire de base
-            $salaireDeBase = $employe->getPoste()->getSalaire();
+            $salaireDeBase = $employe->getPoste()->getSalaire() + $employe->getSursalaire();
             $salaireJournaliere = $salaireDeBase / 30;
 
             // Récupération des primes, heures supplémentaires et sanctions pour le mois en cours

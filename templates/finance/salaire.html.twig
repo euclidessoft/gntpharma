@@ -1,0 +1,44 @@
+{% extends "admin.html.twig" %}
+{% block title %} {{ "Liste des bulletins"|trans }} - GNT Pharma {% endblock %}
+{% block paie %}active{% endblock %}
+{% block paie_historique %}active{% endblock %}
+
+{% block body %}
+    <div class="col-lg-10 mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa fa-money-bill mr-2"></i>
+            {{ "Historique de paiement"|trans }}
+        </h3>
+        <a href="{{ path('paie_historique_bulletin') }}" class="btn btn-success mb-4">
+            <i class="fas fa-plus"></i>
+            Tous les bulletins
+        </a>
+
+        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+            <thead>
+            <tr>
+                <th>{{ 'Matricule'|trans }}</th>
+                <th>{{ 'Employé'|trans }}</th>
+                <th>{{ 'Date paiement'|trans }}</th>
+                <th>{{ 'Salaire de base'|trans }}</th>
+                <th>{{ 'Montant reçu'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for paie in paie %}
+                <tr>
+                    <td>{{ paie.employe.matricule }}</td>
+                    <td>{{ paie.employe.nom }} {{ paie.employe.prenom }}</td>
+                    <td>{{ paie.employe.nom }} {{ paie.employe.prenom }}</td>
+                    <td>{{ paie.salaireBase|number_format(0, '' , ' ') }} FCFA</td>
+                    <td>{{ paie.salaireNet|number_format(0, '' , ' ') }} FCFA</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucune paiement enregistrée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
