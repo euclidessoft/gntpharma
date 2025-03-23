@@ -27,7 +27,7 @@ class Paie
     /**
      * @ORM\Column(type="date")
      */
-    private $mois;
+    private $date;
 
     /**
      * @ORM\Column(type="integer")
@@ -64,9 +64,30 @@ class Paie
      */
     private $detailsRetenues;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $impot;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Mois::class, inversedBy="paies")
+     */
+    private $mois;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $payer;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $datepaye;
+
     public function __construct()
     {
         $this->retenues = new ArrayCollection();
+        $this->date = new \DateTime();
     }
 
     public function getId(): ?int
@@ -86,14 +107,14 @@ class Paie
         return $this;
     }
 
-    public function getMois(): ?\DateTimeInterface
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->mois;
+        return $this->date;
     }
 
-    public function setMois(\DateTimeInterface $mois): self
+    public function setDate(\DateTimeInterface $date): self
     {
-        $this->mois = $mois;
+        $this->date = $date;
 
         return $this;
     }
@@ -203,6 +224,54 @@ class Paie
     public function setDetailsRetenues(?string $detailsRetenues): self
     {
         $this->detailsRetenues = $detailsRetenues;
+
+        return $this;
+    }
+
+    public function getImpot(): ?float
+    {
+        return $this->impot;
+    }
+
+    public function setImpot(float $impot): self
+    {
+        $this->impot = $impot;
+
+        return $this;
+    }
+
+    public function getMois(): ?Mois
+    {
+        return $this->mois;
+    }
+
+    public function setMois(?Mois $mois): self
+    {
+        $this->mois = $mois;
+
+        return $this;
+    }
+
+    public function getPayer(): ?bool
+    {
+        return $this->payer;
+    }
+
+    public function setPayer(bool $payer): self
+    {
+        $this->payer = $payer;
+
+        return $this;
+    }
+
+    public function getDatepaye(): ?\DateTimeInterface
+    {
+        return $this->datepaye;
+    }
+
+    public function setDatepaye(\DateTimeInterface $datepaye): self
+    {
+        $this->datepaye = $datepaye;
 
         return $this;
     }

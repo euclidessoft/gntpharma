@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Complement\Solde;
 use App\Entity\Banque;
 use App\Entity\Ecriture;
+use App\Entity\Paie;
 use App\Repository\EcritureRepository;
 use App\Repository\PaieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -1644,13 +1645,43 @@ class FinanceController extends AbstractController
     /**
      * @Route("/Salaire", name="salaire", methods={"GET"})
      */
-    public function historique(PaieRepository $paieRepository): Response
+    public function salaire(PaieRepository $paieRepository): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
-            $paie = $paieRepository->findAll();
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+            $paie = $paieRepository->findBy(['payer' => false]);
             return $this->render('finance/salaire.html.twig', [
                 'paie' => $paie,
             ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/payer", name="payer", methods={"POST"})
+     */
+    public function payer(PaieRepository $paieRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+           $this->addFlash('notice', 'Paiement effectué avec succès');
+
+            $res['id'] = 'ok';
+
+
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);

@@ -27,7 +27,7 @@ class PaieRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->where('p.employe = :id')
-            ->andWhere('p.mois BETWEEN :start AND :end')
+            ->andWhere('p.date BETWEEN :start AND :end')
             ->setParameters([
                 'id' => $id,
                 'start' => $startOfMonth,

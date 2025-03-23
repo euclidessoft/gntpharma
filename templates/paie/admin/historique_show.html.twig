@@ -8,7 +8,8 @@
         <div class="text-center mb-4">
             <h2 class="text-uppercase font-weight-bold">Historique de Paie</h2>
             <p class="mb-0">GNT Pharma</p>
-            <small>{{ "Date de paiement"|trans }} : {{ paie.mois|date('d/m/Y') }}</small>
+            <small>{{ "Date de validation"|trans }} : {{ paie.date|date('d/m/Y') }}</small>
+            <p class="mb-0">{{ paie.mois.nom }}</p>
         </div>
 
         <div class="row mb-4">
