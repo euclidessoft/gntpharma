@@ -80,6 +80,7 @@ class EmployeController extends AbstractController
 
             $employe = new Employe();
             $form = $this->createForm(EmployeType::class, $employe);
+            $form->remove('password');
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
