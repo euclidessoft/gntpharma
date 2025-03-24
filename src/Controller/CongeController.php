@@ -109,7 +109,7 @@ class CongeController extends AbstractController
             $employe = $security->getUser();
             $conges = $congesRepository->findDemandesEnAttente($employe);
 
-            return $this->render('conge/demande.html.twig', [
+            return $this->render('conge/suivi.html.twig', [
                 'conge' => $conges,
             ]);
         } else {
@@ -163,7 +163,7 @@ class CongeController extends AbstractController
             $employe = $security->getUser();
             $conges = $congesRepository->findDemandesAccepter($employe);
 
-            return $this->render('conge/demande.html.twig', [
+            return $this->render('conge/accepter.html.twig', [
                 'conge' => $conges,
             ]);
         } else {
@@ -244,8 +244,7 @@ class CongeController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $employe = $security->getUser();
             $conges = $congesRepository->findDemandesRefuse($employe);
-
-            return $this->render('conge/demande.html.twig', [
+            return $this->render('conge/refuser.html.twig', [
                 'conge' => $conges,
             ]);
         } else {
@@ -263,7 +262,7 @@ class CongeController extends AbstractController
     }
 
     /**
-     * @Route("/Nouveau", name="conge_new", methods={"GET", "POST"})
+     * @Route("/New", name="conge_new", methods={"GET", "POST"})
      */
     public function new(Request $request, Security $security): Response
     {

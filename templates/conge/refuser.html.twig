@@ -1,15 +1,37 @@
 {% extends 'rh.html.twig' %}
 {% block title %}Mes demandes des Congés{% endblock %}
-{% block discipline %}active{% endblock %}
 {% block conges %}active{% endblock %}
 {% block permissions %}active{% endblock %}
 
 {% block body %}
-<div class="col-lg-12 mt-4 fond-7">
+
+<div class="container mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fas fa-calendar-alt me-2"></i>
-        {{ "Mes Demandes de Congé réfusée"|trans }}
+        {{ "Mes demandes de Congé réfusée"|trans }}
     </h3>
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('conges_employe_suivi') }}">
+                {{ 'Demandes en cours'|trans }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('conges_employe_accepter') }}">
+                {{ 'Demandes acceptées'|trans }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('conges_employe_refuser') }}">
+                {{'Demandes refusée'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('conges_employe_index') }}">
+                {{'Toutes les demandes'|trans}}
+            </a>
+        </li>
+    </ul>
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>

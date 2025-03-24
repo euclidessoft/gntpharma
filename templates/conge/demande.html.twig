@@ -12,11 +12,6 @@
     </h3>
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
-            <a class="nav-link active" href="{{ path('conges_employe_index') }}">
-                {{'Toutes les demandes'|trans}}
-            </a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link" href="{{ path('conges_employe_suivi') }}">
                 {{ 'Demandes en cours'|trans }}
             </a>
@@ -29,6 +24,11 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ path('conges_employe_refuser') }}">
                 {{'Demandes refusée'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('conges_employe_index') }}">
+                {{'Toutes les demandes'|trans}}
             </a>
         </li>
     </ul>

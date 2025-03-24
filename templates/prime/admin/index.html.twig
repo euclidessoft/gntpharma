@@ -26,8 +26,7 @@
                     <td>{{ prime.montant }}</td>
                     <td>{{ prime.description }}</td>
                     <td>
-                        <a href="{{ path('prime_show', {'id': prime.id}) }}">show</a>
-                        <a href="{{ path('prime_edit', {'id': prime.id}) }}">edit</a>
+                        <a href="{{ path('prime_edit', {'id': prime.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
                     </td>
                 </tr>
             {% else %}
