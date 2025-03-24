@@ -60,7 +60,7 @@ class EmployeType extends AbstractType
                     'Divorcé(e)' => 'divorce',
                     'Veuf(ve)' => 'veuf',
                 ],
-                'placeholder' => 'Situation Matrimoniale',
+                'placeholder' => 'Situation matrimoniale',
                 'required' => true,
                 'expanded' => false,
                 'multiple' => false,

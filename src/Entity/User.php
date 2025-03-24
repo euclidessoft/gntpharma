@@ -32,7 +32,7 @@ class User implements UserInterface
         'RH' => 'RH' ,
         'STOCK' => 'STOCK' ,
         'LIVREUR' => 'LIVREUR' ,
-        'EMPLOYER' => 'EMPLOYER' ,
+        'EMPLOYE' => 'EMPLOYE' ,
     ];
 
     /**

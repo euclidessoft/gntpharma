@@ -71,13 +71,13 @@
                                 {{ 'Employés'|trans }}
                             </a>
                         </li>
-                        <li class="dropdown-item" title="{{ 'Performance'|trans }}">
+                       {# <li class="dropdown-item" title="{{ 'Performance'|trans }}">
                             <a class="nav-link {% block performance %}{% endblock %}"
                                 href="{{ path('evaluation_index') }}">
                                 <i class="fa-solid fa-chart-line"></i>
                                 {{ 'Performance'|trans }}
                             </a>
-                        </li>
+                        </li>#}
                         <li class="dropdown-item" title="{{ 'Planning des congés'|trans }}">
                             <a class="nav-link {% block planning %}{% endblock %}"
                                 href="{{ path('calendrier_index') }}">
@@ -154,14 +154,14 @@
                         <li class="dropdown-item" title="{{ 'Performance'|trans }}">
                             <a class="nav-link {% block critere %}{% endblock %}"
                                 href="{{ path('critere_evaluation_index') }}">
-                                <i class="fa-solid fa-chart-line"></i>
+                                <i class="fa-solid fa-chart-simple"></i>
                                 {{ 'Critere'|trans }}
                             </a>
                         </li>
                         {% endif %}
                         <li class="dropdown-item" title="{{ 'Performance'|trans }}">
                             <a class="nav-link {% block evaluat %}{% endblock %}"
-                                href="">
+                                href="{{ path('evaluation_index') }}">
                                 <i class="fa-solid fa-chart-line"></i>
                                 {{ 'Performance'|trans }}
                             </a>
