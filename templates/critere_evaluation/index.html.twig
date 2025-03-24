@@ -1,10 +1,13 @@
 {% extends 'rh.html.twig' %}
+{% block evaluation %}active{% endblock %}
+{% block critere %}active{% endblock %}
 {% block body %}
     <div class="col-lg-6 mt-4 fond-7">
         <h3 class="mt-4 mb-5 text-bold">
             <i class="fa fa-money-bill mr-2"></i>
             {{ "Liste des critères d'évaluation"|trans }}
         </h3>
+        <a href="{{ path('critere_evaluation_new') }}" class="btn btn-success mb-3">Nouveau critère</a>
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
@@ -19,7 +22,6 @@
                 <td>{{ critere_evaluation.nom }}</td>
                 <td>{{ critere_evaluation.description }}</td>
                 <td>
-                    <a href="{{ path('critere_evaluation_show', {'id': critere_evaluation.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
                     <a href="{{ path('critere_evaluation_edit', {'id': critere_evaluation.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>

@@ -96,7 +96,7 @@
                 </li>
                 {% endif %}
                 <li class="nav-item dropright" title="{{ 'Discipline'|trans }}">
-                    <a class="nav-link dropdown-toggle {% block discipline %} {% endblock %}" href="#" id="conges"
+                    <a class="nav-link dropdown-toggle {% block discipline %}{% endblock %}" href="#" id="conges"
                         data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
@@ -291,7 +291,7 @@
                         </li>
                         <li class="dropdown-item" title="{{ 'Notes de service'|trans }}">
                             <a class="nav-link {% block notesuivi %}{% endblock %}"
-                                href="{{ path('note_service_suivi') }}">
+                                href="{{ path('note_service_index') }}">
                                 <i class="fa-regular fa-note-sticky"></i>
                                 {{ 'Mes notes de service'|trans }}
                             </a>
