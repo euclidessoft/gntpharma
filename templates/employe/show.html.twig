@@ -1,0 +1,85 @@
+{% extends 'rh.html.twig' %}
+
+{% block administration %}active{% endblock %}
+{% block employe %}active{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-lg fond-7">
+        <div class="card-header text-white text-center">
+            <h3 class="mb-0">Information de l'employé</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- Photo de l'employé -->
+                <div class="col-md-4 text-center">
+                    <img src="{{ employe.photo ?? asset('images/default-avatar.png') }}"
+                        alt="Photo de {{ employe.nom }}"
+                        class="img-fluid rounded-circle border border-secondary"
+                        style="width: 150px; height: 150px;">
+                    <h5 class="mt-3">{{ employe.nom }} {{ employe.prenom }}</h5>
+                    <span class="badge bg-success text-white">{{ employe.poste.nom }}</span>
+                </div>
+
+                <!-- Informations détaillées -->
+                <div class="col-md-8">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Matricule :</th>
+                            <td>{{ employe.matricule }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nom :</th>
+                            <td>{{ employe.nom }}</td>
+                        </tr>
+                        <tr>
+                            <th>Prénom :</th>
+                            <td>{{ employe.prenom }}</td>
+                        </tr>
+                        <tr>
+                            <th>Âge :</th>
+                            <td>
+                                {{ employe.dateNaissance ? ("now"|date("Y") - employe.dateNaissance|date("Y")) : 'N/A' }} ans
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Sexe :</th>
+                            <td>{{ employe.sexe }}</td>
+                        </tr>
+                        <tr>
+                            <th>Téléphone :</th>
+                            <td>{{ employe.phone }}</td>
+                        </tr>
+                        <tr>
+                            <th>Adresse :</th>
+                            <td>{{ employe.adresse }}</td>
+                        </tr>
+                        <tr>
+                            <th>Poste :</th>
+                            <td>{{ employe.poste.nom }}</td>
+                        </tr>
+                        <tr>
+                            <th>Département :</th>
+                            <td>{{ employe.poste.departement.nom }}</td>
+                        </tr>
+                        <tr>
+                            <th>Salaire :</th>
+                            <td>{{ employe.poste.salaire|number_format(0,'',' ') }} FCFA</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="card-footer text-center">
+            <a href="{{ path('employe_edit', {'id': employe.id}) }}" class="btn btn-success">
+                Modifier
+            </a>
+            <a href="{{ path('employe_index') }}" class="btn btn-success-light">
+                Retour à la liste
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
