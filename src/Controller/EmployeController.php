@@ -96,15 +96,15 @@ class EmployeController extends AbstractController
                     }
                 }
                 $posteEmploye = new PosteEmploye();
-                $hashpass = $encoder->encodePassword($employe, 'Passer2023');
+                $hashpass = $encoder->encodePassword($employe, 'GNTPharma');
                 $employe->setPassword($hashpass);
                 $employe->setUsername($employe->getNom());
-                switch ($employe->getPoste()->getNom()) {
-                    case 'Administrateur': {
+                switch ($employe->getFonction()) {
+                    case 'ADMINISTRATEUR': {
                             $employe->setRoles(['ROLE_ADMIN']);
                             break;
                         }
-                    case 'Financier': {
+                    case 'FINANCE': {
                             $employe->setRoles(['ROLE_FINANCE']);
                             break;
                         }
@@ -112,15 +112,15 @@ class EmployeController extends AbstractController
                             $employe->setRoles(['ROLE_RH']);
                             break;
                         }
-                    case 'EMPLOYER SIMPLE': {
+                    case 'EMPLOYER': {
                             $employe->setRoles(['ROLE_EMPLOYER']);
                             break;
                         }
-                    case 'Gestionnaire de stock': {
+                    case 'STOCK': {
                             $employe->setRoles(['ROLE_STOCK']);
                             break;
                         }
-                    case 'Livreur': {
+                    case 'LIVREUR': {
                             $employe->setRoles(['ROLE_LIVREUR']);
                             $employe->setLivreur(true);
                             break;

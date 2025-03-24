@@ -39,7 +39,7 @@ class PaieService
         // Calcul du début et de la fin du mois
         $startOfMonth = new \DateTime('first day of this month');
         $endOfMonth = new \DateTime('last day of this month');
-        $employes = $this->entityManager->getRepository(Employe::class)->findAll();
+        $employes = $this->entityManager->getRepository(Employe::class)->findBy(['status' => true]);
         $bulletins = [];
 
         foreach ($employes as $employe) {
@@ -50,13 +50,14 @@ class PaieService
             }
 
             // Récupération du salaire de base
-            $salaireDeBase = $employe->getPoste()->getSalaire();
+            $salaireDeBase = $employe->getPoste()->getSalaire() + $employe->getSursalaire();
             $salaireJournaliere = $salaireDeBase / 30;
 
             // Récupération des primes, heures supplémentaires et sanctions pour le mois en cours
             $primes = $this->primeRepository->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
             $heureSup = $this->heureSupRepository->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
             $sanctions = $this->sanctionRepository->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
+            $impot = $salaireDeBase * 0.01;
 
             // Calcul des retenues
             $retenues = [];
@@ -90,6 +91,7 @@ class PaieService
                 'primes' => $primes,
                 'heureSup' => $heureSup,
                 'retenues' => $retenues,
+                'impot' => $impot,
             ];
         }
 

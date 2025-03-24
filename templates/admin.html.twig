@@ -447,6 +447,13 @@
                                     {{ 'Journal'|trans }}
                                 </a>
                             </li>
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block salaire %}{% endblock %}"
+                                   href="{{ path('finance_salaire') }}">
+                                    <i class="fa-solid fa-receipt mr-2"></i>
+                                    {{ 'Paiement Salaire'|trans }}
+                                </a>
+                            </li>
 
                             <li class="dropdown-item submenu">
                                 <a class="nav-link dropdown-toggle {% block rapport %}{% endblock %}" href="#"

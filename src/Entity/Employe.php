@@ -245,10 +245,16 @@ class Employe extends User implements UserInterface
      */
     private $noteService;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $sursalaire;
+
 
     public function __construct()
     {
         parent::__construct();
+
         $this->posteEmployes = new ArrayCollection();
         $this->employeFormations = new ArrayCollection();
         $this->formations = new ArrayCollection();
@@ -1185,6 +1191,18 @@ class Employe extends User implements UserInterface
     public function getNoteService(): Collection
     {
         return $this->noteService;
+    }
+
+    public function getSursalaire(): ?int
+    {
+        return $this->sursalaire;
+    }
+
+    public function setSursalaire(int $sursalaire): self
+    {
+        $this->sursalaire = $sursalaire;
+
+        return $this;
     }
 
 

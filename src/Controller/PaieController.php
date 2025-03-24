@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Employe;
 use App\Entity\HeureSuplementaire;
+use App\Entity\Mois;
 use App\Entity\Paie;
 use App\Entity\Prime;
 use App\Entity\Sanction;
@@ -37,7 +38,7 @@ class PaieController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
         $entityManager = $this->getDoctrine()->getManager();
-        $employes = $entityManager->getRepository(Employe::class)->findAll();
+        $employes = $entityManager->getRepository(Employe::class)->findBy(['status' => true]);
         $paies = [];
         $startOfMonth = new \DateTime('01-' . date('m') . '-' . date('Y'));
         $endOfMonth = new \DateTime('last day of this month');
@@ -369,8 +370,9 @@ class PaieController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $employe = $entityManager->getRepository(Employe::class)->find($id);
 
-        $salaireDeBase = $employe->getPoste()->getSalaire();
+        $salaireDeBase = $employe->getPoste()->getSalaire() + $employe->getSursalaire();
         $salaireJournaliere = $salaireDeBase / 30; // Calcul du salaire journalier (par défaut 30 jours)
+        $impot = $salaireDeBase * 0.01;
 
         $totalRetenue = 0;
         $detailsRetenues = [];
@@ -408,16 +410,17 @@ class PaieController extends AbstractController
         $totalPrimes = $primeRepository->getTotalPrimesByEmploye($employe);
         $totalHeureSup = $heureSuplementaireRepository->getTotalHeuresByEmploye($employe);
         // Calcul du salaire net
-        $salaireNet = $salaireDeBase + $totalHeureSup + $totalPrimes - $totalRetenue;
+        $salaireNet = $salaireDeBase + $totalHeureSup + $totalPrimes - $totalRetenue - $impot;
         // Enregistrement dans la table paie
         $paie = new Paie();
         $paie->setSalaireBase($salaireDeBase);
         $paie->setEmploye($employe);
-        $paie->setMois(new \DateTime());
+        $paie->setMois($entityManager->getRepository(Mois::class)->findOneBy(['id' => date('m')]));// a revoir
         $paie->setTotalPrime($totalPrimes);
         $paie->setTotalheureSup($totalHeureSup);
         $paie->setTotalRetenue($totalRetenue);
         $paie->setSalaireNet($salaireNet);
+        $paie->setImpot($impot);
         $paie->setDetailsRetenues(json_encode($detailsRetenues));
         $entityManager->persist($paie);
         $entityManager->flush();
