@@ -250,4 +250,15 @@ class EmployeController extends AbstractController
             return $response;
         }
     }
+
+    /**
+     * @Route("/Show/{id}", name="employe_show", methods={"GET"})
+     */
+    public function show(Employe $employe): Response
+    {
+        return $this->render('employe/show.html.twig', [
+            'employe' => $employe,
+        ]);
+    }
+    
 }

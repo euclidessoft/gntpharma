@@ -1,5 +1,6 @@
 {% extends 'rh.html.twig' %}
 {% block title %}Mes demandes des Congés{% endblock %}
+{% block discipline %}active{% endblock %}
 {% block conges %}active{% endblock %}
 {% block permissions %}active{% endblock %}
 {% block body %}
@@ -10,11 +11,6 @@
         {{ "Mes demandes de Congé"|trans }}
     </h3>
     <ul class="nav nav-tabs mb-4">
-        <li class="nav-item">
-            <a class="nav-link active" href="{{ path('conges_employe_index') }}">
-                {{'Toutes les demandes'|trans}}
-            </a>
-        </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ path('conges_employe_suivi') }}">
                 {{ 'Demandes en cours'|trans }}
@@ -28,6 +24,11 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ path('conges_employe_refuser') }}">
                 {{'Demandes refusée'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('conges_employe_index') }}">
+                {{'Toutes les demandes'|trans}}
             </a>
         </li>
     </ul>

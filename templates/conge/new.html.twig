@@ -1,4 +1,5 @@
 {% extends 'rh.html.twig' %}
+{% block discipline %}active{% endblock %}
 {% block conges %}active{% endblock %}
 {% block permissions %}active{% endblock %}
 {% block body %}
@@ -16,7 +17,7 @@
 <div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
     <h4 class="mb-5">
         <i class="fa-solid fa-clock"></i><i class="fa fa-plus mr-2"></i>
-        {{ 'Demande de congé'|trans }}
+        {{ 'Demande de permission'|trans }}
     </h4>
     <div class="col-12 mb-4">
         {{ form_row(form.type, {'attr': {'placeholder': 'Type de congés *'}, 'label': false}) }}
@@ -31,7 +32,7 @@
     </div>
 
     <div class="col-12 mb-4">
-        {{ form_row(form.description, {'attr': {'placeholder': 'Motif de votre demande *'}, 'label': false}) }}
+        {{ form_row(form.description, {'attr': {'placeholder': 'Motif de votre demande *','rows': 5}, 'label': false}) }}
     </div>
 
 </div>
@@ -39,7 +40,7 @@
     <div class="centrer">
         <button type="submit" class="btn btn-shadow btn-green btn-normal mb-3 mr-3" id="send">
             <i class="fa fa-save"></i>
-            {{ 'Demandez le congé'|trans }}
+            {{ 'Demandez la permission'|trans }}
         </button>
         {{ form_end(form) }}
     </div>

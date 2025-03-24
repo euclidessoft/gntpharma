@@ -1,5 +1,7 @@
 {% extends 'rh.html.twig' %}
 
+{% block paie %}active{% endblock %}
+{% block heure_supplementaire %}active{% endblock %}
 {% block body %}
 
 
@@ -9,7 +11,7 @@
             {{ 'Modifier le heure_suplementaire'|trans }}
         </h4>
 
-        {{ include('heure_suplementaire/_form.html.twig', {'button_label': 'Update'}) }}
+        {{ include('heure_suplementaire/admin/_form.html.twig', {'button_label': 'Update'}) }}
 
         <div class="col-md-3 offset-md-3 mt-4 pt-3 fond-7">
             <div class="centrer">

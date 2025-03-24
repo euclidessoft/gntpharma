@@ -1,5 +1,6 @@
 {% extends 'rh.html.twig' %}
 {% block title %} {{ "Tous les employes"|trans }} - GNT Pharma {% endblock %}
+{% block administration %}active{% endblock %}
 {% block employe %}active{% endblock %}
 {% block all_employe %}active{% endblock %}
 {% block body %}
@@ -67,7 +68,7 @@
                     {{ employe.poste ? employe.poste.departement.nom: '' }}
                 </td>
                 <td data-label="{{ 'Action'|trans }}" class="text-center">
-                    <a href="{{ path('employe_edit', {'id': employe.id}) }}" class="btn btn-green mb-1 mr-2"
+                    <a href="{{ path('employe_show', {'id': employe.id}) }}" class="btn btn-green mb-1 mr-2"
                        title="{{ "Voir"|trans }}">
                         <i class="fa fa-eye"></i>
                     </a>
