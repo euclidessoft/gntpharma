@@ -42,7 +42,6 @@
                             <td>{{ produit.reference }}</td>
                             <td>{{ produit.desigantion }}</td>
                             <td>
-
                                 <!-- Button trigger modal -->
                                 <button type="button"
                                         class="btn btn-success" {# {% if produit.id in inlist %} disabled {% endif %}" #}
@@ -50,7 +49,6 @@
                                        id="btn{{ produit.id }}" {# onclick="fournisseur({{ produit.id }})"#}>
                                     <i class="fa fa-plus"></i> {{ 'Ajouter'|trans }}
                                 </button>
-
                                 <!-- Modal -->
                                 <div class="modal fade" id="modal{{ produit.id }}" tabindex="-1" role="dialog"
                                      aria-labelledby="exampleModalLabel" aria-hidden="true">
