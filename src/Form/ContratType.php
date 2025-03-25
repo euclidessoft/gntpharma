@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Contrat;
 use App\Entity\Employe;
+use App\Entity\TypeContrat;
+use Dom\Entity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,16 +26,9 @@ class ContratType extends AbstractType
                 'placeholder' => 'Choisissez l\'employé',
                 'required' => true,
             ])
-            ->add('type', ChoiceType::class, [
-                'choices' => [
-                    'CDI (Contrat à Durée Indéterminée)' => 'CDI',
-                    'CDD (Contrat à Durée Déterminée)' => 'CDD',
-                    'Stage' => 'Stage',
-                    'Intérim' => 'Interim',
-                    'Freelance' => 'Freelance',
-                    'Apprentissage' => 'Apprentissage',
-                    'Consultant' => 'Consultant',
-                ],
+            ->add('typeContrat',EntityType::class, [
+                'class' => TypeContrat::class,
+                'choice_label' => 'type',
                 'placeholder' => 'Sélectionner un type de contrat',
             ])
             ->add('dateDebut',DateType::class, [

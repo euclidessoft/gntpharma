@@ -52,6 +52,11 @@ class Contrat
      */
     private $createdAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeContrat::class, inversedBy="contrats")
+     */
+    private $typecontrat;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +142,18 @@ class Contrat
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getTypecontrat(): ?TypeContrat
+    {
+        return $this->typecontrat;
+    }
+
+    public function setTypecontrat(?TypeContrat $typecontrat): self
+    {
+        $this->typecontrat = $typecontrat;
 
         return $this;
     }

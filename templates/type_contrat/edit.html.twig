@@ -1,16 +1,16 @@
 {% extends 'rh.html.twig' %}
 {% block administration %}active{% endblock %}
-{% block contrat %}active{% endblock %}
+{% block type_contrat %}active{% endblock %}
 {% block body %}
 
 
     <div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
         <h4 class="mb-5">
             <i class="fa fa-plus mr-2"></i>
-            {{ 'Modifier le contrat'|trans }}
+            {{ 'Modifier le type de contrat'|trans }}
         </h4>
 
-        {{ include('contrat/admin/_form.html.twig', {'button_label': 'Update'}) }}
+        {{ include('type_contrat/_form.html.twig', {'button_label': 'Update'}) }}
 
         <div class="col-md-3 offset-md-3 mt-4 pt-3 fond-7">
             <div class="centrer">
@@ -21,7 +21,7 @@
                     {{ 'Enregistrer'|trans }}
                 </button>
 
-                <a id="{{ contrat.id }}" onclick="load({{ contrat.id }})" href="{{ path('contrat_index') }}"
+                <a id="{{ type_contrat.id }}" onclick="load({{ type_contrat.id }})" href="{{ path('type_contrat_index') }}"
                    class="btn btn-success-light btn-normal mb-3">
                     <i class="fa fa-undo"></i>
                     {{ 'Retour'|trans }}
