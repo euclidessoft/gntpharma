@@ -1,6 +1,45 @@
 {% extends 'rh.html.twig' %}
 {% block paie %}active{% endblock %}
 {% block body %}
+
+    <div class="container fond-7 mb-5">
+        <div class="row" style="border-bottom: 2px solid #039c4f;padding-bottom: 10px;">
+            <div class="col-2 p-0">
+                <img src="{{ asset('images/gnt.png') }}" alt="Logo" class="w-100">
+            </div>
+            <div class="col-10 text-center mt-2">
+                <div class="row">
+                    <div class="col-12 titre text-center text-green">
+                        GNT PHARMA
+                    </div>
+                    <div class="col-12 text">
+                        Montée Éleveur Immeuble Sainte Marie
+                        <br>
+                        BP : 3582 Yaoundé – Cameroun, NGOUSSO
+                    </div>
+                    <div class="col-12 text">
+                        +237 69 71 49 4 12 / +237 67 52 47 865
+                    </div>
+                    <div class="col-12 text">
+                        info@gntpharma-cameroun.com / www.gnt-pharma.com
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h3 class="text-center text-uppercase font-weight-bold mt-5">
+            Bulletin de Paie
+        </h3>
+        <small>
+
+        </small>
+
+
+    </div>
+
+
+
+
+
     <div class="container mt-5 p-4 border rounded shadow-sm bg-white">
         <h2 class="text-center text-uppercase font-weight-bold mb-4">Détails du Bulletin de Paie</h2>
         <h4 class="text-center mb-5">{{ employe.nom }} {{ employe.prenom }}</h4>
@@ -15,7 +54,8 @@
                         <p><strong>Matricule :</strong> {{ employe.matricule }}</p>
                         <p><strong>Poste :</strong> {{ employe.poste.nom }}</p>
                         <p><strong>Département :</strong> {{ employe.poste.departement.nom }}</p>
-                        <p><strong>Salaire de base :</strong> {{ employe.poste.salaire|number_format(0, '', ' ') }} FCFA</p>
+                        <p><strong>Salaire de base :</strong> {{ employe.poste.salaire|number_format(0, '', ' ') }} FCFA
+                        </p>
                     </div>
                 </div>
 
@@ -72,14 +112,17 @@
                     <h5 class="font-weight-bold">Récapitulatif</h5>
                     <p><strong>Salaire brut :</strong> {{ salaireBrut|number_format(0, '', ' ') }} FCFA</p>
                     <p><strong>Total des primes :</strong> {{ totalPrimes|number_format(0, '', ' ') }} FCFA</p>
-                    <p><strong>Total des heures supplémentaires :</strong> {{ totalHeuresSup|number_format(0, '', ' ') }} FCFA</p>
+                    <p><strong>Total des heures supplémentaires
+                            :</strong> {{ totalHeuresSup|number_format(0, '', ' ') }} FCFA</p>
                     <p><strong>Total des retenues :</strong> {{ totalRetenues|number_format(0, '', ' ') }} FCFA</p>
-                    <p class="h4 text-success font-weight-bold">Net à payer : {{ salaireNet|number_format(0, '', ' ') }} FCFA</p>
+                    <p class="h4 text-success font-weight-bold">Net à payer : {{ salaireNet|number_format(0, '', ' ') }}
+                        FCFA</p>
                 </div>
 
                 <div class="d-flex justify-content-center mt-4">
                     {% if paieExistante == null %}
-                        <a href="{{ path('paie_valider', {'id': employe.id }) }}" class="btn btn-success btn-lg">Valider</a>
+                        <a href="{{ path('paie_valider', {'id': employe.id }) }}"
+                           class="btn btn-success btn-lg">Valider</a>
                     {% else %}
                         <a href="{{ path('paie_index') }}" class="btn btn-secondary btn-lg mr-2">Retour</a>
                         <a href="#" class="btn btn-primary btn-lg">Imprimer</a>
