@@ -92,6 +92,8 @@ class PaieService
                 'heureSup' => $heureSup,
                 'retenues' => $retenues,
                 'impot' => $impot,
+                'startMonth' => $startOfMonth,
+                'endMonth' => $endOfMonth,
             ];
         }
 

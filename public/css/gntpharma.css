@@ -712,8 +712,12 @@ td[data-label="colspan"] {
 
 .titre {
     font-size: 30px;
-    font-weight: bold;
+    font-weight: 900;
     text-transform: uppercase;
+}
+
+.modal-backdrop.show {
+    display: none;
 }
 
 .coupon {

@@ -75,12 +75,12 @@ class ContratController extends AbstractController
             $form = $this->createForm(ContratType::class, $contrat);
             $form->handleRequest($request);
             $employe = $contrat->getEmploye();
+
             if ($employe && $employe->getContrat()) {
-                // Si l'employé a déjà un contrat, rediriger vers le formulaire d'édition
                 $this->addFlash('notice', 'Cet employé a déjà un contrat en cours. Vous pouvez le modifier.');
                 return $this->redirectToRoute('contrat_new');
-
             }
+            
             if ($form->isSubmitted() && $form->isValid()) {
                 $entityManager = $this->getDoctrine()->getManager();
 

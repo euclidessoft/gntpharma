@@ -12,17 +12,11 @@
 
 <div class="row">
     <div class="col-12 mb-4">
-        {{ form_row(form.employe, {'attr': {'placeholder': 'Sélectionnez l\'employé *'}, 'label': false}) }}
+        {{ form_row(form.type, {'attr': {'placeholder': 'Entrez le type de contrat *'}, 'label': false}) }}
     </div>
 
     <div class="col-12 mb-4">
-        {{ form_row(form.typeContrat, {'attr': {'placeholder': 'Sélectionnez le type de contrat *'}, 'label': false}) }}
-    </div>
-    <div class="col-12 mb-4">
-        {{ form_row(form.dateDebut, {'attr': {'tittle': 'Date debut contrat ... *'}, 'label': false}) }}
-    </div>
-    <div class="col-12 mb-4">
-        {{ form_row(form.dateFin, {'attr': {'tittle': 'Date fin contrat ... '}, 'label': false}) }}
+        {{ form_row(form.contenu, {'attr': {'placeholder': 'Contenu du contrat ... *','rows': 10}, 'label': false}) }}
     </div>
 </div>
 

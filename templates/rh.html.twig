@@ -71,6 +71,13 @@
                                 {{ 'Employés'|trans }}
                             </a>
                         </li>
+                        <li class="dropdown-item" title="{{ 'Contrat'|trans }}">
+                            <a class="nav-link {% block contrat %}{% endblock %}"
+                                href="{{ path('contrat_index') }}">
+                                <i class="fa-solid fa-address-card"></i>
+                                {{ 'Contrat'|trans }}
+                            </a>
+                        </li>
                        {# <li class="dropdown-item" title="{{ 'Performance'|trans }}">
                             <a class="nav-link {% block performance %}{% endblock %}"
                                 href="{{ path('evaluation_index') }}">
