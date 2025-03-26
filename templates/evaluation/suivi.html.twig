@@ -1,8 +1,6 @@
 {% extends 'rh.html.twig' %}
-{% block title %} {{ "Lignes de depenses"|trans }} - GNT Pharma {% endblock %}
-{% block employe %}active{% endblock %}
-{% block formation_index %}active{% endblock %}
-{% block all_formations %}active{% endblock %}
+{% block evaluation %}active{% endblock %}
+{% block performance %}active{% endblock %}
 {% block body %}
 <div class="container mt-5 mb-5 p-5 fond-7">
     <h4 class="text-bold mb-5">
@@ -26,44 +24,41 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link active" href="{{ path('evaluation_suivi') }}">
                 {{'Discipline'|trans}}
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="{{ path('mes_bulletins') }}">
+            <a class="nav-link" href="{{ path('mes_bulletins') }}">
                 {{'Bulletins'|trans}}
             </a>
         </li>
     </ul>
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fa fa-money-bill mr-2"></i>
-        {{ "Bulletins de paies"|trans }}
+        {{ "Liste des evaluations"|trans }}
     </h3>
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>{{('Date paiement '|trans)}}</th>
-                <th>{{('Mois de paiement '|trans)}}</th>
-                <th>{{('Salaire de base'|trans)}}</th>
-                <th>{{('Salaire net'|trans)}}</th>
-                <th>{{('actions'|trans)}}</th>
+                <th>Date d'evaluation</th>
+                <th>Moyenne</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% for bulletin in bulletins %}
+            {% for evaluation in evaluations %}
             <tr>
-                <td data-label="Date paiement">{{ bulletin.date ? bulletin.date|date('d/m/Y') }}</td>
-                <td data-label="Mois de paiement">{{ bulletin.mois.nom }}</td>
-                <td data-label="Salaire de base">{{ bulletin.salaireBase|number_format(0,'',' ') }} FCFA</td>
-                <td data-label="Salaire net">{{ bulletin.salaireNet|number_format(0,'',' ') }} FCFA</td>
-                <td data-label="Actions">
-                    <a href="{{ path('mes_bulletin_details', {'id': bulletin.id}) }}" class="btn btn-success">Details</a>
+
+                <td>{{ evaluation.dateEvaluation ? evaluation.dateEvaluation|date('d/m/Y') : '' }}</td>
+                <td>{{ evaluation.moyenne }}</td>
+                <td>
+                    <a href="{{ path('evaluation_suivi_show', {'id': evaluation.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i>Details</a>
                 </td>
             </tr>
             {% else %}
             <tr>
-                <td colspan="4" class="text-center">Vide</td>
+                <td colspan="4">no records found</td>
             </tr>
             {% endfor %}
         </tbody>

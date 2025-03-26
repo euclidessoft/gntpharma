@@ -64,7 +64,6 @@ class EvaluationController extends AbstractController
 
                 $evaluation->setDateEvaluation($dateEvaluation);
                 $evaluation->setEmploye($employe);
-
                 $totalNotes = 0;
                 $nbNotes = 0;
 
@@ -112,6 +111,31 @@ class EvaluationController extends AbstractController
     }
 
     /**
+     * @Route("/Suivi", name="evaluation_suivi", methods={"GET"})
+     */
+    public function suivi(Security $security): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $employe = $security->getUser();
+            $evaluations = $this->getDoctrine()->getRepository(Evaluation::class)->findBy(['employe' => $employe]);
+            return $this->render('evaluation/suivi.html.twig', [
+                'evaluations' => $evaluations,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
      * @Route("/{id}", name="evaluation_show", methods={"GET"})
      */
     public function show(Evaluation $evaluation): Response
@@ -134,16 +158,13 @@ class EvaluationController extends AbstractController
         }
     }
 
-
     /**
-     * @Route("/Suivi", name="evaluation_suivi", methods={"GET"})
+     * @Route("/Suivi/{id}", name="evaluation_suivi_show", methods={"GET"})
      */
-    public function suivi(Security $security): Response
+    public function suiviShow(Evaluation $evaluation): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
-            $employe = $security->getUser();
-            $evaluation = $this->getDoctrine()->getRepository(Evaluation::class)->findBy(['employe' => $employe]);
-            return $this->render('evaluation/suivi.html.twig', [
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            return $this->render('evaluation/suivishow.html.twig', [
                 'evaluation' => $evaluation,
             ]);
         } else {
@@ -159,7 +180,6 @@ class EvaluationController extends AbstractController
             return $response;
         }
     }
-
 
     /**
      * @Route("/{id}/edit", name="evaluation_edit", methods={"GET","POST"})
