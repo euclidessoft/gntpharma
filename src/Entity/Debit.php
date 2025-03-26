@@ -29,13 +29,6 @@ class Debit
     private $date;
 
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->date = new \Datetime();
-    }
 
     /**
      * @ORM\Column(type="integer")
@@ -66,6 +59,19 @@ class Debit
      * @ORM\ManyToOne(targetEntity=Achat::class)
      */
     private $achat;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=PaieSalaire::class)
+     */
+    private $salaire;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->date = new \Datetime();
+    }
 
 
     public function getId(): ?int
@@ -165,6 +171,18 @@ class Debit
     public function setAchat(?Achat $achat): self
     {
         $this->achat = $achat;
+
+        return $this;
+    }
+
+    public function getSalaire(): ?PaieSalaire
+    {
+        return $this->salaire;
+    }
+
+    public function setSalaire(?PaieSalaire $salaire): self
+    {
+        $this->salaire = $salaire;
 
         return $this;
     }
