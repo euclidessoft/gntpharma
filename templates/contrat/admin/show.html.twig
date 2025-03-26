@@ -2,109 +2,143 @@
 {% block administration %}active{% endblock %}
 {% block contrat %}active{% endblock %}
 {% block body %}
-
-<div class="container mt-4 mb-5 fond-7">
-    <div class="row">
-        <div class="col-lg-12">
-
-            <!-- En-tête -->
-            <div class="text-center mb-4">
-                <img src="{{ asset('images/gntpharma.jpeg') }}" alt="Logo GNT-Pharma" class="img-fluid mb-3" style="max-height:80px;">
-                <h1 class="text-uppercase fw-bold mb-2">CONTRAT DE TRAVAIL</h1>
+<div class="container fond-7 mb-5">
+    <div class="col-lg-8 offset-lg-2">
+        <div class="row" style="border-bottom: 1px solid #039c4f;padding-bottom: 20px;">
+            <div class="col-2">
+                <img src="{{ asset('images/gntpharma.jpeg') }}" alt="Logo" class="w-100">
             </div>
-
-            <!-- Parties contractantes -->
-            <div class="mb-4">
-                <p class="text-center fw-bold fs-5 mb-4">ENTRE :</p>
-
-                <!-- Employeur -->
-                <div class="mb-4">
-                    <p class="fw-bold text-decoration-underline mb-2">D'UNE PART,</p>
-                    <div class="ps-3">
-                        <p class="mb-1"><strong>GNT-PHARMA</strong>,</p>
-                        <p class="mb-1">Société immatriculée au Registre du Commerce sous le N° [RC],</p>
-                        <p class="mb-1">Ayant son siège social à NGOUSSO Montée Éleveur, immeuble Sainte Marie, BP : 3582 Yaoundé – Cameroun,</p>
-                        <p class="mb-1">Représentée par [Nom du représentant légal],</p>
-                        <p class="mb-0">En sa qualité de [Directeur Général], dûment habilité à cet effet,</p>
-                    </div>
-                </div>
-
-                <!-- Employé -->
-                <div class="mb-4">
-                    <p class="fw-bold mb-2">D'AUTRE PART,</p>
-                    <div class="ps-3">
-                        <p class="mb-1">
-                            <strong>
-                                {% if contrat.employe.civilite == 'M' %}
-                                Monsieur
-                                {% elseif contrat.employe.civilite == 'Mme' %}
-                                Madame
-                                {% else %}
-                                Monsieur/Madame
-                                {% endif %}
-                                {{ contrat.employe.prenom }} {{ contrat.employe.nom|upper }},
-                            </strong>
-                        </p>
-                        <p class="mb-1">Né(e) le {{ contrat.employe.dateNaissance|date('d/m/Y') }} à {{ contrat.employe.lieuNaissance }},</p>
-                        <p class="mb-1">Demeurant {{ contrat.employe.adresse }},</p>
-                        <p class="mb-0">Ci-après dénommé(e) « l'Employé(e) ».</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Convention -->
-            <div class="text-center fst-italic fw-bold py-2 mb-4 border-top border-bottom">
-                IL A ÉTÉ CONVENU CE QUI SUIT :
-            </div>
-
-            <!-- Articles du contrat -->
-            <div class="mb-4">
-                <h4 class="fw-bold border-bottom pb-2">ARTICLE 1 - OBJET</h4>
-                <p>Le présent contrat a pour objet d'engager <strong>{{ contrat.employe.prenom }} {{ contrat.employe.nom }}</strong> en qualité de <strong>{{ contrat.employe.poste.nom }}</strong> au sein de la société GNT-Pharma.</p>
+            <div class="col-10 text-center">
                 <div class="row">
-                    <div class="col-12">
-                        <p><strong>Type de contrat :</strong> {{ contrat.typecontrat.type }}</p>
+                    <div class="col-12 titre text-center">
+                        GNT PHARMA
                     </div>
-                    <div class="col-12">
-                        <p><strong>Date de début :</strong> {{ contrat.dateDebut|date('d/m/Y') }}</p>
+                    <div class="col-12 text">
+                        BP : 3582 Yaoundé – Cameroun, NGOUSSO
+                        <br>
+                        Montée Éleveur Immeuble Sainte Marie
                     </div>
-                    <div class="col-12">
-                        <p><strong>Date de fin :</strong> {{ contrat.dateFin ? contrat.dateFin|date('d/m/Y') : 'Indéterminée' }}</p>
+                    <div class="col-12 text">
+                        +237 69 71 49 4 12 / +237 67 52 47 865
                     </div>
-                </div>
-                <p>En contrepartie de ses services, l'employé percevra une rémunération mensuelle brute de <strong>{{ contrat.salaire|number_format(0, ',', ' ') }} FCFA</strong>.</p>
-            </div>
-
-            <div class="mb-4">
-                {{ contrat.typecontrat.contenu|nl2br }}
-            </div>
-
-            <!-- Signatures -->
-            <div class="row mt-5">
-                <div class="col-md-6 text-center">
-                    <div class="p-3">
-                        <p>Fait à Yaoundé, le {{ "now"|date('d/m/Y') }}</p>
-                        <div style="height:45px; border-bottom:1px solid #333; width:70%; margin:10px auto;"></div>
-                        <p class="fw-bold">Pour GNT-Pharma</p>
-                        <p class="text-muted small">Le Directeur Général</p>
-                    </div>
-                </div>
-                <div class="col-md-6 text-center">
-                    <div class="p-3">
-                        <div style="height:80px; border-bottom:1px solid #333; width:70%; margin:10px auto;"></div>
-                        <p class="fw-bold">{{ contrat.employe.prenom }} {{ contrat.employe.nom }}</p>
-                        <p class="text-muted small">L'employé(e)</p>
+                    <div class="col-12 text">
+                        info@gntpharma-cameroun.com / www.gnt-pharma.com
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-    
-    <div class="text-center my-3">
-            <button onclick="window.print()" class="btn btn-success">
-                <i class="fas fa-print me-2"></i>Imprimer le contrat
-            </button>
+<div class="container mt-5 fond-7">
+    <div class="card">
+        <div class="card-header text-white">
+            <h3 class="text-center">
+                Détails du contrat de :
+                {% if contrat.typeContrat.type == "CDD" %}
+                    CONTRAT A DURE DETERMINE
+                {% elseif contrat.typeContrat.type == "CDI" %}
+                    CONTRAT A DURE INDETERMINE
+                {% else %}
+                    {{ contrat.typeContrat.type }}
+                {% endif %}
+            </h3>
         </div>
 
-{% endblock %}
+
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Parties contractantes -->
+                <div class="mb-4">
+                    <p class="text-center fw-bold fs-5 mb-4">ENTRE :</p>
+
+                    <!-- Employeur -->
+                    <div class="mb-4">
+                        <p class="fw-bold text-decoration-underline mb-2">D'UNE PART,</p>
+                        <div class="ps-3">
+                            <p class="mb-1"><strong>GNT-PHARMA</strong>,</p>
+                            <p class="mb-1">Société immatriculée au Registre du Commerce sous le N° [RC],</p>
+                            <p class="mb-1">Ayant son siège social à NGOUSSO Montée Éleveur, immeuble Sainte Marie, BP : 3582 Yaoundé – Cameroun,</p>
+                            <p class="mb-1">Représentée par [Nom du représentant légal],</p>
+                            <p class="mb-0">En sa qualité de [Directeur Général], dûment habilité à cet effet,</p>
+                        </div>
+                    </div>
+
+                    <!-- Employé -->
+                    <div class="mb-4">
+                        <p class="fw-bold mb-2">D'AUTRE PART,</p>
+                        <div class="ps-3">
+                            <p class="mb-1">
+                                <strong>
+                                    {% if contrat.employe.civilite == 'M' %}
+                                    Monsieur
+                                    {% elseif contrat.employe.civilite == 'Mme' %}
+                                    Madame
+                                    {% else %}
+                                    Monsieur/Madame
+                                    {% endif %}
+                                    {{ contrat.employe.prenom }} {{ contrat.employe.nom|upper }},
+                                </strong>
+                            </p>
+                            <p class="mb-1">Né(e) le {{ contrat.employe.dateNaissance|date('d/m/Y') }} à {{ contrat.employe.lieuNaissance }},</p>
+                            <p class="mb-1">Demeurant {{ contrat.employe.adresse }},</p>
+                            <p class="mb-0">Ci-après dénommé(e) « l'Employé(e) ».</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Convention -->
+                <div class="text-center fst-italic fw-bold py-2 mb-4 border-top border-bottom">
+                    IL A ÉTÉ CONVENU CE QUI SUIT :
+                </div>
+
+                <!-- Articles du contrat -->
+                <div class="mb-4">
+                    <h4 class="fw-bold border-bottom pb-2">ARTICLE 1 - OBJET</h4>
+                    <p>Le présent contrat a pour objet d'engager <strong>{{ contrat.employe.prenom }} {{ contrat.employe.nom }}</strong> en qualité de <strong>{{ contrat.employe.poste.nom }}</strong> au sein de la société GNT-Pharma.</p>
+                    <div class="row">
+                        <div class="col-12">
+                            <p><strong>Type de contrat :</strong> {{ contrat.typecontrat.type }}</p>
+                        </div>
+                        <div class="col-12">
+                            <p><strong>Date de début :</strong> {{ contrat.dateDebut|date('d/m/Y') }}</p>
+                        </div>
+                        <div class="col-12">
+                            <p><strong>Date de fin :</strong> {{ contrat.dateFin ? contrat.dateFin|date('d/m/Y') : 'Indéterminée' }}</p>
+                        </div>
+                    </div>
+                    <p>En contrepartie de ses services, l'employé percevra une rémunération mensuelle brute de <strong>{{ contrat.salaire|number_format(0, ',', ' ') }} FCFA</strong>.</p>
+                </div>
+
+                <div class="mb-4">
+                    {{ contrat.typecontrat.contenu|nl2br }}
+                </div>
+
+                <!-- Signatures -->
+                <div class="row mt-5">
+                    <div class="col-md-6 text-center">
+                        <div class="p-3">
+                            <p>Fait à Yaoundé, le {{ "now"|date('d/m/Y') }}</p>
+                            <div style="height:45px; border-bottom:1px solid #333; width:70%; margin:10px auto;"></div>
+                            <p class="fw-bold">Pour GNT-Pharma</p>
+                            <p class="text-muted small">Le Directeur Général</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <div class="p-3">
+                            <div style="height:80px; border-bottom:1px solid #333; width:70%; margin:10px auto;"></div>
+                            <p class="fw-bold">{{ contrat.employe.prenom }} {{ contrat.employe.nom }}</p>
+                            <p class="text-muted small">L'employé(e)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center my-3">
+        <button onclick="window.print()" class="btn btn-success">
+            <i class="fas fa-print me-2"></i>Imprimer le contrat
+        </button>
+    </div>
+
+    {% endblock %}
