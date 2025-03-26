@@ -1,51 +1,57 @@
-{% extends 'admin.html.twig' %}
-{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% extends 'finance.html.twig' %}
+{% block title %} {{ "Fournisseurs"|trans }} - GNT Pharma {% endblock %}
 {% block fournisseur %}active{% endblock %}
 {% block all_fournisseurs %}active{% endblock %}
 {% block body %}
-<div class="container mt-4 fond-7">
-    <h3 class="mt-4 mb-5 text-bold">
-        <i class="fa fa-money-bill mr-2"></i>
-        {{ "Liste des fournisseurs"|trans }}
-    </h3>
-
-
-    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
-        <thead>
+    <div class="container mt-4 fond-7">
+        <h3 class="mt-4 mb-5 text-bold">
+            <i class="fa-solid fa-hospital-user"></i>
+            {{ "Liste des fournisseurs"|trans }}
+        </h3>
+        <a class="btn btn-green mb-5" href="{{ path('fournisseur_new') }}">
+            <i class="fa-solid fa-hospital-user"></i><i class="fa-solid fa-plus"></i>
+            {{ 'Nouveau fournisseur'|trans }}
+        </a>
+        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+            <thead>
             <tr>
-                <th>{{'N Compte'|trans }}</th>
-                <th>{{'Désignation'|trans }}</th>
-                <th>{{'Adresse'|trans }}</th>
-                <th>{{'Email'|trans }}</th>
-                <th>{{'Pays'|trans }}</th>
-                <th>{{'Téléphone'|trans }}</th>
-                <th>{{'actions'|trans }}</th>
+                <th>{{ 'Nº Compte'|trans }}</th>
+                <th>{{ 'Nom'|trans }}</th>
+                <th>{{ 'Adresse'|trans }}</th>
+                <th>{{ 'Email'|trans }}</th>
+                <th>{{ 'Pays'|trans }}</th>
+                <th>{{ 'Téléphone'|trans }}</th>
+                <th>{{ 'Actions'|trans }}</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for fournisseur in fournisseurs %}
-            <tr>
-                <td data-label="Désignation">{{ fournisseur.compte }}</td>
-                <td data-label="Désignation">{{ fournisseur.designation }}</td>
-                <td data-label="Adresse">{{ fournisseur.adresse }}</td>
-                <td data-label="Email">{{ fournisseur.email }}</td>
-                <td data-label="Pays">{{ fournisseur.pays }}</td>
-                <td data-label="Téléphone">{{ fournisseur.telephone }}</td>
-                <td data-label="actions" class="text-nowrap">
-                    <a id="{{ fournisseur.id }}" onclick="load({{ fournisseur.id }})" href="{{ path('fournisseur_show', {'id': fournisseur.id}) }}" title="{{'Voir'|trans}}" class="btn btn-success">
-                    <i class="fa fa-eye"></i>
-                    </a>
-                    <a href="{{ path('fournisseur_edit', {'id': fournisseur.id}) }}" title="{{'Modifier'|trans}}" class="btn btn-success-light">
-                    <i class="fa fa-edit"></i>
-                    </a>            
-                    {{ include('fournisseur/_delete_form.html.twig') }}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for fournisseur in fournisseurs %}
+                <tr>
+                    <td data-label="Nº Compte">{{ fournisseur.compte }}</td>
+                    <td data-label="Nom">{{ fournisseur.designation }}</td>
+                    <td data-label="Adresse">{{ fournisseur.adresse }}</td>
+                    <td data-label="Email">{{ fournisseur.email }}</td>
+                    <td data-label="Pays">{{ fournisseur.pays }}</td>
+                    <td data-label="Téléphone">{{ fournisseur.telephone }}</td>
+                    <td data-label="Actions" class="text-nowrap">
+                        <a id="{{ fournisseur.id }}" onclick="load({{ fournisseur.id }})"
+                           href="{{ path('fournisseur_show', {'id': fournisseur.id}) }}" title="{{ 'Voir details'|trans }}"
+                           class="btn btn-green mr-2">
+                            <i class="fa fa-eye"></i>
+                        </a>
+                        <a href="{{ path('fournisseur_edit', {'id': fournisseur.id}) }}" title="{{ 'Modifier'|trans }}"
+                           class="btn btn-success-light mr-2">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        {{ include('fournisseur/_delete_form.html.twig') }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">Aucun fournisseur enregistré</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

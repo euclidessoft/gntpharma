@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    {{ include('head.html.twig') }}
+
+    <title> {% block title %} GNT Pharma {% endblock %} </title>
+
+    {% block stylesheets %}
+        <link href="{{ asset('DataTables/datatables.css') }}" rel="stylesheet">
+        <link href="{{ asset('fontawesome/css/all.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap-4plus.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/accueil.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/gntpharma.css') }}" rel="stylesheet">
+        <link rel="shortcut icon" href="{{ asset('images/gntpharma.jpeg') }}" type="image/x-icon">
+
+    {% endblock %}
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+
+    <!--[if lt IE 9]>
+    <script src="{{ asset('js/html5shiv.js') }}"></script>
+    <script src="{{ asset('js/respond.min.js') }}"></script>
+    <![endif]-->
+
+</head>
+
+<body {% block facture %} {% endblock %}>
+
+{% block nav %}
+    <nav id="navmenu" class="navmenu">
+        <div class="session">
+            <a id="session" class="navbar-brand text-white m-2" href="{{ path('Accueil') }}">
+                Gnt Pharma
+            </a>
+        </div>
+        <div class="closebtn" id="closebtn" onclick="closeNav()">
+        </div>
+
+        <div id="sidenav" class="sidenav" onclick="openNav()">
+            <ul class="navbar-nav">
+                <li class="nav-item" title="{{ 'Accueil'|trans }}">
+                    <a class="nav-link {% block home %} {% endblock %}" href="{{ path('commande_index') }}">
+                        <div class="icone">
+                            <i class="fas fa-dashboard fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Tableau de bord'|trans }}
+                        </div>
+                    </a>
+                </li>
+
+                <li class="nav-item" title="{{ 'Client'|trans }}">
+                    <a class="nav-link {% block client %} {% endblock %}" href="{{ path('client_index') }}">
+                        <div class="icone">
+                            <i class="fas fa-user-tag fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Client'|trans }}
+                        </div>
+                    </a>
+                </li>
+
+                <li class="nav-item dropright" title="{{ 'Produits'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block produit %} {% endblock %}" href="#" id="produits"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fa-brands fa-product-hunt fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Produits'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="produits">
+                        {# {% if is_granted('ROLE_STOCK') %}
+                             <li class="dropdown-item">
+                                 <a class="nav-link {% block new_produit %}{% endblock %}"
+                                    href="{{ path('produit_new') }}">
+                                     <i class="fa fa-plus"></i>
+                                     {{ 'Nouveau produit'|trans }}
+                                 </a>
+                             </li>
+                         {% endif %}#}
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block all_produits %}{% endblock %}"
+                               href="{{ path('produit_index') }}">
+                                <i class="fas fa-list"></i>
+                                {{ 'Tous les produits'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block arrivage %}{% endblock %}"
+                               href="{{ path('produit_arrivage_admin') }}">
+                                <i class="fas fa-plane-arrival"></i>
+                                {{ 'Arrivage'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block ventes %}{% endblock %}"
+                               href="{{ path('produit_vente_admin') }}">
+                                <i class="fas fa-money-bill-trend-up"></i>
+                                {{ 'Meilleures ventes'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item" title="{{ 'Fournisseur'|trans }}">
+                    <a class="nav-link {% block fournisseur %} {% endblock %}" href="{{ path('fournisseur_index') }}">
+                        <div class="icone">
+                            <i class="fa-solid fa-hospital-user fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Fournisseur'|trans }}
+                        </div>
+                    </a>
+                </li>
+                {#                {% if is_granted('ROLE_STOCK') %}#}
+                <li class="nav-item dropright" title="{{ 'stock'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block stock %}{% endblock %}" href="#" id="stock"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fas fa-warehouse fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Stock'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="stock">
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block etat_stock %}{% endblock %}" href="{{ path('stock_index') }}">
+                                <i class="fas fa-warehouse mr-2"></i>
+                                {{ 'Etat du Stock'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block retour_stock %}{% endblock %}"
+                               href="{{ path('stock_retour_index') }}">
+                                <i class="fas fa-warehouse"></i>
+                                <i class="fas fa-arrow-rotate-left mr-2"></i>
+                                {{ 'Retour Stock'|trans }}
+                            </a>
+                            {#<ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+                                <li class="dropdown-item">
+                                    <a class="nav-link  {% block new_retour %}{% endblock %}"
+                                       href="{{ path('stock_retour') }}">
+                                        <i class="fas fa-arrow-rotate-left"></i>
+                                        <i class="fas fa-plus mr-2"></i>
+                                        {{ 'Nouvelle'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block all_retour %}{% endblock %}"
+                                       href="{{ path('stock_retour_index') }}">
+                                        <i class="fas fa-arrow-rotate-left"></i>
+                                        <i class="fas fa-warehouse fa-list mr-2"></i>
+                                        {{ 'Historique'|trans }}
+                                    </a>
+                                </li>
+                            </ul>#}
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block appro %}{% endblock %}" href="{{ path('stock_historique') }}">
+                                <i class="fas fa-warehouse"></i>
+                                <i class="fa-solid fa-arrows-down-to-line fa-rotate-90"></i>
+                                {{ 'Réapprovisionnement'|trans }}
+                            </a>
+                            {#<ul class="dropdown-submenu" aria-labelledby="reapprovisionnement">
+                                <li class="dropdown-item">
+                                    <a class="nav-link  {% block new_appro %}{% endblock %}"
+                                       href="{{ path('stock_appro_index') }}">
+                                        <i class="fa-solid fa-arrows-down-to-line fa-rotate-90"></i>
+                                        <i class="fas fa-plus mr-2"></i>
+                                        {{ 'Nouvelle'|trans }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link {% block all_appro %}{% endblock %}"
+                                       href="{{ path('stock_historique') }}">
+                                        <i class="fa-solid fa-arrows-down-to-line fa-rotate-90"></i>
+                                        <i class="fas fa-warehouse fa-list mr-2"></i>
+                                        {{ 'Historique'|trans }}
+                                    </a>
+                                </li>
+                            </ul>#}
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropright" title="{{ 'Livraison'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block livraison %}{% endblock %}" href="#" id="stock"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fas fa-truck-fast fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Livraison'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="stock">
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block new_livraison %}{% endblock %}"
+                               href="{{ path('livraison_index') }}">
+                                <i class="fas fa-truck-fast"></i>
+                                <i class="fas fa-truck-fast fa-plus mr-2"></i>
+                                {{ 'Nouvelle'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link  {% block all_livraison %}{% endblock %}"
+                               href="{{ path('livraison_historique') }}">
+                                <i class="fas fa-truck-fast"></i>
+                                <i class="fas fa-truck-fast fa-list mr-2"></i>
+                                {{ 'Historique'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {#                {% endif %}#}
+                <li class="nav-item dropright" title="{{ 'Promotion'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block promotion %}{% endblock %}" href="#" id="promotion"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <div class="icone">
+                            <i class="fas fa-tags fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Promotion'|trans }}
+                        </div>
+                    </a>
+                    <ul class=" dropdown-menu" aria-labelledby="promotion">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block new_promotion %}{% endblock %}"
+                                   href="{{ path('promotion_new') }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    {{ 'Créer une promotion'|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block current_promotion %}{% endblock %}"
+                               href="{{ path('promotion_courante') }}">
+                                <i class="fas fa-tag mr-2"></i>
+                                {{ 'Promotions en cours'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block all_promotion %}{% endblock %}"
+                               href="{{ path('promotion_index') }}">
+                                <i class="fas fa-tags mr-2"></i>
+                                {{ 'Toutes les promotions'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% if is_granted('ROLE_FINANCE') %}
+                    <li class="nav-item dropright" title="{{ 'Commande'|trans }}">
+                        <a class="nav-link dropdown-toggle {% block commande %}{% endblock %}" href="#" id="commande"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <div class="icone">
+                                <i class="fa fa-shopping-cart fa-lg"></i>
+                            </div>
+                            <div class="title">
+                                {{ 'Commande'|trans }}
+                            </div>
+                        </a>
+                        <ul class=" dropdown-menu" aria-labelledby="commande">
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block suivi %}{% endblock %}"
+                                   href="{{ path('commande_panier_suivi') }}">
+                                    <i class="fas fa-shopping-cart mr-2"></i>
+                                    {{ 'Suivi Commande'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block extranet %}{% endblock %}"
+                                   href="{{ path('commande_panier_extranet') }}">
+                                    <i class="fas fa-cart-arrow-down mr-2"></i>
+                                    {{ 'Commandes Extranet'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block allcommande %}{% endblock %}"
+                                   href="{{ path('commande_panier_all_commande') }}">
+                                    <i class="fas fa-list"></i>
+                                    <i class="fas fa-shopping-cart mr-2"></i>
+                                    {{ 'Toutes les Commandes'|trans }}
+                                </a>
+                            </li>
+                            {#<li class="dropdown-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="fas fa-list mr-2"></i>
+                                        {{ 'en preparation'|trans }}
+                                    </a>
+                                </li>#}
+                        </ul>
+                    </li>
+                {% endif %}
+                {% if is_granted('ROLE_FINANCE') %}
+                    <li class="nav-item dropright" title="{{ 'Finance'|trans }}">
+                        <a class="nav-link dropdown-toggle {% block finance %} {% endblock %}" href="#" id="finance"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <div class="icone">
+                                <i class="fa-solid fa-money-bill-transfer fa-lg"></i>
+                            </div>
+                            <div class="title">
+                                {{ 'Finance'|trans }}
+                            </div>
+                        </a>
+                        <ul class=" dropdown-menu" aria-labelledby="finance">
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block journal %}{% endblock %}"
+                                   href="{{ path('finance_index') }}">
+                                    <i class="fa-solid fa-receipt mr-2"></i>
+                                    {{ 'Journal'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block salaire %}{% endblock %}"
+                                   href="{{ path('finance_salaire') }}">
+                                    <i class="fa-solid fa-receipt mr-2"></i>
+                                    {{ 'Paiement Salaire'|trans }}
+                                </a>
+                            </li>
+
+                            <li class="dropdown-item submenu">
+                                <a class="nav-link dropdown-toggle {% block rapport %}{% endblock %}" href="#"
+                                   id="rapports"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa-solid fa-chart-simple"></i>
+                                    {{ 'Rapport'|trans }}
+                                </a>
+                                <ul class="dropdown-submenu" aria-labelledby="rapports">
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block rapport_journaliere %}{% endblock %}"
+                                           href="#" data-toggle="modal" data-target="#rapport">
+                                            <i class="fa-solid fa-chart-simple"></i>
+                                            {{ 'Journalier'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block rapport_date %}{% endblock %}"
+                                           href="{{ path('finance_rapport_date') }}">
+                                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+                                            {{ 'A une date'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block rapport_interval %}{% endblock %}"
+                                           href="{{ path('finance_rapport_interval') }}">
+                                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+                                            {{ 'Dans un interval'|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown-item ">
+                                <a class="nav-link {% block compte %}{% endblock %}"
+                                   href="#">
+                                    <i class="fa-solid fa-file-invoice mr-2"></i>
+                                    {{ 'Plan comptable'|trans }}
+                                </a>
+                            </li>
+
+                            <li class="dropdown-item submenu">
+                                <a class="nav-link dropdown-toggle {% block remboursement %}{% endblock %}" href="#"
+                                   id="remboursement"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                                    {{ 'Remboursements'|trans }}
+                                </a>
+                                <ul class="dropdown-submenu" aria-labelledby="remboursement">
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block choix_remboursement %}{% endblock %}"
+                                           href="{{ path('remboursement_choix') }}">
+                                            <i class="fas fa-money-bill"></i>
+                                            {{ 'Financements'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block remboursement_avoir %}{% endblock %}"
+                                           href="{{ path('remboursement_avoir_index') }}">
+                                            <i class="fa-solid fa-sack-dollar"></i>
+                                            <i class="fas fa-arrow-right"></i>
+                                            {{ 'Avoir'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block all_remboursement %}{% endblock %}"
+                                           href="{{ path('remboursement_index') }}">
+                                            <i class="fa-solid fa-hand-holding-dollar"></i>
+                                            <i class="fas fa-list"></i>
+                                            {{ 'Tous les remboursements'|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown-item submenu">
+                                <a class="nav-link dropdown-toggle {% block transfert %}{% endblock %}" href="#"
+                                   id="transfert"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa-solid fa-money-bill-transfer"></i>
+                                    {{ 'Transfert des fonds'|trans }}
+                                </a>
+                                <ul class="dropdown-submenu" aria-labelledby="transfert">
+
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block caisse_banque %}{% endblock %}"
+                                           href="{{ path('transfert_caisse') }}">
+                                            <i class="fa-solid fa-cash-register"></i>
+                                            <i class="fa-solid fa-landmark"></i>
+                                            {{ 'Caisse => Banque'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block banque_caisse %}{% endblock %}"
+                                           href="{{ path('transfert_banque') }}">
+                                            <i class="fa-solid fa-landmark"></i>
+                                            <i class="fa-solid fa-cash-register"></i>
+                                            {{ 'Banque => Caisse'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block all_transfert %}{% endblock %}"
+                                           href="{{ path('transfert_index') }}">
+                                            <i class="fa-solid fa-money-bill-transfer"></i>
+                                            <i class="fas fa-list"></i>
+                                            {{ 'Tous les transferts'|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block banque %}{% endblock %}" href="{{ path('banque_index') }}"
+                                   id="banque">
+                                    <i class="fa-solid fa-landmark"></i>
+                                    {{ 'Banque'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item submenu">
+                                <a class="nav-link dropdown-toggle {% block financement %}{% endblock %}" href="#"
+                                   id="financement"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-money-bills"></i>
+                                    {{ 'Financement'|trans }}
+                                </a>
+                                <ul class="dropdown-submenu" aria-labelledby="financement">
+                                    <li class="dropdown-item">
+                                        <a class="nav-link  {% block new_financement %}{% endblock %}"
+                                           href="{{ path('financement_choix') }}">
+                                            <i class="fas fa-money-bills"></i>
+                                            <i class="fas fa-plus"></i>
+                                            {{ 'Nouveau financement'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block financement_index %}{% endblock %}"
+                                           href="{{ path('financement_index') }}">
+                                            <i class="fas fa-money-bills"></i>
+                                            <i class="fas fa-money-bills fa-list"></i>
+                                            {{ 'Toutes les financements'|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-item submenu">
+                                <a class="nav-link dropdown-toggle {% block achat %}{% endblock %}" href="#"
+                                   id="paiement_fournisseur"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa-solid fa-hospital-user"></i>
+                                    <i class="fas fa-arrow-right"></i>
+                                    {{ 'Paiement Fournisseur'|trans }}
+                                </a>
+                                <ul class="dropdown-submenu" aria-labelledby="paiement_fournisseur">
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block new_achat %}{% endblock %}"
+                                           href="{{ path('facture_list') }}">
+                                            <i class="fa-solid fa-money-bill"></i>
+                                            <i class="fas fa-warehouse fa-plus"></i>
+                                            {{ 'Factures'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block all_achat %}{% endblock %}"
+                                           href="{{ path('achat_index') }}">
+                                            <i class="fa-solid fa-hospital-user"></i>
+                                            <i class="fas fa-hospital-user fa-list"></i>
+                                            {{ 'Tous les paiements'|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-item submenu">
+                                <a class="nav-link dropdown-toggle {% block depense %}{% endblock %}" href="#"
+                                   id="depense"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-money-bill"></i>
+                                    <i class="fas fa-arrow-right"></i>
+                                    {{ 'Dépense'|trans }}
+                                </a>
+                                <ul class="dropdown-submenu" aria-labelledby="depense">
+
+                                    <li class="dropdown-item">
+                                        <a class="nav-link  {% block new_depense %}{% endblock %}"
+                                           href="{{ path('depense_new') }}">
+                                            <i class="fas fa-money-bill"></i>
+                                            <i class="fas fa-plus"></i>
+                                            {{ 'Créer une dépense'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link {% block all_depense %}{% endblock %}"
+                                           href="{{ path('depense_index') }}">
+                                            <i class="fas fa-money-bill"></i>
+                                            <i class="fas fa-list"></i>
+                                            {{ 'Toutes les dépenses'|trans }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link  {% block all_categories %}{% endblock %}"
+                                           href="{{ path('categorie_index') }}">
+                                            <i class="fas fa-money-check"></i>
+                                            <i class="fas fa-plus"></i>
+                                            {{ 'Lignes de dépense'|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+                <li class="nav-item" title="{{ 'Réclamation'|trans }}">
+                    <a class="nav-link {% block reclamation %} {% endblock %}"
+                       href="{{ path('reclamation_index',{'user':app.user.id}) }}">
+                        <div class="icone">
+                            <i class="fa-solid fa-user-clock fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Réclamation'|trans }}
+                        </div>
+                    </a>
+                </li>
+
+                {% if is_granted('ROLE_FINANCE') %}
+                    <li class="nav-item dropright" title="{{ 'Officine'|trans }}">
+                        <a class="nav-link dropdown-toggle {% block officine %} {% endblock %}" href="#" id="officine"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <div class="icone">
+                                <i class="fas fa-staff-snake fa-lg"></i>
+                            </div>
+                            <div class="title">
+                                {{ 'Officine'|trans }}
+                            </div>
+                        </a>
+                        <ul class=" dropdown-menu" aria-labelledby="officine">
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block new_avoir %}{% endblock %}"
+                                   href="{{ path('avoir_choix') }}">
+                                    <i class="fa-solid fa-sack-dollar"></i>
+                                    <i class="fa fa-plus"></i>
+                                    {{ 'Créer avoir'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block all_avoir %}{% endblock %}"
+                                   href="{{ path('avoir_index') }}">
+                                    <i class="fa-solid fa-sack-dollar"></i>
+                                    {{ 'Tous les avoirs'|trans }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a class="nav-link {% block clients %}{% endblock %}"
+                                   href="{{ path('security_clients') }}">
+                                    <i class="fas fa-users"></i>
+                                    {{ 'Liste des clients'|trans }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+                <li class="nav-item dropright" title="{{ 'Aide'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block aide %}{% endblock %}" href="#" id="Aide"
+                       data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false">
+                        <div class="icone">
+                            <i class="fas fa-question-circle fa-lg"></i>
+                        </div>
+                        <div class="title">
+                            {{ 'Aide'|trans }}
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="Aide">
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block manuel %}{% endblock %}" href="#" target="_blank">
+                                <i class="fas fa-book"></i>
+                                {{ 'Manuel'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block pdf_comptable %}{% endblock %}" href="#" target="_blank">
+                                <i class="fas fa-book"></i>
+                                {{ 'Plan Comptable'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block suggestiongit %}{% endblock %}"
+                               href="{{ path('suggestion_index') }}">
+                                <i class="fas fa-comments"></i>
+                                {{ 'Suggestions'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link {% block bug %}{% endblock %}" href="#">
+                                <i class="fas fa-bug"></i>
+                                {{ 'Signaler un bug'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#about">
+                                <i class="fas fa-check-circle"></i>
+                                {{ 'A propos de l\'application'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="copyright">
+            <span>
+                <a href="#" class="text-green" data-toggle="modal" data-target="#about">
+                    <img class="mr-1" src="{{ asset('images/gnt.png') }}" alt="by Euclides" width="45">
+                    <span class="version text-green">GNT PHARMA v{{ include('version.html.twig') }} <br> &copy; {{ 'now'|date('Y') }}</span>
+                </a>
+            </span>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block topbar %}
+    {{ include('topbar.html.twig') }}
+    {{ include('finance/rapport_journalier.html.twig') }}
+{% endblock %}
+
+
+<div id="main" class="container-fluid main pt-5">
+    {% block body %}
+
+    {% endblock %}
+</div>
+
+{{ include('javascript.html.twig') }}
+{% block scripts %}
+
+{% endblock %}
+</body>
+
+</html>
