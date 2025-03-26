@@ -37,7 +37,7 @@
             <td data-label="Adresse">{{ client.adresse }}</td>
             <td data-label="Statut" class="text-center">{{ "Inactif"|trans }}</td>
             <td data-label="Actions" class="text-center">
-                <a href="#" class="btn btn-success-light mr-2" title="{{ "Modifier"|trans }}">
+                <a href="{{ path('client_edit', {'id': client.id }) }}" class="btn btn-success-light mr-2" title="{{ "Modifier"|trans }}">
                     <i class="fa fa-edit"></i>
                 </a>
                 <button class="btn btn-green" type="button">
