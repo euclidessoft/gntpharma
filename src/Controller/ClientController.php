@@ -75,13 +75,43 @@ class ClientController extends AbstractController
 
                 $this->addFlash('notice', "Compte client crée avec succée");
                 return $this->redirectToRoute("client_index");
-
             }
 
 
             return $this->render('client/new.html.twig', [
                 'form' => $form->createView(),
                 'client' => $client
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/{id}/edit", name="client_edit", methods={"GET","POST"} )
+     */
+    public function edit(Request $request, Client $client): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+
+            $form = $this->createForm(ClientType::class, $client);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
+                $this->addFlash('notice', 'Client modifié avec succès');
+                return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
+            }
+            return $this->render('client/edit.html.twig', [
+                'form' => $form->createView(),
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');

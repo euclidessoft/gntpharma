@@ -82,7 +82,7 @@ class Employe extends User implements UserInterface
     private $famillylink;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
     private $famillyphone;
 
@@ -490,12 +490,12 @@ class Employe extends User implements UserInterface
         return $this;
     }
 
-    public function getFamillyphone(): ?int
+    public function getFamillyphone(): ?string
     {
         return $this->famillyphone;
     }
 
-    public function setFamillyphone(int $famillyphone): self
+    public function setFamillyphone(string $famillyphone): self
     {
         $this->famillyphone = $famillyphone;
 

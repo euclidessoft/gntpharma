@@ -2,15 +2,7 @@
 
 {% block body %}
 <div class="container pt-5 mt-5 fond-7">
-    <div class="mb-4">
-        <h3>Informations sur l'Employé</h3>
-        <p><strong>Matricule :</strong> {{ evaluation.employe.matricule }}</p>
-        <p><strong>Employé:</strong> {{ evaluation.employe.nom }} {{ evaluation.employe.prenom }}</p>
-        <p><strong>Poste:</strong> {{ evaluation.employe.poste.departement.nom }}</p>
-        <p><strong>Poste:</strong> {{ evaluation.employe.poste.nom }}</p>
-        <p><strong>Date d'Évaluation :</strong> {{ evaluation.dateEvaluation ? evaluation.dateEvaluation|date('d/m/Y') : '' }}</p>
-    </div>
-
+    
     <!-- Détails de l'évaluation -->
     <div class="card mb-4">
         <div class="card-header">
@@ -42,7 +34,7 @@
         <h4>Moyenne des notes : {{ evaluation.moyenne ? evaluation.moyenne|number_format(2) : 'Non calculée' }}</h4>
     </div>
     <div class="my-4 text-center">
-        <a href="{{ path('evaluation_index') }}" class="btn btn-success-light">Retour à la liste</a>
+        <a href="{{ path('evaluation_suivi') }}" class="btn btn-success-light">Retour à la liste</a>
     </div>
 </div>
 {% endblock %}

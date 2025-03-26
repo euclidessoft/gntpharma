@@ -5,62 +5,71 @@
 {% block body %}
 {#    {{ include('security/security/profile-info.html.twig') }}#}
 
-    <div class="container mt-5 mb-5 p-5 fond-7">
-        <h4 class="text-bold mb-5">
-            <i class="fa fa-user mr-2"></i>
-            {{ 'Profil utilisateur'|trans }}
-        </h4>
+<div class="container mt-5 mb-5 p-5 fond-7">
+    <h4 class="text-bold mb-5">
+        <i class="fa fa-user mr-2"></i>
+        {{ 'Profil utilisateur'|trans }}
+    </h4>
 
-        <div class="row">
-            {% set employe = app.user %}
-            <div class="col-md-10 pt-5">
-                <p class="">{{ employe.matricule }}</p>
-                <p class="text-bold">{{ employe.prenom }} {{ employe.nom }}</p>
-                <p class="font-italic">{{ employe.poste.nom }}</p>
-                <p class="">{{ employe.poste.departement.nom }}</p>
-            </div>
-            <div class="col-md-2">
-                <img src="{{asset('images/avatar-homme.avif') }}" width="50" alt="Photo" class="rounded-circle" />
-            </div>
+    {#        <div class="row">#}
+    {% for message in app.flashes('notice') %}
+    <div class="col-lg-12 mt-4 alert alert-success alert-dismissible fade show radius-10 shadow-black"
+        role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        {{ message|trans }}
+    </div>
+    {% endfor %}
+
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('security_profile') }}">
+                {{'Informations'|trans }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('security_profile_professionnelle') }}">
+                {{'Professionnelles'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('security_change_password') }}">
+                {{'Securite'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('evaluation_suivi') }}">
+                {{'Discipline'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('mes_bulletins') }}">
+                {{'Bulletins'|trans}}
+            </a>
+        </li>
+    </ul>
+
+
+    <div class="row">
+        {% set employe = app.user %}
+        <div class="col-md-8 pt-5">
+            <p><strong>Nom complet : </strong>{{ employe.prenom }} {{ employe.nom }}</p>
+            <p><strong>Date de naissance : </strong>{{ employe.dateNaissance ? employe.dateNaissance|date('d/m/Y'): ' ' }}</p>
+            <p><strong>Lieu de naissance : </strong>{{ employe.lieuNaissance }}</p>
+            <p><strong>Sexe : </strong>{{ employe.sexe }}</p>
+            <p><strong>Situation Matrimoniale : </strong>{{ employe.civilite }}</p>
+            <p><strong>Nombre d'enfants : </strong>{{ employe.enfant }}</p>
+            <p><strong>Nationalité : </strong>{{ employe.nationalite }}</p>
+            <p><strong>Adresse : </strong>{{ employe.adresse }}</p>
+            <p><strong>Téléphone : </strong>{{ employe.phone }}</p>
+            <p><strong>Email : </strong>{{ employe.email }}</p>
+            <p><strong>Groupe sanguin : </strong>{{ employe.bloodgroup }}</p>
         </div>
-{#        <div class="row">#}
-            {% for message in app.flashes('notice') %}
-                <div class="col-lg-12 mt-4 alert alert-success alert-dismissible fade show radius-10 shadow-black"
-                     role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    {{ message|trans }}
-                </div>
-            {% endfor %}
+        <div class="col-md-4">
+            <img src="{{asset('images/avatar-homme.avif') }}" width="150px" height="150px" alt="employe.nom" class="img-fluid border border-secondary rounded-circle" />
+        </div>
+    </div>
 
-            <ul class="nav nav-tabs mb-4">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">
-                        {{'Informations'|trans }}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        {{'Securite'|trans}}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        {{'Professionnelles'|trans}}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        {{'Discipline'|trans}}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        {{'Bulletins'|trans}}
-                    </a>
-                </li>
-            </ul>
-
-           {# {{ include('security/security/boutons.html.twig') }}
+    {# {{ include('security/security/boutons.html.twig') }}
             <div class="col-lg-3 mt-5 text-center">
                 <img src="{{ asset('images/team_1.avif') }}" alt="" class="w-100 img-fluid rounded">
                 #}{#{% if user.sexe == "Monsieur" %}#}{#
@@ -84,6 +93,6 @@
                     <div class="col-lg-9 ml-n4">{{ user.adresse }}</div>
                 </div>
             </div>#}
-{#        </div>#}
-    </div>
+    {#        </div>#}
+</div>
 {% endblock %}
