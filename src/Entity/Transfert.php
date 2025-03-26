@@ -59,6 +59,8 @@ class Transfert
     public function __construct()
     {
         $this->date = new \Datetime();
+        $this->source = "init";
+        $this->destination = "init";
     }
 
     public function getId(): ?int

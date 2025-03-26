@@ -32,6 +32,11 @@ class PaieSalaire
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $compte;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class PaieSalaire
     public function setUser(?Employe $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCompte(): ?int
+    {
+        return $this->compte;
+    }
+
+    public function setCompte(int $compte): self
+    {
+        $this->compte = $compte;
 
         return $this;
     }
