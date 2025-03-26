@@ -1,39 +1,52 @@
-{% extends 'admin.html.twig' %}
-{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% extends 'finance.html.twig' %}
+{% block title %} {{ "Clients"|trans }} - GNT Pharma {% endblock %}
 {% block client %}active{% endblock %}
 {% block all_client %}active{% endblock %}
 {% block body %}
-    <div class="container-fluid mt-4 fond-7">
-    <h3 class="mt-4 mb-5 text-bold">
+    <div class="container mt-4 fond-7">
+    <h4 class="mt-4 mb-5 text-bold">
         <i class="fa fa-money-bill mr-2"></i>
-        {{ "Listes des employés"|trans }}
-    </h3>
-
+        {{ "Listes des clients"|trans }}
+    </h4>
+    <a class="btn btn-green mb-5" href="{{ path('client_new') }}">
+        <i class="fa-solid fa-user-tag"></i><i class="fa-solid fa-plus"></i>
+        {{ 'Nouveau client'|trans }}
+    </a>
 
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
         <tr>
-            <th>{{ 'Prénom'|trans }}</th>
+            <th>{{ 'Nº Compte'|trans }}</th>
             <th>{{ 'Nom'|trans }}</th>
+            <th>{{ 'Prénom'|trans }}</th>
             <th>{{ 'Téléphone'|trans }}</th>
             <th>{{ 'Email'|trans }}</th>
             <th>{{ 'Adresse'|trans }}</th>
-            <!-- <th>{{ 'actions'|trans }}</th> -->
+            <th class="text-center">{{ 'Statut'|trans }}</th>
+            <th class="text-center">{{ 'Actions'|trans }}</th>
         </tr>
         </thead>
         <tbody>
         {% for client in client %}
             <tr>
-            <td>{{ client.prenom }}</td>
-            <td>{{ client.nom }}</td>
-            <td>{{ client.phone }}</td>
-            <td>{{ client.email }}</td>
-            <td>{{ client.adresse }}</td>
-
-            <!-- <td>action</td> -->
+            <td data-label="Nº Compte">{{ client.compte }}</td>
+            <td data-label="Nom">{{ client.nom }}</td>
+            <td data-label="Prénom">{{ client.prenom }}</td>
+            <td data-label="Téléphone">{{ client.phone }}</td>
+            <td data-label="Email">{{ client.email }}</td>
+            <td data-label="Adresse">{{ client.adresse }}</td>
+            <td data-label="Statut" class="text-center">{{ "Inactif"|trans }}</td>
+            <td data-label="Actions" class="text-center">
+                <a href="#" class="btn btn-success-light mr-2" title="{{ "Modifier"|trans }}">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <button class="btn btn-green" type="button">
+                    <i class="fa fa-user-check"></i>
+                </button>
+            </td>
         {% else %}
             <tr>
-                <td colspan="11">no records found</td>
+                <td colspan="7" class="text-center">Aucun client enregistré</td>
             </tr>
         {% endfor %}
         </tbody>

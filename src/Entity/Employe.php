@@ -250,6 +250,11 @@ class Employe extends User implements UserInterface
      */
     private $sursalaire;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PaieSalaire::class, mappedBy="employe")
+     */
+    private $paieSalaires;
+
 
     public function __construct()
     {
@@ -279,6 +284,7 @@ class Employe extends User implements UserInterface
         $this->notifications = new ArrayCollection();
         $this->noteServices = new ArrayCollection();
         $this->noteService = new ArrayCollection();
+        $this->paieSalaires = new ArrayCollection();
     }
 
 
@@ -1201,6 +1207,36 @@ class Employe extends User implements UserInterface
     public function setSursalaire(int $sursalaire): self
     {
         $this->sursalaire = $sursalaire;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PaieSalaire[]
+     */
+    public function getPaieSalaires(): Collection
+    {
+        return $this->paieSalaires;
+    }
+
+    public function addPaieSalaire(PaieSalaire $paieSalaire): self
+    {
+        if (!$this->paieSalaires->contains($paieSalaire)) {
+            $this->paieSalaires[] = $paieSalaire;
+            $paieSalaire->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removePaieSalaire(PaieSalaire $paieSalaire): self
+    {
+        if ($this->paieSalaires->removeElement($paieSalaire)) {
+            // set the owning side to null (unless already changed)
+            if ($paieSalaire->getEmploye() === $this) {
+                $paieSalaire->setEmploye(null);
+            }
+        }
 
         return $this;
     }

@@ -1,8 +1,8 @@
 {{ form_start(form, {'attr': {'id': 'form'}}) }}
 
 <div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
-    <h4 class="mb-3">
-        <i class="fa-brands fa-product-hunt mr-2"></i><i class="fa fa-plus mr-2"></i>
+    <h4 class="mb-5">
+        <i class="fa-solid fa-hospital-user"></i><i class="fa fa-plus"></i>
         {{ 'Nouveau fournisseur'|trans }}
     </h4>
 
@@ -18,7 +18,7 @@
     <div class="row">
  
         <div class="col-12 mb-4">
-            {{ form_row(form.designation, {'attr': {'placeholder': 'Désignation fournisseur*'}, 'label': false}) }}
+            {{ form_row(form.designation, {'attr': {'placeholder': 'Nom fournisseur*'}, 'label': false}) }}
         </div>
 
         <div class="col-12 mb-4">

@@ -88,6 +88,7 @@ class Paie
     {
         $this->retenues = new ArrayCollection();
         $this->date = new \DateTime();
+        $this->payer = false;
     }
 
     public function getId(): ?int
