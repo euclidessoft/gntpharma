@@ -1748,6 +1748,90 @@ class FinanceController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/payerTous", name="payerTous", methods={"POST"})
+     */
+    public function payertous(PaieRepository $paieRepository, Solde $solde, Request $request): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $montant = $request->get('montant');
+            $banque = $entityManager->getRepository(Banque::class)->find($request->get('banque'));
+
+            $solde = $solde->montantbanque($entityManager, $banque->getCompte());
+
+            if ($montant <= $solde) {
+                $paies = $paieRepository->findBy(['payer' => false]);
+                foreach ($paies as $paie) {
+                    $debit = new Debit();
+                    $ecriture = new Ecriture();
+
+
+                    $paieSalaire = new PaieSalaire();
+                    $paieSalaire->setUser($this->getUser());
+                    $paieSalaire->setMontant($paie->getSalaireNet());
+                    $paieSalaire->setEmploye($paie->getEmploye());
+                    $paieSalaire->setCompte($banque->getCompte());
+                    $entityManager->persist($paieSalaire);
+                    $paie->setPayer(true);
+                    $paie->setDatepaye(new \DateTime());
+
+
+                    $debit->setCompte($banque->getCompte());
+                    $debit->setType('Banque');
+
+                    $ecriture->setType('Banque');
+                    $ecriture->setComptecredit("6441");
+                    $ecriture->setComptedebit($banque->getCompte());
+
+
+                    $debit->setSalaire($paieSalaire);
+                    $debit->setMontant($paie->getSalaireNet());
+
+                    $ecriture->setDebit($debit);
+                    $ecriture->setSolde(-$paie->getSalaireNet());
+                    $ecriture->setMontant($paie->getSalaireNet());
+                    $ecriture->setLibelle("Paiement de salaire");
+
+                    $entityManager->persist($paie);
+                    $entityManager->persist($banque);
+                    $entityManager->persist($debit);
+                    $entityManager->persist($ecriture);
+                    $entityManager->flush();
+
+                }
+                $this->addFlash('notice', 'Paiement effectué avec succès');
+//                    return $this->redirectToRoute('depense_index', [], Response::HTTP_SEE_OTHER);
+            } else {
+                $this->addFlash('notice', 'Montant non disponible');
+            }
+
+
+
+
+            $res['id'] = 'ok';
+
+
+            $response = new Response();
+            $response->headers->set('content-type', 'application/json');
+            $re = json_encode($res);
+            $response->setContent($re);
+            return $response;
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
 
 
 }
