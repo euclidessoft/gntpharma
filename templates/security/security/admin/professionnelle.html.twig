@@ -1,0 +1,46 @@
+{% extends 'rh.html.twig' %}
+{% block body %}
+<div class="container mt-5 mb-5 p-5 fond-7">
+    <h4 class="text-bold mb-5">
+        <i class="fa fa-user mr-2"></i>
+        {{ 'Profil utilisateur'|trans }}
+    </h4>
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('security_profile') }}">
+                {{'Informations'|trans }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ ('security_profile_professionnelle') }}">
+                {{'Professionnelles'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('security_change_password') }}">
+                {{'Securite'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('evaluation_suivi') }}">
+                {{'Discipline'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('mes_bulletins') }}">
+                {{'Bulletins'|trans}}
+            </a>
+        </li>
+    </ul>
+    <div class="row">
+        {% set employe = app.user %}
+        <div class="col-md-8 pt-5">
+            <p><strong>Matricule : </strong>{{ employe.matricule }}</p>
+            <p><strong>Date d'embauche : </strong>{{ employe.hireDate ? employe.hireDate|date('d/m/Y'): ' ' }}</p>
+            <p><strong>Poste : </strong>{{ employe.poste.nom }}</p>
+            <p><strong>Departement : </strong>{{ employe.poste.departement.nom }}</p>
+            <p><strong>Niveau d'accés : </strong>{{ employe.fonction }}</p>
+            <p><strong>Salaire : </strong>{{ employe.poste.salaire }} FCFA</p>
+        </div>
+    </div>
+    {% endblock %}

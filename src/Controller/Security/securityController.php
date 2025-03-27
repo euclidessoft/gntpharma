@@ -175,6 +175,47 @@ class securityController extends AbstractController
     }
 
     /**
+     * @Route("/profile/professionnelles", name="security_profile_professionnelle")
+     */
+    public function Professionnelles(SessionInterface $session)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+            $panier = $session->get("panier", []);
+            $response = $this->render('security/security/profile.html.twig', [
+                'user' => $this->getUser(),
+                'panier' => $panier,
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
+
+            $response = $this->render('security/security/admin/professionnelle.html.twig', [
+                'user' => $this->getUser(),
+            ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        } else {
+            $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
+            return $this->redirectToRoute('security_login');
+        }
+    }
+
+
+    /**
      * @Route("/edit_profile", name="security_profile_edit")
      */
     public function edit(SessionInterface $session, Request $request)

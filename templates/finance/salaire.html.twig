@@ -32,7 +32,7 @@
             </thead>
             <tbody>
             {% set montant = 0 %}
-            {% for paie in paie %}
+            {% for paie in paies %}
                 <tr id="tr{{ paie.id }}">
                     <td>{{ paie.employe.matricule }}</td>
                     <td>{{ paie.employe.nom }} {{ paie.employe.prenom }}</td>
@@ -59,17 +59,19 @@
                                     </div>
                                     <div class="modal-body px-5">
                                         <div class="mt-4">
-                                            {{ 'Mois à payer'|trans }}
                                             <label for="{#mois{{ mois.id }}#}"></label>
-                                            <select class="form-control" id="{#mois{{ mois.id }}#}">
-
-
+                                            <select class="form-control" id="banque{{ paie.id }}">
+                                                <option value="0">Selectionnez une banque</option>
+                                                {% for banque in banques  %}
+                                                <option value="{{ banque.id }}">{{ banque.nom }}</option>
+                                                {% else %}
+                                                {% endfor %}
                                             </select>
                                         </div>
 
                                     </div>
                                     <div class="modal-footer px-5 py-4">
-                                        <button type="button" class="btn btn-green mr-3" id="{#ajouter{{ paie.id }}#}"
+                                        <button type="button" class="btn btn-green mr-3"  id="valider{{ paie.id }}"
                                                 onclick="payerOne({{ paie.id }})">
                                             <i class="fa fa-save"></i>
                                             {{ 'Valider'|trans }}
@@ -95,10 +97,12 @@
             <tr>
                 <th colspan="6" class="text-center">
                     {{ 'Montant total'|trans }} : {{ montant|number_format(0, '' , ' ') }} FCFA
+                    {% if paies|length > 1 %}
                     <button type="button" class="btn btn-green" data-toggle="modal" data-target="#modal_tous" id="tous">
                         <i class="fa fa-plus"></i>
                         {{ 'Payer tous'|trans }}
                     </button>
+                    {% endif %}
                     <!-- Modal -->
                     <div class="modal fade" id="modal_tous" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -114,17 +118,20 @@
                                 </div>
                                 <div class="modal-body px-5">
                                     <div class="mt-4">
-                                        {{ 'Mois à payer'|trans }}
                                         <label for="{#mois{{ mois.id }}#}"></label>
                                         <select class="form-control" id="{#mois{{ mois.id }}#}">
-
+                                            <option>Selectionnez une banque</option>
+                                            {% for banque in banques  %}
+                                                <option value="{{ banque.id }}">{{ banque.nom }}</option>
+                                            {% else %}
+                                            {% endfor %}
 
                                         </select>
                                     </div>
 
                                 </div>
                                 <div class="modal-footer px-5 py-4">
-                                    <button type="button" class="btn btn-green mr-3" id="{#ajouter{{ paie.id }}#}"
+                                    <button type="button" class="btn btn-green mr-3"
                                             onclick="payerTous()">
                                         <i class="fa fa-save"></i>
                                         {{ 'Valider'|trans }}
@@ -147,23 +154,28 @@
     {% block scripts %}
         <script>
             function payerOne(id) {
-                if (confirm("{{ 'Voulez-vous vraiement effetuer le paiement' }}")) {
-                    $("#btn" + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ path('finance_payer') }}",
-                        data: "paie=" + id,
-                        success: function (data) {
-                            if (data['id'] == 'ok') {
-                                document.location.href = "{{ path('finance_salaire') }}";
+                var banque = $("#banque"+id+" option:selected");
+                if(banque.val() != "0") {
+                    if (confirm("{{ 'Voulez-vous vraiement effetuer le paiement' }}")) {
+                        $("#btn" + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                        $("#valider" + id).html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ path('finance_payer') }}",
+                            data: { paie : id, banque : banque.val() },
+                            success: function (data) {
+                                if (data['id'] == 'ok') {
+                                    $("#annuler" + id).trigger('click');
+                                    document.location.href = "{{ path('finance_salaire') }}";
 
+                                }
+                            },
+                            error: function () {
+                                alert('{{ "La requête n'a pas abouti"|trans }}');
                             }
-                        },
-                        error: function () {
-                            alert('{{ "La requête n'a pas abouti"|trans }}');
-                        }
-                    });
-                }
+                        });
+                    }
+                }else alert("{{ 'Selectionnez une banque'|trans }}");
 
             }
 

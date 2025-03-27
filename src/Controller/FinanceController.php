@@ -7,6 +7,7 @@ use App\Entity\Banque;
 use App\Entity\Debit;
 use App\Entity\Ecriture;
 use App\Entity\Paie;
+use App\Entity\PaieSalaire;
 use App\Repository\EcritureRepository;
 use App\Repository\PaieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -1651,7 +1652,8 @@ class FinanceController extends AbstractController
         if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
             $paie = $paieRepository->findBy(['payer' => false]);
             return $this->render('finance/salaire.html.twig', [
-                'paie' => $paie,
+                'paies' => $paie,
+                'banques' => $this->getDoctrine()->getRepository(Banque::class)->findAll(),
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -1670,58 +1672,59 @@ class FinanceController extends AbstractController
     /**
      * @Route("/payer", name="payer", methods={"POST"})
      */
-    public function payer(PaieRepository $paieRepository, Solde $solde): Response
+    public function payer(PaieRepository $paieRepository, Solde $solde, Request $request): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
             $debit = new Debit();
             $ecriture = new Ecriture();
-                $entityManager = $this->getDoctrine()->getManager();
-                $depense->setUser($this->getUser());
-                $montant = 0;
-                if ($depense->getType() == 'Espece') {
-                    $montant = $solde->montantcaisse($entityManager, 54);
-                    $depense->setCompte($depense->getCategorie()->getCompte());
+            $entityManager = $this->getDoctrine()->getManager();
+            $paie = $paieRepository->find($request->get('paie'));
+            $banque = $entityManager->getRepository(Banque::class)->find($request->get('banque'));
+            $montant = 0;
 
-                    $debit->setType('Espece');
-                    $debit->setCompte(54);
+            $montant = $solde->montantbanque($entityManager, $banque->getCompte());
 
-                    $ecriture->setType('Espece');
-                    $ecriture->setComptecredit($depense->getCategorie()->getCompte());
-                    $ecriture->setComptedebit(54);
-                } else {
-                    $montant = $solde->montantbanque($entityManager, $depense->getBanque()->getCompte());
-                    $depense->setType('Banque');
-                    $depense->setCompte($depense->getCategorie()->getCompte());
+            if ($paie->getSalaireNet() <= $montant) {
+            $paieSalaire = new PaieSalaire();
+            $paieSalaire->setUser($this->getUser());
+            $paieSalaire->setMontant($paie->getSalaireNet());
+            $paieSalaire->setEmploye($paie->getEmploye());
+            $paieSalaire->setCompte($banque->getCompte());
+            $entityManager->persist($paieSalaire);
+            $paie->setPayer(true);
+            $paie->setDatepaye(new \DateTime());
 
-                    $debit->setType('Banque');
-                    $debit->setCompte($depense->getBanque()->getCompte());
 
-                    $ecriture->setType('Banque');
-                    $ecriture->setComptecredit($depense->getCategorie()->getCompte());
-                    $ecriture->setComptedebit($depense->getBanque()->getCompte());
-                }
-                if ($depense->getMontant() <= $montant) {
-                    $debit->setDepense($depense);
-                    $debit->setMontant($depense->getMontant());
+            $debit->setCompte($banque->getCompte());
+            $debit->setType('Banque');
+
+            $ecriture->setType('Banque');
+            $ecriture->setComptecredit("6441");
+            $ecriture->setComptedebit($banque->getCompte());
+
+
+                    $debit->setSalaire($paieSalaire);
+                    $debit->setMontant($paie->getSalaireNet());
 
                     $ecriture->setDebit($debit);
-                    $ecriture->setSolde(-$depense->getMontant());
-                    $ecriture->setMontant($depense->getMontant());
-                    $ecriture->setLibelle($depense->getLibelle());
+                    $ecriture->setSolde(-$paie->getSalaireNet());
+                    $ecriture->setMontant($paie->getSalaireNet());
+                    $ecriture->setLibelle("Paiement de salaire");
 
-                    $entityManager->persist($depense);
+                    $entityManager->persist($paie);
+                    $entityManager->persist($banque);
                     $entityManager->persist($debit);
                     $entityManager->persist($ecriture);
                     $entityManager->flush();
+                $this->addFlash('notice', 'Paiement effectué avec succès');
 
-                    return $this->redirectToRoute('depense_index', [], Response::HTTP_SEE_OTHER);
+//                    return $this->redirectToRoute('depense_index', [], Response::HTTP_SEE_OTHER);
                 } else {
                     $this->addFlash('notice', 'Montant non disponible');
                 }
 
 
 
-           $this->addFlash('notice', 'Paiement effectué avec succès');
 
             $res['id'] = 'ok';
 

@@ -89,7 +89,6 @@ class TransfertController extends AbstractController
                 $this->addFlash('notice', 'Montant disponible '.$montant);
             }
         }
-
         return $this->render('transfert/caisse.html.twig', [
             'transfert' => $transfert,
             'form' => $form->createView(),

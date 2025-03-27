@@ -4,10 +4,6 @@
 {% block all_client %}active{% endblock %}
 {% block body %}
     <div class="container mt-4 fond-7">
-        <h4 class="mt-4 mb-5 text-bold">
-            <i class="fa fa-money-bill mr-2"></i>
-            {{ "Listes des clients"|trans }}
-        </h4>
         {% for message in app.flashes('notice') %}
             <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black mb-5">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
