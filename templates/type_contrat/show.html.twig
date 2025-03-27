@@ -18,6 +18,13 @@
                     </div>
                 </div>
             </div>
+            <div class="text-center">
+                <a id="{{ type_contrat.id }}" onclick="load({{ type_contrat.id }})" href="{{ path('type_contrat_index') }}"
+                    class="btn btn-success-light btn-normal mb-3">
+                    <i class="fa fa-undo"></i>
+                    {{ 'Retour'|trans }}
+                </a>
+            </div>
         </div>
     </div>
 </div>
