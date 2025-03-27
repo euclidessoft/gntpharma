@@ -94,6 +94,14 @@
                                                 </a>
                                             </div>
                                         {% endif %}
+                                        {% if is_granted('ROLE_RH') %}
+                                            <div class="mt-2">
+                                                <a href="{{ path('security_clients') }}">
+                                                    <i class="fa-solid fa-user-tag"></i>
+                                                    {{ 'Gestion clients'|trans }}
+                                                </a>
+                                            </div>
+                                        {% endif %}
                                         <div class="mt-2">
                                             <a href="{{ path('security_logout') }}" data-toggle="modal"
                                                data-target="#logout">

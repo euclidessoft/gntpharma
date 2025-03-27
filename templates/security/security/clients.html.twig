@@ -3,7 +3,7 @@
 {% block ag %} class="btn btn-primary mt-3" {% endblock %}
 
 {% block body %}
-    <div class="container-fluid mt-4 mb-4 p-4 fond-7">
+    <div class="container mt-4 mb-4 p-4 fond-7">
         <h3 class="text-bold">
             <i class="fa fa-user mr-2"></i>
             {{ 'Listes des clients'|trans }}
@@ -26,62 +26,60 @@
                         <th>
                             {{ 'Nom et Prénom'|trans }}
                         </th>
-                        <th class="text-center">
+                        <th>
                             {{ 'Téléphone'|trans }}
                         </th>
-                        <th class="text-center">
+                        <th>
                             {{ 'Email'|trans }}
                         </th>
-                        {% if is_granted("ROLE_ADMIN") %}
-                            <th>
-                                {{ 'Actions'|trans }}
-                            </th>
-                        {% endif %}
+                        <th class="text-center">
+                            {{ 'Statut'|trans }}
+                        </th>
+                        <th class="text-center">
+                            {{ 'Actions'|trans }}
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for user in users %}
                     {% if user != app.user %}
                     <tr>
-                        <td data-label="{{ 'Prénom'|trans }}">
-                            <b> <a href="{{ path('security_user', { user : user.id }) }}">
-                                    {{ user.nom|upper }} {{ user.prenom }}
-                                </a></b>
+                        <td data-label="{{ 'Nom et Prénom'|trans }}">
+                            {{ user.nom|upper }} {{ user.prenom }}
                         </td>
-                        <td data-label="{{ 'Téléphone'|trans }}" class="phone">
-                            <b> <a href="{{ path('security_user', { user : user.id }) }}">
-                                    {{ user.phone }}
-                                </a></b>
+                        <td data-label="{{ 'Téléphone'|trans }}">
+                            {{ user.phone }}
                         </td>
-                        <td data-label="{{ 'email'|trans }}" class="phone">
-                            <b> <a href="{{ path('security_user', { user : user.id }) }}">
-                                    {{ user.email }}
-                                </a></b>
+                        <td data-label="{{ 'email'|trans }}">
+                            {{ user.email }}
                         </td>
-                        {% if is_granted("ROLE_ADMIN") %}
-                            <td>
-                                <button class="btn btn-normal btn-danger mb-2 mr-2 l-5" onclick="del({{ user.id }})"
-                                        id="btn">
-                                    <i class="fa fa-trash"></i>
-                                    {{ 'Supprimer'|trans }}
+                        <td data-label="Statut" class="text-center" id="statut">
+                            {% if user.enabled == 1 %}
+                                {{ "Actif"|trans }}
+                            {% else %}
+                                {{ "Inactif"|trans }}
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {#<button class="btn btn-normal btn-danger mb-2 mr-2 l-5" onclick="del({{ user.id }})"
+                                    id="btn">
+                                <i class="fa fa-trash"></i>
+                                {{ 'Supprimer'|trans }}
+                            </button>#}
+
+                            {% if user.enabled == 1 %}
+                                <button class="btn btn-danger" id="btn{{ user.id }}" onclick="userdisable({{ user.id }})">
+                                    <i class="fa fa-user-lock"></i>
+                                    {{ 'Désactiver'|trans }}
                                 </button>
+                            {% else %}
+                                <button class="btn btn-green" id="btn{{ user.id }}" onclick="userenable({{ user.id }})">
+                                    <i class="fa fa-user-check"></i>
+                                    {{ 'Activer'|trans }}
+                                </button>
+                            {% endif %}
 
-                                {% if user.enabled == 1 %}
-                                    <button class="btn btn-shadow btn-normal mb-2 btn-warning" id="btn{{ user.id }}"
-                                            onclick="userdisable({{ user.id }})">
-                                        <i class="fa fa-user-lock"></i>
-                                        {{ 'Désactiver'|trans }}
-                                    </button>
-                                {% else %}
-                                    <button class="btn btn-shadow btn-normal mb-2 btn-success" id="btn{{ user.id }}"
-                                            onclick="userenable({{ user.id }})">
-                                        <i class="fa fa-lock-open"></i>
-                                        {{ 'Activer'|trans }}
-                                    </button>
-                                {% endif %}
-
-                            </td>
-                        {% endif %}
+                        </td>
                         {% endif %}
 
                         {% endfor %}
@@ -91,6 +89,81 @@
         </div>
     </div>
     {% block scripts %}
+        <script>
+            function userdisable(id) {
+                let bouton = $('#btn' + id);
+                let etat = $('#statut');
+                if (confirm("{{ 'Voulez-vous vraiment désactiver ce client ?'|trans }}")) {
+                    bouton.html("<i class='fa fa-spinner'></i>");
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('security_user_disable') }}",
+                        data: "usr=" + id,
+                        success: function (data) {
+                            if (data['ok'] !== '') {
+                                bouton.attr('class', 'btn btn-green');
+                                bouton.attr('onclick', 'userenable(' + id + ')');
+                                bouton.attr('title', ' {{ "Activer"|trans }}');
+                                bouton.html("<i class='fa fa-user-check'></i>{{ 'Activer'|trans }}");
+                                etat.html("{{ 'Inactif'|trans }}");
+                            }
+                        },
+                        error: function () {
+                            alert('{{ "La requête n'a pas abouti"|trans }}');
+                        }
+                    });
+                }
+            }
+
+            function userenable(id) {
+                let bouton = $('#btn' + id);
+                let etat = $('#statut');
+                if (confirm("{{ 'Voulez-vous vraiment activer ce client ?'|trans }}")) {
+                    bouton.html("<i class='fa fa-spinner'></i>");
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('security_user_enable') }}",
+                        data: "usr=" + id,
+                        success: function (data) {
+                            if (data['ok'] !== '') {
+                                bouton.attr('class', 'btn btn-danger');
+                                bouton.attr('onclick', 'userdisable(' + id + ')');
+                                bouton.attr('title', ' {{ "Désactiver"|trans }}');
+                                bouton.html("<i class='fa fa-user-lock'></i>{{ 'Désactiver'|trans }}");
+                                etat.html("{{ 'Actif'|trans }}");
+                            }
+                        },
+                        error: function () {
+                            alert('{{ "La requête n'a pas abouti"|trans }}');
+                        }
+                    });
+                }
+
+            }
+
+            function del(id) {
+                if (confirm("{{ 'Voulez-vous vraiment supprimer ce client ?'|trans }}")) {
+                    $('#btn' + id).html("<i class='fa fa-spinner'></i>");
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('security_user_delete') }}",
+                        data: "usr=" + id,
+                        success: function (data) {
+                            if (data['ok'] !== '') {
+                                document.location.href = data['ok'];
+                            }
+                        },
+                        error: function () {
+                            alert('{{ "La requête n'a pas abouti"|trans }}');
+                        }
+                    });
+                }
+
+            }
+
+        </script>
+    {% endblock %}
+    {#{% block scripts %}
         <script>
             function userdisable(id) {
                 if (confirm("{{ 'Voulez-vous vraiment désactiver cet utilisateur ?'|trans }}")) {
@@ -103,7 +176,7 @@
                             if (data['ok'] != '') {
                                 $('#btn' + id).attr('class', 'btn btn-shadow btn-td btn-normal btn-success');
                                 $('#btn' + id).attr('onclick', 'userenable(' + id + ')');
-                                $('#btn' + id).html("<i class='fa fa-lock-open'></i> {{ 'Activer'|trans }}");
+                                $('#btn' + id).html("<i class='fa fa-user-tag'></i> {{ 'Activer'|trans }}");
                             }
                         },
                         error: function () {
@@ -157,5 +230,5 @@
             }
 
         </script>
-    {% endblock %}
+    {% endblock %}#}
 {% endblock %}
