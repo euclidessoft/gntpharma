@@ -44,14 +44,15 @@
         </tbody>
     </table>
 
-    <div class="col-md-4 offset-md-3 mt-4 py-3 fond-7">
+    <div class="col-md-6 offset-md-3 mt-4 py-3 fond-7">
         <div class="centrer">
-{#            <a class="btn btn-success mr-3" href="{{ path('produit_edit', {'id': produit.id}) }}">#}
-{#                <i class="fa fa-edit"></i> Modifier</a>#}
-            <a id="{{ produit.id }}" onclick="load({{ produit.id }})" class="btn btn-success-light text-green" href="{{ path('produit_index') }}">
+            <a id="{{ produit.id }}" onclick="load({{ produit.id }})" class="btn btn-success-light text-green mr-3" href="{{ path('produit_index') }}">
                 <i class="fa fa-undo"></i>
                 {{ 'Retour'|trans }}
             </a>
+            <a class="btn btn-success mr-3" href="{{ path('produit_edit', {'id': produit.id}) }}">
+                <i class="fa fa-edit"></i> Modifier</a>
+            {{ include('produit/admin/_delete_form.html.twig') }}
         </div>
     </div>
 
@@ -65,17 +66,17 @@
 
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
-        <tr>
-            <th>{{'Désignation'|trans }}</th>
-            <th>{{'Adresse'|trans }}</th>
-            <th>{{'Email'|trans }}</th>
-            <th>{{'Pays'|trans }}</th>
-            <th>{{'Téléphone'|trans }}</th>
-            <th>{{'actions'|trans }}</th>
-        </tr>
+            <tr>
+                <th>{{'Désignation'|trans }}</th>
+                <th>{{'Adresse'|trans }}</th>
+                <th>{{'Email'|trans }}</th>
+                <th>{{'Pays'|trans }}</th>
+                <th>{{'Téléphone'|trans }}</th>
+                <th>{{'actions'|trans }}</th>
+            </tr>
         </thead>
         <tbody>
-        {% for fournisseur in produit.fournisseurs %}
+            {% for fournisseur in produit.fournisseurs %}
             <tr>
                 <td data-label="Désignation">{{ fournisseur.designation }}</td>
                 <td data-label="Adresse">{{ fournisseur.adresse }}</td>
@@ -88,11 +89,11 @@
                     </a>
                 </td>
             </tr>
-        {% else %}
+            {% else %}
             <tr>
                 <td colspan="8">no records found</td>
             </tr>
-        {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
 

@@ -129,10 +129,17 @@
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Demande d\'explication'|trans }}">
+                            <a class="nav-link {% block explications %}{% endblock %}"
+                                href="{{ path('demande_index') }}">
+                                <i class="fa-solid fa-user-plus"></i>
+                                {{ 'Demande d\'explication'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item" title="{{ 'Demande d\'explication'|trans }}">
                             <a class="nav-link {% block explication %}{% endblock %}"
                                 href="{{ path('demande_explication_index') }}">
                                 <i class="fa-solid fa-user-pen"></i>
-                                {{ 'Demande d\'explication'|trans }}
+                                {{ 'Mes demandes d\'explication'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Sanctions'|trans }}">
