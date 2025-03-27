@@ -94,8 +94,9 @@ class RemboursementController extends AbstractController
 
                     $ecriture->setType('Espece');
                     $ecriture->setComptedebit('54');
+                    $ecriture->setLibellecomptedebit("Caisse");
                     $ecriture->setComptecredit($remboursement->getFinancement()->getCompte());
-
+                    $ecriture->setLibeellecomptecredit($remboursement->getFinancement()->getLibellecompte());
 
 
             }else{
@@ -108,7 +109,9 @@ class RemboursementController extends AbstractController
 
                     $ecriture->setType('Banque');
                     $ecriture->setComptedebit($remboursement->getBanque()->getCompte());
+                    $ecriture->setLibellecomptedebit($remboursement->getBanque()->getNom());
                     $ecriture->setComptecredit($remboursement->getFinancement()->getCompte());
+                    $ecriture->setLibellecomptecredit($remboursement->getFinancement()->getLibellecompte());
 
                 }
 
@@ -196,7 +199,9 @@ class RemboursementController extends AbstractController
 
             $ecriture->setType('Banque');
             $ecriture->setComptedebit($remboursement->getFinancement()->getBanque()->getCompte());
+            $ecriture->setLibellecomptedebit($remboursement->getFinancement()->getBanque()->getNom());
             $ecriture->setComptecredit($remboursement->getFinancement()->getCompte());
+            $ecriture->setLibellecomptecredit($remboursement->getFinancement()->getLibellecompte());
             $ecriture->setDebit($debit);
             $ecriture->setLibelle($remboursement->getLibele());
             $ecriture->setSolde(-$remboursement->getMontant());
@@ -204,7 +209,9 @@ class RemboursementController extends AbstractController
 
             $ecritureinteret->setType('Banque');
             $ecritureinteret->setComptedebit($remboursement->getFinancement()->getBanque()->getCompte());
+            $ecritureinteret->setLibellecomptedebit($remboursement->getFinancement()->getBanque()->getNom());
             $ecritureinteret->setComptecredit($remboursement->getFinancement()->getCompteinteret());
+            $ecritureinteret->setLibellecomptecredit("Intérêts des emprunts et dettes");
             $ecritureinteret->setDebit($debitinteret);
             $ecritureinteret->setLibelle('interet'. $remboursement->getLibele());
             $ecritureinteret->setSolde(-$totalinteret);
@@ -262,7 +269,9 @@ class RemboursementController extends AbstractController
 
                 $ecriture->setType('Espece');
                 $ecriture->setComptedebit('54');
+                $ecriture->setLibellecomptedebit('Caisse');
                 $ecriture->setComptecredit($avoir->getClient()->getCompte());
+                $ecriture->setLibellecomptecredit("Compte Client");
 
 
 
@@ -275,8 +284,9 @@ class RemboursementController extends AbstractController
                 $debit->setCompte($remboursement->getBanque()->getCompte());
 
                 $ecriture->setType('Banque');
-                $ecriture->setComptedebit($remboursement->getBanque()->getCompte());
+                $ecriture->setLibellecomptedebit($remboursement->getBanque()->getNom());
                 $ecriture->setComptecredit($avoir->getClient()->getCompte());
+                $ecriture->setLibellecomptecredit("Compte Client");
 
             }
 

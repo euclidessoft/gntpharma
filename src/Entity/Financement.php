@@ -99,6 +99,11 @@ class Financement
      */
     private $compteinteret;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $libellecompte;
+
 
     /**
      * Set motif
@@ -295,6 +300,18 @@ class Financement
     public function setCompteinteret(int $compteinteret): self
     {
         $this->compteinteret = $compteinteret;
+
+        return $this;
+    }
+
+    public function getLibellecompte(): ?string
+    {
+        return $this->libellecompte;
+    }
+
+    public function setLibellecompte(?string $libellecompte): self
+    {
+        $this->libellecompte = $libellecompte;
 
         return $this;
     }

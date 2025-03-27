@@ -62,6 +62,16 @@ class Ecriture
      */
     private $montant;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $libellecomptedebit;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $libellecomptecredit;
+
 
     /**
      * Constructor
@@ -180,6 +190,30 @@ class Ecriture
     public function setMontant(int $montant): self
     {
         $this->montant = $montant;
+
+        return $this;
+    }
+
+    public function getLibellecomptedebit(): ?string
+    {
+        return $this->libellecomptedebit;
+    }
+
+    public function setLibellecomptedebit(?string $libellecomptedebit): self
+    {
+        $this->libellecomptedebit = $libellecomptedebit;
+
+        return $this;
+    }
+
+    public function getLibellecomptecredit(): ?string
+    {
+        return $this->libellecomptecredit;
+    }
+
+    public function setLibellecomptecredit(?string $libellecomptecredit): self
+    {
+        $this->libellecomptecredit = $libellecomptecredit;
 
         return $this;
     }
