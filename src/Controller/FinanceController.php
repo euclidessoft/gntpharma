@@ -1699,8 +1699,10 @@ class FinanceController extends AbstractController
             $debit->setType('Banque');
 
             $ecriture->setType('Banque');
-            $ecriture->setComptecredit("6441");
+            $ecriture->setComptecredit("641");
+            $ecriture->setLibellecomptecredit("Salaire Personnel");
             $ecriture->setComptedebit($banque->getCompte());
+            $ecriture->setLibellecomptedebit($banque->getCompte()->getNom());
 
 
                     $debit->setSalaire($paieSalaire);
@@ -1782,8 +1784,10 @@ class FinanceController extends AbstractController
                     $debit->setType('Banque');
 
                     $ecriture->setType('Banque');
-                    $ecriture->setComptecredit("6441");
+                    $ecriture->setComptecredit("641");
+                    $ecriture->setLibellecomptecredit("Salaire Personnel");
                     $ecriture->setComptedebit($banque->getCompte());
+                    $ecriture->setLibellecomptedebit($banque->getCompte()->getNom());
 
 
                     $debit->setSalaire($paieSalaire);
