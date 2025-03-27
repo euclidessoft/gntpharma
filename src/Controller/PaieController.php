@@ -138,11 +138,13 @@ class PaieController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $startOfMonth = new \DateTime('01-' . date('m') . '-' . date('Y'));
         $endOfMonth = new \DateTime('last day of this month');
+        $mois = $entityManager->getRepository(Mois::class)->find(date('m'));
 
-        $employes = $entityManager->getRepository(Employe::class)->findAll();
+        $employes = $entityManager->getRepository(Employe::class)->findBy(['status' => true]);
         foreach ($employes as $employe) {
             $salaireDeBase = $employe->getPoste()->getSalaire();
             $salaireJournaliere = $salaireDeBase / 30;
+            $impot = $salaireDeBase * 0.01;
 
             $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
             $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
@@ -186,11 +188,12 @@ class PaieController extends AbstractController
             $paie = new Paie();
             $paie->setSalaireBase($salaireDeBase);
             $paie->setEmploye($employe);
-            $paie->setMois(new \DateTime());
+            $paie->setMois($mois);
             $paie->setTotalPrime($totalPrimes);
             $paie->setTotalheureSup($totalHeureSup);
             $paie->setTotalRetenue($totalRetenue);
             $paie->setSalaireNet($salaireNet);
+            $paie->setImpot($impot);
             $paie->setDetailsRetenues(json_encode($detailsRetenues));
             $entityManager->persist($paie);
         }

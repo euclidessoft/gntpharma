@@ -86,9 +86,19 @@ class ApprovisionnementController extends AbstractController
     public function historique(ApprovisionnerRepository $repository): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_STOCK')) {
-            return $this->render('approvisionnement/historique.html.twig', [
+
+            $response = $this->render('approvisionnement/historique.html.twig', [
                 'approvisionnements' => $repository->findAll(),
             ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_login');
             $response->setSharedMaxAge(0);
