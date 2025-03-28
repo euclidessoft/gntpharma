@@ -76,21 +76,6 @@ class NoteServiceController extends AbstractController
     }
 
     /**
-     * @Route("/SuiviNote", name="note_service_suivi", methods={"GET"})
-     */
-    public function suiviNote(Security $security,NoteServiceRepository $noteServiceRepository): Response
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $employe = $security->getUser();
-        $noteService = $noteServiceRepository->findNotesByEmployes($employe);
-
-        return $this->render('note_service/suivi.html.twig', [
-            'note_services' => $noteService,
-        ]);
-    }
-
-
-    /**
      * @Route("/{id}", name="note_service_show", methods={"GET"})
      */
     public function show(NoteService $noteService): Response

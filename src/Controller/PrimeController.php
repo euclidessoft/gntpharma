@@ -44,7 +44,7 @@ class PrimeController extends AbstractController
      */
     public function suivi(Security $security): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
             $entityManager = $this->getDoctrine()->getManager();
             $employe = $security->getUser();
             $primes = $entityManager->getRepository(Prime::class)->findBy(['employe' => $employe]);
