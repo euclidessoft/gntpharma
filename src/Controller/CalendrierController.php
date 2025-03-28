@@ -47,7 +47,6 @@ class CalendrierController extends AbstractController
             $calendrier = new Calendrier();
             $form = $this->createForm(CalendrierType::class, $calendrier);
             $form->handleRequest($request);
-
             if ($form->isSubmitted() && $form->isValid()) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($calendrier);

@@ -38,7 +38,9 @@
             <tbody>
                 {% for employe in employes %}
                 <tr>
-                    <td><input type="checkbox" name="employes[]" value="{{ employe.id }}" class="employe_checkbox"></td>
+                    <td>
+                        <input type="checkbox" name="employes[]" value="{{ employe.id }}" class="employe_checkbox">
+                    </td>
                     <td>{{ employe.nom }}</td>
                     <td>{{ employe.prenom }}</td>
                     <td>{{ employe.phone }}</td>
@@ -55,7 +57,7 @@
 
         {% if employes|length > 0 %}
         <button type="submit" class="btn btn-success">
-            {{ 'Attribuer les employés sélectionnés'|trans }}
+            {{ 'Attribuer'|trans }}
         </button>
         {% else %}
         <div class="col-md-4 offset-md-3 mt-4 py-3 fond-7">

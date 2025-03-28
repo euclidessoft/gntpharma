@@ -37,7 +37,7 @@
                     {{ 'Enregistrer'|trans }}
                 </button>
 
-                <a id="{{ produit.id }}" onclick="load({{ produit.id }})" href="{{ path('produit_index') }}" class="btn btn-success-light btn-normal mb-3">
+                <a id="{{ produit.id }}" onclick="load({{ produit.id }})" href="{{ path('produit_show',{'id': produit.id } ) }}" class="btn btn-success-light btn-normal mb-3">
                     <i class="fa fa-undo"></i>
                     {{ 'Retour'|trans }}
                 </a>

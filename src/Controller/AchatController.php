@@ -90,7 +90,9 @@ class AchatController extends AbstractController
 
                 $ecriture->setType('Espece');
                 $ecriture->setComptecredit($achat->getFournisseur()->getCompte());
+                $ecriture->setLibellecomptecredit($achat->getFournisseur()->getNom());
                 $ecriture->setComptedebit(54);
+                $ecriture->setLibellecomptedebit("Caisse");
             }
             else{
                 $montant = $solde->montantbanque($entityManager, $achat->getBanque()->getCompte());//sole compte
@@ -103,7 +105,9 @@ class AchatController extends AbstractController
 
                 $ecriture->setType('Banque');
                 $ecriture->setComptecredit($achat->getFournisseur()->getCompte());
+                $ecriture->setLibellecomptecredit("Fournisseur");
                 $ecriture->setComptedebit($achat->getBanque()->getCompte());
+                $ecriture->setLibelleComptedebit($achat->getBanque()->getNom());
             }
             if($achat->getMontant() <= $montant) {
                 $debit->setAchat($achat);
@@ -113,7 +117,7 @@ class AchatController extends AbstractController
                 $ecriture->setDebit($debit);
                 $ecriture->setSolde(-$achat->getMontant());
                 $ecriture->setMontant($achat->getMontant());
-                $ecriture->setLibelle('paiement approvisionnement '. $facture->getApprovisionner()->getId());
+                $ecriture->setLibelle('Achat chez '. $achat->getFournisseur()->getDesignation());
                 $entityManager->persist($achat);
                 $entityManager->persist($debit);
                 $entityManager->persist($ecriture);

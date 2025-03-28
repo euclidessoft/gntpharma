@@ -40,11 +40,6 @@ class NoteService
     private $dateFin;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $status;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Employe::class, inversedBy="noteServices")
      */
     private $responsable;
@@ -108,18 +103,6 @@ class NoteService
     public function setDateFin(?\DateTimeInterface $dateFin): self
     {
         $this->dateFin = $dateFin;
-
-        return $this;
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
 
         return $this;
     }

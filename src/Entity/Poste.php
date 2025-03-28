@@ -6,6 +6,7 @@ use App\Repository\PosteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PosteRepository::class)
@@ -21,16 +22,19 @@ class Poste
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message= "Champ obligatoire")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotBlank(message= "Champ obligatoire")
      */
     private $description;
 
     /**
      * @ORM\OneToMany(targetEntity=Employe::class, mappedBy="poste")
+     * @Assert\NotBlank(message= "Champ obligatoire")
      */
     private $employes;
 
@@ -46,6 +50,7 @@ class Poste
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message= "Champ obligatoire")
      */
     private $salaire;
 

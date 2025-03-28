@@ -79,7 +79,7 @@
                         <th class="text-center"> {{ 'Nº'|trans }}</th>
                         <th class="text-center"> {{ 'Date'|trans }}</th>
                         <th>{{ 'Compte'|trans }}</th>
-                        <th>{{ 'Référence'|trans }}</th>
+{#                        <th>{{ 'Référence'|trans }}</th>#}
                         <th>{{ 'Libellé'|trans }}</th>
                         <th class="text-center">{{ 'Débit'|trans }}</th>
                         <th class="text-center">{{ 'Crédit'|trans }}</th>
@@ -107,27 +107,27 @@
                                             {% set first = 1 %}
                                         {% endif %}
                                     </td>
-                                    <td data-label="{{ 'Compte'|trans }}" class="credit">
-                                        <a href="{{ path('finance_journal_compte',{ 'compte': ecriture.comptedebit  }) }}">
-                                        {#                                    {{ ecriture.debit ? ecriture.comptecredit : '' }}#}
-                                        {{ ecriture.credit ? ecriture.comptedebit : '' }}
+                                    <td data-label="{{ 'Débit'|trans }}">
+                                        <a href="{{ path('finance_journal_compte',{ 'compte': ecriture.comptecredit  }) }}">
+                                            {#                                    {{ ecriture.debit ? ecriture.comptedebit : '' }}#}
+                                            {{ ecriture.credit ? ecriture.comptecredit~" - "~ ecriture.libellecomptecredit : '' }}
                                         </a>
                                     </td>
-                                    <td data-label="{{ 'Référence'|trans }}">
+                                    {#                                    <td data-label="{{ 'Référence'|trans }}">#}
 
-                                    </td>
+                                    {#                                    </td>#}
                                     <td data-label="{{ 'Libellé'|trans }}">
-                                        {#                                    {{ ecriture.debit ? ecriture.libelle : '' }}#}
-                                        {{ ecriture.credit ? ecriture.libelle : '' }}
+                                        {#                                        {{ ecriture.debit ? ecriture.libelle : '' }}#}
+                                                                                {{ ecriture.credit ? ecriture.libelle : '' }}
 
                                     </td>
                                     <td data-label="{{ 'Crédit'|trans }}" class="text-right">
-                                        {#                                                                        {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
-                                        {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
+                                        {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
+                                        {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}
                                     </td>
                                     <td data-label="{{ 'Débit'|trans }}" class="text-right">
                                         {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
-                                        {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}
+                                        {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
 
                                     </td>
                                     {#                                <td data-label="{{ 'solde'|trans }}"  class="text-center">#}
@@ -145,27 +145,27 @@
                                             {% set first = 1 %}
                                         {% endif %}
                                     </td>
-                                    <td data-label="{{ 'Débit'|trans }}">
-                                        <a href="{{ path('finance_journal_compte',{ 'compte': ecriture.comptecredit  }) }}">
-                                        {#                                    {{ ecriture.debit ? ecriture.comptedebit : '' }}#}
-                                        {{ ecriture.credit ? ecriture.comptecredit : '' }}
+                                    <td data-label="{{ 'Compte'|trans }}" class="credit">
+                                        <a href="{{ path('finance_journal_compte',{ 'compte': ecriture.comptedebit  }) }}">
+                                        {#                                    {{ ecriture.debit ? ecriture.comptecredit : '' }}#}
+                                        {{ ecriture.credit ? ecriture.comptedebit~" - "~ ecriture.libellecomptedebit : '' }}
                                         </a>
                                     </td>
-                                    <td data-label="{{ 'Référence'|trans }}">
+{#                                    <td data-label="{{ 'Référence'|trans }}">#}
 
-                                    </td>
+{#                                    </td>#}
                                     <td data-label="{{ 'Libellé'|trans }}">
-{#                                        {{ ecriture.debit ? ecriture.libelle : '' }}#}
-{#                                        {{ ecriture.credit ? ecriture.libelle : '' }}#}
+                                        {#                                    {{ ecriture.debit ? ecriture.libelle : '' }}#}
+                                        {{ ecriture.credit ? ecriture.libelle : '' }}
 
                                     </td>
                                     <td data-label="{{ 'Crédit'|trans }}" class="text-right">
-                                        {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
-                                        {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}
+                                        {#                                                                        {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
+                                        {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                     </td>
                                     <td data-label="{{ 'Débit'|trans }}" class="text-right">
                                         {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
-                                        {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
+                                        {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}
 
                                     </td>
                                     {#                                <td data-label="{{ 'solde'|trans }}"  class="text-center">#}
@@ -187,27 +187,27 @@
                                             {% set first = 1 %}
                                         {% endif %}
                                     </td>
-                                    <td data-label="{{ 'Compte'|trans }}" class="credit">
-                                        <a href="{{ path('finance_journal_compte',{ 'compte': ecriture.comptedebit  }) }}">
-                                        {{ ecriture.debit ? ecriture.comptedebit : '' }}
-                                        {#                                    {{ ecriture.credit ? ecriture.comptedebit : '' }}#}
+                                    <td data-label="{{ 'Débit'|trans }}" class="credit">
+                                        <a href="{{ path('finance_journal_compte',{ 'compte': ecriture.comptecredit  }) }}">
+
+                                            {{ ecriture.debit ? ecriture.comptecredit~" - "~ ecriture.libellecomptecredit : '' }}
+                                            {#                                    {{ ecriture.credit ? ecriture.comptecredit : '' }}#}
                                         </a>
-
                                     </td>
-                                    <td data-label="{{ 'Référence'|trans }}">
+{#                                    <td data-label="{{ 'Référence'|trans }}">#}
 
-                                    </td>
+{#                                    </td>#}
                                     <td data-label="{{ 'Libellé'|trans }}">
-                                        {{ ecriture.debit ? ecriture.libelle : '' }}
+                                                                                {{ ecriture.debit ? ecriture.libelle : '' }}
                                         {#                                    {{ ecriture.credit ? ecriture.libelle : '' }}#}
 
                                     </td>
                                     <td data-label="{{ 'Crédit'|trans }}" class="text-right">
-                                        {#                                                                        {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
+                                        {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}
                                         {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                     </td>
                                     <td data-label="{{ 'Débit'|trans }}" class="text-right">
-                                        {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}
+                                        {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                         {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
 
                                     </td>
@@ -226,27 +226,27 @@
                                             {% set first = 1 %}
                                         {% endif %}
                                     </td>
-                                    <td data-label="{{ 'Débit'|trans }}" class="credit">
-                                        <a href="{{ path('finance_journal_compte',{ 'compte': ecriture.comptecredit  }) }}">
-
-                                        {{ ecriture.debit ? ecriture.comptecredit : '' }}
-                                        {#                                    {{ ecriture.credit ? ecriture.comptecredit : '' }}#}
+                                    <td data-label="{{ 'Compte'|trans }}" class="credit">
+                                        <a href="{{ path('finance_journal_compte',{ 'compte': ecriture.comptedebit  }) }}">
+                                        {{ ecriture.debit ? ecriture.comptedebit ~" - "~ ecriture.libellecomptedebit : '' }}
+                                        {#                                    {{ ecriture.credit ? ecriture.comptedebit : '' }}#}
                                         </a>
-                                    </td>
-                                    <td data-label="{{ 'Référence'|trans }}">
 
                                     </td>
+{#                                    <td data-label="{{ 'Référence'|trans }}">#}
+
+{#                                    </td>#}
                                     <td data-label="{{ 'Libellé'|trans }}">
-{#                                        {{ ecriture.debit ? ecriture.libelle : '' }}#}
+                                        {{ ecriture.debit ? ecriture.libelle : '' }}
                                         {#                                    {{ ecriture.credit ? ecriture.libelle : '' }}#}
 
                                     </td>
                                     <td data-label="{{ 'Crédit'|trans }}" class="text-right">
-                                        {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}
+                                        {#                                                                        {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                         {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
                                     </td>
                                     <td data-label="{{ 'Débit'|trans }}" class="text-right">
-                                        {#                                    {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
+                                        {{ ecriture.debit ? ecriture.montant|number_format(0, '', ' ') : '' }}
                                         {#                                    {{ ecriture.credit ? ecriture.montant|number_format(0, '', ' ') : '' }}#}
 
                                     </td>

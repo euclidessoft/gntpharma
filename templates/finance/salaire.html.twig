@@ -105,6 +105,7 @@
             <tr>
                 <th colspan="6" class="text-center">
                     {{ 'Montant total'|trans }} : {{ montant|number_format(0, '' , ' ') }} FCFA
+                    <input type="hidden" value="{{ montant }}" id="montant"/>
                     {% if paies|length > 1 %}
                     <button type="button" class="btn btn-green" data-toggle="modal" data-target="#modal_tous" id="tous">
                         <i class="fa fa-plus"></i>
@@ -127,8 +128,8 @@
                                 <div class="modal-body px-5">
                                     <div class="mt-4">
                                         <label for="{#mois{{ mois.id }}#}"></label>
-                                        <select class="form-control" id="{#mois{{ mois.id }}#}">
-                                            <option>Selectionnez une banque</option>
+                                        <select class="form-control" id="banquetous">
+                                            <option value="0">Selectionnez une banque</option>
                                             {% for banque in banques  %}
                                                 <option value="{{ banque.id }}">{{ banque.nom }}</option>
                                             {% else %}
@@ -139,13 +140,12 @@
 
                                 </div>
                                 <div class="modal-footer px-5 py-4">
-                                    <button type="button" class="btn btn-green mr-3"
+                                    <button type="button" class="btn btn-green mr-3"  id="validertous"
                                             onclick="payerTous()">
                                         <i class="fa fa-save"></i>
                                         {{ 'Valider'|trans }}
                                     </button>
-                                    <button type="button" class="btn btn-success-light" data-dismiss="modal">
-{#                                            id="annuler{{ paie.id }}">#}
+                                    <button type="button" class="btn btn-success-light" data-dismiss="modal" id="annulertous">
                                         <i class="fa-solid fa-rotate-left"></i>
                                         {{ 'Annuler'|trans }}
                                     </button>
@@ -188,23 +188,28 @@
             }
 
             function payerTous() {
-                if (confirm("{{ 'Voulez-vous vraiement payer tous' }}")) {
-                    $("#tous").html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ path('finance_payer') }}",
-                        success: function (data) {
-                            if (data['id'] == 'ok') {
-                                document.location.href = "{{ path('finance_salaire') }}";
+                var banque = $("#banquetous option:selected");
+                var montant = $("#montant");
+                if(banque.val() != "0") {
+                    if (confirm("{{ 'Voulez-vous vraiement effetuer le paiement' }}")) {
+                        $("button").html("<i class='fa-solid fa-spinner fa-spin-pulse fa-lg'></i>");
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ path('finance_payerTous') }}",
+                            data: { banque : banque.val(), montant : montant.val() },
+                            success: function (data) {
+                                if (data['id'] == 'ok') {
+                                    $("#annulertous").trigger('click');
+                                    document.location.href = "{{ path('finance_salaire') }}";
 
+                                }
+                            },
+                            error: function () {
+                                alert('{{ "La requête n'a pas abouti"|trans }}');
                             }
-                        },
-                        error: function () {
-                            alert('{{ "La requête n'a pas abouti"|trans }}');
-                        }
-                    });
-                }
-
+                        });
+                    }
+                }else alert("{{ 'Selectionnez une banque'|trans }}");
             }
         </script>
     {% endblock %}
