@@ -1,4 +1,3 @@
-{% extends "rh.html.twig" %}
 {% extends
     is_granted('ROLE_ADMIN') ? 'admin.html.twig' :
     is_granted('ROLE_RH') ? 'rh.html.twig' :
