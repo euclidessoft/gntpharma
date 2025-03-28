@@ -38,15 +38,7 @@
                 <div class="col-lg-2 col-md-3 col-6 text-nowrap">
                     <div class="row">
                         <div class="col-3">
-                            <div class="dropdown">
-                                <a class="panier" href="{{ path('commande_panier_panier') }}">
-                                    <span id="gest_panier" class="badge badge-danger panierNombre">
-                                    {# {{ panier|length }} #}
-                                    </span><i class="fa fa-cart-shopping fa-lg"></i>
-                                </a>
-                                <div class="dropdown-menu">
-                                </div>
-                            </div>
+
                         </div>
                         <div class="col-9">
                             <div class="text-right">
@@ -64,7 +56,7 @@
                     <div class="text-right">
                         <div class="dropdown">
                             <a href="#" class="" data-toggle="dropdown">
-                                {{ app.user.username }}
+                                {{ app.user.nom }}
                                 <img src="{{ asset('images/avatar-homme.avif') }}" class="user-thumb" alt="User Image">
                             </a>
                             <div class="dropdown-menu">
@@ -75,9 +67,9 @@
                                     </div>
                                     <div class="col-7">
                                         <div class="mt-0">
-                                            <h6 class="text-bold">
-                                                {{ app.user.prenom }}
+                                            <h6 class="text-bold text-wrap">
                                                 {{ app.user.nom }}
+                                                {{ app.user.prenom }}
                                             </h6>
                                         </div>
                                         <div class="mt-3">
@@ -94,7 +86,7 @@
                                                 </a>
                                             </div>
                                         {% endif %}
-                                        {% if is_granted('ROLE_RH') %}
+                                        {% if is_granted('ROLE_FINANCE') %}
                                             <div class="mt-2">
                                                 <a href="{{ path('security_clients') }}">
                                                     <i class="fa-solid fa-user-tag"></i>
@@ -162,11 +154,12 @@
                              class="img-fluid mt-n4 mb-4 align-center">
                     </div>
                     <div class="col-lg-6">
-                        <h3 class="text-center text-bold">GNT PHARMA v{{ include('version.html.twig') }}</h3>
+                        <h3 class="text-center text-bold">GNT PHARMA v{{ include('includes/version.html.twig') }}</h3>
                         <p class="text-center mt-3">
-                            Copyright &copy; 2023-{{ 'now'|date('Y') }} <b><a class="text-green"
-                                                                              href="http://euclideservices.com"
-                                                                              target="_blank">EUCLIDES</a></b>
+                            Copyright &copy; 2023-{{ 'now'|date('Y') }}
+                            <b>
+                                <a class="text-green" href="http://euclideservices.com" target="_blank">EUCLIDES</a>
+                            </b>
                             <br>{{ 'Tous droits réservés'|trans }}
                         </p>
                         <p class="text-center mt-n2">
@@ -183,9 +176,10 @@
                                                          href="tel:+221775423500">(+221) 77 542 35 00</a></span>
                             <span class="col-5 text-right"></span>
                             <span class="col-7 ml-n4"><a class="text-green"
-                                                         href="tel:+221777333434">(+221) 77 733 34 34</a></span>
-                            <span class="col-12 text-center">Email : <a class="text-green"
-                                                                        href="mailto:hajjalbayt@euclideservices.com">infos@euclideservices.com</a></span>
+                                                         href="tel:+221787333434">(+221) 78 733 34 34</a></span>
+                            <span class="col-12 text-center">Email :
+                                <a class="text-green" href="mailto:hajjalbayt@euclideservices.com">infos@euclideservices.com</a>
+                            </span>
                         </span>
                     </div>
                 </div>
@@ -194,68 +188,69 @@
     </div>
 </div>
 
-{#{% block javascripts %}#}
-{#    <script>#}
-{#        const locale = 'fr';#}
-{#        let isFetching = false; // Éviter les requêtes multiples#}
-
-{#        // Fonction pour récupérer les notifications#}
-{#        function fetchNotifications() {#}
-{#            if (isFetching) return; // Empêche les requêtes multiples#}
-{#            isFetching = true;#}
-
-{#            fetch(`/${locale}/notifications/check`)#}
-{#                .then(response => response.json())#}
-{#                .then(data => {#}
-{#                    const notificationCount = document.getElementById('notification-count');#}
-{#                    const notificationsMenu = document.getElementById('notifications-menu');#}
-
-{#                    if (notificationCount && notificationsMenu) {#}
-{#                        if (data.count > 0) {#}
-{#                            notificationCount.textContent = data.count;#}
-
-{#                            // Vérifier et ajouter seulement les nouvelles notifications#}
-{#                            data.notifications.forEach(notification => {#}
-{#                                if (!document.querySelector(`[data-id='${notification.id}']`)) {#}
-{#                                    const li = document.createElement('a');#}
-{#                                    li.classList.add('dropdown-item');#}
-{#                                    li.textContent = notification.message;#}
-{#                                    li.href = notification.lien;#}
-{#                                    li.dataset.id = notification.id;#}
-{#                                    li.style.cursor = 'pointer';#}
-{#                                    li.addEventListener('click', () => markAsRead(notification.id, li));#}
-{#                                    notificationsMenu.appendChild(li);#}
-{#                                }#}
-{#                            });#}
-{#                        } else {#}
-{#                            notificationCount.textContent = '';#}
-{#                            notificationsMenu.innerHTML = '<li class="dropdown-item">Aucune nouvelle notification</li>';#}
-{#                        }#}
-{#                    }#}
-{#                })#}
-{#                .catch(error => console.error('Erreur récupération notifications:', error))#}
-{#                .finally(() => isFetching = false);#}
-{#        }#}
-
-{#        // Fonction pour marquer une notification comme lue#}
-{#        function markAsRead(notificationId, notificationElement) {#}
-{#            fetch(`/${locale}/notifications/Read/${notificationId}`, { method: 'POST' })#}
-{#                .then(response => response.json())#}
-{#                .then(data => {#}
-{#                    if (data.message) {#}
-{#                        notificationElement.style.textDecoration = 'line-through';#}
-{#                        notificationElement.style.color = 'gray';#}
-{#                        notificationElement.removeEventListener('click', () => markAsRead(notificationId, notificationElement));#}
-{#                    }#}
-{#                })#}
-{#                .catch(error => console.error('Erreur lors de la mise à jour de la notification:', error));#}
-{#        }#}
-
-{#        // Lancer le chargement des notifications#}
-{#        document.addEventListener('DOMContentLoaded', function () {#}
-{#            fetchNotifications();#}
-{#            setInterval(fetchNotifications, 60000); // Vérifie toutes les 60 secondes#}
-{#        });#}
-
-{#    </script>#}
-{#{% endblock %}#}
+{#
+{% block javascripts %}
+    <script>
+        const locale = 'fr';
+        let isFetching = false; // Éviter les requêtes multiples
+//
+        // Fonction pour récupérer les notifications
+        function fetchNotifications() {
+            if (isFetching) return; // Empêche les requêtes multiples
+            isFetching = true;
+//
+            fetch(`/${locale}/notifications/check`)
+                .then(response => response.json())
+                .then(data => {
+                    const notificationCount = document.getElementById('notification-count');
+                    const notificationsMenu = document.getElementById('notifications-menu');
+//
+                    if (notificationCount && notificationsMenu) {
+                        if (data.count > 0) {
+                            notificationCount.textContent = data.count;
+//
+                            // Vérifier et ajouter seulement les nouvelles notifications
+                            data.notifications.forEach(notification => {
+                                if (!document.querySelector(`[data-id='${notification.id}']`)) {
+                                    const li = document.createElement('a');
+                                    li.classList.add('dropdown-item');
+                                    li.textContent = notification.message;
+                                    li.href = notification.lien;
+                                    li.dataset.id = notification.id;
+                                    li.style.cursor = 'pointer';
+                                    li.addEventListener('click', () => markAsRead(notification.id, li));
+                                    notificationsMenu.appendChild(li);
+                                }
+                            });
+                        } else {
+                            notificationCount.textContent = '';
+                            notificationsMenu.innerHTML = '<li class="dropdown-item">Aucune nouvelle notification</li>';
+                        }
+                    }
+                })
+                .catch(error => console.error('Erreur récupération notifications:', error))
+                .finally(() => isFetching = false);
+        }
+//
+        // Fonction pour marquer une notification comme lue
+        function markAsRead(notificationId, notificationElement) {
+            fetch(`/${locale}/notifications/Read/${notificationId}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        notificationElement.style.textDecoration = 'line-through';
+                        notificationElement.style.color = 'gray';
+                        notificationElement.removeEventListener('click', () => markAsRead(notificationId, notificationElement));
+                    }
+                })
+                .catch(error => console.error('Erreur lors de la mise à jour de la notification:', error));
+        }
+//
+        // Lancer le chargement des notifications
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchNotifications();
+            setInterval(fetchNotifications, 60000); // Vérifie toutes les 60 secondes
+        });
+//
+    </script>
+{% endblock %}#}

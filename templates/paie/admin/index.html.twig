@@ -1,4 +1,12 @@
-{% extends 'rh.html.twig' %}
+{% extends
+    is_granted('ROLE_ADMIN') ? 'admin.html.twig' :
+    is_granted('ROLE_RH') ? 'rh.html.twig' :
+    is_granted('ROLE_FINANCE') ? 'finance.html.twig' :
+    is_granted('ROLE_STOCK') ? 'stock.html.twig' :
+    is_granted('ROLE_LIVREUR') ? 'livreur.html.twig' :
+    is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
+    'layout.html.twig'
+%}
 {% block paie %}active{% endblock %}
 {% block fiche %}active{% endblock %}
 
@@ -18,7 +26,7 @@
         <tr>
             <th>Matricule</th>
             <th>Employé(e)</th>
-            <th>Salaire De base</th>
+            <th>Salaire net</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -38,5 +46,6 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table
+    </table>
+</div>
 {% endblock %}

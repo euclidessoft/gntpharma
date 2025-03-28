@@ -3,7 +3,7 @@
 
 <head>
 
-    {{ include('head.html.twig') }}
+    {{ include('includes/head.html.twig') }}
 
     <title> {% block title %} GNT Pharma  {% endblock %} </title>
 
@@ -125,7 +125,7 @@
             <span>
                 <a href="#" class="text-green" data-toggle="modal" data-target="#about">
                 <img class="mr-1" src="{{ asset('images/gnt.png') }}" alt="by Euclides" width="45">
-                <span class="version text-green">GNT PHARMA v{{ include('version.html.twig') }} <br> &copy; {{ 'now'|date('Y') }}</span>
+                <span class="version text-green">GNT PHARMA v{{ include('includes/version.html.twig') }} <br> &copy; {{ 'now'|date('Y') }}</span>
                 </a>
             </span>
         </div>
@@ -133,7 +133,7 @@
 {% endblock %}
 
 {% block topbar %}
-    {{ include('topbar.html.twig') }}
+    {{ include('includes/topbar.html.twig') }}
 {% endblock %}
 
 
@@ -143,7 +143,7 @@
     {% endblock %}
 </div>
 
-{{ include('javascript.html.twig') }}
+{{ include('includes/javascript.html.twig') }}
 {% block scripts %}
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="{{ asset('signature/js/jquery.ui.touch-punch.js') }}"></script>

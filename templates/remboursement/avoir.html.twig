@@ -1,4 +1,12 @@
-{% extends 'admin.html.twig' %}
+{% extends
+    is_granted('ROLE_ADMIN') ? 'admin.html.twig' :
+    is_granted('ROLE_RH') ? 'rh.html.twig' :
+    is_granted('ROLE_FINANCE') ? 'finance.html.twig' :
+    is_granted('ROLE_STOCK') ? 'stock.html.twig' :
+    is_granted('ROLE_LIVREUR') ? 'livreur.html.twig' :
+    is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
+    'layout.html.twig'
+%}
 {% block title %} {{ "Avoir"|trans }} - GNT Pharma {% endblock %}
 {% block officine %}active{% endblock %}
 {% block avoir %}active{% endblock %}
@@ -130,7 +138,7 @@
             </div>
         </div>
 </div>
-    {{ include('javascript.html.twig') }}
+    {{ include('includes/javascript.html.twig') }}
 
 {% endblock %}
 {% block scripts %}
