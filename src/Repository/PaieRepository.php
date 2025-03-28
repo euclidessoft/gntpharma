@@ -44,7 +44,7 @@ class PaieRepository extends ServiceEntityRepository
         $endDate = new \DateTime('last day of this month 23:59:59');
 
         return $this->createQueryBuilder('p')
-            ->where('p.datepaye BETWEEN :start AND :end')
+            ->where('p.date BETWEEN :start AND :end')
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
             ->getQuery()

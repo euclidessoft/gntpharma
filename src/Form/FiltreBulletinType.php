@@ -43,7 +43,7 @@ class FiltreBulletinType extends AbstractType
                 },
                 'placeholder' => 'Sélectionnez les employés',
                 'multiple' => false,
-                'required' => true,
+                'required' => false,
                 'expanded' => false,
             ])
             ->add('mois', ChoiceType::class, [
