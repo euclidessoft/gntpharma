@@ -1711,7 +1711,7 @@ class FinanceController extends AbstractController
                     $ecriture->setDebit($debit);
                     $ecriture->setSolde(-$paie->getSalaireNet());
                     $ecriture->setMontant($paie->getSalaireNet());
-                    $ecriture->setLibelle("Paiement de salaire");
+                    $ecriture->setLibelle("Paiement de salaire".$paie->getEmploye()->getNom(). " ".$paie->getEmploye()->getPrenom());
 
                     $entityManager->persist($paie);
                     $entityManager->persist($banque);
@@ -1787,7 +1787,7 @@ class FinanceController extends AbstractController
                     $ecriture->setComptecredit("641");
                     $ecriture->setLibellecomptecredit("Salaire Personnel");
                     $ecriture->setComptedebit($banque->getCompte());
-                    $ecriture->setLibellecomptedebit($banque->getCompte()->getNom());
+                    $ecriture->setLibellecomptedebit($banque->getNom());
 
 
                     $debit->setSalaire($paieSalaire);
@@ -1796,7 +1796,7 @@ class FinanceController extends AbstractController
                     $ecriture->setDebit($debit);
                     $ecriture->setSolde(-$paie->getSalaireNet());
                     $ecriture->setMontant($paie->getSalaireNet());
-                    $ecriture->setLibelle("Paiement de salaire");
+                    $ecriture->setLibelle("Paiement de salaire".$paie->getEmploye()->getNom(). " ".$paie->getEmploye()->getPrenom());
 
                     $entityManager->persist($paie);
                     $entityManager->persist($banque);

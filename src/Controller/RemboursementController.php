@@ -165,12 +165,12 @@ class RemboursementController extends AbstractController
             $remboursement->setCompte($remboursement->getFinancement()->getCompte());
 
             $debit = new Debit();
-            $debitinteret = new Debit();
+//            $debitinteret = new Debit();
             $ecriture = new Ecriture();
-            $ecritureinteret = new Ecriture();
+//            $ecritureinteret = new Ecriture();
 
             $montant = $solde->montantbanque($entityManager, $remboursement->getFinancement()->getBanque()->getCompte());
-            $totalinteret =  $remboursement->getMontant() * $remboursement->getFinancement()->getTaux() / 100;
+//            $totalinteret =  $remboursement->getMontant() * $remboursement->getFinancement()->getTaux() / 100;
 
             $somme = 0;
             if($remboursement->getFinancement()->getRemboursements() != null){
@@ -179,7 +179,8 @@ class RemboursementController extends AbstractController
                     }
             }
 
-            if (($remboursement->getMontant() + $totalinteret) <= $montant && $remboursement->getMontant() <= ($remboursement->getFinancement()->getMontant() - $somme)) {
+            if ($remboursement->getMontant()<= $montant && $remboursement->getMontant() <= ($remboursement->getFinancement()->getMontant() - $somme)) {
+//            if (($remboursement->getMontant() + $totalinteret) <= $montant && $remboursement->getMontant() <= ($remboursement->getFinancement()->getMontant() - $somme)) {
 
 
             $remboursement->setType('Banque');
@@ -189,11 +190,11 @@ class RemboursementController extends AbstractController
             $debit->setMontant($remboursement->getMontant());
             $debit->setRemboursement($remboursement);
 
-
-            $debitinteret->setType('Banque');
-            $debitinteret->setCompte($remboursement->getFinancement()->getBanque()->getCompte());
-            $debitinteret->setMontant($totalinteret);
-            $debitinteret->setRemboursement($remboursement);
+//
+//            $debitinteret->setType('Banque');
+//            $debitinteret->setCompte($remboursement->getFinancement()->getBanque()->getCompte());
+//            $debitinteret->setMontant($totalinteret);
+//            $debitinteret->setRemboursement($remboursement);
 
 
 
@@ -207,21 +208,21 @@ class RemboursementController extends AbstractController
             $ecriture->setSolde(-$remboursement->getMontant());
             $ecriture->setMontant($remboursement->getMontant());
 
-            $ecritureinteret->setType('Banque');
-            $ecritureinteret->setComptedebit($remboursement->getFinancement()->getBanque()->getCompte());
-            $ecritureinteret->setLibellecomptedebit($remboursement->getFinancement()->getBanque()->getNom());
-            $ecritureinteret->setComptecredit($remboursement->getFinancement()->getCompteinteret());
-            $ecritureinteret->setLibellecomptecredit("Intérêts des emprunts et dettes");
-            $ecritureinteret->setDebit($debitinteret);
-            $ecritureinteret->setLibelle('interet'. $remboursement->getLibele());
-            $ecritureinteret->setSolde(-$totalinteret);
-            $ecritureinteret->setMontant($totalinteret);
+//            $ecritureinteret->setType('Banque');
+//            $ecritureinteret->setComptedebit($remboursement->getFinancement()->getBanque()->getCompte());
+//            $ecritureinteret->setLibellecomptedebit($remboursement->getFinancement()->getBanque()->getNom());
+//            $ecritureinteret->setComptecredit($remboursement->getFinancement()->getCompteinteret());
+//            $ecritureinteret->setLibellecomptecredit("Intérêts des emprunts et dettes");
+//            $ecritureinteret->setDebit($debitinteret);
+//            $ecritureinteret->setLibelle('interet '. $remboursement->getLibele());
+//            $ecritureinteret->setSolde(-$totalinteret);
+//            $ecritureinteret->setMontant($totalinteret);
 
             $entityManager->persist($remboursement);
             $entityManager->persist($debit);
             $entityManager->persist($ecriture);
-            $entityManager->persist($debitinteret);
-            $entityManager->persist($ecritureinteret);
+//            $entityManager->persist($debitinteret);
+//            $entityManager->persist($ecritureinteret);
             $entityManager->flush();
 
             return $this->redirectToRoute('remboursement_index', [], Response::HTTP_SEE_OTHER);
