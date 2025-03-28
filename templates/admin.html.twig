@@ -119,6 +119,13 @@
                             </a>
                         </li>
                         <li class="dropdown-item">
+                            <a class="nav-link {% block paie %}{% endblock %}"
+                                href="{{ path('paie_index') }}">
+                                <i class="fa fa-money-check-dollar"></i>
+                                {{ 'Paie'|trans }}
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
                             <a class="nav-link {% block all_employe %}{% endblock %}"
                                href="{{ path('employe_index') }}">
                                 <i class="fas fa-list"></i>

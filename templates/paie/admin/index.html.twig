@@ -18,7 +18,10 @@
     </h4>
     {% if paie|length > 2  %}
     <a href="{{ path('paie_bulletin') }}" class="btn btn-success mb-4">
+
         <i class="fas fa-plus"></i>Valider tous les bulletins
+        <i class="fas fa-money-check-dollar"></i> Tous les bulletins
+
     </a>
     {% endif %}
 
@@ -36,14 +39,14 @@
             <tr>
                 <td>{{ paies.employe.matricule }}</td>
                 <td>{{ paies.employe.nom~' '~paies.employe.prenom }}</td>
-                <td>{{ paies.salaireBase }}</td>
+                <td>{{ paies.salaireNet }}</td>
                 <td>
                     <a href="{{ path('paie_show', {'id': paies.employe.id }) }}" class="btn btn-success">Details</a>
                 </td>
             </tr>
             {% else %}
             <tr>
-                <td colspan="6" class="text-center">Aucune fiche de paie enregistrée.</td>
+                <td colspan="4" class="text-center">Aucune fiche de paie enregistrée.</td>
             </tr>
             {% endfor %}
         </tbody>
