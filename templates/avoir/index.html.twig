@@ -1,4 +1,4 @@
-{% extends 'commande.html.twig' %}
+{% extends 'client.html.twig' %}
 {% block title %} {{ "Voir les avoir"|trans }} - GNT Pharma {% endblock %}
 {% block officine %}active{% endblock %}
 {% block avoir %}active{% endblock %}
@@ -27,7 +27,7 @@
                 <td>{{ avoir.admin.nom }}</td>
                 <td>{{ avoir.Montant|number_format(0, '' , ' ') }}</td>
                 <td>
-                    <a id="{{ avoir.id }}" onclick="load({{ avoir.id }})" class="btn btn-success" href="{{ path('avoir_show', {'id': avoir.id}) }}"><i class="fa fa-list"></i>
+                    <a id="{{ avoir.id }}" onclick="load({{ avoir.id }})" class="btn btn-green" href="{{ path('avoir_show', {'id': avoir.id}) }}"><i class="fa fa-list"></i>
                         {{ 'Afficher'|trans }}
                     </a>
                 </td>

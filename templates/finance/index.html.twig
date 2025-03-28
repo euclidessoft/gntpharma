@@ -1,4 +1,12 @@
-{% extends "admin.html.twig" %}
+{% extends
+    is_granted('ROLE_ADMIN') ? 'admin.html.twig' :
+    is_granted('ROLE_RH') ? 'rh.html.twig' :
+    is_granted('ROLE_FINANCE') ? 'finance.html.twig' :
+    is_granted('ROLE_STOCK') ? 'stock.html.twig' :
+    is_granted('ROLE_LIVREUR') ? 'livreur.html.twig' :
+    is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
+    'layout.html.twig'
+%}
 
 {% block title %}{{ 'Journal comptable'|trans }} - GNT Pharma{% endblock %}
 
@@ -10,8 +18,8 @@
 
     <div class="col-lg-11 mt-5 mb-5 fond-7">
         <h3 class="mt-4 text-bold">
-            <i class="fas fa-money-bill fa-lg"></i><i class="fas fa-hourglass-half mr-2"></i>
-            {{ 'Compte'|trans }}
+            <i class="fas fa-money-bill fa-lg"></i><i class="fas fa-hourglass-half"></i>
+            {{ 'Journal comptable'|trans }}
         </h3>
         {% for message in app.session.flashbag.get('notice') %}
             <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black mt-5 mb-5">

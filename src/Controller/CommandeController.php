@@ -1012,7 +1012,7 @@ class CommandeController extends AbstractController
                     $ecriture->setSolde($paiement->getMontant());
                     $ecriture->setCredit($credit);
                     $ecriture->setMontant($paiement->getMontant());
-                    $ecriture->setLibelle('Paiement client');
+                    $ecriture->setLibelle('Vente de médicaments');
                     $ecriture->setComptedebit($paiement->getCommande()->getUser()->getCompte());
                     $ecriture->setLibellecomptedebit("Compte Client");
 
@@ -1137,7 +1137,7 @@ class CommandeController extends AbstractController
                     $ecriture->setSolde($versement->getMontant());
                     $ecriture->setCredit($credit);
                     $ecriture->setMontant($versement->getMontant());
-                    $ecriture->setLibelle('Paiement client');
+                    $ecriture->setLibelle('Vente de médicaments');
                     $ecriture->setComptedebit($versement->getCommande()->getUser()->getCompte());
                     $ecriture->setLibellecomptedebit("Compte Client");
 

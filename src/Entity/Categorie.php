@@ -45,6 +45,11 @@ class Categorie
      */
     private $compte;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $actif = true;
+
     public function __construct()
     {
         $this->depenses = new ArrayCollection();
@@ -117,6 +122,18 @@ class Categorie
     public function setCompte(string $compte): self
     {
         $this->compte = $compte;
+
+        return $this;
+    }
+
+    public function getActif(): ?bool
+    {
+        return $this->actif;
+    }
+
+    public function setActif(bool $actif): self
+    {
+        $this->actif = $actif;
 
         return $this;
     }

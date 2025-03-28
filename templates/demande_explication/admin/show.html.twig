@@ -1,7 +1,15 @@
-{% extends 'rh.html.twig' %}
-
+{% extends
+    is_granted('ROLE_ADMIN') ? 'admin.html.twig' :
+    is_granted('ROLE_RH') ? 'rh.html.twig' :
+    is_granted('ROLE_FINANCE') ? 'finance.html.twig' :
+    is_granted('ROLE_STOCK') ? 'stock.html.twig' :
+    is_granted('ROLE_LIVREUR') ? 'livreur.html.twig' :
+    is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
+    'layout.html.twig'
+%}
 {% block discipline %}active{% endblock %}
 {% block explications %}active{% endblock %}
+
 {% block body %}
 <div class="col-lg-8 mt-4 fond-7">
     <div class="card">

@@ -1,4 +1,12 @@
-{% extends 'admin.html.twig' %}
+{% extends
+    is_granted('ROLE_ADMIN') ? 'admin.html.twig' :
+    is_granted('ROLE_RH') ? 'rh.html.twig' :
+    is_granted('ROLE_FINANCE') ? 'finance.html.twig' :
+    is_granted('ROLE_STOCK') ? 'stock.html.twig' :
+    is_granted('ROLE_LIVREUR') ? 'livreur.html.twig' :
+    is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
+    'layout.html.twig'
+%}
 {% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
 {% block commande %}active{% endblock %}
 
@@ -25,15 +33,14 @@
                     <th>{{ 'Numero Commande'|trans }}</th>
                     <th>{{ 'Date'|trans }}</th>
                     <th>{{ 'Client'|trans }}</th>
-
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                <td>{{ commande.id }}</td>
-                <td>{{ commande.date|date('d/m/Y') }}</td>
-                <td>{{ commande.user.nom }}</td>
-</tr>
+                    <td>{{ commande.id }}</td>
+                    <td>{{ commande.date|date('d/m/Y') }}</td>
+                    <td>{{ commande.user.nom }}</td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -157,24 +164,19 @@
     <div class="container mt-4 mb-5 py-3 fond-7">
         <div class="centrer">
             <div class="row">
-
-                <button type="button"
-                        class="btn btn-success"
-                        data-toggle="modal" data-target="#modal"
-                        id="btn">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal" id="btn">
                     <i class="fa fa-money-bill"></i>
                     {{ 'Paiement'|trans }}
                 </button>
 
 
-                <div class="modal fade" id="modal" tabindex="-1" role="dialog"
-                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog text-center">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">
                                     {{ 'Paiement'|trans }}
-                                    </h1>
+                                 </h1>
                                 <button type="button" class="close" data-dismiss="modal"
                                         aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -226,13 +228,11 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
 
-{{ include('javascript.html.twig') }}
+{{ include('includes/javascript.html.twig') }}
 
 {% endblock %}
 

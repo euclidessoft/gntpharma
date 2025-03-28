@@ -1,4 +1,12 @@
-{% extends 'rh.html.twig' %}
+{% extends
+    is_granted('ROLE_ADMIN') ? 'admin.html.twig' :
+    is_granted('ROLE_RH') ? 'rh.html.twig' :
+    is_granted('ROLE_FINANCE') ? 'finance.html.twig' :
+    is_granted('ROLE_STOCK') ? 'stock.html.twig' :
+    is_granted('ROLE_LIVREUR') ? 'livreur.html.twig' :
+    is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
+    'layout.html.twig'
+%}
 {% block paie %}active{% endblock %}
 {% block body %}
     {% if bulletins is empty %}
@@ -57,7 +65,7 @@
                     <!-- Calcul du salaire net -->
                     <p><strong>Salaire net à payer :</strong>
                         <span class="h4 text-success">
-                            {{ bulletin.salaireBase + totalPrimes + totalHeuresSup - totalRetenues }} FCFA
+                            {{ (bulletin.salaireBase + totalPrimes + totalHeuresSup - totalRetenues - (bulletin.salaireBase * 0.01 ))|number_format(0, '', ' ') }} FCFA
                         </span>
                     </p>
                 </div>

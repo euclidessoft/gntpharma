@@ -134,18 +134,29 @@ class PaieController extends AbstractController
      * @Route("/new", name="paie_new", methods={"POST","GET"})
      */
     public function new(Request $request, PrimeRepository $primeRepository, HeureSuplementaireRepository $heureSuplementaireRepository, RetenueRepository $retenueRepository): Response
-    {
+    {// validation de tous les buletins de salaire
         if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
             $entityManager = $this->getDoctrine()->getManager();
             $startOfMonth = new \DateTime('01-' . date('m') . '-' . date('Y'));
             $endOfMonth = new \DateTime('last day of this month');
             $mois = $entityManager->getRepository(Mois::class)->find(date('m'));
 
+
             $employes = $entityManager->getRepository(Employe::class)->findBy(['status' => true]);
             foreach ($employes as $employe) {
                 $salaireDeBase = $employe->getPoste()->getSalaire();
                 $salaireJournaliere = $salaireDeBase / 30;
                 $impot = $salaireDeBase * 0.01;
+        $employes = $entityManager->getRepository(Employe::class)->findBy(['status' => true]);
+        foreach ($employes as $employe) {
+            $paieExistante = $entityManager->getRepository(Paie::class)->findByDate($employe->getId(), $startOfMonth, $endOfMonth);
+            if ($paieExistante) {
+                continue;
+            }
+
+            $salaireDeBase = $employe->getPoste()->getSalaire();
+            $salaireJournaliere = $salaireDeBase / 30;
+            $impot = $salaireDeBase * 0.01;
 
                 $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
                 $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
@@ -197,8 +208,29 @@ class PaieController extends AbstractController
                 $entityManager->persist($paie);
             }
 
+
             $entityManager->flush();
             return $this->redirectToRoute('print_bulletin');
+
+            $totalPrimes = $primeRepository->getTotalPrimesByEmploye($employe);
+            $totalHeureSup = $heureSuplementaireRepository->getTotalHeuresByEmploye($employe);
+            $salaireNet = $salaireDeBase + $totalHeureSup + $totalPrimes - $totalRetenue- $impot;
+            // Enregistrement dans la table paie
+            $paie = new Paie();
+            $paie->setSalaireBase($salaireDeBase);
+            $paie->setEmploye($employe);
+            $paie->setMois($mois);
+            $paie->setTotalPrime($totalPrimes);
+            $paie->setTotalheureSup($totalHeureSup);
+            $paie->setTotalRetenue($totalRetenue);
+            $paie->setSalaireNet($salaireNet);
+            $paie->setImpot($impot);
+            $paie->setDetailsRetenues(json_encode($detailsRetenues));
+            $entityManager->persist($paie);
+        }
+
+        $entityManager->flush();
+        return $this->redirectToRoute('print_bulletin');
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
@@ -406,7 +438,7 @@ class PaieController extends AbstractController
      * @Route("/valider/{id}", name="paie_valider", methods={"POST","GET"})
      */
     public function valider(int $id, PrimeRepository $primeRepository, HeureSuplementaireRepository $heureSuplementaireRepository): Response
-    {
+    {// validation d'un seul buletin de salaire
         if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
             $entityManager = $this->getDoctrine()->getManager();
             $employe = $entityManager->getRepository(Employe::class)->find($id);

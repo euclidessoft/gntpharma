@@ -1,5 +1,13 @@
-{% extends 'admin.html.twig' %}
-{% block title %} {{ "Commande"|trans }} - GNT Pharma {% endblock %}
+{% extends
+    is_granted('ROLE_ADMIN') ? 'admin.html.twig' :
+    is_granted('ROLE_RH') ? 'rh.html.twig' :
+    is_granted('ROLE_FINANCE') ? 'finance.html.twig' :
+    is_granted('ROLE_STOCK') ? 'stock.html.twig' :
+    is_granted('ROLE_LIVREUR') ? 'livreur.html.twig' :
+    is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
+    'layout.html.twig'
+%}
+{% block title %} {{ "Nouveau financement"|trans }} - GNT Pharma {% endblock %}
 {% block finance %}active{% endblock %}
 {% block financement %}active{% endblock %}
 {% block financement_index %}active{% endblock %}
@@ -10,6 +18,10 @@
         {{ "Listes des financements"|trans }}
     </h3>
 
+    <a class="btn btn-green mb-5" href="{{ path('financement_choix') }}">
+        <i class="fas fa-money-bills"></i><i class="fa fa-plus"></i>
+        {{ 'Nouveau financement'|trans }}
+    </a>
 
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
@@ -22,7 +34,7 @@
                 <th>{{ 'Type'|trans }}</th>
                 <th>{{ 'Banque'|trans }}</th>
                 <th>{{ 'Numero'|trans }}</th>
-                <th>{{ 'actions'|trans }}</th>
+                <th>{{ 'Actions'|trans }}</th>
             </tr>
         </thead>
         <tbody>

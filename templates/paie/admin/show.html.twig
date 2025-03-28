@@ -1,4 +1,12 @@
-{% extends 'rh.html.twig' %}
+{% extends
+    is_granted('ROLE_ADMIN') ? 'admin.html.twig' :
+    is_granted('ROLE_RH') ? 'rh.html.twig' :
+    is_granted('ROLE_FINANCE') ? 'finance.html.twig' :
+    is_granted('ROLE_STOCK') ? 'stock.html.twig' :
+    is_granted('ROLE_LIVREUR') ? 'livreur.html.twig' :
+    is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
+    'layout.html.twig'
+%}
 {% block paie %}active{% endblock %}
 {% block body %}
 
@@ -106,7 +114,7 @@
                 <hr>
 
                 {% set salaireBrut = employe.poste.salaire + totalPrimes + totalHeuresSup %}
-                {% set salaireNet = salaireBrut - totalRetenues %}
+                {% set salaireNet = salaireBrut - totalRetenues - (salaireBrut * 0.01) %}
 
                 <div class="alert alert-info p-4">
                     <h5 class="font-weight-bold">Récapitulatif</h5>

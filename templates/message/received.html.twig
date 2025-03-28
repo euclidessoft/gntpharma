@@ -1,4 +1,28 @@
-{% extends 'rh.html.twig' %}
+{% extends
+    is_granted('ROLE_ADMIN') ? 'admin.html.twig' :
+    is_granted('ROLE_RH') ? 'rh.html.twig' :
+    is_granted('ROLE_FINANCE') ? 'finance.html.twig' :
+    is_granted('ROLE_STOCK') ? 'stock.html.twig' :
+    is_granted('ROLE_LIVREUR') ? 'livreur.html.twig' :
+    is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
+    'layout.html.twig'
+%}
+
+
+{#
+{% set layout = '' %}
+
+{% if is_granted('ROLE_RH') %}
+    {% set layout = 'rh.html.twig' %}
+{% elseif is_granted('ROLE_FINANCE') %}
+    {% set layout = 'finance.html.twig' %}
+{% elseif is_granted('ROLE_ADMIN') %}
+    {% set layout = 'admin.html.twig' %}
+{% endif %}
+
+{% extends layout %}
+#}
+
 {% block communication %} active {% endblock %}
 {% block messagerie %} active {% endblock %}
 {% block title %}{{ "Boîte de réception"|trans }} - GNT Pharma {% endblock %}
