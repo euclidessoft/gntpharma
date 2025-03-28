@@ -34,7 +34,7 @@
                     <td>{{ paie.salaireBase|number_format(0, '' , ' ') }} FCFA</td>
                     <td>{{ paie.salaireNet|number_format(0, '' , ' ') }} FCFA</td>
                     <td>
-                        <a href="{{ path('paie_historique_show', {'id': paie.id} ) }}" class="btn btn-success"><i class="fas fa-eye"></i>Details</a>
+                        <a href="{{ path('paie_historique_show', {'id': paie.id} ) }}" class="btn btn-success"><i class="fas fa-eye"></i> Details</a>
                     </td>
                 </tr>
             {% else %}

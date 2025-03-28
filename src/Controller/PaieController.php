@@ -133,7 +133,7 @@ class PaieController extends AbstractController
      * @Route("/new", name="paie_new", methods={"POST","GET"})
      */
     public function new(Request $request, PrimeRepository $primeRepository, HeureSuplementaireRepository $heureSuplementaireRepository, RetenueRepository $retenueRepository): Response
-    {
+    {// validation de tous les buletins de salaire
         if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
         $entityManager = $this->getDoctrine()->getManager();
         $startOfMonth = new \DateTime('01-' . date('m') . '-' . date('Y'));
@@ -142,6 +142,11 @@ class PaieController extends AbstractController
 
         $employes = $entityManager->getRepository(Employe::class)->findBy(['status' => true]);
         foreach ($employes as $employe) {
+            $paieExistante = $entityManager->getRepository(Paie::class)->findByDate($employe->getId(), $startOfMonth, $endOfMonth);
+            if ($paieExistante) {
+                continue;
+            }
+
             $salaireDeBase = $employe->getPoste()->getSalaire();
             $salaireJournaliere = $salaireDeBase / 30;
             $impot = $salaireDeBase * 0.01;
@@ -183,7 +188,7 @@ class PaieController extends AbstractController
 
             $totalPrimes = $primeRepository->getTotalPrimesByEmploye($employe);
             $totalHeureSup = $heureSuplementaireRepository->getTotalHeuresByEmploye($employe);
-            $salaireNet = $salaireDeBase + $totalHeureSup + $totalPrimes - $totalRetenue;
+            $salaireNet = $salaireDeBase + $totalHeureSup + $totalPrimes - $totalRetenue- $impot;
             // Enregistrement dans la table paie
             $paie = new Paie();
             $paie->setSalaireBase($salaireDeBase);
@@ -368,7 +373,7 @@ class PaieController extends AbstractController
      * @Route("/valider/{id}", name="paie_valider", methods={"POST","GET"})
      */
     public function valider(int $id, PrimeRepository $primeRepository, HeureSuplementaireRepository $heureSuplementaireRepository): Response
-    {
+    {// validation d'un seul buletin de salaire
         if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
         $entityManager = $this->getDoctrine()->getManager();
         $employe = $entityManager->getRepository(Employe::class)->find($id);

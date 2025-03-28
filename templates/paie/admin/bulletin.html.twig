@@ -57,7 +57,7 @@
                     <!-- Calcul du salaire net -->
                     <p><strong>Salaire net à payer :</strong>
                         <span class="h4 text-success">
-                            {{ bulletin.salaireBase + totalPrimes + totalHeuresSup - totalRetenues }} FCFA
+                            {{ (bulletin.salaireBase + totalPrimes + totalHeuresSup - totalRetenues - (bulletin.salaireBase * 0.01 ))|number_format(0, '', ' ') }} FCFA
                         </span>
                     </p>
                 </div>

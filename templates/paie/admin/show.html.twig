@@ -106,7 +106,7 @@
                 <hr>
 
                 {% set salaireBrut = employe.poste.salaire + totalPrimes + totalHeuresSup %}
-                {% set salaireNet = salaireBrut - totalRetenues %}
+                {% set salaireNet = salaireBrut - totalRetenues - (salaireBrut * 0.01) %}
 
                 <div class="alert alert-info p-4">
                     <h5 class="font-weight-bold">Récapitulatif</h5>
