@@ -1,9 +1,21 @@
-{% extends 'finance.html.twig' %}
-{% block title %} {{ "Clients"|trans }} - GNT Pharma {% endblock %}
+{% extends
+    is_granted('ROLE_ADMIN') ? 'admin.html.twig' :
+    is_granted('ROLE_RH') ? 'rh.html.twig' :
+    is_granted('ROLE_FINANCE') ? 'finance.html.twig' :
+    is_granted('ROLE_STOCK') ? 'stock.html.twig' :
+    is_granted('ROLE_LIVREUR') ? 'livreur.html.twig' :
+    is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
+    'layout.html.twig'
+%}
+{% block title %} {{ "Tous les clients"|trans }} - GNT Pharma {% endblock %}
 {% block client %}active{% endblock %}
 {% block all_client %}active{% endblock %}
 {% block body %}
     <div class="container mt-4 fond-7">
+        <h4 class="text-bold mt-3 mb-5">
+            <i class="fa fa-user-tag"></i>
+            {{ "Tous les clients"|trans }}
+        </h4>
         {% for message in app.flashes('notice') %}
             <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black mb-5">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
@@ -12,11 +24,12 @@
                 {{ message|trans }}
             </div>
         {% endfor %}
+        {% if is_granted('ROLE_FINANCE') %}
         <a class="btn btn-green mb-5" href="{{ path('client_new') }}">
             <i class="fa-solid fa-user-tag"></i><i class="fa-solid fa-plus"></i>
             {{ 'Nouveau client'|trans }}
         </a>
-
+        {% endif %}
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
             <thead>
             <tr>
@@ -26,7 +39,6 @@
                 <th>{{ 'Téléphone'|trans }}</th>
                 <th>{{ 'Email'|trans }}</th>
                 <th>{{ 'Adresse'|trans }}</th>
-                <th class="text-center">{{ 'Statut'|trans }}</th>
                 <th class="text-center">{{ 'Actions'|trans }}</th>
             </tr>
             </thead>
@@ -46,7 +58,7 @@
                 </td>
             {% else %}
                 <tr>
-                    <td colspan="7" class="text-center">Aucun client enregistré</td>
+                    <td colspan="7" class="text-center">{{ "Aucun client enregistré"|trans }}</td>
                 </tr>
             {% endfor %}
             </tbody>
