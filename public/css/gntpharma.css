@@ -165,10 +165,10 @@ tr {
     visibility: hidden;
     bottom: 0;
     top: 0;
-    left: 230px;
+    left: 250px;
     right: 0;
     height: 100%;
-    width: calc(100% - 230px);
+    width: calc(100% - 250px);
     z-index: 1000;
     background: rgba(0, 0, 0, 0.2);
 }
@@ -861,7 +861,7 @@ select#transfert_date_time_minute {
 
 .title {
     display: inline-block;
-    width: 150px;
+    width: 170px;
 }
 
 .show.about {
@@ -1547,4 +1547,9 @@ select#transfert_date_time_minute {
 .topbar .dropdown-menu {
     top: 5px !important;
     /*background-color: var(--vert-clair);*/
+}
+
+.menu-title {
+    margin: 0.5rem !important;
+    color: var(--vert-clair);
 }

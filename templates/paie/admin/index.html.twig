@@ -35,7 +35,7 @@
             <tr>
                 <td>{{ paies.employe.matricule }}</td>
                 <td>{{ paies.employe.nom~' '~paies.employe.prenom }}</td>
-                <td>{{ paies.salaireNet }}</td>
+                <td>{{ paies.salaireBase }}</td>
                 <td>
                     <a href="{{ path('paie_show', {'id': paies.employe.id }) }}" class="btn btn-success">Details</a>
                 </td>
