@@ -29,7 +29,7 @@ class MessageType extends AbstractType
             ])
             ->add('recipients', EntityType::class, [
                 'class' => Employe::class,
-                'choice_label' => 'username', // ou une autre propriété
+                'choice_label' => function($recipients){ return $recipients->getPrenom().' '.$recipients->getNom();}, // ou une autre propriété
                 'multiple' => true,
                 'expanded' => true,
                 'mapped' => false,

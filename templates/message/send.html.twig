@@ -47,180 +47,182 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
-                                            <thead>
-                                            <tr>
-                                                <th>
-                                                    <input type="checkbox">
-                                                </th>
-                                                <th>{{ 'Nom et Prenom'|trans }}</th>
-                                                <th>{{ 'Poste'|trans }}</th>
-                                                <th>{{ 'Département'|trans }}</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
+                                        {{ form_row(form.recipients, {'label': 'Choisir destinataire(s)'}) }}
+{#                                        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">#}
+{#                                            <thead>#}
+{#                                            <tr>#}
+{#                                                <th>#}
+{#                                                    <input type="checkbox">#}
+{#                                                </th>#}
+{#                                                <th>{{ 'Nom et Prenom'|trans }}</th>#}
+{#                                                <th>{{ 'Poste'|trans }}</th>#}
+{#                                                <th>{{ 'Département'|trans }}</th>#}
+{#                                            </tr>#}
+{#                                            </thead>#}
+{#                                            <tbody>#}
 {#                                            {% for employe in employes %}#}
-                                                <tr>
-                                                <td>
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td data-label="{{ 'Nom et Prenom'|trans }}">
-                                                    Mamadou AliouneSARR
-                                                </td>
-                                                <td data-label="{{ 'Poste'|trans }}">
-                                                    Développeur
-                                                </td>
-                                                <td data-label="{{ 'Département'|trans }}">
-                                                    Informatique
-                                                </td>
-                                                </tr>
-                                                <tr>
-                                                <td>
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td data-label="{{ 'Nom et Prenom'|trans }}">
+{#                                                <tr>#}
+{#                                                <td>#}
+{#                                                    <input type="checkbox">#}
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Nom et Prenom'|trans }}">#}
+{#                                                    Mamadou AliouneSARR#}
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Poste'|trans }}">#}
+{#                                                    Développeur#}
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Département'|trans }}">#}
+{#                                                    Informatique#}
+{#                                                </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                <td>#}
+{#                                                    <input type="checkbox">#}
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Nom et Prenom'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Poste'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Poste'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Département'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Département'|trans }}">#}
 
-                                                </td>
-                                                </tr>
-                                                <tr>
-                                                <td>
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td data-label="{{ 'Nom et Prenom'|trans }}">
+{#                                                </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                <td>#}
+{#                                                    <input type="checkbox">#}
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Nom et Prenom'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Poste'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Poste'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Département'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Département'|trans }}">#}
 
-                                                </td>
-                                                </tr>
-                                                <tr>
-                                                <td>
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td data-label="{{ 'Nom et Prenom'|trans }}">
+{#                                                </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                <td>#}
+{#                                                    <input type="checkbox">#}
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Nom et Prenom'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Poste'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Poste'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Département'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Département'|trans }}">#}
 
-                                                </td>
-                                                </tr>
-                                                <tr>
-                                                <td>
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td data-label="{{ 'Nom et Prenom'|trans }}">
+{#                                                </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                <td>#}
+{#                                                    <input type="checkbox">#}
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Nom et Prenom'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Poste'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Poste'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Département'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Département'|trans }}">#}
 
-                                                </td>
-                                                </tr>
-                                                <tr>
-                                                <td>
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td data-label="{{ 'Nom et Prenom'|trans }}">
+{#                                                </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                <td>#}
+{#                                                    <input type="checkbox">#}
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Nom et Prenom'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Poste'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Poste'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Département'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Département'|trans }}">#}
 
-                                                </td>
-                                                </tr>
-                                                <tr>
-                                                <td>
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td data-label="{{ 'Nom et Prenom'|trans }}">
+{#                                                </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                <td>#}
+{#                                                    <input type="checkbox">#}
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Nom et Prenom'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Poste'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Poste'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Département'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Département'|trans }}">#}
 
-                                                </td>
-                                                </tr>
-                                                <tr>
-                                                <td>
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td data-label="{{ 'Nom et Prenom'|trans }}">
+{#                                                </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                <td>#}
+{#                                                    <input type="checkbox">#}
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Nom et Prenom'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Poste'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Poste'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Département'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Département'|trans }}">#}
 
-                                                </td>
-                                                </tr>
-                                                <tr>
-                                                <td>
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td data-label="{{ 'Nom et Prenom'|trans }}">
+{#                                                </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                <td>#}
+{#                                                    <input type="checkbox">#}
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Nom et Prenom'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Poste'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Poste'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Département'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Département'|trans }}">#}
 
-                                                </td>
-                                                </tr>
-                                                <tr>
-                                                <td>
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td data-label="{{ 'Nom et Prenom'|trans }}">
+{#                                                </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                <td>#}
+{#                                                    <input type="checkbox">#}
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Nom et Prenom'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Poste'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Poste'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Département'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Département'|trans }}">#}
 
-                                                </td>
-                                                </tr>
-                                                <tr>
-                                                <td>
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td data-label="{{ 'Nom et Prenom'|trans }}">
+{#                                                </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                <td>#}
+{#                                                    <input type="checkbox">#}
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Nom et Prenom'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Poste'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Poste'|trans }}">#}
 
-                                                </td>
-                                                <td data-label="{{ 'Département'|trans }}">
+{#                                                </td>#}
+{#                                                <td data-label="{{ 'Département'|trans }}">#}
 
-                                                </td>
-                                                </tr>
-                                            {#{% else %}
-                                                <tr>
-                                                    <td class="text-center" colspan="4">{{ 'Aucun employé enregistré'|trans }}</td>
-                                                </tr>
-                                            {% endfor %}#}
-                                            </tbody>
-                                        </table>
+{#                                                </td>#}
+{#                                                </tr>#}
+{#                                            #}{#{% else %}#}
+{#                                                <tr>#}
+{#                                                    <td class="text-center" colspan="4">{{ 'Aucun employé enregistré'|trans }}</td>#}
+{#                                                </tr>#}
+{#                                            {% endfor %}#}
+{#                                            </tbody>#}
+{#                                        </table>#}
+
                                     </div>
                                     <div class="modal-footer centrer">
                                         <button type="submit" class="btn btn-green btn-normal mr-3" id="send" {#onclick="envoie()"#}>

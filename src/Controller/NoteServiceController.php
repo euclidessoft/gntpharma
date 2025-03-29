@@ -44,23 +44,23 @@ class NoteServiceController extends AbstractController
             $noteService->setResponsable($responsable);
             //Recuperation de tous les employé
 
-            $employes = $entityManager->getRepository(Employe::class)->findAll();
-            foreach ($employes as $employe) {
-                // Ajouter tous les employés sauf le responsable
-                if ($employe != $responsable) {
-                    $noteService->addEmploye($employe);
-
-                    // **Ajout de la notification**
-                    $notification = new Notification();
-                    $notification->setEmploye($employe);
-                    $notification->setMessage("Nouvelle note de service enregistrée");
-                    $notification->setCreatedAt(new \DateTime());
-                    $notification->setIsRead(false);
-                    $notification->setLien($this->generateUrl('note_service_suivi', ['id' => $noteService->getId()]));
-                    $entityManager->persist($notification);
-                    $entityManager->flush();
-                }
-            }
+//            $employes = $entityManager->getRepository(Employe::class)->findAll();
+//            foreach ($employes as $employe) {
+//                // Ajouter tous les employés sauf le responsable
+//                if ($employe != $responsable) {
+//                    $noteService->addEmploye($employe);
+//
+//                    // **Ajout de la notification**
+//                    $notification = new Notification();
+//                    $notification->setEmploye($employe);
+//                    $notification->setMessage("Nouvelle note de service enregistrée");
+//                    $notification->setCreatedAt(new \DateTime());
+//                    $notification->setIsRead(false);
+//                    $notification->setLien($this->generateUrl('note_service_suivi', ['id' => $noteService->getId()]));
+//                    $entityManager->persist($notification);
+//                    $entityManager->flush();
+//                }
+//            }
             $entityManager->persist($noteService);
             $entityManager->flush();
 
