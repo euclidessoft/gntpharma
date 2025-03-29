@@ -25,6 +25,14 @@
                 {{ message|trans }}
             </div>
         {% endfor %}
+        {% for message in app.flashes('danger') %}
+            <div class="alert alert-danger alert-dismissible fade show radius-10 shadow-black">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    &times;
+                </button>
+                {{ message|trans }}
+            </div>
+        {% endfor %}
         <div id="flash"></div>
 
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
@@ -33,8 +41,9 @@
                 <th>{{ 'Matricule'|trans }}</th>
                 <th>{{ 'Employé'|trans }}</th>
                 <th>{{ 'Date de validation'|trans }}</th>
-                <th>{{ 'Salaire de base'|trans }}</th>
-                <th>{{ 'Montant reçu'|trans }}</th>
+                <th>{{ 'Salaire Brut'|trans }}</th>
+                <th>{{ 'Net à Payer'|trans }}</th>
+                <th>{{ 'Charge patronale'|trans }}</th>
                 <th>{{ 'Action'|trans }}</th>
             </tr>
             </thead>
@@ -45,8 +54,9 @@
                     <td>{{ paie.employe.matricule }}</td>
                     <td>{{ paie.employe.nom }} {{ paie.employe.prenom }}</td>
                     <td>{{ paie.date|date('d/m/Y') }}</td>
-                    <td>{{ paie.salaireBase|number_format(0, '' , ' ') }} FCFA</td>
+                    <td>{{ paie.salaireBrut|number_format(0, '' , ' ') }} FCFA</td>
                     <td>{{ paie.salaireNet|number_format(0, '' , ' ') }} FCFA</td>
+                    <td>{{ paie.totalchargepatronal|number_format(0, '' , ' ') }} FCFA</td>
                     <td>
                         <button type="button" class="btn btn-green" data-toggle="modal" data-target="#modal{{ paie.id }}" id="btn{{ paie.id }}">
                             <i class="fa fa-plus"></i>
@@ -95,16 +105,16 @@
                         </div>
 
                     </td>
-                    {% set montant = montant + paie.salaireNet %}
+                    {% set montant = montant + paie.salaireBrut + paie.totalchargepatronal %}
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6" class="text-center">Aucun paiement enregistré</td>
+                    <td colspan="8" class="text-center">Aucun paiement enregistré</td>
                 </tr>
             {% endfor %}
             <tr>
-                <th colspan="6" class="text-center">
-                    {{ 'Montant total'|trans }} : {{ montant|number_format(0, '' , ' ') }} FCFA
+                <th colspan="8" class="text-center">
+                    {{ 'Montant total dû'|trans }} : {{ montant|number_format(0, '' , ' ') }} FCFA
                     <input type="hidden" value="{{ montant }}" id="montant"/>
                     {% if paies|length > 1 %}
                     <button type="button" class="btn btn-green" data-toggle="modal" data-target="#modal_tous" id="tous">

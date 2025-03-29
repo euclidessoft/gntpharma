@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Complement\Solde;
 use App\Entity\Banque;
 use App\Entity\Debit;
+use App\Entity\Depense;
 use App\Entity\Ecriture;
 use App\Entity\Paie;
 use App\Entity\PaieSalaire;
@@ -1676,15 +1677,20 @@ class FinanceController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_FINANCE')) {
             $debit = new Debit();
+            $debitcharge = new Debit();
+            $debitimpot = new Debit();
             $ecriture = new Ecriture();
+            $ecriturecharge = new Ecriture();
+            $ecritureimpot = new Ecriture();
             $entityManager = $this->getDoctrine()->getManager();
             $paie = $paieRepository->find($request->get('paie'));
             $banque = $entityManager->getRepository(Banque::class)->find($request->get('banque'));
             $montant = 0;
 
             $montant = $solde->montantbanque($entityManager, $banque->getCompte());
+            $montantapayer = $paie->getSalaireBrut() + $paie->getTotalChargePatronal();
 
-            if ($paie->getSalaireNet() <= $montant) {
+            if ($montantapayer <= $montant) {
             $paieSalaire = new PaieSalaire();
             $paieSalaire->setUser($this->getUser());
             $paieSalaire->setMontant($paie->getSalaireNet());
@@ -1697,27 +1703,58 @@ class FinanceController extends AbstractController
 
             $debit->setCompte($banque->getCompte());
             $debit->setType('Banque');
+            $debit->setSalaire($paieSalaire);
+            $debit->setMontant($paie->getSalaireNet());
+
+            $debitcharge->setCompte($banque->getCompte());
+            $debitcharge->setType('Banque');
+            $debitcharge->setSalaire($paieSalaire);
+            $debitcharge->setMontant($paie->getTotalChargeEmploye() + $paie->getTotalChargePatronal());
+
+            $debitimpot->setCompte($banque->getCompte());
+            $debitimpot->setType('Banque');
+            $debitimpot->setSalaire($paieSalaire);
+            $debitimpot->setMontant($paie->getImpot());
 
             $ecriture->setType('Banque');
             $ecriture->setComptecredit("641");
             $ecriture->setLibellecomptecredit("Salaire Personnel");
             $ecriture->setComptedebit($banque->getCompte());
             $ecriture->setLibellecomptedebit($banque->getNom());
+            $ecriture->setDebit($debit);
+            $ecriture->setSolde(-$paie->getSalaireNet());
+            $ecriture->setMontant($paie->getSalaireNet());
+            $ecriture->setLibelle("Paiement de salaire ".$paie->getEmploye()->getNom(). " ".$paie->getEmploye()->getPrenom());
 
+            $ecriturecharge->setType('Banque');
+            $ecriturecharge->setComptecredit("431");
+            $ecriturecharge->setLibellecomptecredit("Charge Sociale");
+            $ecriturecharge->setComptedebit($banque->getCompte());
+            $ecriturecharge->setLibellecomptedebit($banque->getNom());
+            $ecriturecharge->setDebit($debitcharge);
+            $ecriturecharge->setSolde(-($paie->getTotalChargeEmploye() + $paie->getTotalChargePatronal()));
+            $ecriturecharge->setMontant($paie->getTotalChargeEmploye() + $paie->getTotalChargePatronal());
+            $ecriturecharge->setLibelle("Versement charge sociale");
 
-                    $debit->setSalaire($paieSalaire);
-                    $debit->setMontant($paie->getSalaireNet());
+            $ecritureimpot->setType('Banque');
+            $ecritureimpot->setComptecredit("4421");
+            $ecritureimpot->setLibellecomptecredit("Impot sur les revenues");
+            $ecritureimpot->setComptedebit($banque->getCompte());
+            $ecritureimpot->setLibellecomptedebit($banque->getNom());
+            $ecritureimpot->setDebit($debitimpot);
+            $ecritureimpot->setSolde(-$paie->getImpot());
+            $ecritureimpot->setMontant($paie->getImpot());
+            $ecritureimpot->setLibelle("Versement impot sur les revenues");
 
-                    $ecriture->setDebit($debit);
-                    $ecriture->setSolde(-$paie->getSalaireNet());
-                    $ecriture->setMontant($paie->getSalaireNet());
-                    $ecriture->setLibelle("Paiement de salaire ".$paie->getEmploye()->getNom(). " ".$paie->getEmploye()->getPrenom());
-
-                    $entityManager->persist($paie);
-                    $entityManager->persist($banque);
-                    $entityManager->persist($debit);
-                    $entityManager->persist($ecriture);
-                    $entityManager->flush();
+            $entityManager->persist($paie);
+            $entityManager->persist($banque);
+            $entityManager->persist($debit);
+            $entityManager->persist($debitcharge);
+            $entityManager->persist($debitimpot);
+            $entityManager->persist($ecriture);
+            $entityManager->persist($ecriturecharge);
+            $entityManager->persist($ecritureimpot);
+            $entityManager->flush();
                 $this->addFlash('notice', 'Paiement effectué avec succès');
 
 //                    return $this->redirectToRoute('depense_index', [], Response::HTTP_SEE_OTHER);
@@ -1765,9 +1802,13 @@ class FinanceController extends AbstractController
 
             if ($montant <= $solde) {
                 $paies = $paieRepository->findBy(['payer' => false]);
+
+
+
+                $montantNet = 0;
+                $montantcharge = 0;
+                $montantimpot = 0;
                 foreach ($paies as $paie) {
-                    $debit = new Debit();
-                    $ecriture = new Ecriture();
 
 
                     $paieSalaire = new PaieSalaire();
@@ -1780,35 +1821,105 @@ class FinanceController extends AbstractController
                     $paie->setDatepaye(new \DateTime());
 
 
-                    $debit->setCompte($banque->getCompte());
-                    $debit->setType('Banque');
-
-                    $ecriture->setType('Banque');
-                    $ecriture->setComptecredit("641");
-                    $ecriture->setLibellecomptecredit("Salaire Personnel");
-                    $ecriture->setComptedebit($banque->getCompte());
-                    $ecriture->setLibellecomptedebit($banque->getNom());
-
-
-                    $debit->setSalaire($paieSalaire);
-                    $debit->setMontant($paie->getSalaireNet());
-
-                    $ecriture->setDebit($debit);
-                    $ecriture->setSolde(-$paie->getSalaireNet());
-                    $ecriture->setMontant($paie->getSalaireNet());
-                    $ecriture->setLibelle("Paiement de salaire ".$paie->getEmploye()->getNom(). " ".$paie->getEmploye()->getPrenom());
-
                     $entityManager->persist($paie);
-                    $entityManager->persist($banque);
-                    $entityManager->persist($debit);
-                    $entityManager->persist($ecriture);
                     $entityManager->flush();
 
+                    $montantNet = $montantNet + $paie->getSalaireNet();
+                    $montantimpot = $montantimpot + $paie->getImpot();
+                    $montantcharge = $montantcharge + $paie->getTotalChargeEmploye() + $paie->getTotalChargePatronal();
+
+
                 }
+                $debitNet = new Debit();
+                $debitCharge = new Debit();
+                $debitImpot = new Debit();
+                $ecritureNet = new Ecriture();
+                $ecritureCharge = new Ecriture();
+                $ecritureImpot = new Ecriture();
+
+                $depenseNet = new Depense();
+                $depenseNet->setUser($this->getUser());
+                $depenseNet->setType("Banque");
+                $depenseNet->setLibelle("Paiement salaire");
+                $depenseNet->setMontant($montantNet);
+                $depenseNet->setStatut("Effectuée");
+                $depenseNet->setCompte("641");
+
+                $depenseCharge = new Depense();
+                $depenseCharge->setUser($this->getUser());
+                $depenseCharge->setType("Banque");
+                $depenseCharge->setLibelle("Versement charge sociale");
+                $depenseCharge->setMontant($montantcharge);
+                $depenseCharge->setStatut("Effectuée");
+                $depenseCharge->setCompte("431");
+
+                $depenseImpot = new Depense();
+                $depenseImpot->setUser($this->getUser());
+                $depenseImpot->setType("Banque");
+                $depenseImpot->setLibelle("Versement Impot les revenues");
+                $depenseImpot->setMontant($montantimpot);
+                $depenseImpot->setStatut("Effectuée");
+                $depenseImpot->setCompte("4421");
+
+                $debitNet->setCompte($banque->getCompte());
+                $debitNet->setType('Banque');
+                $debitNet->setDepense($depenseNet);
+                $debitNet->setMontant($montantNet);
+
+                $debitCharge->setCompte($banque->getCompte());
+                $debitCharge->setType('Banque');
+                $debitCharge->setDepense($depenseCharge);
+                $debitCharge->setMontant($montantcharge);
+
+                $debitImpot->setCompte($banque->getCompte());
+                $debitImpot->setType('Banque');
+                $debitImpot->setDepense($depenseImpot);
+                $debitImpot->setMontant($montantimpot);
+
+                $ecritureNet->setType('Banque');
+                $ecritureNet->setComptecredit("641");
+                $ecritureNet->setLibellecomptecredit("Salaire Personnel");
+                $ecritureNet->setComptedebit($banque->getCompte());
+                $ecritureNet->setLibellecomptedebit($banque->getNom());
+                $ecritureNet->setDebit($debitNet);
+                $ecritureNet->setSolde(-$montantNet);
+                $ecritureNet->setMontant($montantNet);
+                $ecritureNet->setLibelle("Paiement des salaires aux employes");
+
+                $ecritureCharge->setType('Banque');
+                $ecritureCharge->setComptecredit("431");
+                $ecritureCharge->setLibellecomptecredit("Charge Sociale");
+                $ecritureCharge->setComptedebit($banque->getCompte());
+                $ecritureCharge->setLibellecomptedebit($banque->getNom());
+                $ecritureCharge->setDebit($debitCharge);
+                $ecritureCharge->setSolde(-$montantcharge);
+                $ecritureCharge->setMontant($montantcharge);
+                $ecritureCharge->setLibelle("Versement charges sociales");
+
+                $ecritureImpot->setType('Banque');
+                $ecritureImpot->setComptecredit("431");
+                $ecritureImpot->setLibellecomptecredit("Impot sur les revenues");
+                $ecritureImpot->setComptedebit($banque->getCompte());
+                $ecritureImpot->setLibellecomptedebit($banque->getNom());
+                $ecritureImpot->setDebit($debitImpot);
+                $ecritureImpot->setSolde(-$montantimpot);
+                $ecritureImpot->setMontant($montantimpot);
+                $ecritureImpot->setLibelle("Versement Impot sur les revenues");
+
+                $entityManager->persist($depenseNet);
+                $entityManager->persist($depenseCharge);
+                $entityManager->persist($depenseImpot);
+                $entityManager->persist($debitNet);
+                $entityManager->persist($debitCharge);
+                $entityManager->persist($debitImpot);
+                $entityManager->persist($ecritureNet);
+                $entityManager->persist($ecritureCharge);
+                $entityManager->persist($ecritureImpot);
+                $entityManager->flush();
                 $this->addFlash('notice', 'Paiement effectué avec succès');
 //                    return $this->redirectToRoute('depense_index', [], Response::HTTP_SEE_OTHER);
             } else {
-                $this->addFlash('notice', 'Montant non disponible');
+                $this->addFlash('danger', 'Montant non disponible');
             }
 
 
