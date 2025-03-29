@@ -1553,3 +1553,11 @@ select#transfert_date_time_minute {
     margin: 0.5rem !important;
     color: var(--vert-clair);
 }
+
+.bulletin th, .bulletin td {
+    padding: 0.15rem;
+}
+
+.bulletin td {
+    padding-right: 0.75rem !important;
+}

@@ -40,21 +40,148 @@
             {#{{ mois.nom|trans }} {{ 'now'|date('Y') }}#}
             Du 01/03/2025 au 21/03/2025
         </p>
-        <div class="row mt-5"></div>
-        <div class="col-7">
-            <div class="row">
-                <div class="col-5">
-                    {{ "Matricule : "|trans }}
+        <p class="mt-5">&nbsp;</p>
+        <div class="row my-5">
+            <div class="col-7">
+                <div class="row">
+                    <div class="col-4 text-right text-bold">
+                        {{ "Matricule : "|trans }}
+                    </div>
+                    <div class="col-8">
+                        {{ employe.matricule }}
+                    </div>
+                    <div class="col-4 text-right text-bold">
+                        {{ "Poste : "|trans }}
+                    </div>
+                    <div class="col-8">
+                        {{ employe.poste.nom }}
+                    </div>
+                    <div class="col-4 text-right text-bold">
+                        {{ "Département : "|trans }}
+                    </div>
+                    <div class="col-8">
+                        {{ employe.poste.departement.nom }}
+                    </div>
+                    <div class="col-4 text-right text-bold">
+                        {{ "Date d'embauche : "|trans }}
+                    </div>
+                    <div class="col-8">
+                        {{ employe.hireDate|date('d/m/Y') }}
+                    </div>
+                    <div class="col-4 text-right text-bold">
+                        {{ "Ancienneté : "|trans }}
+                    </div>
+                    <div class="col-8">
+                        {% set yearDiff = 'now'|date('Y') - employe.hireDate|date('Y') %}
+                        {% set monthDiff = 'now'|date('m') - employe.hireDate|date('m') + 1 %}
+                        {% if yearDiff <= 0 %}
+
+                        {% elseif yearDiff > 0  and yearDiff < 2 %}
+                            {{ yearDiff }} {{ "an"|trans }}
+                        {% else %}
+                            {{ yearDiff }} {{ "ans"|trans }}
+                        {% endif %}
+                        {{ monthDiff }} {{ "mois"|trans }}
+                    </div>
                 </div>
-                <div class="col-7">
-                    {{ employe.matricule }}
+            </div>
+            <div class="col-5 px-5">
+                <div class="col-12 border-green border-2 radius-10 p-4">
+                    <h4 class="text-bold text-dark">
+                        {{ employe.nom }} {{ employe.prenom }}
+                    </h4>
+                    <p class="">
+                        {{ employe.adresse }}
+                    </p>
+                </div>
+            </div>
+            <div class="col-12 mt-5">
+                <table class="table table-success-light table-bordered w-100 bulletin">
+                    <thead>
+                    <tr class="text-center">
+                        <th class="text-left">ELEMENTS DE PAIE</th>
+                        <th>BASE</th>
+                        <th>TAUX</th>
+                        <th>GAINS</th>
+                        <th>RETENUES</th>
+                        <th>COTISATIONS <br> PATRONALES</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="text-right">
+                        <td class="text-left">ACCIDENTS DU TRAVAIL-MALADIES PROFESSIONNELLES</td>
+                        <td>300 000</td>
+                        <td></td>
+                        <td>300 000</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="text-bold text-right">
+                        <td class="text-left">TOTAL DES COTISATIONS ET CONTRIBUTIONS</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>40 000</td>
+                        <td>20 000</td>
+                    </tr>
+                    <tr class="text-bold">
+                        <td colspan="3">
+                            NET IMPOSABLE
+                        </td>
+                        <td class="text-right">300 000</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 mt-4">
+                <table class="table table-success-light table-bordered w-100 bulletin">
+                    <thead>
+                    <tr class="text-center">
+                        <th colspan="2" class="text-left">Impôt sur le revenu</th>
+                        <th>Base</th>
+                        <th>Taux</th>
+                        <th>Montant</th>
+                        <th>Cumul annuel</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="text-right">
+                        <td colspan="2" class="text-left">Impôt sur le revenu prélevé à la source</td>
+                        <td>300 000</td>
+                        <td></td>
+                        <td>300 000</td>
+                        <td>300 000</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-7">&nbsp;</div>
+            <div class="col-5 p-4">
+                <div class="row bg-success-light p-3">
+                    <div class="col-6">
+                        <h3 class="text-dark text-bold">
+                        Net à payer
+                        </h3>
+                        <p class="mb-0"> Validé le : 29/03/2025</p>
+                    </div>
+                    <div class="col-6">
+                        <h3 class="text-dark text-right text-bold">
+                        300 000
+                        </h3>
+                        <p class="text-right mb-0"> Payé le : 31/03/2025</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-5">
-
-        </div>
     </div>
+
+
+
+
+
 
 
 
