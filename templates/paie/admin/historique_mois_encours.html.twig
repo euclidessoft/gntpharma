@@ -1,0 +1,55 @@
+{% extends "rh.html.twig" %}
+{% block title %} {{ "Liste des bulletins"|trans }} - GNT Pharma {% endblock %}
+{% block paie %}active{% endblock %}
+{% block paie_historique %}active{% endblock %}
+
+{% block body %}
+
+<div class="col-lg-10 mt-4 fond-7">
+
+    <h3 class="mt-4 mb-5 text-bold">
+        <i class="fas fa-calendar-alt me-2"></i>
+        {{ "Historique de paiement"|trans }}
+    </h3>
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('paie_historique_mois_en_cours') }}">
+                {{'Mois en cours'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('paie_historique') }}">
+                {{'Autres'|trans}}
+            </a>
+        </li>
+    </ul>
+
+    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+        <thead>
+            <tr>
+                <th>Matricule</th>
+                <th>Employé(e)</th>
+                <th>Salaire De base</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paies in paie %}
+            <tr>
+                <td>{{ paies.employe.matricule }}</td>
+                <td>{{ paies.employe.nom~' '~paies.employe.prenom }}</td>
+                <td>{{ paies.salaireBase }}</td>
+                <td>
+                    <a href="{{ path('paie_show', {'id': paies.employe.id }) }}" class="btn btn-success">Details</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center">Aucune fiche de paie valié.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

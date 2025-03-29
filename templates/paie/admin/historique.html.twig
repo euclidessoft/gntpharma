@@ -5,23 +5,54 @@
     is_granted('ROLE_STOCK') ? 'stock.html.twig' :
     is_granted('ROLE_LIVREUR') ? 'livreur.html.twig' :
     is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
-    'layout.html.twig'
-%}
+    'layout.html.twig' %}
 {% block title %} {{ "Liste des bulletins"|trans }} - GNT Pharma {% endblock %}
 {% block paie %}active{% endblock %}
 {% block paie_historique %}active{% endblock %}
 
 {% block body %}
+
     <div class="col-lg-10 mt-4 fond-7">
+
         <h3 class="mt-4 mb-5 text-bold">
-            <i class="fa fa-money-bill mr-2"></i>
+            <i class="fas fa-calendar-alt me-2"></i>
             {{ "Historique de paiement"|trans }}
         </h3>
-        <a href="{{ path('paie_historique_bulletin') }}" class="btn btn-success mb-4">
-            <i class="fas fa-plus"></i>
-            Tous les bulletins
-        </a>
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('paie_historique_mois_en_cours') }}">
+                    {{ 'Mois en cours'|trans }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('paie_historique') }}">
+                    {{ 'Autres'|trans }}
+                </a>
+            </li>
+        </ul>
 
+        <!-- Filtre par mois et année -->
+        <div class="row mb-4">
+            <div class="col-12">
+                {{ form_start(form, {'attr': {'class': 'row w-100'}}) }}
+                <div class="col-md-3 d-flex align-items-center">
+                    {{ form_label(form.employe, null, {'label_attr': {'class': 'me-2 fw-bold'}}) }}
+                    {{ form_widget(form.employe) }}
+                </div>
+                <div class="col-md-3 d-flex align-items-center">
+                    {{ form_label(form.mois, null, {'label_attr': {'class': 'me-2 fw-bold'}}) }}
+                    {{ form_widget(form.mois) }}
+                </div>
+                <div class="col-md-3 d-flex align-items-center">
+                    {{ form_label(form.annee, null, {'label_attr': {'class': 'me-2 fw-bold'}}) }}
+                    {{ form_widget(form.annee) }}
+                </div>
+                <div class="col-md-3">
+                    {{ form_widget(form.filtrer, {'attr': {'class': 'btn btn-success w-70'}}) }}
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
             <thead>
             <tr>
@@ -42,7 +73,8 @@
                     <td>{{ paie.salaireBase|number_format(0, '' , ' ') }} FCFA</td>
                     <td>{{ paie.salaireNet|number_format(0, '' , ' ') }} FCFA</td>
                     <td>
-                        <a href="{{ path('paie_historique_show', {'id': paie.id} ) }}" class="btn btn-success"><i class="fas fa-eye"></i> Details</a>
+                        <a href="{{ path('paie_historique_show', {'id': paie.id} ) }}" class="btn btn-success"><i
+                                    class="fas fa-eye"></i> Details</a>
                     </td>
                 </tr>
             {% else %}
@@ -53,4 +85,7 @@
             </tbody>
         </table>
     </div>
+    <!-- filtre par mois et année -->
+
+
 {% endblock %}

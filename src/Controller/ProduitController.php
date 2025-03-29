@@ -475,7 +475,7 @@ class ProduitController extends AbstractController
                     $this->getDoctrine()->getManager()->flush();
                     $this->addFlash('notice', 'Produit modifié avec succès');
 
-                    $response = $this->redirectToRoute('produit_edit', ['id' => $produit->getId()], Response::HTTP_SEE_OTHER);
+                    $response = $this->redirectToRoute('produit_show', ['id' => $produit->getId()], Response::HTTP_SEE_OTHER);
                     $response->setSharedMaxAge(0);
                     $response->headers->addCacheControlDirective('no-cache', true);
                     $response->headers->addCacheControlDirective('no-store', true);
