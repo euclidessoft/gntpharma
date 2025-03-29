@@ -39,6 +39,7 @@
                 <td>{{ paie.employe.matricule }}</td>
                 <td>{{ paie.employe.nom~' '~paie.employe.prenom }}</td>
                 <td>{{ paie.salaireNet|number_format(0, '', ' ') }}</td>
+
                 <td>
                     <a href="{{ path('paie_show', {'id': paie.employe.id }) }}" class="btn btn-success">Details</a>
                 </td>
