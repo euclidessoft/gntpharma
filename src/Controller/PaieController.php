@@ -57,7 +57,7 @@ class PaieController extends AbstractController
                         'employe' => $employe,
                         'salaireBase' => $salaireDeBase,
                         'salaireBrut' => $salaireDeBase + $employe->getSursalaire(),
-                        'salaireNet' => $salaireDeBase - $salaireDeBase * 0.01,
+                        'salaireNet' => $salaireDeBase + $employe->getSursalaire() ,
                         'prime' => $primes,
                         'heureSup' => $heureSup,
                     ];

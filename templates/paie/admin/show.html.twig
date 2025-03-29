@@ -109,26 +109,58 @@
                     </thead>
                     <tbody>
                     <tr class="text-right">
-                        <td class="text-left">ACCIDENTS DU TRAVAIL-MALADIES PROFESSIONNELLES</td>
-                        <td>300 000</td>
+                        <td class="text-left">SALAIRES DE BASE</td>
+                        <td>{{ employe.poste.salaire|number_format(0, '' , ' ') }}</td>
                         <td></td>
-                        <td>300 000</td>
+                        <td>{{ employe.poste.salaire|number_format(0, '' , ' ') }}</td>
                         <td></td>
                         <td></td>
+                    </tr>
+                    <tr class="text-right">
+                        <td class="text-left">SURSALAIRES</td>
+                        <td>{{ employe.sursalaire|number_format(0, '' , ' ') }}</td>
+                        <td></td>
+                        <td>{{ employe.sursalaire|number_format(0, '' , ' ') }}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="text-bold text-right">
+                        <td class="text-left">TOTAL DES GAINS(Brut)</td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ (employe.sursalaire + employe.poste.salaire)|number_format(0, '' , ' ') }}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="text-right">
+                        <td class="text-left">TOTAL COTISATIONS SOCIALES</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>14 000</td>
+                        <td></td>
+                    </tr>
+                    <tr class="text-right">
+                        <td class="text-left">TOTAL CHARGES PATRIONALES</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>7 000</td>
                     </tr>
                     <tr class="text-bold text-right">
                         <td class="text-left">TOTAL DES COTISATIONS ET CONTRIBUTIONS</td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td>40 000</td>
-                        <td>20 000</td>
+                        <td>14 000</td>
+                        <td>7 000</td>
                     </tr>
                     <tr class="text-bold">
                         <td colspan="3">
                             NET IMPOSABLE
                         </td>
-                        <td class="text-right">300 000</td>
+                        <td class="text-right">{{ (employe.sursalaire + employe.poste.salaire- 14000)|number_format(0, '' , ' ') }}</td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -149,10 +181,10 @@
                     <tbody>
                     <tr class="text-right">
                         <td colspan="2" class="text-left">Impôt sur le revenu prélevé à la source</td>
-                        <td>300 000</td>
+                        <td>{{ (employe.sursalaire + employe.poste.salaire- 14000)|number_format(0, '' , ' ') }}</td>
                         <td></td>
-                        <td>300 000</td>
-                        <td>300 000</td>
+                        <td>8 000</td>
+                        <td>24 000</td>
                     </tr>
 
                     </tbody>
@@ -169,7 +201,7 @@
                     </div>
                     <div class="col-6">
                         <h3 class="text-dark text-right text-bold">
-                        300 000
+                            {{ (employe.sursalaire + employe.poste.salaire- 14000-8000)|number_format(0, '' , ' ') }}
                         </h3>
                         <p class="text-right mb-0"> Payé le : 31/03/2025</p>
                     </div>
@@ -180,102 +212,4 @@
 
 
 
-
-
-
-
-
-
-
-    <div class="container mt-5 p-4 border rounded shadow-sm bg-white">
-        <h2 class="text-center text-uppercase font-weight-bold mb-4">Détails du Bulletin de Paie</h2>
-        <h4 class="text-center mb-5">{{ employe.nom }} {{ employe.prenom }}</h4>
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-dark text-white font-weight-bold">
-                <i class="fas fa-money-bill-wave mr-2"></i> Bulletin de Paie
-            </div>
-            <div class="card-body">
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <h5 class="font-weight-bold">Informations de l'employé</h5>
-                        <p><strong>Matricule :</strong> {{ employe.matricule }}</p>
-                        <p><strong>Poste :</strong> {{ employe.poste.nom }}</p>
-                        <p><strong>Département :</strong> {{ employe.poste.departement.nom }}</p>
-                        <p><strong>Salaire de base :</strong> {{ employe.poste.salaire|number_format(0, '', ' ') }} FCFA
-                        </p>
-                    </div>
-                </div>
-
-                <hr>
-
-                <h5 class="font-weight-bold">Primes</h5>
-                <ul class="list-group mb-3">
-                    {% set totalPrimes = 0 %}
-                    {% for prime in primes %}
-                        <li class="list-group-item d-flex justify-content-between">
-                            Prime : {{ prime.montant|number_format(0, '', ' ') }} FCFA
-                            {% set totalPrimes = totalPrimes + prime.montant %}
-                        </li>
-                    {% endfor %}
-                    {% if primes is empty %}
-                        <li class="list-group-item text-muted">Aucune prime</li>
-                    {% endif %}
-                </ul>
-
-                <h5 class="font-weight-bold">Heures supplémentaires</h5>
-                <ul class="list-group mb-3">
-                    {% set totalHeuresSup = 0 %}
-                    {% for heure in heureSup %}
-                        <li class="list-group-item d-flex justify-content-between">
-                            {{ heure.duree }} heures à {{ heure.tauxHoraire|number_format(0, '', ' ') }} FCFA
-                            {% set totalHeuresSup = totalHeuresSup + (heure.duree * heure.tauxHoraire) %}
-                        </li>
-                    {% endfor %}
-                    {% if heureSup is empty %}
-                        <li class="list-group-item text-muted">Aucune heure supplémentaire</li>
-                    {% endif %}
-                </ul>
-
-                <h5 class="font-weight-bold">Retenues</h5>
-                <ul class="list-group mb-3">
-                    {% set totalRetenues = 0 %}
-                    {% for retenue in retenues %}
-                        <li class="list-group-item d-flex justify-content-between">
-                            {{ retenue.type }} : {{ retenue.montantRetenue|number_format(0, '', ' ') }} FCFA
-                            {% set totalRetenues = totalRetenues + retenue.montantRetenue %}
-                        </li>
-                    {% endfor %}
-                    {% if retenues is empty %}
-                        <li class="list-group-item text-muted">Aucune retenue</li>
-                    {% endif %}
-                </ul>
-
-                <hr>
-
-                {% set salaireBrut = employe.poste.salaire + totalPrimes + totalHeuresSup %}
-                {% set salaireNet = salaireBrut - totalRetenues - (salaireBrut * 0.01) %}
-
-                <div class="alert alert-info p-4">
-                    <h5 class="font-weight-bold">Récapitulatif</h5>
-                    <p><strong>Salaire brut :</strong> {{ salaireBrut|number_format(0, '', ' ') }} FCFA</p>
-                    <p><strong>Total des primes :</strong> {{ totalPrimes|number_format(0, '', ' ') }} FCFA</p>
-                    <p><strong>Total des heures supplémentaires
-                            :</strong> {{ totalHeuresSup|number_format(0, '', ' ') }} FCFA</p>
-                    <p><strong>Total des retenues :</strong> {{ totalRetenues|number_format(0, '', ' ') }} FCFA</p>
-                    <p class="h4 text-success font-weight-bold">Net à payer : {{ salaireNet|number_format(0, '', ' ') }}
-                        FCFA</p>
-                </div>
-
-                <div class="d-flex justify-content-center mt-4">
-                    {% if paieExistante == null %}
-                        <a href="{{ path('paie_valider', {'id': employe.id }) }}"
-                           class="btn btn-success btn-lg">Valider</a>
-                    {% else %}
-                        <a href="{{ path('paie_index') }}" class="btn btn-secondary btn-lg mr-2">Retour</a>
-                        <a href="#" class="btn btn-primary btn-lg">Imprimer</a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}

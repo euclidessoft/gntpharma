@@ -77,17 +77,33 @@
                 </td>
                 <td>{{ conges.description }}</td>
                 <td>
-                    {% if conges.status == 0 %}
-                    <span class="badge badge-info">En attente de validation</span>
-                    {% elseif conges.status == 1 and conges.congeaccorder is not null and conges.congeaccorder.status == true %}
                     <span class="badge badge-success">Confirmée</span>
-                    {% elseif conges.status == 2 and conges.congeaccorder is null %}
-                    <span class="badge badge-danger">Rejetée</span>
-                    {% elseif conges.status == 2 and conges.congeaccorder is not null and conges.congeaccorder.status == false %}
-                    <span class="badge badge-danger">Déclinée</span>
-                    {% else %}
-                    <span class="badge badge-warning">En attente de confirmation</span>
-                    {% endif %}
+{#                    {% if conges.status == 0 %}#}
+{#                    <span class="badge badge-info">En attente de validation</span>#}
+{#                    {% elseif conges.status == 1 and conges.congeaccorder is not null and conges.congeaccorder.status == true %}#}
+{#                    <span class="badge badge-success">Confirmée</span>#}
+{#                    {% elseif conges.status == 2 and conges.congeaccorder is null %}#}
+{#                    <span class="badge badge-danger">Rejetée</span>#}
+{#                    {% elseif conges.status == 3 and conges.congeaccorder is not null and conges.congeaccorder.status == false %}#}
+{#                    <span class="badge badge-danger">Déclinée</span>#}
+{#                    {% else %}#}
+{#                    <span class="badge badge-warning">En attente de confirmation</span>#}
+{#                    {% endif %}#}
+                </td>
+                <td>
+                    <a class="btn btn-success">Confirmée</a>
+                    <a class="btn btn-success-light">Declinée</a>
+{#                    {% if conges.status == 0 %}#}
+{#                    <span class="badge badge-info">En attente de validation</span>#}
+{#                    {% elseif conges.status == 1 and conges.congeaccorder is not null and conges.congeaccorder.status == true %}#}
+{#                    <span class="badge badge-success">Confirmée</span>#}
+{#                    {% elseif conges.status == 2 and conges.congeaccorder is null %}#}
+{#                    <span class="badge badge-danger">Rejetée</span>#}
+{#                    {% elseif conges.status == 3 and conges.congeaccorder is not null and conges.congeaccorder.status == false %}#}
+{#                    <span class="badge badge-danger">Déclinée</span>#}
+{#                    {% else %}#}
+{#                    <span class="badge badge-warning">En attente de confirmation</span>#}
+{#                    {% endif %}#}
                 </td>
             </tr>
             {% else %}
