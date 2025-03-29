@@ -84,6 +84,26 @@ class Paie
      */
     private $datepaye;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $salaireBrut;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $salaireNetImposable;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $totalChargeEmploye;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $totalChargePatronal;
+
     public function __construct()
     {
         $this->retenues = new ArrayCollection();
@@ -273,6 +293,54 @@ class Paie
     public function setDatepaye(\DateTimeInterface $datepaye): self
     {
         $this->datepaye = $datepaye;
+
+        return $this;
+    }
+
+    public function getSalaireBrut(): ?float
+    {
+        return $this->salaireBrut;
+    }
+
+    public function setSalaireBrut(?float $salaireBrut): self
+    {
+        $this->salaireBrut = $salaireBrut;
+
+        return $this;
+    }
+
+    public function getSalaireNetImposable(): ?float
+    {
+        return $this->salaireNetImposable;
+    }
+
+    public function setSalaireNetImposable(?float $salaireNetImposable): self
+    {
+        $this->salaireNetImposable = $salaireNetImposable;
+
+        return $this;
+    }
+
+    public function getTotalChargeEmploye(): ?float
+    {
+        return $this->totalChargeEmploye;
+    }
+
+    public function setTotalChargeEmploye(?float $totalChargeEmploye): self
+    {
+        $this->totalChargeEmploye = $totalChargeEmploye;
+
+        return $this;
+    }
+
+    public function getTotalChargePatronal(): ?float
+    {
+        return $this->totalChargePatronal;
+    }
+
+    public function setTotalChargePatronal(?float $totalChargePatronal): self
+    {
+        $this->totalChargePatronal = $totalChargePatronal;
 
         return $this;
     }

@@ -56,6 +56,7 @@ class PaieController extends AbstractController
                     $paies[] = [
                         'employe' => $employe,
                         'salaireBase' => $salaireDeBase,
+                        'salaireBrut' => $salaireDeBase + $employe->getSursalaire(),
                         'salaireNet' => $salaireDeBase - $salaireDeBase * 0.01,
                         'prime' => $primes,
                         'heureSup' => $heureSup,
@@ -142,12 +143,6 @@ class PaieController extends AbstractController
             $endOfMonth = new \DateTime('last day of this month');
             $mois = $entityManager->getRepository(Mois::class)->find(date('m'));
 
-
-            $employes = $entityManager->getRepository(Employe::class)->findBy(['status' => true]);
-            foreach ($employes as $employe) {
-                $salaireDeBase = $employe->getPoste()->getSalaire();
-                $salaireJournaliere = $salaireDeBase / 30;
-                $impot = $salaireDeBase * 0.01;
         $employes = $entityManager->getRepository(Employe::class)->findBy(['status' => true]);
         foreach ($employes as $employe) {
             $paieExistante = $entityManager->getRepository(Paie::class)->findByDate($employe->getId(), $startOfMonth, $endOfMonth);
@@ -155,9 +150,8 @@ class PaieController extends AbstractController
                 continue;
             }
 
-            $salaireDeBase = $employe->getPoste()->getSalaire();
+            $salaireDeBase = $employe->getPoste()->getSalaire() + $employe->getSursalaire();
             $salaireJournaliere = $salaireDeBase / 30;
-            $impot = $salaireDeBase * 0.01;
 
                 $primes = $entityManager->getRepository(Prime::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
                 $heureSup = $entityManager->getRepository(HeureSuplementaire::class)->findByDateRange($employe->getId(), $startOfMonth, $endOfMonth);
@@ -194,7 +188,12 @@ class PaieController extends AbstractController
 
                 $totalPrimes = $primeRepository->getTotalPrimesByEmploye($employe);
                 $totalHeureSup = $heureSuplementaireRepository->getTotalHeuresByEmploye($employe);
-                $salaireNet = $salaireDeBase + $totalHeureSup + $totalPrimes - $totalRetenue;
+                $salaireBrut = $salaireDeBase + $totalHeureSup + $totalPrimes - $totalRetenue;
+                $chargeSocial = 14000;
+                $chargePatronal= 7000;
+                $salaireNetImposable = $salaireBrut - $chargeSocial;
+                $impot = 8000;
+                $salaireNet = $salaireNetImposable - $impot;
                 // Enregistrement dans la table paie
                 $paie = new Paie();
                 $paie->setSalaireBase($salaireDeBase);
@@ -203,6 +202,10 @@ class PaieController extends AbstractController
                 $paie->setTotalPrime($totalPrimes);
                 $paie->setTotalheureSup($totalHeureSup);
                 $paie->setTotalRetenue($totalRetenue);
+                $paie->setSalaireBrut($salaireBrut);
+                $paie->setSalaireNetImposable($salaireNetImposable);
+                $paie->setTotalChargeEmploye($chargeSocial);
+                $paie->setTotalChargePatronal($chargePatronal);
                 $paie->setSalaireNet($salaireNet);
                 $paie->setImpot($impot);
                 $paie->setDetailsRetenues(json_encode($detailsRetenues));
@@ -210,27 +213,9 @@ class PaieController extends AbstractController
             }
 
 
-            $entityManager->flush();
-            return $this->redirectToRoute('print_bulletin');
-
-            $totalPrimes = $primeRepository->getTotalPrimesByEmploye($employe);
-            $totalHeureSup = $heureSuplementaireRepository->getTotalHeuresByEmploye($employe);
-            $salaireNet = $salaireDeBase + $totalHeureSup + $totalPrimes - $totalRetenue- $impot;
-            // Enregistrement dans la table paie
-            $paie = new Paie();
-            $paie->setSalaireBase($salaireDeBase);
-            $paie->setEmploye($employe);
-            $paie->setMois($mois);
-            $paie->setTotalPrime($totalPrimes);
-            $paie->setTotalheureSup($totalHeureSup);
-            $paie->setTotalRetenue($totalRetenue);
-            $paie->setSalaireNet($salaireNet);
-            $paie->setImpot($impot);
-            $paie->setDetailsRetenues(json_encode($detailsRetenues));
-            $entityManager->persist($paie);
-        }
 
         $entityManager->flush();
+        $this->addFlash('notice', 'Bulletin validé qvec succès');
         return $this->redirectToRoute('print_bulletin');
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -385,6 +370,7 @@ class PaieController extends AbstractController
             $startOfMonth = new \DateTime('01-' . date('m') . ('-') . date('Y'));
             $endOfMonth = new \DateTime('last day of this month');
             $employe = $entityManager->getRepository(Employe::class)->find($id);
+            $mois = $entityManager->getRepository(Mois::class)->find(date('m'));
 
             // Vérifier si la paie du mois en cours est déjà validée
             $paieExistante = $entityManager->getRepository(Paie::class)->findByDate($employe->getId(), $startOfMonth, $endOfMonth);
@@ -420,6 +406,7 @@ class PaieController extends AbstractController
                 'heureSup' => $heureSup,
                 'retenues' => $retenues,
                 'paieExistante' => $paieExistante,
+                'mois' => $mois,
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -443,10 +430,11 @@ class PaieController extends AbstractController
         if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
             $entityManager = $this->getDoctrine()->getManager();
             $employe = $entityManager->getRepository(Employe::class)->find($id);
+            $mois = $entityManager->getRepository(Mois::class)->find(date('m'));
 
             $salaireDeBase = $employe->getPoste()->getSalaire() + $employe->getSursalaire();
             $salaireJournaliere = $salaireDeBase / 30; // Calcul du salaire journalier (par défaut 30 jours)
-            $impot = $salaireDeBase * 0.01;
+            //$impot = $salaireDeBase * 0.01;
 
             $totalRetenue = 0;
             $detailsRetenues = [];
@@ -482,21 +470,30 @@ class PaieController extends AbstractController
             // Calcul des primes et heures supplémentaires
             $totalPrimes = $primeRepository->getTotalPrimesByEmploye($employe);
             $totalHeureSup = $heureSuplementaireRepository->getTotalHeuresByEmploye($employe);
-            // Calcul du salaire net
-            $salaireNet = $salaireDeBase + $totalHeureSup + $totalPrimes - $totalRetenue - $impot;
+            $salaireBrut = $salaireDeBase + $totalHeureSup + $totalPrimes - $totalRetenue;
+            $chargeSocial = 14000;
+            $chargePatronal= 7000;
+            $salaireNetImposable = $salaireBrut - $chargeSocial;
+            $impot = 8000;
+            $salaireNet = $salaireNetImposable - $impot;
             // Enregistrement dans la table paie
             $paie = new Paie();
             $paie->setSalaireBase($salaireDeBase);
             $paie->setEmploye($employe);
-            $paie->setMois($entityManager->getRepository(Mois::class)->findOneBy(['id' => date('m')])); // a revoir
+            $paie->setMois($mois);
             $paie->setTotalPrime($totalPrimes);
             $paie->setTotalheureSup($totalHeureSup);
             $paie->setTotalRetenue($totalRetenue);
+            $paie->setSalaireBrut($salaireBrut);
+            $paie->setSalaireNetImposable($salaireNetImposable);
+            $paie->setTotalChargeEmploye($chargeSocial);
+            $paie->setTotalChargePatronal($chargePatronal);
             $paie->setSalaireNet($salaireNet);
             $paie->setImpot($impot);
             $paie->setDetailsRetenues(json_encode($detailsRetenues));
             $entityManager->persist($paie);
             $entityManager->flush();
+            $this->addFlash('notice', 'Bulletin validé qvec succès');
             return $this->redirectToRoute('paie_historique');
         } else {
             $response = $this->redirectToRoute('security_logout');
