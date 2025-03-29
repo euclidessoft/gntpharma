@@ -56,13 +56,14 @@ class PaieController extends AbstractController
                     $paies[] = [
                         'employe' => $employe,
                         'salaireBase' => $salaireDeBase,
+                        'salaireNet' => $salaireDeBase - $salaireDeBase * 0.01,
                         'prime' => $primes,
                         'heureSup' => $heureSup,
                     ];
                 }
             }
             return $this->render('paie/admin/index.html.twig', [
-                'paie' => $paies,
+                'paies' => $paies,
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -289,7 +290,7 @@ class PaieController extends AbstractController
     public function historiqueMonthCurent(PaieRepository $paieRepository): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
-            $paie = $paieRepository->findPaieCurrentMonth();
+        $paie = $paieRepository->findPaieCurrentMonth();
             return $this->render('paie/admin/historique_mois_encours.html.twig', [
                 'paie' => $paie,
             ]);
