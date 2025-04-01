@@ -47,50 +47,25 @@
                 <th>Période demande</th>
                 <th>Période accordée</th>
                 <td>Raison</td>
-                <th>Statut</th>
             </tr>
         </thead>
         <tbody>
-            {% for conges in conge %}
+        {% for conge in conges %}
             <tr>
-                <td>{{ conges.type.nom }}</td>
-                <td>
-                    {{ conges.dateDebut|date('d/m/Y') }} <small class="text-muted">au</small> {{ conges.dateFin|date('d/m/Y') }}
-                    <br> Durée : {{ conges.dateFin.diff(conges.dateDebut).days + 1 }} jours
+                <td data-label="{{ 'Type de congé'|trans }}">{{ conge.type.nom }}</td>
+                <td data-label="{{ 'Période demandée'|trans }}">{{ conge.dateDebut|date('d/m/Y') }} <small>au</small> {{ conge.dateFin|date('d/m/Y') }}
+                    <br> {{ "Durée"|trans }} : {{ conge.dateFin.diff(conge.dateDebut).days + 1 }} {{ "jours"|trans }}
                 </td>
-                <td>
-                    {% if conges.congeaccorder %}
-                    {% if conges.congeaccorder.dateDebutAccorder is not null and conges.congeaccorder.dateFinAccorder is not null %}
-                         {{ conges.congeaccorder.dateDebutAccorder|date('d/m/Y') }} <small>au</small> {{ conges.congeaccorder.dateFinAccorder|date('d/m/Y') }}
-                        <br> Durée : {{ conges.congeaccorder.dateFinAccorder.diff(conges.congeaccorder.dateDebutAccorder).days + 1 }} jours
-                    {% else %}
-                         Non accordé
-                    {% endif %}
-
-                    {% else %}
-                         Non accordé
-                    {% endif %}
+                <td data-label="{{ 'Période accordée'|trans }}">
+                   -
                 </td>
-                <td>{{ conges.description }}</td>
-                <td>
-                    {% if conges.status == 0 %}
-                    <span class="badge badge-info">En attente de validation</span>
-                    {% elseif conges.status == 1 and conges.congeaccorder is not null and conges.congeaccorder.status == true %}
-                    <span class="badge badge-success">Confirmée</span>
-                    {% elseif conges.status == 2 and conges.congeaccorder is null %}
-                    <span class="badge badge-danger">Rejetée</span>
-                    {% elseif conges.status == 2 and conges.congeaccorder is not null and conges.congeaccorder.status == false %}
-                    <span class="badge badge-danger">Déclinée</span>
-                    {% else %}
-                    <span class="badge badge-warning">En attente de confirmation</span>
-                    {% endif %}
-                </td>
+                <td data-label="{{ 'Raison'|trans }}">{{ conge.description }}</td>
             </tr>
-            {% else %}
+        {% else %}
             <tr>
-                <td colspan="6">Aucune demande enregistrée</td>
+                <td data-label="colspan" colspan="8">{{ "Aucune demande enregistrée"|trans }}</td>
             </tr>
-            {% endfor %}
+        {% endfor %}
         </tbody>
     </table>
 </div>

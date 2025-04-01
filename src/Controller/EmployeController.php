@@ -178,6 +178,7 @@ class EmployeController extends AbstractController
     {
         $form = $this->createForm(EmployeType::class, $employe);
         $form->remove('password');
+        $form->remove('fonction');
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();

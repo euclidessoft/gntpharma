@@ -95,7 +95,7 @@ class ContratController extends AbstractController
                 $entityManager->persist($contrat);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('contrat_print', ['contrat' => $contrat->getId()], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('contrat_show', ['id' => $contrat->getId()], Response::HTTP_SEE_OTHER);
             }
 
             return $this->render('contrat/admin/new.html.twig', [

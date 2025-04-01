@@ -37,8 +37,8 @@
             Bulletin de Paie
         </h3>
         <p class="text-center mb-5">
-            {#{{ mois.nom|trans }} {{ 'now'|date('Y') }}#}
-            Du 01/03/2025 au 21/03/2025
+            {{ mois.nom|trans }} {{ 'now'|date('Y') }}
+{#            Du 01/03/2025 au 21/03/2025#}
         </p>
         <p class="mt-5">&nbsp;</p>
         <div class="row my-5">
@@ -197,18 +197,30 @@
                         <h3 class="text-dark text-bold">
                         Net à payer
                         </h3>
-                        <p class="mb-0"> Validé le : 29/03/2025</p>
+{#                        <p class="mb-0"> Validé le : 29/03/2025</p>#}
                     </div>
                     <div class="col-6">
                         <h3 class="text-dark text-right text-bold">
                             {{ (employe.sursalaire + employe.poste.salaire- 14000-8000)|number_format(0, '' , ' ') }}
                         </h3>
-                        <p class="text-right mb-0"> Payé le : 31/03/2025</p>
+{#                        <p class="text-right mb-0"> Payé le : 31/03/2025</p>#}
                     </div>
                 </div>
             </div>
         </div>
+        <br><br><br><br><br>
     </div>
+<div class="container fond-7 mb-5 p-3">
+    <div class="centrer">
+        {% if paieExistante == null %}
+            <a href="{{ path('paie_valider', {'id': employe.id }) }}"
+               class="btn btn-success btn-lg"><i class="fa fa-save"></i> Valider</a>
+        {% else %}
+            <a href="{{ path('paie_index') }}" class="btn btn-secondary btn-lg mr-2">Retour</a>
+            <a href="#" class="btn btn-primary btn-lg"><i class="fa fa-print"></i> Imprimer</a>
+        {% endif %}
+    </div>
+</div>
 
 
 

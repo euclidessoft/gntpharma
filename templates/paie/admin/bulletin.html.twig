@@ -9,73 +9,235 @@
 %}
 {% block paie %}active{% endblock %}
 {% block body %}
+
     {% if bulletins is empty %}
         <div class="alert alert-info">Aucun bulletin en attente de validation pour ce mois.</div>
     {% else %}
+        {% if bulletins|length > 0 %}
+        <div class="container fond-7 mb-5 p-4 mt-5">
+            <div class="centrer">
+                <!-- Bouton pour valider tous les bulletins -->
+                <a href="{{ path('paie_new') }}" class="btn btn-success mr-2"><i class="fa fa-save"></i> Valider tous les bulletins</a>
+                <a href="{{ path('paie_index') }}" class="btn btn-success-light ml-2"><i class="fa fa-undo"></i> Retour</a>
+            </div>
+        </div>
+            {% endif %}
         {% for bulletin in bulletins %}
             {% set totalPrimes = 0 %}
             {% set totalHeuresSup = 0 %}
             {% set totalRetenues = 0 %}
+            {% set employe = bulletin.employe %}
 
-            <div class="card mb-4">
-                <div class="card-header bg-dark text-white">
-                    Bulletin de {{ bulletin.employe.nom }} {{ bulletin.employe.prenom }}
+            <div class="container fond-7 mb-5">
+                <div class="row" style="border-bottom: 2px solid #039c4f;padding-bottom: 10px;">
+                    <div class="col-2 p-0">
+                        <img src="{{ asset('images/gnt.png') }}" alt="Logo" class="w-100">
+                    </div>
+                    <div class="col-10 text-center mt-2">
+                        <div class="row">
+                            <div class="col-12 titre text-center text-green">
+                                GNT PHARMA
+                            </div>
+                            <div class="col-12 text">
+                                Montée Éleveur Immeuble Sainte Marie
+                                <br>
+                                BP : 3582 Yaoundé – Cameroun, NGOUSSO
+                            </div>
+                            <div class="col-12 text">
+                                +237 69 71 49 4 12 / +237 67 52 47 865
+                            </div>
+                            <div class="col-12 text">
+                                info@gntpharma-cameroun.com / www.gnt-pharma.com
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p><strong>Matricule :</strong> {{ bulletin.employe.matricule }}</p>
-                    <p><strong>Poste :</strong> {{ bulletin.employe.poste.nom }}</p>
-                    <p><strong>Salaire brut :</strong> {{ bulletin.salaireBase }} FCFA</p>
+                <h3 class="text-center text-uppercase font-weight-bold mt-5">
+                    Bulletin de Paie
+                </h3>
+                <p class="text-center mb-5">
+                    {{ mois.nom|trans }} {{ 'now'|date('Y') }}
+{#                    Du 01/03/2025 au 21/03/2025#}
+                </p>
+                <p class="mt-5">&nbsp;</p>
+                <div class="row my-5">
+                    <div class="col-7">
+                        <div class="row">
+                            <div class="col-4 text-right text-bold">
+                                {{ "Matricule : "|trans }}
+                            </div>
+                            <div class="col-8">
+                                {{ employe.matricule }}
+                            </div>
+                            <div class="col-4 text-right text-bold">
+                                {{ "Poste : "|trans }}
+                            </div>
+                            <div class="col-8">
+                                {{ employe.poste.nom }}
+                            </div>
+                            <div class="col-4 text-right text-bold">
+                                {{ "Département : "|trans }}
+                            </div>
+                            <div class="col-8">
+                                {{ employe.poste.departement.nom }}
+                            </div>
+                            <div class="col-4 text-right text-bold">
+                                {{ "Date d'embauche : "|trans }}
+                            </div>
+                            <div class="col-8">
+                                {{ employe.hireDate|date('d/m/Y') }}
+                            </div>
+                            <div class="col-4 text-right text-bold">
+                                {{ "Ancienneté : "|trans }}
+                            </div>
+                            <div class="col-8">
+                                {% set yearDiff = 'now'|date('Y') - employe.hireDate|date('Y') %}
+                                {% set monthDiff = 'now'|date('m') - employe.hireDate|date('m') + 1 %}
+                                {% if yearDiff <= 0 %}
 
-                    <p><strong>Primes :</strong></p>
-                    <ul>
-                        {% if bulletin.primes is not empty %}
-                            {% for prime in bulletin.primes %}
-                                <li>Nom prime : {{ prime.montant }} FCFA</li>
-                                {% set totalPrimes = totalPrimes + prime.montant %}
-                            {% endfor %}
-                        {% else %}
-                            <li>Aucune prime</li>
-                        {% endif %}
-                    </ul>
+                                {% elseif yearDiff > 0  and yearDiff < 2 %}
+                                    {{ yearDiff }} {{ "an"|trans }}
+                                {% else %}
+                                    {{ yearDiff }} {{ "ans"|trans }}
+                                {% endif %}
+                                {{ monthDiff }} {{ "mois"|trans }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-5 px-5">
+                        <div class="col-12 border-green border-2 radius-10 p-4">
+                            <h4 class="text-bold text-dark">
+                                {{ employe.nom }} {{ employe.prenom }}
+                            </h4>
+                            <p class="">
+                                {{ employe.adresse }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-5">
+                        <table class="table table-success-light table-bordered w-100 bulletin">
+                            <thead>
+                            <tr class="text-center">
+                                <th class="text-left">ELEMENTS DE PAIE</th>
+                                <th>BASE</th>
+                                <th>TAUX</th>
+                                <th>GAINS</th>
+                                <th>RETENUES</th>
+                                <th>COTISATIONS <br> PATRONALES</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="text-right">
+                                <td class="text-left">SALAIRES DE BASE</td>
+                                <td>{{ employe.poste.salaire|number_format(0, '' , ' ') }}</td>
+                                <td></td>
+                                <td>{{ employe.poste.salaire|number_format(0, '' , ' ') }}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr class="text-right">
+                                <td class="text-left">SURSALAIRES</td>
+                                <td>{{ employe.sursalaire|number_format(0, '' , ' ') }}</td>
+                                <td></td>
+                                <td>{{ employe.sursalaire|number_format(0, '' , ' ') }}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr class="text-bold text-right">
+                                <td class="text-left">TOTAL DES GAINS(Brut)</td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ (employe.sursalaire + employe.poste.salaire)|number_format(0, '' , ' ') }}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr class="text-right">
+                                <td class="text-left">TOTAL COTISATIONS SOCIALES</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>14 000</td>
+                                <td></td>
+                            </tr>
+                            <tr class="text-right">
+                                <td class="text-left">TOTAL CHARGES PATRIONALES</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>7 000</td>
+                            </tr>
+                            <tr class="text-bold text-right">
+                                <td class="text-left">TOTAL DES COTISATIONS ET CONTRIBUTIONS</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>14 000</td>
+                                <td>7 000</td>
+                            </tr>
+                            <tr class="text-bold">
+                                <td colspan="3">
+                                    NET IMPOSABLE
+                                </td>
+                                <td class="text-right">{{ (employe.sursalaire + employe.poste.salaire- 14000)|number_format(0, '' , ' ') }}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-12 mt-4">
+                        <table class="table table-success-light table-bordered w-100 bulletin">
+                            <thead>
+                            <tr class="text-center">
+                                <th colspan="2" class="text-left">Impôt sur le revenu</th>
+                                <th>Base</th>
+                                <th>Taux</th>
+                                <th>Montant</th>
+                                <th>Cumul annuel</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="text-right">
+                                <td colspan="2" class="text-left">Impôt sur le revenu prélevé à la source</td>
+                                <td>{{ (employe.sursalaire + employe.poste.salaire- 14000)|number_format(0, '' , ' ') }}</td>
+                                <td></td>
+                                <td>8 000</td>
+                                <td>24 000</td>
+                            </tr>
 
-                    <p><strong>Heures supplémentaires :</strong></p>
-                    <ul>
-                        {% if bulletin.heureSup is not empty %}
-                            {% for heure in bulletin.heureSup %}
-                                <li>{{ heure.duree }} heures à {{ heure.tauxHoraire }} FCFA</li>
-                                {% set totalHeuresSup = totalHeuresSup + (heure.duree * heure.tauxHoraire) %}
-                            {% endfor %}
-                        {% else %}
-                            <li>Aucune heure supplémentaire</li>
-                        {% endif %}
-                    </ul>
-
-                    <p><strong>Retenues :</strong></p>
-                    <ul>
-                        {% if bulletin.retenues is not empty %}
-                            {% for retenue in bulletin.retenues %}
-                                <li>{{ retenue.type }} : {{ retenue.montantRetenue }} FCFA</li>
-                                {% set totalRetenues = totalRetenues + retenue.montantRetenue %}
-                            {% endfor %}
-                        {% else %}
-                            <li>Aucune retenue</li>
-                        {% endif %}
-                    </ul>
-
-                    <!-- Calcul du salaire net -->
-                    <p><strong>Salaire net à payer :</strong>
-                        <span class="h4 text-success">
-                            {{ (bulletin.salaireBase + totalPrimes + totalHeuresSup - totalRetenues - (bulletin.salaireBase * 0.01 ))|number_format(0, '', ' ') }} FCFA
-                        </span>
-                    </p>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-7">&nbsp;</div>
+                    <div class="col-5 p-4">
+                        <div class="row bg-success-light p-3">
+                            <div class="col-6">
+                                <h3 class="text-dark text-bold">
+                                    Net à payer
+                                </h3>
+{#                                <p class="mb-0"> Validé le : 29/03/2025</p>#}
+                            </div>
+                            <div class="col-6">
+                                <h3 class="text-dark text-right text-bold">
+                                    {{ (employe.sursalaire + employe.poste.salaire- 14000-8000)|number_format(0, '' , ' ') }}
+                                </h3>
+{#                                <p class="text-right mb-0"> Payé le : 31/03/2025</p>#}
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <br><br><br><br><br>
             </div>
         {% endfor %}
-
-        <div class="d-flex">
-            <!-- Bouton pour valider tous les bulletins -->
-            <a href="{{ path('paie_new') }}" class="btn btn-success mr-2"> Valider tous les bulletins</a>
-            <a href="{{ path('paie_index') }}" class="btn btn-success-light mr-2">Retour</a>
-        </div>
+        {% if bulletins|length > 0 %}
+            <div class="container fond-7 mb-5 p-4 mt-5">
+                <div class="centrer">
+                    <!-- Bouton pour valider tous les bulletins -->
+                    <a href="{{ path('paie_new') }}" class="btn btn-success mr-2"><i class="fa fa-save"></i> Valider tous les bulletins</a>
+                    <a href="{{ path('paie_index') }}" class="btn btn-success-light ml-2"><i class="fa fa-undo"></i> Retour</a>
+                </div>
+            </div>
+        {% endif %}
     {% endif %}
 {% endblock %}

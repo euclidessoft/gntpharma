@@ -7,35 +7,33 @@
     is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
     'layout.html.twig'
 %}
-{% block title %}Mes demandes des Congés{% endblock %}
+{% block title %} {{ "Gestion des congés"|trans }} - GNT Pharma {% endblock %}
 {% block discipline %}active{% endblock %}
 {% block conges %}active{% endblock %}
-{% block permissions %}active{% endblock %}
 {% block body %}
-
-<div class="container mt-4 fond-7">
+<div class="container-fluid mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
-        <i class="fas fa-calendar-alt me-2"></i>
-        {{ "Mes demandes de Congé"|trans }}
+        <i class="fa fa-user-slash mr-2"></i>
+        {{ "Gestion des demandes de congé"|trans }}
     </h3>
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('conges_employe_suivi') }}">
+            <a class="nav-link" href="{{ path('conges_admin_suivi') }}">
                 {{ 'Demandes en cours'|trans }}
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('conges_employe_accepter') }}">
+            <a class="nav-link" href="{{ path('conge_admin_accepter') }}">
                 {{ 'Demandes acceptées'|trans }}
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('conges_employe_refuser') }}">
-                {{'Demandes refusée'|trans}}
+            <a class="nav-link active" href="{{ path('conge_admin_refuser') }}">
+                {{'Demandes refusées'|trans}}
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="{{ path('conges_employe_index') }}">
+            <a class="nav-link" href="{{ path('conges_admin_index') }}">
                 {{'Toutes les demandes'|trans}}
             </a>
         </li>
@@ -43,17 +41,19 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
-                <th>Type de Congé</th>
-                <th>Période demande</th>
-                <th>Période accordée</th>
-                <td>Raison</td>
-                <th>Statut</th>
-                <th>Action</th>
+                <th>{{ "Matricule"|trans }}</th>
+                <th>{{ "Employé"|trans }}</th>
+                <th>{{ "Type de congé"|trans }}</th>
+                <th>{{ "Période demandée"|trans }}</th>
+                <th>{{ "Période accordée"|trans }}</th>
+                <th>{{ "Raison"|trans }}</th>
             </tr>
         </thead>
         <tbody>
         {% for conge in conges %}
             <tr>
+                <td data-label="{{ 'Matricule'|trans }}">{{ conge.employe.matricule }}</td>
+                <td data-label="{{ 'Employé'|trans }}">{{ conge.employe.prenom }} {{ conge.employe.nom }}</td>
                 <td data-label="{{ 'Type de congé'|trans }}">{{ conge.type.nom }}</td>
                 <td data-label="{{ 'Période demandée'|trans }}">{{ conge.dateDebut|date('d/m/Y') }} <small>au</small> {{ conge.dateFin|date('d/m/Y') }}
                     <br> {{ "Durée"|trans }} : {{ conge.dateFin.diff(conge.dateDebut).days + 1 }} {{ "jours"|trans }}
@@ -65,39 +65,8 @@
                     {% else %}
                         -
                     {% endif %}
-                    {% if conge.confirmer == false and conge.confirmer is not null %}
-                        <span class="badge badge-danger">
-                        {{ "Declinée"|trans }}
-                    </span>
-                    {% endif %}
                 </td>
                 <td data-label="{{ 'Raison'|trans }}">{{ conge.description }}</td>
-                <td data-label="{{ 'Statut'|trans }}">
-                    {% if conge.status is null %}
-                        <span class="badge badge-danger">
-                        {{ "En attente de validation"|trans }}
-                    </span>
-                    {% elseif conge.status == 0 %}
-                        <span class="badge badge-danger">
-                        {{ "Rejetée"|trans }}
-                    </span>
-                    {% else %}
-                        <span class="badge badge-success">
-                        {{ "Approuvée"|trans }}
-                    </span>
-                    {% endif %}
-                </td>
-                <td data-label="{{ 'Actions'|trans }}">
-                    {% if conge.datemodifier == true and conge.confirmer is null %}
-                        <a href="{{ path('conge_confirmer', {'id': conge.id }) }}" class="btn btn-success btn-sm">
-                            <i class="fa fa-check"></i> {{ "Confirmer"|trans }}
-                        </a>
-                        <a href="{{ path('conge_decliner', {'id': conge.id }) }}" class="btn btn-success-light btn-sm">
-                            <i class="fas fa-times"></i> {{ "decliner"|trans }}
-                        </a>
-                    {% endif %}
-
-                </td>
             </tr>
         {% else %}
             <tr>
@@ -107,5 +76,4 @@
         </tbody>
     </table>
 </div>
-
 {% endblock %}

@@ -51,7 +51,7 @@ class Conges
     private $type;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boolean", nullable="true")
      */
     private $status;
 
@@ -66,30 +66,31 @@ class Conges
     private $dateModifier= false;
 
     /**
-     * @ORM\OneToOne(targetEntity=CongeAccorder::class, cascade={"persist", "remove"})
+     * @ORM\Column(type="date", nullable="true")
      */
-    private $congeaccorder;
+    private $dateDebutAccorder;
+
+    /**
+     * @ORM\Column(type="date", nullable="true")
+     */
+    private $dateFinAccorder;
+
+    /**
+     * @ORM\Column(type="boolean", nullable="true")
+     */
+    private $confirmer;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->status = null;
+        $this->dateModifier = false;
+        $this->confirmer = null;
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEmploye(): ?Employe
-    {
-        return $this->employe;
-    }
-
-    public function setEmploye(?Employe $employe): self
-    {
-        $this->employe = $employe;
-
-        return $this;
     }
 
     public function getDateDebut(): ?\DateTimeInterface
@@ -133,31 +134,19 @@ class Conges
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
-    public function getType(): ?TypeConge
-    {
-        return $this->type;
-    }
-
-    public function setType(?TypeConge $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getStatus(): ?int
+    public function getStatus(): ?bool
     {
         return $this->status;
     }
 
-    public function setStatus(int $status): self
+    public function setStatus(?bool $status): self
     {
         $this->status = $status;
 
@@ -188,16 +177,64 @@ class Conges
         return $this;
     }
 
-    public function getCongeaccorder(): ?CongeAccorder
+    public function getDateDebutAccorder(): ?\DateTimeInterface
     {
-        return $this->congeaccorder;
+        return $this->dateDebutAccorder;
     }
 
-    public function setCongeaccorder(?CongeAccorder $congeaccorder): self
+    public function setDateDebutAccorder(?\DateTimeInterface $dateDebutAccorder): self
     {
-        $this->congeaccorder = $congeaccorder;
+        $this->dateDebutAccorder = $dateDebutAccorder;
 
         return $this;
     }
-    
+
+    public function getDateFinAccorder(): ?\DateTimeInterface
+    {
+        return $this->dateFinAccorder;
+    }
+
+    public function setDateFinAccorder(?\DateTimeInterface $dateFinAccorder): self
+    {
+        $this->dateFinAccorder = $dateFinAccorder;
+
+        return $this;
+    }
+
+    public function getConfirmer(): ?bool
+    {
+        return $this->confirmer;
+    }
+
+    public function setConfirmer(?bool $confirmer): self
+    {
+        $this->confirmer = $confirmer;
+
+        return $this;
+    }
+
+    public function getEmploye(): ?Employe
+    {
+        return $this->employe;
+    }
+
+    public function setEmploye(?Employe $employe): self
+    {
+        $this->employe = $employe;
+
+        return $this;
+    }
+
+    public function getType(): ?TypeConge
+    {
+        return $this->type;
+    }
+
+    public function setType(?TypeConge $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
 }

@@ -19,14 +19,14 @@ use Symfony\Component\Security\Core\Security;
 class CongeController extends AbstractController
 {
     /**
-     * @Route("/", name="conge_index")
+     * @Route("/All", name="conges_admin_index")
      */
-    public function index(CongesRepository $congesRepository): Response
+    public function demandeAdmin(Security $security, CongesRepository $congesRepository): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
             $conges = $congesRepository->findAll();
-            return $this->render('conge/admin/index.html.twig', [
-                'conge' => $conges,
+            return $this->render('conge/admin/all.html.twig', [
+                'conges' => $conges,
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -53,36 +53,10 @@ class CongeController extends AbstractController
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
             $entityManager = $this->getDoctrine()->getManager();
-            $employe = $security->getUser();
-            $conges = $congesRepository->findDemandesTraitees($employe);
+//            $employe = $security->getUser();
+            $conges = $congesRepository->findBy(['employe' => $this->getUser()]);
             return $this->render('conge/demande.html.twig', [
-                'conge' => $conges,
-            ]);
-        } else {
-            $response = $this->redirectToRoute('security_logout');
-            $response->setSharedMaxAge(0);
-            $response->headers->addCacheControlDirective('no-cache', true);
-            $response->headers->addCacheControlDirective('no-store', true);
-            $response->headers->addCacheControlDirective('must-revalidate', true);
-            $response->setCache([
-                'max_age' => 0,
-                'private' => true,
-            ]);
-            return $response;
-        }
-    }
-
-    /**
-     * @Route("/Traites", name="conges_admin_index")
-     */
-    public function demandeAdmin(Security $security, CongesRepository $congesRepository): Response
-    {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $employe = $security->getUser();
-            $conges = $congesRepository->findDemandesTraitees($employe);
-            return $this->render('conge/admin/index.html.twig', [
-                'conge' => $conges,
+                'conges' => $conges,
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -106,11 +80,14 @@ class CongeController extends AbstractController
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
             $entityManager = $this->getDoctrine()->getManager();
-            $employe = $security->getUser();
-            $conges = $congesRepository->findDemandesEnAttente($employe);
+            $query = $entityManager->createQuery(
+                'SELECT c FROM App\Entity\Conges c WHERE c.status IS NULL OR c.confirmer IS NULL'
+            );
+//                ->setParameter('status', null)
+//            ->setParameter('confirmer', null);
 
             return $this->render('conge/suivi.html.twig', [
-                'conge' => $conges,
+                'conges' => $query->getResult(),
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -133,11 +110,12 @@ class CongeController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
             $entityManager = $this->getDoctrine()->getManager();
-            $employe = $security->getUser();
-            $conges = $congesRepository->findDemandesEnAttente($employe);
+            $query = $entityManager->createQuery(
+                'SELECT c FROM App\Entity\Conges c WHERE c.status IS NULL OR c.confirmer IS NULL'
+            );
 
             return $this->render('conge/admin/index.html.twig', [
-                'conge' => $conges,
+                'conges' => $query->getResult(),
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -161,65 +139,10 @@ class CongeController extends AbstractController
         if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
             $entityManager = $this->getDoctrine()->getManager();
             $employe = $security->getUser();
-            $conges = $congesRepository->findDemandesAccepter($employe);
+            $conges = $congesRepository->findBy(['status' => true, 'employe' => $this->getUser()]);
 
             return $this->render('conge/accepter.html.twig', [
-                'conge' => $conges,
-            ]);
-        } else {
-            $response = $this->redirectToRoute('security_logout');
-            $response->setSharedMaxAge(0);
-            $response->headers->addCacheControlDirective('no-cache', true);
-            $response->headers->addCacheControlDirective('no-store', true);
-            $response->headers->addCacheControlDirective('must-revalidate', true);
-            $response->setCache([
-                'max_age' => 0,
-                'private' => true,
-            ]);
-            return $response;
-        }
-    }
-
-
-    /**
-     * @Route("/Approuver", name="conge_admin_accepter")
-     */
-    public function accepterAdmin(Security $security, CongesRepository $congesRepository): Response
-    {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $employe = $security->getUser();
-            $conges = $congesRepository->findDemandesAccepter($employe);
-
-            return $this->render('conge/admin/index.html.twig', [
-                'conge' => $conges,
-            ]);
-        } else {
-            $response = $this->redirectToRoute('security_logout');
-            $response->setSharedMaxAge(0);
-            $response->headers->addCacheControlDirective('no-cache', true);
-            $response->headers->addCacheControlDirective('no-store', true);
-            $response->headers->addCacheControlDirective('must-revalidate', true);
-            $response->setCache([
-                'max_age' => 0,
-                'private' => true,
-            ]);
-            return $response;
-        }
-    }
-
-    /**
-     * @Route("/Refuser", name="conge_admin_refuser")
-     */
-    public function refuserAdmin(Security $security, CongesRepository $congesRepository): Response
-    {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $employe = $security->getUser();
-            $conges = $congesRepository->findDemandesRefuse($employe);
-
-            return $this->render('conge/admin/index.html.twig', [
-                'conge' => $conges,
+                'conges' => $conges,
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -243,9 +166,64 @@ class CongeController extends AbstractController
         if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
             $entityManager = $this->getDoctrine()->getManager();
             $employe = $security->getUser();
-            $conges = $congesRepository->findDemandesRefuse($employe);
+            $conges = $congesRepository->findBy(['status' => false, 'employe' => $this->getUser()]);
             return $this->render('conge/refuser.html.twig', [
-                'conge' => $conges,
+                'conges' => $conges,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+
+    /**
+     * @Route("/Accepter", name="conge_admin_accepter")
+     */
+    public function accepterAdmin(Security $security, CongesRepository $congesRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $employe = $security->getUser();
+            $conges = $congesRepository->findBy(['status' => true]);
+
+            return $this->render('conge/admin/accepte.html.twig', [
+                'conges' => $conges,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/Refuser", name="conge_admin_refuser")
+     */
+    public function refuserAdmin(Security $security, CongesRepository $congesRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $employe = $security->getUser();
+            $conges = $congesRepository->findBy(['status' => false]);
+
+            return $this->render('conge/admin/rejete.html.twig', [
+                'conges' => $conges,
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -277,7 +255,6 @@ class CongeController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $employe = $security->getUser();
                 $conges->setEmploye($employe);
-                $conges->setStatus(0);
 
                 $entityManager->persist($conges);
                 $entityManager->flush();
@@ -310,11 +287,10 @@ class CongeController extends AbstractController
     public function approuver(Request $request, Conges $conges): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
-            $congesAccorder = new CongeAccorder();
-            $form = $this->createForm(ApprouverType::class, $congesAccorder, [
-                'conge' => $conges,
-            ]);
 
+            $conges->setDateDebutAccorder($conges->getDateDebut());
+            $conges->setDateFinAccorder($conges->getDateFin());
+            $form = $this->createForm(ApprouverType::class, $conges);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $entityManager = $this->getDoctrine()->getManager();
@@ -324,29 +300,31 @@ class CongeController extends AbstractController
                 $endDateAccorder = $form->get('dateFinAccorder')->getData();
 
                 if (($startDateDemande != $startDateAccorder) || ($endDateDemande != $endDateAccorder)) {
-                    $conges->setDateModifier(true);
-                    $congesAccorder->setStatus(false);
-                    $conges->setStatus(3);
-                } else {
-                    $conges->setDateModifier(false);
-                    $congesAccorder->setStatus(false);
-                    $conges->setStatus(3);
-                }
-                $congesAccorder->setConges($conges);
-                $congesAccorder->setDateDebutAccorder($startDateAccorder);
-                $congesAccorder->setDateFinAccorder($endDateAccorder);
-                $congesAccorder->setEmploye($conges->getEmploye());
-                $congesAccorder->setType($conges->getType());
-                $conges->setCongeaccorder($congesAccorder);
+                    // avec modification sur la demande
 
-                $entityManager->persist($congesAccorder);
+                    $conges->setDateModifier(true);
+                    $conges->setStatus(true);
+                    $this->addFlash('success', 'Congé accordé avec succès.');
+                    $url = $this->redirectToRoute('conges_admin_suivi');
+
+                } else {//  approuvee sans modification sur la demande
+
+                    $conges->setStatus(true);
+                    $this->addFlash('success', 'Congé accordé avec modification.');
+                    $url = $this->redirectToRoute('conge_admin_accepter');
+                    $conges->setConfirmer(true);
+                }
+                $conges->setUpdatedAt(new \DateTimeImmutable());
+
+                $entityManager->persist($conges);
                 $entityManager->flush();
-                $this->addFlash('success', 'Le congé a été accordé avec succès.');
-                return $this->redirectToRoute('conge_index');
+
+                return $url;
             }
 
             return $this->render('conge/admin/_approuver.html.twig', [
                 'form' => $form->createView(),
+                'conges' => $conges,
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -371,13 +349,14 @@ class CongeController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
             if ($this->isCsrfTokenValid('rejeter' . $conges->getId(), $request->request->get('_token'))) {
-                $conges->setStatus(2);
+                $conges->setStatus(false);
+                $conges->setConfirmer(true);
             }
 
             $entityManager->persist($conges);
             $entityManager->flush();
 
-            return $this->redirectToRoute('conge_index');
+            return $this->redirectToRoute('conge_admin_refuser');
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
@@ -398,20 +377,18 @@ class CongeController extends AbstractController
      */
     public function confirmer(Request $request, Conges $conges)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
             $entityManager = $this->getDoctrine()->getManager();
-            $congesAccorder = $conges->getCongeaccorder();
 
-            if ($this->isCsrfTokenValid('confirmer' . $conges->getId(), $request->request->get('_token'))) {
-                $conges->setStatus(1);
-                $congesAccorder->setStatus(true);
-            }
+//            if ($this->isCsrfTokenValid('confirmer' . $conges->getId(), $request->request->get('_token'))) {
+                $conges->setConfirmer(true);
+//            }
 
             $entityManager->persist($conges);
-            $entityManager->persist($congesAccorder);
             $entityManager->flush();
+            $this->addFlash('notice', 'Conge accepté et confirmé');
 
-            return $this->redirectToRoute('conges_employe_suivi');
+            return $this->redirectToRoute('conges_employe_accepter');
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);
@@ -434,17 +411,14 @@ class CongeController extends AbstractController
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
             $entityManager = $this->getDoctrine()->getManager();
-            $congesAccorder = $conges->getCongeaccorder();
 
-            if ($this->isCsrfTokenValid('decliner' . $conges->getId(), $request->request->get('_token'))) {
-                $conges->setStatus(2);
-                $congesAccorder->setStatus(false);
-            }
+//            if ($this->isCsrfTokenValid('decliner' . $conges->getId(), $request->request->get('_token'))) {
+                $conges->setConfirmer(false);
+//            }
 
             $entityManager->persist($conges);
-            $entityManager->persist($congesAccorder);
             $entityManager->flush();
-            return $this->redirectToRoute('conges_employe_suivi');
+            return $this->redirectToRoute('conges_employe_accepter');
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);

@@ -92,6 +92,7 @@ class PaieController extends AbstractController
             //dd($employe,$startOfMonth,$salaireDeBase,$primes,$retenues);
             return $this->render('paie/admin/bulletin.html.twig', [
                 'bulletins' => $bulletins,
+                'mois' => $this->getDoctrine()->getRepository(Mois::class)->find(date('m')),
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -345,6 +346,7 @@ class PaieController extends AbstractController
             return $this->render('paie/admin/historique_show.html.twig', [
                 'paie' => $paie,
                 'detailsRetenues' => $detailsRetenues,
+                'mois' => $this->getDoctrine()->getRepository(Mois::class)->find(date('m')),
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');
@@ -547,6 +549,7 @@ class PaieController extends AbstractController
             return $this->render("paie/detail_bulletin.html.twig", [
                 'paie' => $paie,
                 'detailsRetenues' => $detailsRetenues,
+                'mois' => $this->getDoctrine()->getRepository(Mois::class)->find(date('m')),
             ]);
         } else {
             $response = $this->redirectToRoute('security_logout');

@@ -23,11 +23,6 @@ class Contrat
     private $employe;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $type;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $dateDebut;
@@ -70,18 +65,6 @@ class Contrat
     public function setEmploye(?Employe $employe): self
     {
         $this->employe = $employe;
-
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
 
         return $this;
     }

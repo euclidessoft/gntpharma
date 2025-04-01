@@ -112,62 +112,64 @@
                     <td colspan="8" class="text-center">Aucun paiement enregistré</td>
                 </tr>
             {% endfor %}
+            {% if paies|length > 1 %}
             <tr>
                 <th colspan="8" class="text-center">
                     {{ 'Montant total dû'|trans }} : {{ montant|number_format(0, '' , ' ') }} FCFA
                     <input type="hidden" value="{{ montant }}" id="montant"/>
-                    {% if paies|length > 1 %}
+
                     <button type="button" class="btn btn-green" data-toggle="modal" data-target="#modal_tous" id="tous">
                         <i class="fa fa-plus"></i>
                         {{ 'Payer tous'|trans }}
                     </button>
-                    {% endif %}
                     <!-- Modal -->
-                    <div class="modal fade" id="modal_tous" tabindex="-1" role="dialog"
-                         aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog text-center">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title fs-5" id="exampleModalLabel">
-                                        {{ 'Paiement de tous les salaires'|trans }}
-                                    </h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body px-5">
-                                    <div class="mt-4">
-                                        <label for="{#mois{{ mois.id }}#}"></label>
-                                        <select class="form-control" id="banquetous">
-                                            <option value="0">Selectionnez une banque</option>
-                                            {% for banque in banques  %}
-                                                <option value="{{ banque.id }}">{{ banque.nom }}</option>
-                                            {% else %}
-                                            {% endfor %}
 
-                                        </select>
-                                    </div>
-
-                                </div>
-                                <div class="modal-footer px-5 py-4">
-                                    <button type="button" class="btn btn-green mr-3"  id="validertous"
-                                            onclick="payerTous()">
-                                        <i class="fa fa-save"></i>
-                                        {{ 'Valider'|trans }}
-                                    </button>
-                                    <button type="button" class="btn btn-success-light" data-dismiss="modal" id="annulertous">
-                                        <i class="fa-solid fa-rotate-left"></i>
-                                        {{ 'Annuler'|trans }}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                 </th>
             </tr>
+            {% endif %}
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="modal_tous" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog text-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title fs-5" id="exampleModalLabel">
+                        {{ 'Paiement de tous les salaires'|trans }}
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body px-5">
+                    <div class="mt-4">
+                        <label for="{#mois{{ mois.id }}#}"></label>
+                        <select class="form-control" id="banquetous">
+                            <option value="0">Selectionnez une banque</option>
+                            {% for banque in banques  %}
+                                <option value="{{ banque.id }}">{{ banque.nom }}</option>
+                            {% else %}
+                            {% endfor %}
+
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer px-5 py-4">
+                    <button type="button" class="btn btn-green mr-3"  id="validertous"
+                            onclick="payerTous()">
+                        <i class="fa fa-save"></i>
+                        {{ 'Valider'|trans }}
+                    </button>
+                    <button type="button" class="btn btn-success-light" data-dismiss="modal" id="annulertous">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        {{ 'Annuler'|trans }}
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
     {% block scripts %}
         <script>

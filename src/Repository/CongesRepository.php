@@ -39,9 +39,10 @@ class CongesRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->where('c.employe = :employe')
-            ->andWhere('c.status NOT IN (:statuses)')
+            ->andWhere('c.status IS NULL')
+            ->andWhere('c.dateModifier = :modif')
             ->setParameter('employe', $employe)
-            ->setParameter('statuses', ['0', '3'])
+            ->setParameter('modif', true)
             ->orderBy('c.dateDebut', 'ASC')
             ->getQuery()
             ->getResult();
@@ -78,6 +79,47 @@ class CongesRepository extends ServiceEntityRepository
             ->where('c.employe = :employe')
             ->andWhere('c.status = :status')
             ->setParameter('employe', $employe)
+            ->setParameter('status', '2')
+            ->orderBy('c.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+    public function Traitees(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.status IS NULL')
+            ->andWhere('c.dateModifier = :modif')
+            ->setParameter('modif', true)
+            ->orderBy('c.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function EnAttente(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.status IN (:statuses)')
+            ->setParameter('statuses', ['0', '3'])
+            ->orderBy('c.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function Accepter(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.status = :status')
+            ->setParameter('status', '1')
+            ->orderBy('c.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    public function Refuse(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.status = :status')
             ->setParameter('status', '2')
             ->orderBy('c.dateDebut', 'ASC')
             ->getQuery()
