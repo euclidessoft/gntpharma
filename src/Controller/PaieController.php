@@ -242,7 +242,7 @@ class PaieController extends AbstractController
             $form->handleRequest($request);
             $paie = [];
 
-            $paie = $paieRepository->findAll();
+
             if ($form->isSubmitted() && $form->isValid()) {
                 $filters = $form->getData();
                 $paie = $paieRepository->findByFiltrer(
@@ -250,8 +250,12 @@ class PaieController extends AbstractController
                     $filters['mois'] ?? null,
                     $filters['annee'] ?? null
                 );
+                return $this->render('paie/admin/historique.html.twig', [
+                    'form' => $form->createView(),
+                    'paie' => $paie,
+                ]);
             }
-
+            $paie = $paieRepository->findAll();
             return $this->render('paie/admin/historique.html.twig', [
                 'form' => $form->createView(),
                 'paie' => $paie,
@@ -513,17 +517,48 @@ class PaieController extends AbstractController
 
 
     /**
-     * @Route("/Paiement/", name="mes_bulletins", methods={"GET"})
+     * @Route("/Paiement/", name="mes_bulletins", methods={"GET","POST"})
      */
-    public function paiement(Security $security): Response
+    public function paiement(Security $security, Request $request, PaieRepository $paieRepository): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+        if ($this->getUser() !== null) {
             $entityManager = $this->getDoctrine()->getManager();
+//            $mois = $entityManager->getRepository(Mois::class)->find(date('m'));
             $employe = $security->getUser();
+
+            $form = $this->createForm(FiltreBulletinType::class);
+            $form->remove('employe');
+            $form->handleRequest($request);
+            $paie = [];
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $filters = $form->getData();
+                $paie = $paieRepository->findByFiltrer(
+                    $filters['employe'] ?? null,
+                    $filters['mois'] ?? null,
+                    $filters['annee'] ?? null
+                );
+                return $this->render('paie/index.html.twig', [
+                    'form' => $form->createView(),
+                    'bulletins' => $paie,
+                ]);
+            }
             $bulletin = $entityManager->getRepository(Paie::class)->findBy(['employe' => $employe]);
-            return $this->render("paie/index.html.twig", [
+
+            $response = $this->render("paie/index.html.twig", [
                 'bulletins' => $bulletin,
+                'form' => $form->createView(),
+//                'mois' => $mois,
             ]);
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         } else {
             $response = $this->redirectToRoute('security_logout');
             $response->setSharedMaxAge(0);

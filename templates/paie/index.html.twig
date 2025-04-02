@@ -24,7 +24,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ ('security_profile_professionnelle') }}">
+            <a class="nav-link" href="{{ path('security_profile_professionnelle') }}">
                 {{'Professionnelles'|trans}}
             </a>
         </li>
@@ -48,6 +48,28 @@
         <i class="fa fa-money-bill mr-2"></i>
         {{ "Bulletins de paies"|trans }}
     </h3>
+    <!-- Filtre par mois et année -->
+    <div class="row mb-4">
+        <div class="col-12">
+            {{ form_start(form, {'attr': {'class': 'row w-100'}}) }}
+{#            <div class="col-md-3 d-flex align-items-center">#}
+{#                {{ form_label(form.employe, null, {'label_attr': {'class': 'me-2 fw-bold'}}) }}#}
+{#                {{ form_widget(form.employe) }}#}
+{#            </div>#}
+            <div class="col-md-4 d-flex align-items-center">
+                {{ form_label(form.mois, null, {'label_attr': {'class': 'me-2 fw-bold'}}) }}
+                {{ form_widget(form.mois) }}
+            </div>
+            <div class="col-md-4 d-flex align-items-center">
+                {{ form_label(form.annee, null, {'label_attr': {'class': 'me-2 fw-bold'}}) }}
+                {{ form_widget(form.annee) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_widget(form.filtrer, {'attr': {'class': 'btn btn-success w-70'}}) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
         <thead>
             <tr>
@@ -71,7 +93,7 @@
             </tr>
             {% else %}
             <tr>
-                <td colspan="4" class="text-center">Vide</td>
+                <td colspan="5" class="text-center">{{ "Aucun Bulletin"|trans }}</td>
             </tr>
             {% endfor %}
         </tbody>

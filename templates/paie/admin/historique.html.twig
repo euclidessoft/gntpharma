@@ -58,6 +58,7 @@
             <tr>
                 <th>{{ 'Matricule'|trans }}</th>
                 <th>{{ 'Employé'|trans }}</th>
+                <th>{{ 'Mois'|trans }}</th>
                 <th>{{ 'Date paiement'|trans }}</th>
                 <th>{{ 'Salaire de base'|trans }}</th>
                 <th>{{ 'Montant reçu'|trans }}</th>
@@ -69,7 +70,8 @@
                 <tr>
                     <td>{{ paie.employe.matricule }}</td>
                     <td>{{ paie.employe.nom }} {{ paie.employe.prenom }}</td>
-                    <td>{{ paie.employe.nom }} {{ paie.employe.prenom }}</td>
+                    <td>{{ paie.mois.nom }}</td>
+                    <td>{{ paie.datepaye ? paie.datepaye|date('d/m/Y') : ''}}</td>
                     <td>{{ paie.salaireBase|number_format(0, '' , ' ') }} FCFA</td>
                     <td>{{ paie.salaireNet|number_format(0, '' , ' ') }} FCFA</td>
                     <td>

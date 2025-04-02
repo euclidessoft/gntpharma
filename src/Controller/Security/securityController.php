@@ -179,22 +179,24 @@ class securityController extends AbstractController
      */
     public function Professionnelles(SessionInterface $session)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
-            $panier = $session->get("panier", []);
-            $response = $this->render('security/security/profile.html.twig', [
-                'user' => $this->getUser(),
-                'panier' => $panier,
-            ]);
-            $response->setSharedMaxAge(0);
-            $response->headers->addCacheControlDirective('no-cache', true);
-            $response->headers->addCacheControlDirective('no-store', true);
-            $response->headers->addCacheControlDirective('must-revalidate', true);
-            $response->setCache([
-                'max_age' => 0,
-                'private' => true,
-            ]);
-            return $response;
-        } else if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')) {
+//        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+//            $panier = $session->get("panier", []);
+//            $response = $this->render('security/security/profile.html.twig', [
+//                'user' => $this->getUser(),
+//                'panier' => $panier,
+//            ]);
+//            $response->setSharedMaxAge(0);
+//            $response->headers->addCacheControlDirective('no-cache', true);
+//            $response->headers->addCacheControlDirective('no-store', true);
+//            $response->headers->addCacheControlDirective('must-revalidate', true);
+//            $response->setCache([
+//                'max_age' => 0,
+//                'private' => true,
+//            ]);
+//            return $response;
+//        } else
+            if ($this->get('security.authorization_checker')->isGranted('ROLE_BACK')
+                || $this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
 
             $response = $this->render('security/security/admin/professionnelle.html.twig', [
                 'user' => $this->getUser(),
@@ -210,7 +212,17 @@ class securityController extends AbstractController
             return $response;
         } else {
             $this->addFlash('notice', 'Vous n\'avez pas le droit d\'acceder à cette partie de l\'application');
-            return $this->redirectToRoute('security_login');
+
+            $response = $this->redirectToRoute('security_login');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
         }
     }
 

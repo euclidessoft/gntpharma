@@ -136,11 +136,6 @@ class Employe extends User implements UserInterface
     private $conges;
 
     /**
-     * @ORM\OneToMany(targetEntity=CongeAccorder::class, mappedBy="employe")
-     */
-    private $congeAccorders;
-
-    /**
      * @ORM\OneToMany(targetEntity=Absence::class, mappedBy="employe")
      */
     private $absences;
@@ -264,7 +259,6 @@ class Employe extends User implements UserInterface
         $this->employeFormations = new ArrayCollection();
         $this->formations = new ArrayCollection();
         $this->conges = new ArrayCollection();
-        $this->congeAccorders = new ArrayCollection();
         $this->absences = new ArrayCollection();
         $this->demandeExplications = new ArrayCollection();
         $this->reponseExplications = new ArrayCollection();
@@ -640,36 +634,6 @@ class Employe extends User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($conge->getEmploye() === $this) {
                 $conge->setEmploye(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|CongeAccorder[]
-     */
-    public function getCongeAccorders(): Collection
-    {
-        return $this->congeAccorders;
-    }
-
-    public function addCongeAccorder(CongeAccorder $congeAccorder): self
-    {
-        if (!$this->congeAccorders->contains($congeAccorder)) {
-            $this->congeAccorders[] = $congeAccorder;
-            $congeAccorder->setEmploye($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCongeAccorder(CongeAccorder $congeAccorder): self
-    {
-        if ($this->congeAccorders->removeElement($congeAccorder)) {
-            // set the owning side to null (unless already changed)
-            if ($congeAccorder->getEmploye() === $this) {
-                $congeAccorder->setEmploye(null);
             }
         }
 
