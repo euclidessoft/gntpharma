@@ -82,8 +82,10 @@ class AbsenceController extends AbstractController
                     $dernierDateFin = $dernierAbsence->getDateFin();
                     $dernierDateFin->modify('+1 day');
                     if ($dernierDateFin->format('Y-m-d') === $dateDebut->format('Y-m-d')) {
+                        // prolongement absence jour suivant
                         $dernierAbsence->setDateFin($dateFin);
                         $entityManager->flush();
+                        $this->addFlash('notice', 'absence prolongée');
                         return $this->redirectToRoute('absence_index', [], Response::HTTP_SEE_OTHER);
                     }
 
@@ -94,6 +96,7 @@ class AbsenceController extends AbstractController
                             $dernierAbsence->setDateFin($absence->getDateFin()); // Met à jour la date de fin
                             $entityManager->flush();
                         }
+                        $this->addFlash('notice', 'absence deja enregistré');
                         return $this->redirectToRoute('absence_index', [], Response::HTTP_SEE_OTHER);
                     }
                 }
@@ -103,15 +106,15 @@ class AbsenceController extends AbstractController
                 $entityManager->persist($absence);
                 $entityManager->flush();
 
-                // **Ajout de la notification**
-                $notification = new Notification();
-                $notification->setEmploye($employe);
-                $notification->setMessage("Nouvelle absence enregistrée du " .$dateFin->format('d/m/Y') . " au " .$dateFin->format('d/m/Y'));
-                $notification->setCreatedAt(new \DateTime());
-                $notification->setIsRead(false);
-                $notification->setLien($this->generateUrl('absence_detail', ['id' => $absence->getId()]));
-                $entityManager->persist($notification);
-                $entityManager->flush();
+//                // **Ajout de la notification**
+//                $notification = new Notification();
+//                $notification->setEmploye($employe);
+//                $notification->setMessage("Nouvelle absence enregistrée du " .$dateFin->format('d/m/Y') . " au " .$dateFin->format('d/m/Y'));
+//                $notification->setCreatedAt(new \DateTime());
+//                $notification->setIsRead(false);
+//                $notification->setLien($this->generateUrl('absence_detail', ['id' => $absence->getId()]));
+//                $entityManager->persist($notification);
+//                $entityManager->flush();
 
 
                 return $this->redirectToRoute('absence_index', [], Response::HTTP_SEE_OTHER);
@@ -348,8 +351,11 @@ class AbsenceController extends AbstractController
                                 $entityManager->persist($calendrier);
                             }
                         }
-                    } elseif ($typeSanction === 'ponction salarial') {
-                        $sanction->setNombreJours('1');
+                    } elseif ($typeSanction === 'Ponction Salariale') {
+                        if($absence->getDateAbsence() == $absence->getDateFin())
+                            $sanction->setNombreJours( 1);
+                        else
+                            $sanction->setNombreJours( $absence->getDateAbsence()->diff($absence->getDateFin())->days);
                     }
 
                     $entityManager->persist($sanction);

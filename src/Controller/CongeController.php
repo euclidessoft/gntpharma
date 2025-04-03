@@ -81,9 +81,9 @@ class CongeController extends AbstractController
         if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
             $entityManager = $this->getDoctrine()->getManager();
             $query = $entityManager->createQuery(
-                'SELECT c FROM App\Entity\Conges c WHERE c.status IS NULL OR c.confirmer IS NULL'
-            );
-//                ->setParameter('status', null)
+                'SELECT c FROM App\Entity\Conges c WHERE c.status IS NULL OR c.confirmer IS NULL AND c.employe = :employe'
+            )
+                ->setParameter('employe', $this->getUser()->getId());
 //            ->setParameter('confirmer', null);
 
             return $this->render('conge/suivi.html.twig', [

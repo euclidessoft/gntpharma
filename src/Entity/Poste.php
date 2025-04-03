@@ -59,6 +59,11 @@ class Poste
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $heureSup;
+
     public function __construct()
     {
         $this->employes = new ArrayCollection();
@@ -186,6 +191,18 @@ class Poste
     public function setType(bool $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getHeureSup(): ?float
+    {
+        return $this->heureSup;
+    }
+
+    public function setHeureSup(?float $heureSup): self
+    {
+        $this->heureSup = $heureSup;
 
         return $this;
     }

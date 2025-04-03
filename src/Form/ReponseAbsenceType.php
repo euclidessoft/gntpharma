@@ -15,10 +15,11 @@ class ReponseAbsenceType extends AbstractType
     {
         $builder
             ->add('cause')
+            ->add('reponse')
             ->add('file', FileType::class, [
                 'label' => 'Fichier (PDF, JPEG, PNG)',
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '2048k',
