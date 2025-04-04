@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<title>PrimePerformance index</title>
+
+{% block body %}
+    <h1>PrimePerformance index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>CreateAt</th>
+                <th>Montant</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for prime_performance in prime_performances %}
+            <tr>
+                <td>{{ prime_performance.id }}</td>
+                <td>{{ prime_performance.createAt ? prime_performance.createAt|date('Y-m-d') : '' }}</td>
+                <td>{{ prime_performance.montant }}</td>
+                <td>
+                    <a href="{{ path('prime_performance_show', {'id': prime_performance.id}) }}">show</a>
+                    <a href="{{ path('prime_performance_edit', {'id': prime_performance.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('prime_performance_new') }}">Create new</a>
+{% endblock %}

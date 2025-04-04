@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit PrimePerformance</title>
+
+{% block body %}
+    <h1>Edit PrimePerformance</h1>
+
+    {{ include('prime_performance/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('prime_performance_index') }}">back to list</a>
+
+    {{ include('prime_performance/_delete_form.html.twig') }}
+{% endblock %}

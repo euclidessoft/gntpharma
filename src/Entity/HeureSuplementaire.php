@@ -28,11 +28,6 @@ class HeureSuplementaire
     private $duree;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $tauxHoraire;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -62,18 +57,6 @@ class HeureSuplementaire
     public function setDuree(float $duree): self
     {
         $this->duree = $duree;
-
-        return $this;
-    }
-
-    public function getTauxHoraire(): ?int
-    {
-        return $this->tauxHoraire;
-    }
-
-    public function setTauxHoraire(int $tauxHoraire): self
-    {
-        $this->tauxHoraire = $tauxHoraire;
 
         return $this;
     }

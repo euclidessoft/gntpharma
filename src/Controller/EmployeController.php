@@ -112,7 +112,7 @@ class EmployeController extends AbstractController
                             $employe->setRoles(['ROLE_RH']);
                             break;
                         }
-                    case 'EMPLOYER': {
+                    case 'EMPLOYE': {
                             $employe->setRoles(['ROLE_EMPLOYER']);
                             break;
                         }

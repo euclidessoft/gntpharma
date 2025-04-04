@@ -28,9 +28,14 @@ class ReponseAbsence
     private $absence;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $file;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $reponse;
 
     public function getId(): ?int
     {
@@ -69,6 +74,18 @@ class ReponseAbsence
     public function setFile(string $file): self
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    public function getReponse(): ?string
+    {
+        return $this->reponse;
+    }
+
+    public function setReponse(string $reponse): self
+    {
+        $this->reponse = $reponse;
 
         return $this;
     }

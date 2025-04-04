@@ -250,6 +250,11 @@ class Employe extends User implements UserInterface
      */
     private $paieSalaires;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PrimePerformance::class, mappedBy="employe")
+     */
+    private $primePerformances;
+
 
     public function __construct()
     {
@@ -279,6 +284,7 @@ class Employe extends User implements UserInterface
         $this->noteServices = new ArrayCollection();
         $this->noteService = new ArrayCollection();
         $this->paieSalaires = new ArrayCollection();
+        $this->primePerformances = new ArrayCollection();
     }
 
 
@@ -1199,6 +1205,36 @@ class Employe extends User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($paieSalaire->getEmploye() === $this) {
                 $paieSalaire->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PrimePerformance[]
+     */
+    public function getPrimePerformances(): Collection
+    {
+        return $this->primePerformances;
+    }
+
+    public function addPrimePerformance(PrimePerformance $primePerformance): self
+    {
+        if (!$this->primePerformances->contains($primePerformance)) {
+            $this->primePerformances[] = $primePerformance;
+            $primePerformance->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrimePerformance(PrimePerformance $primePerformance): self
+    {
+        if ($this->primePerformances->removeElement($primePerformance)) {
+            // set the owning side to null (unless already changed)
+            if ($primePerformance->getEmploye() === $this) {
+                $primePerformance->setEmploye(null);
             }
         }
 
