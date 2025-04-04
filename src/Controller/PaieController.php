@@ -428,10 +428,12 @@ class PaieController extends AbstractController
                 ];
             }
 
-
+            $nbrjoursmois = new \DateTime();
             return $this->render('paie/admin/show.html.twig', [
                 'employe' => $employe,
                 'primes' => $primes,
+                'nbrjoursmois' => $nbrjoursmois->format('t'),
+                'nombreJours' => $nombreJours,
                 'totalPrimePerf' => $totalPrimePerf,
                 'heureSups' => $nombreHeures,
                 'retenues' => $retenues,

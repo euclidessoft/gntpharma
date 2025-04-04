@@ -28,7 +28,7 @@ class Prime
     private $montant;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
 
@@ -37,6 +37,11 @@ class Prime
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $base;
 
     public function getId(): ?int
     {
@@ -87,6 +92,18 @@ class Prime
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getBase(): ?bool
+    {
+        return $this->base;
+    }
+
+    public function setBase(bool $base): self
+    {
+        $this->base = $base;
 
         return $this;
     }

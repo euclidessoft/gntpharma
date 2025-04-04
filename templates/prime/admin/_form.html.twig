@@ -11,15 +11,18 @@
     {% endfor %}
 
 <div class="row">
-
-    <div class="col-12 mb-4">
-        {{ form_row(form.montant, {'attr': {'placeholder': 'Entrez le montant du prime *'}, 'label': false}) }}
-    </div>
     <div class="col-12 mb-4">
         {{ form_row(form.employe, {'attr': {'placeholder': 'Sélectionnez l\'employé *'}, 'label': false}) }}
     </div>
+
     <div class="col-12 mb-4">
-        {{ form_row(form.description, {'attr': {'placeholder': 'Description ... *'}, 'label': false}) }}
+        {{ form_row(form.description, {'attr': {'placeholder': 'Nom de la prime *'}, 'label': false}) }}
+    </div>
+    <div class="col-12 mb-4">
+        {{ form_row(form.montant, {'attr': {'placeholder': 'Montant *'}, 'label': false}) }}
+    </div>
+    <div class="col-12 mb-4">
+        {{ form_row(form.base, {'label': false}) }}
     </div>
 </div>
 
