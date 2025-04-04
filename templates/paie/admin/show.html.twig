@@ -181,7 +181,7 @@
                     <tbody>
                     <tr class="text-right">
                         <td colspan="2" class="text-left">Impôt sur le revenu prélevé à la source</td>
-                        <td>{{ (employe.sursalaire + employe.poste.salaire- 14000)|number_format(0, '' , ' ') }}</td>
+                        <td>{{ (employe.sursalaire + employe.poste.salaire - 14000)|number_format(0, '' , ' ') }}</td>
                         <td></td>
                         <td>8 000</td>
                         <td>24 000</td>
@@ -201,7 +201,7 @@
                     </div>
                     <div class="col-6">
                         <h3 class="text-dark text-right text-bold">
-                            {{ (employe.sursalaire + employe.poste.salaire- 14000-8000)|number_format(0, '' , ' ') }}
+                            {{ (employe.sursalaire + employe.poste.salaire - 14000-8000)|number_format(0, '' , ' ') }}
                         </h3>
 {#                        <p class="text-right mb-0"> Payé le : 31/03/2025</p>#}
                     </div>

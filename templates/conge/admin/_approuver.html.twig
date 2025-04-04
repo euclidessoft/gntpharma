@@ -7,7 +7,7 @@
     is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
     'layout.html.twig'
 %}
-{% block title %} {{ "Demande de congé "|trans }} - GNT Pharma {% endblock %}
+{% block title %} {{ "Demande de permission "|trans }} - GNT Pharma {% endblock %}
 {% block discipline %}active{% endblock %}
 {% block body %}
     {{ form_start(form, {'attr': {'id': 'form'}}) }}
@@ -24,7 +24,7 @@
     <div class="col-lg-5 offset-lg-2 mt-4 fond-7 pb-5 pt-3 px-5">
         <h4 class="mb-5">
             <i class="fa-solid fa-clock"></i><i class="fa fa-plus mr-2"></i>
-            {{ 'Traitement de la demande de congé'|trans }}
+            {{ 'Traitement de la demande de permission'|trans }}
         </h4>
         <div class="col-12 mb-4">
             <h6> {{ conges.employe.prenom }}  {{ conges.employe.nom }}</h6>

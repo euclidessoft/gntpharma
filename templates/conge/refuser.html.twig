@@ -7,7 +7,7 @@
     is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
     'layout.html.twig'
 %}
-{% block title %}Mes demandes des Congés{% endblock %}
+{% block title %}{{ "Mes demandes des permission"|trans }} {% endblock %}
 {% block conges %}active{% endblock %}
 {% block permissions %}active{% endblock %}
 
@@ -16,7 +16,7 @@
 <div class="container mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
         <i class="fas fa-calendar-alt me-2"></i>
-        {{ "Mes demandes de Congé réfusée"|trans }}
+        {{ "Mes demandes de permission réfusée"|trans }}
     </h3>
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">

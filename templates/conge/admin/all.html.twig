@@ -7,14 +7,14 @@
     is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
     'layout.html.twig'
 %}
-{% block title %} {{ "Gestion des congés"|trans }} - GNT Pharma {% endblock %}
+{% block title %} {{ "Gestion des permission"|trans }} - GNT Pharma {% endblock %}
 {% block discipline %}active{% endblock %}
 {% block conges %}active{% endblock %}
 {% block body %}
-    <div class="container-fluid mt-4 fond-7">
+    <div class="container mt-4 fond-7">
         <h3 class="mt-4 mb-5 text-bold">
             <i class="fa fa-user-slash mr-2"></i>
-            {{ "Gestion des demandes de congé"|trans }}
+            {{ "Gestion des demandes de permission"|trans }}
         </h3>
         <ul class="nav nav-tabs mb-4">
             <li class="nav-item">
