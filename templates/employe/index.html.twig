@@ -5,8 +5,7 @@
     is_granted('ROLE_STOCK') ? 'stock.html.twig' :
     is_granted('ROLE_LIVREUR') ? 'livreur.html.twig' :
     is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
-    'layout.html.twig'
-%}
+    'layout.html.twig' %}
 {% block title %} {{ "Tous les employes"|trans }} - GNT Pharma {% endblock %}
 {% block administration %}active{% endblock %}
 {% block employe %}active{% endblock %}
@@ -25,10 +24,12 @@
                 {{ message|trans }}
             </div>
         {% endfor %}
-        <a href="{{ path('employe_new') }}" class="btn btn-green mb-4">
-            <i class="fa fa-plus"></i>
-            {{ "Ajouter employé"|trans }}
-        </a>
+        {% if is_granted('ROLE_RH') %}
+            <a href="{{ path('employe_new') }}" class="btn btn-green mb-4">
+                <i class="fa fa-plus"></i>
+                {{ "Ajouter employé"|trans }}
+            </a>
+        {% endif %}
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
             <thead>
             <tr>

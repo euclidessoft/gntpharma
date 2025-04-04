@@ -64,14 +64,13 @@
                         <li class="dropdown-item" title="{{ 'Mon contrat'|trans }}">
                             <a class="nav-link {% block mon_contrat %}{% endblock %}" href="{{ path('contrat_index') }}">
                                 <i class="fa-solid fa-address-card"></i>
-                                {{ 'Contrat'|trans }}
+                                {{ 'Mon contrat'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Mes fiches de paie'|trans }}">
-                            <a class="nav-link {% block mes_heure_supplementaire %}{% endblock %}"
-                               href="{{ path('heure_suivi') }}">
+                            <a class="nav-link {% block bulletiins %}{% endblock %}" href="{#{{ path('heure_suivi') }}#}">
                                 <i class="fa-solid fa-money-check-dollar"></i>
-                                {{ 'Heure Supplementaire'|trans }}
+                                {{ 'Mes fiches de paie'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Mes primes et avantages'|trans }}">
@@ -118,45 +117,33 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item dropright" title="{{ 'Administration'|trans }}">
-                    <a class="nav-link dropdown-toggle {% block administration %} {% endblock %}" href="#"
-                        id="administration"
-                        data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropright" title="{{ 'Employés'|trans }}">
+                    <a class="nav-link dropdown-toggle {% block employes %} {% endblock %}" href="#"
+                        id="employes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="icone">
                             <i class="fas fa-users fa-lg"></i>
                         </div>
                         <div class="title">
-                            {{ 'Administration'|trans }}
+                            {{ 'Employés'|trans }}
                         </div>
                     </a>
-                    <ul class=" dropdown-menu" aria-labelledby="administration">
-                        <li class="dropdown-item" title="{{ 'Employés'|trans }}">
-                            <a class="nav-link {% block employe %}{% endblock %}"
-                                href="{{ path('employe_index') }}">
+                    <ul class=" dropdown-menu" aria-labelledby="employes">
+                        <li class="dropdown-item" title="{{ 'Tous les employés'|trans }}">
+                            <a class="nav-link {% block all_employe %}{% endblock %}" href="{{ path('employe_index') }}">
                                 <i class="fa-solid fa-address-card"></i>
-                                {{ 'Employés'|trans }}
+                                {{ 'Tous les employés'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Contrat'|trans }}">
-                            <a class="nav-link {% block contrat %}{% endblock %}"
-                                href="{{ path('contrat_index') }}">
+                            <a class="nav-link {% block contrat %}{% endblock %}" href="{{ path('contrat_index') }}">
                                 <i class="fa-solid fa-address-card"></i>
                                 {{ 'Contrat'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Planning des congés'|trans }}">
-                            <a class="nav-link {% block planning %}{% endblock %}"
-                                href="{{ path('calendrier_index') }}">
+                            <a class="nav-link {% block planning %}{% endblock %}" href="{{ path('calendrier_index') }}">
                                 <i class="fa-solid fa-calendar-days"></i>
                                 {{ 'Planning des congés'|trans }}
-                            </a>
-                        </li>
-                        <li class="dropdown-item" title="{{ 'Configuration'|trans }}">
-                            <a class="nav-link {% block config %}{% endblock %}"
-                                href="{{ path('departement_index') }}">
-                                <i class="fa-solid fa-gears"></i>
-                                {{ 'Configuration'|trans }}
                             </a>
                         </li>
                     </ul>
@@ -356,17 +343,16 @@
                         </li>
                     </ul>
                 </li>
-                {#<li class="nav-item" title="{{ 'Réclamation'|trans }}">
-                    <a class="nav-link {% block reclamation %} {% endblock %}"
-                        href="#">
+                <li class="nav-item" title="{{ 'Configuration'|trans }}">
+                    <a class="nav-link {% block config %}{% endblock %}" href="{{ path('departement_index') }}">
                         <div class="icone">
-                            <i class="fa-solid fa-user-clock fa-lg"></i>
+                        <i class="fa-solid fa-gear fa-lg"></i>
                         </div>
                         <div class="title">
-                            {{ 'Réclamations'|trans }}
+                        {{ 'Configuration'|trans }}
                         </div>
                     </a>
-                </li>#}
+                </li>
                 <li class="nav-item dropright" title="{{ 'Aide'|trans }}">
                     <a class="nav-link dropdown-toggle {% block aide %}{% endblock %}" href="#" id="Aide"
                         data-toggle="dropdown" aria-haspopup="true"
