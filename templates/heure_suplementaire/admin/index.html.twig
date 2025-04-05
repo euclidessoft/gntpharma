@@ -19,6 +19,7 @@
     <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
     <thead>
             <tr>
+                <th>{{ "Date"|trans }}</th>
                 <th>Matricule</th>
                 <th>Employé(e)</th>
                 <th>Duree</th>
@@ -29,10 +30,11 @@
         <tbody>
         {% for heure_suplementaire in heure_suplementaires %}
             <tr>
+                <td>{{ heure_suplementaire.createdAt ? heure_suplementaire.createdAt|date('d/m/Y') : ''}}</td>
                 <td>{{ heure_suplementaire.employe.matricule }}</td>
                 <td>{{ heure_suplementaire.employe.nom~' '~heure_suplementaire.employe.prenom }}</td>
                 <td>{{ heure_suplementaire.duree }}</td>
-                <td>{{ heure_suplementaire.tauxHoraire }}</td>
+                <td>{{ heure_suplementaire.tauxHoraire|number_format(0, '', ' ') }}</td>
                 <td>
                     <a href="{{ path('heure_suplementaire_edit', {'id': heure_suplementaire.id}) }}" class="btn btn-success"><i class="fas fa-edit"></i></a>
                 </td>

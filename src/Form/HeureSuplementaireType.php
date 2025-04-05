@@ -15,7 +15,6 @@ class HeureSuplementaireType extends AbstractType
     {
         $builder
             ->add('duree')
-            ->add('tauxHoraire')
             ->add('employe',EntityType::class, [
                 'class' => Employe::class,
                 'choice_label' => function(Employe $employe){

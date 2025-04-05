@@ -18,6 +18,7 @@
        <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
             <thead>
             <tr>
+                <th>{{ "Date"|trans }}</th>
                 <th>Matricule</th>
                 <th>Durée</th>
                 <th>Taux Horaire</th>
@@ -26,6 +27,7 @@
             <tbody>
             {% for heure in heures %}
                 <tr>
+                    <td>{{ heure.createdAt ? heure.createdAt|date('d/m/Y') : ''}}</td>
                     <td>{{ heure.employe.matricule }}</td>
                      <td>{{ heure.duree }}</td>
                     <td>{{ heure.tauxHoraire|number_format(0,'',' ') }} FCFA</td>

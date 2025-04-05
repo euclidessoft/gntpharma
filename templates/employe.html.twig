@@ -63,14 +63,14 @@
                     <ul class=" dropdown-menu" aria-labelledby="administration">
                         <li class="dropdown-item" title="{{ 'Contrat'|trans }}">
                             <a class="nav-link {% block contrat %}{% endblock %}"
-                                href="{{ path('contrat_index') }}">
+                                href="{{ path('contrat_index_suivi') }}">
                                 <i class="fa-solid fa-address-card"></i>
                                 {{ 'Contrat'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Planning des congés'|trans }}">
                             <a class="nav-link {% block planning %}{% endblock %}"
-                                href="{{ path('calendrier_index') }}">
+                                href="{{ path('calendrier_index_suivi') }}">
                                 <i class="fa-solid fa-calendar-days"></i>
                                 {{ 'Planning des congés'|trans }}
                             </a>
@@ -116,7 +116,7 @@
                 </li>
                 <li class="nav-item" title="{{ 'Performance'|trans }}">
                     <a class="nav-link {% block performance %} {% endblock %}"
-                       href="{{ path('evaluation_index') }}">
+                       href="{{ path('evaluation_suivi') }}">
                         <div class="icone">
                             <i class="fa-solid fa-chart-line fa-lg"></i>
                         </div>
@@ -148,14 +148,14 @@
 
                         <li class="dropdown-item" title="{{ 'Fiche de paie'|trans }}">
                             <a class="nav-link {% block heure_supplementaire %}{% endblock %}"
-                                href="{{ path('heure_suplementaire_index') }}">
+                                href="{{ path('heure_suivi') }}">
                                 <i class="fa-solid fa-money-check-dollar"></i>
                                 {{ 'Heure supplementaire'|trans }}
                             </a>
                         </li>
                         <li class="dropdown-item" title="{{ 'Primes et avantages'|trans }}">
                             <a class="nav-link {% block prime %}{% endblock %}"
-                                href="{{ path('prime_index') }}">
+                                href="{{ path('prime_suivi') }}">
                                 <i class="fa-solid fa-money-bill-wheat"></i>
                                 {{ 'Primes et avantages'|trans }}
                             </a>

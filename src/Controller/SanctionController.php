@@ -44,7 +44,7 @@ class SanctionController extends AbstractController
      */
     public function suivi(Security $security): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
             $employe = $security->getUser();
             $sanction = $this->getDoctrine()->getRepository(Sanction::class)->findBy(['employe' => $employe]);
             return $this->render('sanction/suivi.html.twig', [

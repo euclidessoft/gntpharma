@@ -44,7 +44,7 @@ class ContratController extends AbstractController
      */
     public function suivi(Security $security): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLYER')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
             $entityManager = $this->getDoctrine()->getManager();
             $employe = $security->getUser();
             $contrat = $entityManager->getRepository(Contrat::class)->findBy(['employe' => $employe]);

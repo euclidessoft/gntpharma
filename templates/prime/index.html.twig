@@ -19,7 +19,7 @@
         <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
             <thead>
             <tr>
-                <th>Date prime</th>
+{#                <th>Date prime</th>#}
                 <th>Montant</th>
                 <th>Description</th>
             </tr>
@@ -27,7 +27,7 @@
             <tbody>
             {% for prime in primes %}
                 <tr>
-                    <td>{{ prime.createdAt ? prime.createdAt|date('d/m/Y') }}</td>
+{#                    <td>{{ prime.createdAt ? prime.createdAt|date('d/m/Y') }}</td>#}
                     <td>{{ prime.montant|number_format(0,'',' ') }} FCFA</td>
                     <td>{{ prime.description }}</td>
                 </tr>

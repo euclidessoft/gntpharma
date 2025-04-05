@@ -39,6 +39,29 @@ class CalendrierController extends AbstractController
     }
 
     /**
+     * @Route("/Suivi", name="calendrier_index_suivi", methods={"GET"})
+     */
+    public function suivi(CalendrierRepository $calendrierRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            return $this->render('calendrier/index.html.twig', [
+                'calendriers' => $calendrierRepository->findBy(['employe' => $this->getUser()]),
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
      * @Route("/new", name="calendrier_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response

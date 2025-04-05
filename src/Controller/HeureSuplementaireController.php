@@ -78,6 +78,7 @@ class HeureSuplementaireController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $heureSuplementaire->setCreatedAt(new \DateTime());
+                $heureSuplementaire->setTauxHoraire($heureSuplementaire->getEmploye()->getPoste()->getHeureSup());
                 $entityManager->persist($heureSuplementaire);
                 $entityManager->flush();
 
