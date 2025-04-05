@@ -30,12 +30,12 @@ class Absence
     private $dateAbsence;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $justifier;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $status;
 
@@ -66,6 +66,8 @@ class Absence
 
     public function __construct()
     {
+        $this->status = false;
+        $this->justifier = null;
         $this->reponseAbsences = new ArrayCollection();
         $this->decisions = new ArrayCollection();
     }
@@ -112,12 +114,12 @@ class Absence
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?bool
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(bool $status): self
     {
         $this->status = $status;
 

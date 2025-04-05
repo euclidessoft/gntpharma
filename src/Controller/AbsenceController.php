@@ -101,8 +101,6 @@ class AbsenceController extends AbstractController
                     }
                 }
 
-                $absence->setJustifier(false);
-                $absence->setStatus(0);
                 $entityManager->persist($absence);
                 $entityManager->flush();
 
@@ -212,7 +210,7 @@ class AbsenceController extends AbstractController
                     }
                     $justificatif->setFile($newFileName);
                 }
-                $absence->setStatus(1);
+                $absence->setStatus(true);
 
                 $entityManager->persist($justificatif);
                 $entityManager->flush();
@@ -245,7 +243,6 @@ class AbsenceController extends AbstractController
             $responsable = $security->getUser();
 
             if ($this->isCsrfTokenValid('confirmer' . $absence->getId(), $request->request->get('_token'))) {
-                $absence->setStatus(1);
                 $absence->setJustifier(true);
                 $absence->setResponsable($responsable);
                 $absence->setDateAbsence(new \DateTime());
@@ -287,8 +284,7 @@ class AbsenceController extends AbstractController
                 $decision->setResponsable($responsable);
                 $decision->setDateConfirm(new \DateTime());
 
-                $absence->setJustifier(true);
-                $absence->setStatus(0);
+                $absence->setJustifier(false);
                 $absence->setResponsable($responsable);
                 $absence->setDateConfirm(new \DateTime());
 
@@ -432,6 +428,32 @@ class AbsenceController extends AbstractController
     }
 
     /**
+     * @Route("/Suivi/Admin/Attente", name="absence_admin_attente")
+     */
+    public function attente(Security $security, AbsenceRepository $absenceRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_RH')) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $employe = $security->getUser();
+            $absences = $absenceRepository->adminAttente();
+            return $this->render('absence/admin/attente.html.twig', [
+                'absences' => $absences,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
      * @Route("/Suivi/Refuser", name="absence_employe_refuser")
      */
     public function RefuserAbsence(Security $security, AbsenceRepository $absenceRepository): Response
@@ -441,6 +463,31 @@ class AbsenceController extends AbstractController
             $employe = $security->getUser();
             $absences = $absenceRepository->findAbsenceRefuser($employe);
             return $this->render('absence/refuser.html.twig', [
+                'absences' => $absences,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+    /**
+     * @Route("/Suivi/Admin/Refuser", name="absence_admin_refuser")
+     */
+    public function RefuserAdmin(Security $security, AbsenceRepository $absenceRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $employe = $security->getUser();
+            $absences = $absenceRepository->findBy(['status' => true, 'justifier' => true]);
+            return $this->render('absence/admin/refuser.html.twig', [
                 'absences' => $absences,
             ]);
         } else {
@@ -468,6 +515,32 @@ class AbsenceController extends AbstractController
             $employe = $security->getUser();
             $absences = $absenceRepository->findAbsenceAccepeter($employe);
             return $this->render('absence/accepter.html.twig', [
+                'absences' => $absences,
+            ]);
+        } else {
+            $response = $this->redirectToRoute('security_logout');
+            $response->setSharedMaxAge(0);
+            $response->headers->addCacheControlDirective('no-cache', true);
+            $response->headers->addCacheControlDirective('no-store', true);
+            $response->headers->addCacheControlDirective('must-revalidate', true);
+            $response->setCache([
+                'max_age' => 0,
+                'private' => true,
+            ]);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route("/Suivi/Admin/Accepter", name="absence_admin_accepter")
+     */
+    public function AccepterAdmin(Security $security, AbsenceRepository $absenceRepository): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_EMPLOYER')) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $employe = $security->getUser();
+            $absences = $absenceRepository->findBy(['status' => 1, 'justifier' => true]);
+            return $this->render('absence/admin/accepter.html.twig', [
                 'absences' => $absences,
             ]);
         } else {

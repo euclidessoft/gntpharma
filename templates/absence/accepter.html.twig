@@ -17,7 +17,6 @@
         <i class="fas fa-calendar-alt me-2"></i>
         {{ "Mes absences"|trans }}
     </h3>
-    <a href="{{ path('absence_new') }}" class="btn btn-success mb-3"> Nouvel absence</a>
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
             <a class="nav-link" href="{{ path('absence_employe_attente') }}">
@@ -44,8 +43,6 @@
         <thead>
         <tr>
             <th>{{ ('Date absence'|trans) }}</th>
-            <th>{{ ('Status'|trans) }}</th>
-            <th>{{ ('Décision'|trans) }}</th>
             <th>{{ ('Actions'|trans) }}</th>
         </tr>
         </thead>
@@ -57,24 +54,6 @@
                     {% if absence.dateAbsence != absence.dateFin %}
                         au {{ absence.dateFin|date('d/m/Y') }}
                     {% endif %}
-                </td>
-                <td>
-                    {% if absence.status == 0 and absence.justifier == 0 %}
-                        <span class="badge badge-warning">En attente de justification</span>
-                    {% elseif absence.justifier == 0 and absence.status == 1 %}
-                        <span class="badge badge-info">En attente de validation</span>
-                    {% elseif absence.status == 1 and absence.justifier == 1 %}
-                        <span class="badge badge-success">Absence justifiée</span>
-                    {% elseif absence.status == 0 and absence.justifier == 1 %}
-                        <span class="badge badge-danger">Non justifiée</span>
-                    {% else %}
-                        <span class="badge badge-secondary">Statut inconnu</span>
-                    {% endif %}
-                </td>
-                <td data-label="decision">
-                    {% for decision in absence.decisions %}
-                        <span>{{ decision.type }}</span><br>
-                    {% endfor %}
                 </td>
                 <td>
                     {% if absence.status == 0 and absence.justifier == 0 %}

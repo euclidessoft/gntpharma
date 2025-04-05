@@ -52,10 +52,7 @@ class AbsenceRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->where('a.employe = :employe')
-            ->andWhere('(a.status != :status OR a.justifier != :justifier)')
             ->setParameter('employe', $employe)
-            ->setParameter('status', '0')
-            ->setParameter('justifier', '0')
             ->getQuery()
             ->getResult();
     }
@@ -65,11 +62,16 @@ class AbsenceRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->where('a.employe = :employe')
-            ->andWhere('a.status = :status')
-            ->andWhere('a.justifier = :justifier')
+            ->andWhere('a.justifier IS NULL')
             ->setParameter('employe', $employe)
-            ->setParameter('status', '0')
-            ->setParameter('justifier', '0')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function adminAttente(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->Where('a.justifier IS NULL')
             ->getQuery()
             ->getResult();
     }
@@ -81,8 +83,8 @@ class AbsenceRepository extends ServiceEntityRepository
             ->andWhere('a.status = :status')
             ->andWhere('a.justifier = :justifier')
             ->setParameter('employe', $employe)
-            ->setParameter('status', '0')
-            ->setParameter('justifier', '1')
+            ->setParameter('status', true)
+            ->setParameter('justifier', false)
             ->getQuery()
             ->getResult();
     }

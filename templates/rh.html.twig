@@ -89,7 +89,7 @@
                         </li>
                         <li class="dropdown-item" title="{{ 'Mes absences'|trans }}">
                             <a class="nav-link {% block mes_absence %}{% endblock %}"
-                               href="{{ path('absence_suivi') }}">
+                               href="{{ path('absence_index') }}">
                                 <i class="fa fa-user-slash"></i>
                                 {{ 'Absences'|trans }}
                             </a>
@@ -169,7 +169,7 @@
                         </li>
                         <li class="dropdown-item" title="{{ 'Absences'|trans }}">
                             <a class="nav-link {% block absence %}{% endblock %}"
-                                href="{{ path('absence_suivi') }}">
+                                href="{{ path('absence_admin_attente') }}">
                                 <i class="fa fa-user-slash"></i>
                                 {{ 'Absences'|trans }}
                             </a>

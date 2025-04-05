@@ -16,12 +16,32 @@
 {% block body %}
 <div class="col-lg-10 mt-4 fond-7">
     <h3 class="mt-4 mb-5 text-bold">
-        <i class="fa fa-money-bill mr-2"></i>
-        {{ "Liste des absences"|trans }}
+        <i class="fas fa-calendar-alt me-2"></i>
+        {{ "Absences"|trans }}
     </h3>
-    <a href="{{ path('absence_new') }}" class="btn btn-success mb-4">
-        <i class="fas fa-plus"></i> Nouvel absence
-    </a>
+    <a href="{{ path('absence_new') }}" class="btn btn-success mb-3"> Nouvel absence</a>
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('absence_admin_attente') }}">
+                {{'En attente de justification'|trans}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('absence_admin_accepter') }}">
+                {{ 'Accepter'|trans }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('absence_admin_refuser') }}">
+                {{ 'Réfuser'|trans }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#">
+                {{ 'Toutes les absences'|trans }}
+            </a>
+        </li>
+    </ul>
     {% for message in app.flashes('notice') %}
         <div class="alert alert-success alert-dismissible fade show radius-10 shadow-black mb-5">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
@@ -53,16 +73,16 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if absence.status == 0 and absence.justifier == 0 %}
+                        {% if absence.status == 0 %}
                             <span class="badge badge-warning">En attente de justification</span>
-                        {% elseif absence.status == 1 and absence.justifier == 0 %}
-                            <span class="badge badge-info">En attente de validation</span>
-                        {% elseif absence.status == 1 and absence.justifier == 1 %}
-                            <span class="badge badge-success">Absence justifiée</span>
-                        {% elseif absence.status == 0 and absence.justifier == 1 %}
-                            <span class="badge badge-danger">Non justifiée</span>
                         {% else %}
-                            <span class="badge badge-secondary">Statut inconnu</span>
+                            {% if absence.justifier is null %}
+                                 <span class="badge badge-info">En attente de validation</span>
+                            {% elseif absence.justifier == true %}
+                                <span class="badge badge-success">{{ "justifiée"|trans }}</span>
+                            {% else %}
+                                <span class="badge badge-danger">{{ "Refusée"|trans }}</span>
+                            {% endif %}
                         {% endif %}
                     </td>
                     <td>
