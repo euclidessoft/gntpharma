@@ -32,6 +32,7 @@
                 <th>{{ 'Département'|trans }}</th>
                 <th class="text-center">{{ 'Téléphone'|trans }}</th>
                 <th>{{ 'Email'|trans }}</th>
+                <th>{{ "Niveau d'accès"|trans }}</th>
                 <th class="text-center">{{ 'Statut'|trans }}</th>
                 <th>{{ 'Action'|trans }}</th>
             </tr>
@@ -43,6 +44,7 @@
                 <td data-label="{{ 'Département'|trans }}">{{ employe.poste ? employe.poste.departement.nom: '' }}</td>
                 <td class="text-center" data-label="{{ 'Téléphone'|trans }}">{{ employe.phone }}</td>
                 <td data-label="{{ 'Email'|trans }}">{{ employe.email }}</td>
+                <td data-label="{{ "Niveau d'accès"|trans }}">{{ employe.fonction }}</td>
                 <td data-label="{{ 'Statut'|trans }}" class="text-center">
                     {% if employe.status %}
                         {{ "Actif "|trans }}

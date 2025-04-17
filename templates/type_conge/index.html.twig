@@ -5,74 +5,73 @@
     is_granted('ROLE_STOCK') ? 'stock.html.twig' :
     is_granted('ROLE_LIVREUR') ? 'livreur.html.twig' :
     is_granted('ROLE_EMPLOYER') ? 'employe.html.twig' :
-    'layout.html.twig'
-%}
-{% block title %} {{ "Lignes de depenses"|trans }} - GNT Pharma {% endblock %}
+    'layout.html.twig' %}
+{% block title %} {{ "Permission"|trans }} - GNT Pharma {% endblock %}
 {% block administration %}active{% endblock %}
 {% block config %}active{% endblock %}
 {% block body %}
 
 
-<div class="container mt-4 fond-7 pb-5 pt-3 px-5">
-    <h4 class="text-bold mb-5">
-        <i class="fa-solid fa-gears fa-lg"></i>
-        {{ 'Configuration du système'|trans }}
-    </h4>
-    <ul class="nav nav-tabs mb-4">
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('departement_index') }}">
-                {{'Département'|trans }}
+    <div class="container mt-4 fond-7 pb-5 pt-3 px-5">
+        <h4 class="text-bold mb-5">
+            <i class="fa-solid fa-gear"></i>
+            {{ 'Configuration du système'|trans }}
+        </h4>
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('departement_index') }}">
+                    {{ 'Département'|trans }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('poste_index') }}">
+                    {{ 'Poste'|trans }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('type_conge_index') }}">
+                    {{ 'Permission'|trans }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('type_contrat_index') }}">
+                    {{ 'Contrat'|trans }}
+                </a>
+            </li>
+        </ul>
+        <h5 class="">{{ "Motifs de permission"|trans }}</h5>
+        <div class="tab-content">
+
+            <a href="{{ path('type_conge_new') }}" class="btn btn-success my-4">
+                <i class="fas fa-plus"></i>Nouveau motif
             </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('poste_index') }}">
-                {{'Poste'|trans}}
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="{{ path('type_conge_index') }}">
-                {{'Permission'|trans}}
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('type_sanction_index') }}">
-                {{'Sanction'|trans}}
-            </a>
-        </li>
-        <li class="nav-item">
-        <a class="nav-link" href="{{ path('type_contrat_index') }}">
-                {{'Contrat'|trans}}
-            </a>
-        </li>
-    </ul>
-    <h5 class="text-bold">{{ "Liste des types de congé"|trans }}</h5>
-    <div class="tab-content">
-        <!-- Section Département -->
-    <a href="{{ path('type_conge_new') }}" class="btn btn-success mb-4"><i class="fas fa-plus"></i>Nouvel type conge</a>
-    <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
-        <thead>
-            <tr>
-                <th>{{('Nom'|trans)}}</th>
-                <th>{{('Description'|trans)}}</th>
-                <th>{{('actions'|trans)}}</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for type_conge in type_conges %}
-            <tr>
-                <td data-label="Nom">{{ type_conge.nom }}</td>
-                <td data-label="Description">{{ type_conge.description }}</td>
-                <td data-label="Actions">
-                    <a href="{{ path('type_conge_edit', {'id': type_conge.id}) }}" class="btn btn-success-light"><i class="fas fa-edit"></i></a>
-                    {{ include('type_conge/_delete_form.html.twig') }}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4" class="text-center">Aucune ligne de dépenses</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+            <table class="table table-success-light table-bordered table-hover table-striped w-100" id="liste">
+                <thead>
+                <tr>
+                    <th>{{ ('Nom'|trans) }}</th>
+                    <th>{{ ('Description'|trans) }}</th>
+                    <th class="text-center">{{ ('Actions'|trans) }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for type_conge in type_conges %}
+                    <tr>
+                        <td data-label="Nom">{{ type_conge.nom }}</td>
+                        <td data-label="Description">{{ type_conge.description }}</td>
+                        <td data-label="Actions" class="text-center">
+                            <a href="{{ path('type_conge_edit', {'id': type_conge.id}) }}" class="btn btn-success-light mr-2">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            {{ include('type_conge/_delete_form.html.twig') }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center">Aucun motifs de permission</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
