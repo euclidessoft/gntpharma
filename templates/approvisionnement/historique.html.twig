@@ -26,7 +26,10 @@
             {{ message|trans }}
         </div>
     {% endfor %}
-
+    <a href="{{ path('stock_appro_index') }}" class="btn btn-green my-4">
+        <i class="fa fa-plus"></i>
+        {{ "Reaprovionner"|trans }}
+    </a>
     <table class="table table-success-light table-bordered table-hover table-striped w-100 text-center" id="liste">
         <thead>
         <tr>
